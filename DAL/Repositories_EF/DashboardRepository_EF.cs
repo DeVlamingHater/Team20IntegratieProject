@@ -30,7 +30,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Alert> getActiveAlerts()
         {
-            return context.Alerts.Where<Alert>(a=>a.Status ==AlertStatus.ACTIEF).ToList<Alert>();
+            return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a=>a.Status ==AlertStatus.ACTIEF).ToList<Alert>();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)

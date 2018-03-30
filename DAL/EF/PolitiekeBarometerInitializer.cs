@@ -93,7 +93,8 @@ namespace DAL.EF
             #region Themas
             Thema thema1 = new Thema()
             {
-                Naam = "Cultuur"
+                Naam = "Cultuur",
+                Keywords = new List<Keyword>()
             };
             thema1.Keywords.Add(keyword1);
             keyword1.Themas.Add(thema1);
@@ -247,7 +248,7 @@ namespace DAL.EF
             #endregion
             #endregion
             #endregion
-
+            context.SaveChanges();
             base.Seed(context);
         }
     }

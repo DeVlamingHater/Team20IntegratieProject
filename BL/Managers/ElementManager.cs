@@ -13,6 +13,19 @@ namespace BL.Managers
     {
         IElementRepository elementRepository = new ElementRepository_EF();
 
+        UnitOfWorkManager uowManager;
+
+        public ElementManager(UnitOfWorkManager uowManager)
+        {
+            this.uowManager = uowManager;
+            elementRepository = new ElementRepository_EF(uowManager.UnitOfWork);
+        }
+
+        public ElementManager()
+        {
+            elementRepository = new ElementRepository_EF();
+        }
+
         public List<Element> getAllElementen()
         {
             return elementRepository.getAllElementen().ToList();
