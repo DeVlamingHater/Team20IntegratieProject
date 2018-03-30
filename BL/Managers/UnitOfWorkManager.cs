@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CA
+namespace BL.Managers
 {
-    class Program
+    class UnitOfWorkManager
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("hallo");
-        }
     }
 }

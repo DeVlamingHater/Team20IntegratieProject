@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CA
+namespace Domain
 {
-    class Program
+    public enum DataType
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("hallo");
-        }
+        TOTAAL,
+        TREND
     }
 }
