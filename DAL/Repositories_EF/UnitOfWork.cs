@@ -6,7 +6,7 @@ namespace DAL.Repositories_EF
     {
         private PolitiekeBarometerContext context;
 
-        internal    PolitiekeBarometerContext Context
+        internal PolitiekeBarometerContext Context
         {
             get
             {

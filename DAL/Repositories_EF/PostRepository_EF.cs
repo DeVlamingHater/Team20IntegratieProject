@@ -119,8 +119,21 @@ namespace DAL.Repositories_EF
                     });
                     index++;
                 }
+                string naam = tweet.Politician[0] + " " + tweet.Politician[1];
+                Persoon persoon;
+                try
+                {
+                     persoon = (Persoon)context.Personen.Single(p=>p.Naam == naam);
+                }
+                catch (Exception)
+                {
 
-                post.Persoon = context.Personen.Single(p => p.Naam.Equals(tweet.Politician[0] + " " + tweet.Politician[1]));
+                    persoon = null;
+                }
+                if (persoon != null)
+                {
+                    post.Persoon = persoon;
+                }
                 post.Source = "Twitter";
                 post.Date = tweet.Date;
                 posts.Add(post);

@@ -28,6 +28,7 @@ namespace PolitiekeBarometer_MVC
                 roleManager.Create(role);
 
                 var user = new ApplicationUser();
+                user.Name = "Integratie Project User";
                 user.UserName = "IntegratieProjectTeam20@gmail.com";
                 user.Email = "IntegratieProjectTeam20@gmail.com";
                 string pwd = "Integratie20";

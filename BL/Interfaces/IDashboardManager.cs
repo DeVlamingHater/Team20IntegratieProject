@@ -12,5 +12,6 @@ namespace BL.Interfaces
         List<Alert> getActiveAlerts();
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
+        void sendAlerts();
     }
 }
