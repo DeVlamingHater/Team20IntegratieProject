@@ -1,0 +1,25 @@
+﻿.icon {
+    width: 30px;
+    height: 30px;
+}
+
+.graph {
+    width: 30%;
+    height: auto;
+}
+
+.inline {
+    display: inline;
+}
+
+header {
+    background: url("https://www.echt-susteren.nl/sites/default/files/styles/news_full/public/politiek_bewust.jpg?itok=pXY96cQ0") no-repeat center;
+    background-size: 100% 100%;
+    height: 300px;
+    position: relative;
+}
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
