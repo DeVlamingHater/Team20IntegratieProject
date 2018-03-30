@@ -10,7 +10,9 @@ namespace CA
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Sam");
+
+            Console.WriteLine("Thomas");
+
         }
     }
 }
