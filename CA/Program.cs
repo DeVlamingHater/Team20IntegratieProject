@@ -10,7 +10,7 @@ namespace CA
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("conflict");
+            Console.WriteLine("Daan");
         }
     }
 }
