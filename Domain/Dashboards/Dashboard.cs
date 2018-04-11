@@ -14,5 +14,6 @@ namespace Domain.Dashboards
         public int DashboardId { get; set; }
 
         public Gebruiker Gebruiker { get; set; }
-    }
+        public ICollection<Zone> Zones { get; set; }
+  }
 }
