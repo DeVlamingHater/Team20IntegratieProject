@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BL.Managers;
+using Domain.Dashboards;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,7 +11,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index()
-        {
+        {     
           return View();
         }
 
@@ -22,5 +24,19 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             return View();
         }
+   
+      private DashboardManager mgr = new DashboardManager();
+
+      public ActionResult _DashboardPartial(int gebruikerId)
+      {
+        Dashboard dashboard = mgr.getDashboard(gebruikerId);
+        IEnumerable<Zone> zones = mgr.getZones(dashboard);
+        return View(zones);
+      }
+      public ActionResult getZone(int zoneId)
+      {
+        Zone zone = mgr.getZone(zoneId);
+        return View(zone);
+      }
     }
-}
+  }
