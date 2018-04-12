@@ -15,13 +15,13 @@ namespace PolitiekeBarometer_CA
         private static IElementManager elementManager;
         private static IPostManager postManager;
         private static IDashboardManager dashboardManager;
-        private static IPlatformManager platformManager;
+        private static BL.Interfaces.IPlatformManager platformManager;
         static void Main(string[] args)
         {
             elementManager = new ElementManager();
             postManager = new PostManager();
             dashboardManager = new DashboardManager();
-            platformManager = new PlatformManager();
+      platformManager = new BL.Managers.PlatformManager();
             Console.WriteLine("Politieke Barometer");
             bool afsluiten = false;
             while (!afsluiten)

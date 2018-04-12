@@ -1,4 +1,5 @@
 ﻿using DAL.EF;
+using Domain.Platformen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,10 @@ namespace DAL.Repositories_EF
         {
             context = unitOfWork.Context;
         }
+
+    public Gebruiker getGebruiker(int gebruikerId)
+    {
+      throw new NotImplementedException();
     }
+  }
 }

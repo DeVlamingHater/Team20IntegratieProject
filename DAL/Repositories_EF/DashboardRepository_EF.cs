@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
+using Domain.Dashboards;
+using Domain.Platformen;
 
 namespace DAL.Repositories_EF
 {
-    public class DashboardRepository_EF : IDashboardRepository
+    public class DashboardRepository_EF : DashboardRepository
     {
         PolitiekeBarometerContext context;
 
@@ -38,6 +40,19 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-       
+    public Dashboard getDashboard(Gebruiker gebruiker)
+    {
+      throw new NotImplementedException();
     }
+
+    public IEnumerable<Zone> getZones(int dashboardId)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Zone getZone(int zoneId)
+    {
+      throw new NotImplementedException();
+    }
+  }
 }

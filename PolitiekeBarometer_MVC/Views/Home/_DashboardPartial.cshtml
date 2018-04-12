@@ -1,0 +1,25 @@
+﻿@model  IEnumerable<Domain.Dashboards.Zone>
+@{
+    ViewBag.Title = "_DashboardPartial";
+}
+
+<h2>_DashboardPartial</h2>
+<div id="dashboard">
+    @if (Request.IsAuthenticated)
+    {
+        <ul id="tabs">
+        
+        @foreach (var item in Model)
+         {
+            <li>@Html.DisplayFor(modelItem => item.Naam)</li>
+         }
+            <li class="inline"><a href="#"><img src="http://icons.iconarchive.com/icons/icons8/android/256/Very-Basic-Plus-icon.png" alt="Plus-Icon" class="icon" /></a></li>
+        </ul>
+    }
+    else
+    {
+        <div>Standaard</div>
+      
+    }
+
+</div>

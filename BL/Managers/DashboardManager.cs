@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Repositories_EF;
 using Domain;
+using Domain.Dashboards;
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BL.Managers
 {
     public class DashboardManager : IDashboardManager
     {
-        IDashboardRepository dashboardRepository;
+        DashboardRepository dashboardRepository;
         public UnitOfWorkManager uowManager;
         public DashboardManager()
         {
@@ -24,6 +25,22 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
+    public Dashboard getDashboard(int gebruikerId)
+    {
+      PlatformManager platformManager = new PlatformManager();
+      Gebruiker gebruiker = platformManager.getGebruiker(gebruikerId);
+      Dashboard dashboard = dashboardRepository.getDashboard(gebruiker);
+      return dashboard;
+    }
+    public IEnumerable<Zone> getZones(Dashboard dashboard)
+    {
+      int dashboardId = dashboard.DashboardId;
+      return dashboardRepository.getZones(dashboardId);
+    }
+    public Zone getZone(int zoneId)
+    {
+      return dashboardRepository.getZone(zoneId);
+    }
         public List<Alert> getActiveAlerts()
         {
             initNonExistingRepo(false);
