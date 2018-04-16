@@ -33,10 +33,17 @@ namespace PolitiekeBarometer_MVC.Controllers
         IEnumerable<Zone> zones = mgr.getZones(dashboard);
         return View(zones);
       }
-      public ActionResult getZone(int zoneId)
+      public ActionResult GetZone(int zoneId)
       {
         Zone zone = mgr.getZone(zoneId);
         return View(zone);
       }
+      public ActionResult AddZone()
+    {
+      Zone zone= mgr.addZone();
+      //GEBRUIKER NOG JUISTE MANIER VINDEN
+      this._DashboardPartial(1);
+      return View();
+    }
     }
   }

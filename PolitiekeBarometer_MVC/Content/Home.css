@@ -23,3 +23,10 @@ html, body {
     padding: 0px;
     margin: 0px;
 }
+a.newtab {
+    background: url(http://icons.iconarchive.com/icons/icons8/android/256/Very-Basic-Plus-icon.png) no-repeat top left;
+    display: block;
+    width: 150px;
+    height: 150px;
+    text-indent: -9999px; /* hides the link text */
+}

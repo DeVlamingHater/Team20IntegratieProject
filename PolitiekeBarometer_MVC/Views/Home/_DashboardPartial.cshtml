@@ -13,7 +13,8 @@
          {
             <li>@Html.DisplayFor(modelItem => item.Naam)</li>
          }
-            <li class="inline"><a href="#"><img src="http://icons.iconarchive.com/icons/icons8/android/256/Very-Basic-Plus-icon.png" alt="Plus-Icon" class="icon" /></a></li>
+            <li>@Html.ActionLink(" ","AddZone", null ,new { @class = "newtab" })</li>
+            <li class="inline"><a href="#"></a></li>
         </ul>
     }
     else

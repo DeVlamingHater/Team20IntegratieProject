@@ -17,5 +17,6 @@ namespace DAL
     Dashboard getDashboard(Gebruiker gebruiker);
     IEnumerable<Zone> getZones(int dashboardId);
     Zone getZone(int zoneId);
+    Zone addZone(Zone zone);
   }
 }

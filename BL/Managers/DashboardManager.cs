@@ -41,6 +41,20 @@ namespace BL.Managers
     {
       return dashboardRepository.getZone(zoneId);
     }
+    public Zone addZone()
+    {
+      // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+      Dashboard dashboard = this.getDashboard(1);
+      IEnumerable<Zone> zones = this.getZones(dashboard);
+      Zone zone = new Zone()
+      {
+        ZoneId = 10,
+        Naam = "New",
+        Locatie = zones.Count() + 1,
+        Dashboard = dashboard
+      };
+      return dashboardRepository.addZone(zone);
+    }
         public List<Alert> getActiveAlerts()
         {
             initNonExistingRepo(false);
