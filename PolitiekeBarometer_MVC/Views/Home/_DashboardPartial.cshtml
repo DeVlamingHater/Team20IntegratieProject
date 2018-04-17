@@ -5,22 +5,22 @@
 
 <h2>_DashboardPartial</h2>
 <div id="dashboard">
-    @if (Request.IsAuthenticated)
-    {
-        <ul id="tabs">
-        
+    @* @if (Request.IsAuthenticated)
+        {*@
+    <ul id="tabs">
+
         @foreach (var item in Model)
-         {
+        {
             <li>@Html.DisplayFor(modelItem => item.Naam)</li>
-         }
-            <li>@Html.ActionLink(" ","AddZone", null ,new { @class = "newtab" })</li>
-            <li class="inline"><a href="#"></a></li>
-        </ul>
-    }
-    else
-    {
-        <div>Standaard</div>
-      
+        }
+        <li>@Html.ActionLink(" ", "AddZone", null, new { @class = "newtab" })</li>
+        <li class="inline"><a href="#"></a></li>
+    </ul>
+    @*}
+        else
+        {*@
+    <div>Standaard</div>
+
     }
 
 </div>

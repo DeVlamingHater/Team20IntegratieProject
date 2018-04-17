@@ -11,7 +11,7 @@ using Domain.Platformen;
 
 namespace DAL.Repositories_EF
 {
-    public class DashboardRepository_EF : DashboardRepository
+    public class DashboardRepository_EF : IDashboardRepository
     {
         PolitiekeBarometerContext context;
 
@@ -40,17 +40,23 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-    public Dashboard getDashboard(Gebruiker gebruiker)
+    public Dashboard getDashboard(int gebruikerId)
     {
-      throw new NotImplementedException();
+      Dashboard dashboard = context.Dashboards.Include(db=>db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
+      return dashboard;
     }
 
     public IEnumerable<Zone> getZones(int dashboardId)
     {
-      throw new NotImplementedException();
+      return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
     }
 
     public Zone getZone(int zoneId)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Zone addZone(Zone zone)
     {
       throw new NotImplementedException();
     }

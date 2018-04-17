@@ -12,7 +12,6 @@ namespace DAL.EF
             this.SetDefaultConnectionFactory(new System.Data.Entity.Infrastructure.SqlConnectionFactory()); // SQL Server instantie op machine
 
             this.SetProviderServices("System.Data.SqlClient", System.Data.Entity.SqlServer.SqlProviderServices.Instance);
-
-            }
+    }
     }
 }

@@ -11,7 +11,8 @@ namespace PolitiekeBarometer_MVC.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index()
-        {     
+        {
+          this._DashboardPartial(1); //zorgen voor juiste gebruikerId
           return View();
         }
 
@@ -29,7 +30,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
       public ActionResult _DashboardPartial(int gebruikerId)
       {
-        Dashboard dashboard = mgr.getDashboard(gebruikerId);
+        Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
         IEnumerable<Zone> zones = mgr.getZones(dashboard);
         return View(zones);
       }

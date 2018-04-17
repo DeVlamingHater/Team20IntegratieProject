@@ -7,16 +7,16 @@ using System.Text;
 
 namespace DAL
 {
-  public interface DashboardRepository
+  public interface IDashboardRepository
   {
 
     IEnumerable<Alert> getActiveAlerts();
 
     DataConfig getAlertDataConfig(Alert alert);
     IEnumerable<Alert> getAllAlerts();
-    Dashboard getDashboard(Gebruiker gebruiker);
     IEnumerable<Zone> getZones(int dashboardId);
     Zone getZone(int zoneId);
     Zone addZone(Zone zone);
+    Dashboard getDashboard(int gebruikerId);
   }
 }

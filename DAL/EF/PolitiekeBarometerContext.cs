@@ -13,6 +13,7 @@ namespace DAL.EF
     class PolitiekeBarometerContext : DbContext
     {
 
+
         private readonly bool delaySave;
         public PolitiekeBarometerContext(bool unitOfWorkPresent = false) : base("Politieke_BarometerDB")
         {
@@ -49,6 +50,7 @@ namespace DAL.EF
         //Platformen
         public DbSet<Dashboard> Dashboards { get; set; }
         public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<Zone> Zones { get; set; }
 
         //Posts
         public DbSet<Post> Posts { get; set; }

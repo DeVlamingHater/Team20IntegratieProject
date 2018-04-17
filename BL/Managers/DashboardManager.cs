@@ -13,10 +13,11 @@ namespace BL.Managers
 {
     public class DashboardManager : IDashboardManager
     {
-        DashboardRepository dashboardRepository;
+        IDashboardRepository dashboardRepository;
         public UnitOfWorkManager uowManager;
         public DashboardManager()
         {
+      dashboardRepository = new DashboardRepository_EF();
         }
 
         public DashboardManager(UnitOfWorkManager uowManager)
@@ -27,9 +28,7 @@ namespace BL.Managers
 
     public Dashboard getDashboard(int gebruikerId)
     {
-      PlatformManager platformManager = new PlatformManager();
-      Gebruiker gebruiker = platformManager.getGebruiker(gebruikerId);
-      Dashboard dashboard = dashboardRepository.getDashboard(gebruiker);
+      Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
       return dashboard;
     }
     public IEnumerable<Zone> getZones(Dashboard dashboard)
@@ -48,7 +47,7 @@ namespace BL.Managers
       IEnumerable<Zone> zones = this.getZones(dashboard);
       Zone zone = new Zone()
       {
-        ZoneId = 10,
+        ZoneId = zones.Count() + 1,
         Naam = "New",
         Locatie = zones.Count() + 1,
         Dashboard = dashboard
