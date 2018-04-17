@@ -16,19 +16,29 @@ namespace BL.Managers
     {
         IPostRepository postRepository;
 
+        UnitOfWorkManager uowManager;
+
         public PostManager()
         {
             this.postRepository = new PostRepository_EF();
+        }
+
+        public PostManager(UnitOfWorkManager uowManager)
+        {
+            this.uowManager = uowManager;
+            postRepository = new PostRepository_EF(uowManager.UnitOfWork);
         }
 
         public void addPosts(List<Post> list)
         {
             postRepository.addPosts(list);
         }
+
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
         {
             return postRepository.getDataConfigPosts(dataConfig);
         }
+
         public double getHuidigeWaarde(DataConfig dataConfig)
         {
             List<Post> posts = getDataConfigPosts(dataConfig).ToList();
@@ -75,6 +85,8 @@ namespace BL.Managers
         {
             //PostsUpdaten
             this.postRepository.updatePosts();
+            uowManager =  new UnitOfWorkManager();
+            DashboardManager dashboardManager = new DashboardManager(uowManager);
         }
     }
 }

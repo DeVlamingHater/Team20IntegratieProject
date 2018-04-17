@@ -11,9 +11,17 @@ namespace BL.Managers
     {
         IPlatformRepository platformRepository;
 
+        UnitOfWorkManager uowManager;
+
         public PlatformManager()
         {
             platformRepository = new PlatformRepository_EF();
+        }
+
+        public PlatformManager(UnitOfWorkManager uowManager)
+        {
+            this.uowManager = uowManager;
+            platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
     }
 }
