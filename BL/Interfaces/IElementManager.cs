@@ -11,7 +11,7 @@ namespace BL.Interfaces
 
         List<Element> getAllElementen();
 
-        List<Element> getTrendingElementen();
+        List<Element> getTrendingElementen(int amount);
 
         void setTrendingElementen();
 

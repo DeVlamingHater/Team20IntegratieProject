@@ -46,27 +46,30 @@ namespace BL.Managers
             return element;
         }
 
-        public List<Element> getTrendingElementen()
+        public List<Element> getTrendingElementen(int amount = 3)
         {
-            PostManager postManager = new PostManager(uowManager);
+            List<Element> elementenTrending = new List<Element>();
+            elementenTrending = elementRepository.getTrendingElementen(amount);
             return null;
         }
-        
+       
+
         public void setTrendingElementen()
         {
-            PostManager postManager = new PostManager(uowManager);
+            PostManager postManager = new PostManager();
 
             List<Element> elementen = getAllElementen();
 
             foreach (Element element in elementen)
             {
-                element.Trend =  postManager.calculateElementTrend(element);
+                element.Trend = postManager.calculateElementTrend(element);
                 elementRepository.setElement(element);
             }
             elementen.Sort();
-
-            
-            elementen.Max(e => e.Trend);
+            int index = 0;
+            elementen.ForEach(e => e.TrendingPlaats = index++);
         }
+
+       
     }
 }

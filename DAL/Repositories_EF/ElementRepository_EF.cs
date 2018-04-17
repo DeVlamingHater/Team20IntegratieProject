@@ -47,6 +47,17 @@ namespace DAL.Repositories_EF
             return null;
         }
 
+        public List<Element> getTrendingElementen(int amount)
+        {
+            List<Element> elementenTrending = new List<Element>();
+
+            elementenTrending.AddRange(context.Personen.Where(p => p.TrendingPlaats < amount));
+            elementenTrending.AddRange(context.Organisaties.Where(p => p.TrendingPlaats < amount));
+            elementenTrending.AddRange(context.Themas.Where(p => p.TrendingPlaats < amount));
+
+            return elementenTrending;
+        }
+
         public void setElement(Element element)
         {
             context.Entry(element).State = EntityState.Modified;

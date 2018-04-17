@@ -46,6 +46,8 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
             Console.WriteLine("4. API Update");
+            Console.WriteLine("5. Show Trending");
+
             DetectMenuAction();
         }
 
@@ -73,6 +75,9 @@ namespace PolitiekeBarometer_CA
                         case 4:
                             updateAPI();
                             break;
+                        case 5:
+                            showTrending();
+                            break;
                         default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
@@ -82,12 +87,24 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
+        private static void showTrending()
+        {
+            elementManager.setTrendingElementen();
+            foreach (Element element in elementManager.getTrendingElementen(3))
+            {
+                Console.WriteLine(element.Naam);
+                Console.WriteLine(element.Trend);
+                Console.WriteLine(element.TrendingPlaats);
+            }
+        }
+
         private static void updateAPI()
         {
         }
 
         private static void showElementen()
-        { 
+        {
+            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " + p.TrendingPlaats));
         }
 
         private static void showAlerts()

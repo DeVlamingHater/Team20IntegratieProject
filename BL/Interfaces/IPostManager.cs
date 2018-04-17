@@ -20,6 +20,6 @@ namespace BL.Interfaces
 
         IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig);
 
-        double calculateElementTrend(Element);
+        double calculateElementTrend(Element element);
     }
 }
