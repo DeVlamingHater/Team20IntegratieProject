@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public class AdminController : Controller
     {
         // GET: Admin

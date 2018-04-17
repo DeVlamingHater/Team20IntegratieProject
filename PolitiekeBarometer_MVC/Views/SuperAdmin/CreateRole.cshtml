@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "CreateRole";
+}
+
+<h2>CreateRole</h2>
+@using (Html.BeginForm("CreateRole", "SuperAdmin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">Role Name</label>
+            <input type="text" class="form-control" name="RoleName" />
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+    </div>
+}
