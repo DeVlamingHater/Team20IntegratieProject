@@ -46,5 +46,11 @@ namespace DAL.Repositories_EF
         {
             return null;
         }
+
+        public void setElement(Element element)
+        {
+            context.Entry(element).State = EntityState.Modified;
+            context.SaveChanges();
+        }
     }
 }

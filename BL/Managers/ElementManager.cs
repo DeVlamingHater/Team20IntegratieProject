@@ -41,9 +41,32 @@ namespace BL.Managers
                 {
                     Naam = naam
                 };
-                elementRepository.AddPersoon((Persoon) element);
+                elementRepository.AddPersoon((Persoon)element);
             }
             return element;
+        }
+
+        public List<Element> getTrendingElementen()
+        {
+            PostManager postManager = new PostManager(uowManager);
+            return null;
+        }
+        
+        public void setTrendingElementen()
+        {
+            PostManager postManager = new PostManager(uowManager);
+
+            List<Element> elementen = getAllElementen();
+
+            foreach (Element element in elementen)
+            {
+                element.Trend =  postManager.calculateElementTrend(element);
+                elementRepository.setElement(element);
+            }
+            elementen.Sort();
+
+            
+            elementen.Max(e => e.Trend);
         }
     }
 }

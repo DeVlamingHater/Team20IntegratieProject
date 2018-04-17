@@ -123,7 +123,7 @@ namespace DAL.Repositories_EF
                 Persoon persoon;
                 try
                 {
-                     persoon = (Persoon)context.Personen.Single(p=>p.Naam == naam);
+                    persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
                 }
                 catch (Exception)
                 {
@@ -206,6 +206,24 @@ namespace DAL.Repositories_EF
                 //    });
                 //};
                 #endregion
+            }
+            return posts;
+        }
+
+        public IEnumerable<Post> getElementPosts(Element element)
+        {
+            List<Post> posts = new List<Post>();
+            if (element.GetType().Equals(typeof(Persoon)))
+            {
+                posts = context.Posts.Where(p => p.Persoon.Naam == element.Naam).ToList();
+            }
+            else if (element.GetType().Equals(typeof(Organisatie)))
+            {
+                posts = context.Posts.Where(p => p.Persoon.Organisatie != null && p.Persoon.Organisatie.Id == element.Id).ToList();
+            }
+            else if (element.GetType().Equals(typeof(Thema)))
+            {
+                posts = context.Posts.Where(p => checkKeywords(p, element)).ToList();
             }
             return posts;
         }

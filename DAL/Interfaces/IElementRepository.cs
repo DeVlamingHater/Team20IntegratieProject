@@ -11,5 +11,6 @@ namespace DAL
         Element getElementByName(string naam);
         IEnumerable<Element> getAllElementen();
         void AddPersoon(Persoon persoon);
+        void setElement(Element element);
     }
 }

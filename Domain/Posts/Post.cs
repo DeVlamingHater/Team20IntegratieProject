@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Post
+    public class Post : IComparable<Post>
     {
         public String Source { get; set; }
         [Key]
@@ -21,5 +21,10 @@ namespace Domain
         public List<Parameter> Parameters { get; set; }
 
         public DateTime Date { get; set; }
+
+        public int CompareTo(Post other)
+        {
+            return Date.CompareTo(other.Date);
+        }
     }
 }
