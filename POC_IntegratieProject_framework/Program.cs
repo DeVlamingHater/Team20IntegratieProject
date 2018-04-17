@@ -5,7 +5,13 @@ using Domain;
 using Domain.Elementen;
 using Domain.Platformen;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PolitiekeBarometer_CA
 {
@@ -22,6 +28,8 @@ namespace PolitiekeBarometer_CA
             postManager = new PostManager();
             dashboardManager = new DashboardManager();
             platformManager = new PlatformManager();
+            HttpClient client = new HttpClient();
+
             Console.WriteLine("Politieke Barometer");
             bool afsluiten = false;
             while (!afsluiten)
@@ -37,6 +45,7 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("1. Update Posts");
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
+            Console.WriteLine("4. API Update");
             DetectMenuAction();
         }
 
@@ -61,6 +70,9 @@ namespace PolitiekeBarometer_CA
                         case 3:
                             showElementen();
                             break;
+                        case 4:
+                            updateAPI();
+                            break;
                         default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
@@ -70,11 +82,12 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
-        private static void showElementen()
+        private static void updateAPI()
         {
-           
+        }
 
-          
+        private static void showElementen()
+        { 
         }
 
         private static void showAlerts()
