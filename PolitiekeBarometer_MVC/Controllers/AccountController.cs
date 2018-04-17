@@ -25,32 +25,26 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
+        public ApplicationSignInManager SignInManager {
+            get {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set {
+                _signInManager = value;
             }
         }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
+        public ApplicationUserManager UserManager {
+            get {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set
-            {
+            private set {
                 _userManager = value;
             }
         }
@@ -58,6 +52,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -68,6 +63,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -97,6 +93,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
+        [RequireHttps]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
@@ -111,6 +108,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
@@ -123,7 +121,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -140,6 +138,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult Register()
         {
             return View();
@@ -149,6 +148,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -163,24 +163,26 @@ namespace PolitiekeBarometer_MVC.Controllers
                 var status = (bool)obj.SelectToken("success");
                 ViewBag.Message = status ? "Google reCaptcha validation success" : "Google reCaptcha validation failed";
 
+
                 if (status == true)
                 {
-                    var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
+                    if (result.Succeeded && status)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                         // Send an email with this link
-                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                         return RedirectToAction("Index", "Home");
                     }
                     AddErrors(result);
                 }
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -190,6 +192,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
+        [RequireHttps]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -203,6 +206,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult ForgotPassword()
         {
             return View();
@@ -212,6 +216,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -226,10 +231,10 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -239,6 +244,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -247,6 +253,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
@@ -256,6 +263,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -281,6 +289,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -290,6 +299,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
@@ -300,6 +310,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/SendCode
         [AllowAnonymous]
+        [RequireHttps]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
@@ -316,6 +327,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
@@ -335,6 +347,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
+        [RequireHttps]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -366,6 +379,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
+        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
@@ -413,6 +427,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult ExternalLoginFailure()
         {
             return View();
@@ -442,10 +457,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
+        private IAuthenticationManager AuthenticationManager {
+            get {
                 return HttpContext.GetOwinContext().Authentication;
             }
         }

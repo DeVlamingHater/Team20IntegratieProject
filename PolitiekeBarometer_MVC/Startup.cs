@@ -28,15 +28,33 @@ namespace PolitiekeBarometer_MVC
                 roleManager.Create(role);
 
                 var user = new ApplicationUser();
-                user.Name = "Integratie Project User";
-                user.UserName = "IntegratieProjectTeam20@gmail.com";
-                user.Email = "IntegratieProjectTeam20@gmail.com";
-                string pwd = "Integratie20";
+                user.Name = "Thomas SuperAdmin";
+                user.UserName = "thomas.somers@student.kdg.be";
+                user.Email = "thomas.somers@student.kdg.be";
+                string pwd = "ThomasSuperAdmin20";
 
                 var newuser = userManager.Create(user, pwd);
                 if (newuser.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "SuperAdmin");
+                }
+            }
+
+            if (!roleManager.RoleExists("Admin"))
+            {
+                var role = new IdentityRole("Admin");
+                roleManager.Create(role);
+
+                var user = new ApplicationUser();
+                user.Name = "Thomas Admin";
+                user.UserName = "thomas.somers@live.nl";
+                user.Email = "thomas.somers@live.nl";
+                string pwd = "ThomasAdmin20";
+
+                var newuser = userManager.Create(user, pwd);
+                if (newuser.Succeeded)
+                {
+                    userManager.AddToRole(user.Id, "Admin");
                 }
             }
         }
