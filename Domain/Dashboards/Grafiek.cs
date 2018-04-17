@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Dashboards
 {
-    class Grafiek : Item
+    public class Grafiek : Item
     {
         [Key]
         public int Id { get; set; }
 
-        public List<DataConfig> Dataconfig{ get; set; }
+        public List<DataConfig> Dataconfigs{ get; set; }
     }
 }

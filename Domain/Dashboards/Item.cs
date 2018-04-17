@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Dashboards
 {
-    abstract class Item
+    public abstract class Item
     {
         public int Id { get; set; }
         public int X { get; set; }
