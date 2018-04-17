@@ -67,6 +67,12 @@
                     <a class="dropdown-item" href="#">Gezondheid</a>
                 </div>
             </li>
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <li>@Html.ActionLink("SuperAdmin", "Index", "SuperAdmin")</li>}
+            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+            {
+                <li>@Html.ActionLink("Admin", "Index", "Admin")</li>}
         </ul>
     </nav>
     <div class="container body-content">
