@@ -3,15 +3,6 @@
     height: 30px;
 }
 
-.graph {
-    width: 30%;
-    height: auto;
-}
-
-.inline {
-    display: inline;
-}
-
 header {
     background: url("https://www.echt-susteren.nl/sites/default/files/styles/news_full/public/politiek_bewust.jpg?itok=pXY96cQ0") no-repeat center;
     background-size: 100% 100%;
