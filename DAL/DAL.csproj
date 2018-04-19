@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EF\PolitiekeBaromaterConfiguration.cs" />
+    <Compile Include="EF\PolitiekeBarometerConfiguration.cs" />
     <Compile Include="EF\PolitiekeBarometerContext.cs" />
     <Compile Include="EF\PolitiekeBarometerInitializer.cs" />
     <Compile Include="Interfaces\IDashboardRepository.cs" />

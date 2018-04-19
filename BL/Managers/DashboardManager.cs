@@ -6,6 +6,7 @@ using Domain.Dashboards;
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -54,7 +55,23 @@ namespace BL.Managers
       };
       return dashboardRepository.addZone(zone);
     }
-        public List<Alert> getActiveAlerts()
+
+    public void changeZone(Zone zone)
+    {
+      this.Validate(zone);
+      dashboardRepository.UpdateZone(zone);
+    }
+
+    private void Validate(Zone zone)
+    {
+      List<ValidationResult> errors = new List<ValidationResult>();
+      bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, validateAllProperties: true);
+
+      if (!valid)
+        throw new ValidationException("Zone not valid!");
+    }
+
+    public List<Alert> getActiveAlerts()
         {
             initNonExistingRepo(false);
             return dashboardRepository.getActiveAlerts().ToList();

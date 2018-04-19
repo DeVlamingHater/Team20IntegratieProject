@@ -18,5 +18,6 @@ namespace DAL
     Zone getZone(int zoneId);
     Zone addZone(Zone zone);
     Dashboard getDashboard(int gebruikerId);
+    void UpdateZone(Zone zone);
   }
 }

@@ -11,10 +11,11 @@
 
         @foreach (var item in Model)
         {
-            <li>@Html.DisplayFor(modelItem => item.Naam)</li>
+        <li> @Html.EditorFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
+             @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
+        </li>
         }
         <li>@Html.ActionLink(" ", "AddZone", null, new { @class = "newtab" })</li>
-        <li class="inline"><a href="#"></a></li>
     </ul>
     @*}
         else

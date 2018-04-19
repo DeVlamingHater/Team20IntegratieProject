@@ -60,5 +60,10 @@ namespace DAL.Repositories_EF
     {
       throw new NotImplementedException();
     }
+    public void UpdateZone(Zone zone)
+    { 
+      // dit staat in supportcenter????:
+      // Do nothing! All data lives in memory, everything references the same objects!!
+    }
   }
 }

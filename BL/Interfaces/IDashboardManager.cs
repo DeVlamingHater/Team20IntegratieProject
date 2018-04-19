@@ -15,5 +15,6 @@ namespace BL.Interfaces
     List<Alert> getAllAlerts();
     void sendAlerts();
     Dashboard getDashboard(int gebruikerId);
+    void changeZone(Zone zone);
   }
 }
