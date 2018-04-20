@@ -60,6 +60,8 @@
     <Compile Include="Dashboards\Dashboard.cs" />
     <Compile Include="Dashboards\DataConfig.cs" />
     <Compile Include="Dashboards\DataType.cs" />
+    <Compile Include="Dashboards\Grafiek.cs" />
+    <Compile Include="Dashboards\Item.cs" />
     <Compile Include="Dashboards\Zone.cs" />
     <Compile Include="Elementen\Element.cs" />
     <Compile Include="Elementen\Organisatie.cs" />

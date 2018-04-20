@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -19,13 +20,14 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,21 +71,12 @@
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.2\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -215,8 +208,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SuperAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,31 +231,114 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Element.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\NewTab.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap.min" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.0.0.js" />
+    <Content Include="Scripts\jquery-3.0.0.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\.gitignore" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\blank.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\cards.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\charts.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\css\sb-admin.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\css\sb-admin.min.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\forgot-password.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\gulpfile.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\index.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-datatables.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-datatables.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\login.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\navbar.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\register.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\tables.html" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap-grid.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap-grid.min.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap-reboot.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap.min.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.bundle.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\chart.js\Chart.bundle.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\chart.js\Chart.bundle.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\chart.js\Chart.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\chart.js\Chart.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\datatables\dataTables.bootstrap4.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\datatables\dataTables.bootstrap4.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\datatables\jquery.dataTables.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\css\font-awesome.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\css\font-awesome.min.css" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery-easing\jquery.easing.compatibility.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery-easing\jquery.easing.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery-easing\jquery.easing.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.min.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.slim.js" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.slim.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -295,23 +373,104 @@
     <Content Include="Views\Home\Element.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\_DashboardPartial.cshtml" />
+    <Content Include="Views\SuperAdmin\AssignRole.cshtml" />
+    <Content Include="Views\SuperAdmin\CreateRole.cshtml" />
+    <Content Include="Views\SuperAdmin\CreateUser.cshtml" />
+    <Content Include="Views\SuperAdmin\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\.jsbeautifyrc" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\.travis.yml" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\LICENSE" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\package-lock.json" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\package.json" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\blank.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\cards.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\charts.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\forgot-password.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\css\core.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\css\custom.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\footer.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\js\core.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\js\custom.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\modals\logout.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\navbar.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\includes\scroll-to-top.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\index.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\login.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\navbar.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\register.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\pug\tables.pug" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\README.md" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\navbar\_navbar_colors.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\navbar\_navbar_fixed.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\navbar\_navbar_global.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\navbar\_navbar_static.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\navbar\_navbar_toggle.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\sb-admin.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_cards.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_footer.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_global.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_login.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_mixins.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_utilities.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\scss\_variables.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap.css.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.bundle.js.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.js.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\css\font-awesome.css.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\animated.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\bordered-pulled.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\core.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\fixed-width.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\font-awesome.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\icons.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\larger.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\list.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\mixins.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\path.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\rotated-flipped.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\screen-reader.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\stacked.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\less\variables.less" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\font-awesome.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_animated.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_core.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_icons.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_larger.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_list.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_mixins.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_path.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_stacked.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\font-awesome\scss\_variables.scss" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.min.map" />
+    <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\vendor\jquery\jquery.slim.min.map" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803300923062_InitialCreate.resx">
@@ -322,20 +481,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BL\BL.csproj">
-      <Project>{73EAB191-FE2B-400E-89CE-499F187F5044}</Project>
-      <Name>BL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain\Domain.csproj">
-      <Project>{8FD40279-6C0C-47BF-B57C-248B268FAA85}</Project>
-      <Name>Domain</Name>
-    </ProjectReference>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
@@ -349,7 +505,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51613</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51613/</IISUrl>
+          <IISUrl>https://localhost:44301/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -19,5 +19,7 @@ namespace BL.Interfaces
         double calculateTrend(DataConfig dataConfig, Element element);
 
         IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig);
+
+        double calculateElementTrend(Element element);
     }
 }
