@@ -14,6 +14,7 @@ namespace PolitiekeBarometer_MVC
         {
             ConfigureAuth(app);
             createUserAndRoles();
+            
         }
 
         private void createUserAndRoles()
