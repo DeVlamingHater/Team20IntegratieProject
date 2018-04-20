@@ -50,7 +50,7 @@ namespace BL.Managers
         {
             List<Element> elementenTrending = new List<Element>();
             elementenTrending = elementRepository.getTrendingElementen(amount);
-            return null;
+            return elementenTrending;
         }
        
 

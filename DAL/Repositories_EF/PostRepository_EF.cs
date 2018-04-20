@@ -96,7 +96,7 @@ namespace DAL.Repositories_EF
             context.Posts.AddRange(posts);
 
             //TODO: verwijder posts die ouder zijn dan de ingestelde historiek
-
+            context.SaveChanges();
 
         }
 

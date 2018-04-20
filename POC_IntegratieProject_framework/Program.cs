@@ -90,7 +90,8 @@ namespace PolitiekeBarometer_CA
         private static void showTrending()
         {
             elementManager.setTrendingElementen();
-            foreach (Element element in elementManager.getTrendingElementen(3))
+            List<Element> trendingElementen = elementManager.getTrendingElementen(3);
+            foreach (Element element in trendingElementen)
             {
                 Console.WriteLine(element.Naam);
                 Console.WriteLine(element.Trend);
@@ -134,7 +135,7 @@ namespace PolitiekeBarometer_CA
         private static void updatePosts()
         {
             postManager.updatePosts();
-            dashboardManager.sendAlerts();
+            //dashboardManager.sendAlerts();
         }
     }
 }
