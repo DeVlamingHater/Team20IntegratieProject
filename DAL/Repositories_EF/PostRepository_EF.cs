@@ -223,7 +223,7 @@ namespace DAL.Repositories_EF
             }
             else if (element.GetType().Equals(typeof(Thema)))
             {
-                posts = context.Posts.Where(p => checkKeywords(p, element)).ToList();
+                posts = context.Posts.ToList();
             }
             return posts;
         }

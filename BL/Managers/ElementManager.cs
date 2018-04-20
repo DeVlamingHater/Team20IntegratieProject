@@ -63,13 +63,15 @@ namespace BL.Managers
             foreach (Element element in elementen)
             {
                 element.Trend = postManager.calculateElementTrend(element);
-                elementRepository.setElement(element);
             }
             elementen.Sort();
             int index = 0;
             elementen.ForEach(e => e.TrendingPlaats = index++);
+            elementen.ForEach(e => elementRepository.setElement(e));
+            
+
         }
 
-       
+
     }
 }

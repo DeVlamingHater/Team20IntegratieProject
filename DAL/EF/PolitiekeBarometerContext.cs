@@ -10,14 +10,16 @@ using System.Text;
 namespace DAL.EF
 {
     [DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
-    class PolitiekeBarometerContext : DbContext
+    internal class PolitiekeBarometerContext : DbContext
     {
 
         private readonly bool delaySave;
         public PolitiekeBarometerContext(bool unitOfWorkPresent = false) : base("Politieke_BarometerDB")
         {
             delaySave = unitOfWorkPresent;
+
             Database.SetInitializer<PolitiekeBarometerContext>(new PolitiekeBarometerInitializer());
+            Console.WriteLine(this.Database.Connection.ToString());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
