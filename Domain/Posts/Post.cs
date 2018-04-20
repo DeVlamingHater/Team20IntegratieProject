@@ -10,7 +10,8 @@ namespace Domain
 {
     public class Post : IComparable<Post>
     {
-        public String Source { get; set; }
+       
+        public string Source { get; set; }
         [Key]
         public long PostId { get; set; }
 

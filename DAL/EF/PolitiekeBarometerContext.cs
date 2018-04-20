@@ -19,7 +19,6 @@ namespace DAL.EF
             delaySave = unitOfWorkPresent;
 
             Database.SetInitializer<PolitiekeBarometerContext>(new PolitiekeBarometerInitializer());
-            Console.WriteLine(this.Database.Connection.ToString());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -66,6 +66,7 @@ namespace BL.Managers
             }
             elementen.Sort();
             int index = 0;
+            //TODO: 3Per Type
             elementen.ForEach(e => e.TrendingPlaats = index++);
             elementen.ForEach(e => elementRepository.setElement(e));
             
