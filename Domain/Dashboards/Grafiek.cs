@@ -9,9 +9,6 @@ namespace Domain.Dashboards
 {
     public class Grafiek : Item
     {
-        [Key]
-        public int Id { get; set; }
-
-        public List<DataConfig> Dataconfigs{ get; set; }
+       public List<DataConfig> Dataconfigs{ get; set; }
     }
 }

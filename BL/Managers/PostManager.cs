@@ -26,7 +26,7 @@ namespace BL.Managers
         public PostManager(UnitOfWorkManager uowManager)
         {
             this.uowManager = uowManager;
-            postRepository = new PostRepository_EF(uowManager.UnitOfWork);
+            postRepository = new PostRepository_EF();
         }
 
         public void addPosts(List<Post> list)
@@ -76,6 +76,20 @@ namespace BL.Managers
 
         }
 
+        public double calculateElementTrend(Element element)
+        {
+            List<Post> posts = postRepository.getElementPosts(element).ToList();
+
+            DateTime timeForTrending = DateTime.Now.AddHours(-1.0);
+            posts.Sort();
+            List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
+            if (posts.Count != 0)
+            {
+                return trendPosts.Count / posts.Count();
+            }
+            else return 0;
+        }
+
         public int getNextPostId()
         {
             return postRepository.getPosts().ToList().Count;
@@ -85,8 +99,10 @@ namespace BL.Managers
         {
             //PostsUpdaten
             this.postRepository.updatePosts();
-            uowManager =  new UnitOfWorkManager();
+            uowManager = new UnitOfWorkManager();
             DashboardManager dashboardManager = new DashboardManager(uowManager);
         }
+
+
     }
 }

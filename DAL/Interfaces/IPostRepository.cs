@@ -12,5 +12,6 @@ namespace DAL
 
         IEnumerable<Post> getPosts();
         void addPosts(List<Post> list);
+        IEnumerable<Post> getElementPosts(Element element);
     }
 }

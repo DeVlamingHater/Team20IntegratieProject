@@ -8,6 +8,13 @@ namespace BL.Interfaces
     public interface IElementManager
     {
         Element getElementByNaam(string naam);
+
         List<Element> getAllElementen();
+
+        List<Element> getTrendingElementen(int amount);
+
+        void setTrendingElementen();
+
+
     }
 }
