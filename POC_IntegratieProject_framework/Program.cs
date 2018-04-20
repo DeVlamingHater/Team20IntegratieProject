@@ -73,7 +73,7 @@ namespace PolitiekeBarometer_CA
                             showElementen();
                             break;
                         case 4:
-                            updateAPIAsync();
+                             updateAPIAsync();
                             break;
                         case 5:
                             showTrending();
@@ -101,13 +101,20 @@ namespace PolitiekeBarometer_CA
         private static async Task updateAPIAsync()
         {
             HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
+            client.DefaultRequestHeaders.Add("X-API-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+
             Dictionary<string, string> values = new Dictionary<string, string>
             {
                 {"since", "18 Apr 2018 08:00:00" }
             };
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             var response = await client.PostAsync("http://kdg.textgain.com/query", content);
-            await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseString);
         }
 
         private static void showElementen()
