@@ -58,7 +58,9 @@ namespace DAL.Repositories_EF
 
     public Zone addZone(Zone zone)
     {
-      throw new NotImplementedException();
+      context.Zones.Add(zone);
+      context.SaveChanges();
+      return zone;
     }
     public void UpdateZone(Zone zone)
     { 

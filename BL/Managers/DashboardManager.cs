@@ -49,7 +49,7 @@ namespace BL.Managers
       Zone zone = new Zone()
       {
         Id = zones.Count() + 1,
-        Naam = "New",
+        Naam = "NewZone",
         Dashboard = dashboard
       };
       return dashboardRepository.addZone(zone);

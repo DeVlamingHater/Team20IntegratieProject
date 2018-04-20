@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DAL.EF
 {
-    [DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
+    //[DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
     internal class PolitiekeBarometerContext : DbContext
     {
 
