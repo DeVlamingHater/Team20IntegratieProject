@@ -31,12 +31,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })
                     <div class="col-md-10">
                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
                     </div>
                 </div>
-                <div class="g-recaptcha" data-sitekey="6LcE6k8UAAAAABwpkyPpI4Wcog2dqrz5A09xcmQD"></div>
+                <div class="g-recaptcha col-md-4" data-sitekey="6LcE6k8UAAAAABwpkyPpI4Wcog2dqrz5A09xcmQD"></div>
                 <span style="color:red; font-size:14px;margin:auto;padding:20px;">
                     @ViewBag.Message
                 </span>
