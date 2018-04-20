@@ -3,7 +3,7 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>_Dashboard</h2>
+<h2>Dashboard</h2>
 <div id="dashboard">
     @* @if (Request.IsAuthenticated)
         {*@
@@ -11,9 +11,10 @@
 
         @foreach (var item in Model)
         {
-        <li> @Html.EditorFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
-             @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
-        </li>
+            <li>
+                @Html.EditorFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
+            </li>
         }
         <li>@Html.ActionLink(" ", "AddZone", null, new { @class = "newtab" })</li>
     </ul>
