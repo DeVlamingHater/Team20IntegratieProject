@@ -10,7 +10,7 @@ using Domain.Platformen;
 
 namespace DAL.EF
 {
-  class PolitiekeBarometerInitializer : DropCreateDatabaseAlways<PolitiekeBarometerContext>
+  class PolitiekeBarometerInitializer : DropCreateDatabaseIfModelChanges<PolitiekeBarometerContext>
   {
     protected override void Seed(PolitiekeBarometerContext context)
     {
@@ -52,21 +52,18 @@ namespace DAL.EF
       Zone zone1 = new Zone()
       {
         Naam = "Zone1",
-        Locatie = 1,
         Dashboard = dashboard1
       };
 
       Zone zone2 = new Zone()
       {
         Naam = "Zone2",
-        Locatie = 2,
         Dashboard = dashboard1
       };
 
       Zone zone3 = new Zone()
       {
         Naam = "Zone3",
-        Locatie = 3,
         Dashboard = dashboard1
       };
       #endregion

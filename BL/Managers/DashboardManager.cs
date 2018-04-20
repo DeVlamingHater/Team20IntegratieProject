@@ -48,9 +48,8 @@ namespace BL.Managers
       IEnumerable<Zone> zones = this.getZones(dashboard);
       Zone zone = new Zone()
       {
-        ZoneId = zones.Count() + 1,
+        Id = zones.Count() + 1,
         Naam = "New",
-        Locatie = zones.Count() + 1,
         Dashboard = dashboard
       };
       return dashboardRepository.addZone(zone);
