@@ -53,7 +53,7 @@ namespace DAL.Repositories_EF
 
     public Zone getZone(int zoneId)
     {
-      throw new NotImplementedException();
+      return context.Zones.Find(zoneId);
     }
 
     public Zone addZone(Zone zone)
@@ -66,6 +66,12 @@ namespace DAL.Repositories_EF
     { 
       // dit staat in supportcenter????:
       // Do nothing! All data lives in memory, everything references the same objects!!
+    }
+    public void deleteZone(int zoneId)
+    {
+      Zone zone = getZone(zoneId);
+      context.Zones.Remove(zone);
+      context.SaveChanges();
     }
   }
 }

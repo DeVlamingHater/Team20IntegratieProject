@@ -13,7 +13,6 @@ namespace PolitiekeBarometer_MVC.Controllers
   {
     public ActionResult Index()
     {
-      this.Dashboard(1); //zorgen voor juiste gebruikerId
       return View();
     }
 
@@ -29,9 +28,9 @@ namespace PolitiekeBarometer_MVC.Controllers
 
     #region Dashboard
  DashboardManager mgr = new DashboardManager();
-    public ActionResult Dashboard(int gebruikerId)
+    public ActionResult Dashboard()
     {
-      Dashboard dashboard = mgr.getDashboard(gebruikerId); //aanpassen naar gebruikerId
+      Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
       IEnumerable<Zone> zones = mgr.getZones(dashboard);
       return View(zones);
     }
@@ -44,8 +43,14 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       Zone zone = mgr.addZone();
       //GEBRUIKER NOG JUISTE MANIER VINDEN
-      this.Dashboard(1);
-      return RedirectToAction("Index");
+      this.Dashboard();
+      return RedirectToAction("Dashboard");
+      return View();
+    }
+    public ActionResult DeleteZone(int zoneId)
+    {
+      mgr.deleteZone(zoneId);
+      return RedirectToAction("Dashboard");
       return View();
     }
     /*public ActionResult changeZone(int zoneid, Zone zone)

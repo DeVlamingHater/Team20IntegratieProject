@@ -14,15 +14,14 @@
             <li>
                 @Html.EditorFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
+                @Html.ActionLink("x","DeleteZone",new { zoneId = item.Id })
             </li>
         }
-        <li>@Html.ActionLink(" ", "AddZone", null, new { @class = "newtab" })</li>
+                <li>@Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })</li>
     </ul>
     @*}
         else
         {*@
     <div>Standaard</div>
-
     }
-
 </div>
