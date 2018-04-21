@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Dashboards
 {
-    public abstract class Item
+    public class Item
     {
         public int Id { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public int Size { get; set; }
+        public Zone Zone { get; set; }
 
     }
 }

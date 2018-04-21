@@ -12,16 +12,22 @@
         @foreach (var item in Model)
         {
             <li>
-                @Html.EditorFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
+                <a href="#tab">
+                    @Html.DisplayFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ActionLink("Z", "setActiveZone", new { zoneId = item.Id })
+                </a>
                 @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
-                @Html.ActionLink("x","DeleteZone",new { zoneId = item.Id })
+
+                @Html.ActionLink("x", "DeleteZone", new { zoneId = item.Id })
             </li>
         }
-                <li>@Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })</li>
+        <li> @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" }) </li>
     </ul>
+    <div id="tab">
+        @Html.Action("_ItemsPartial")
+    </div>
+
     @*}
         else
         {*@
-    <div>Standaard</div>
-    }
 </div>

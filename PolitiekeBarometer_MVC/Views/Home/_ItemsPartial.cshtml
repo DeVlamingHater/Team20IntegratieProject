@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Domain.Dashboards.Item>
+@{
+    ViewBag.Title = "_ItemsPartial";
+}
+
+<h2>_ItemsPartial</h2>
+<ul>
+    @foreach (var item in Model)
+    {
+      <li>@Html.DisplayFor(modelItem => item.Id)
+           @Html.DisplayFor(modelItem => item.Zone);
+        </li>
+    }
+</ul>
+

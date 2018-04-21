@@ -73,5 +73,10 @@ namespace DAL.Repositories_EF
       context.Zones.Remove(zone);
       context.SaveChanges();
     }
+
+    public IEnumerable<Item> getItems(Zone actieveZone)
+    {
+      return context.Items.Where(r => r.Zone == actieveZone).AsEnumerable();
+    }
   }
 }

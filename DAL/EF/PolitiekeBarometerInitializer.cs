@@ -67,6 +67,44 @@ namespace DAL.EF
         Dashboard = dashboard1
       };
       #endregion
+      
+      #region Item
+      Item item1 = new Item()
+      {
+        Zone = zone1,
+        X=1,
+        Y=1,
+        Size=1
+      };
+      Item item2 = new Item()
+      {
+        Zone = zone1,
+        X = 1,
+        Y = 1,
+        Size = 1
+      };
+      Item item3 = new Item()
+      {
+        Zone = zone2,
+        X = 1,
+        Y = 1,
+        Size = 1
+      };
+      Item item4 = new Item()
+      {
+        Zone = zone2,
+        X = 1,
+        Y = 1,
+        Size = 1
+      };
+      Item item5 = new Item()
+      {
+        Zone = zone3,
+        X = 1,
+        Y = 1,
+        Size = 1
+      };
+      #endregion
 
       #region Organisatie
       Organisatie organisatie1 = new Organisatie()
@@ -233,6 +271,13 @@ namespace DAL.EF
       context.Zones.Add(zone1);
       context.Zones.Add(zone2);
       context.Zones.Add(zone3);
+      #endregion
+      #region AddItems
+      context.Items.Add(item1);
+      context.Items.Add(item2);
+      context.Items.Add(item3);
+      context.Items.Add(item4);
+      context.Items.Add(item5);
       #endregion
       #endregion
 
