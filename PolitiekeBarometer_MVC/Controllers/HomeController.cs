@@ -27,12 +27,31 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
 
     #region Dashboard
- DashboardManager mgr = new DashboardManager();
+    static int actieveZone;
+    DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
       Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
       IEnumerable<Zone> zones = mgr.getZones(dashboard);
+       if (actieveZone == 0)
+      {
+        actieveZone = zones.First().Id;
+      }
       return View(zones);
+      
+    }
+    public ActionResult _ItemsPartial()
+    {
+     
+      IEnumerable<Item> items = mgr.getItems(actieveZone);
+      return PartialView(items);
+    }
+    public ActionResult setActiveZone(int zoneId)
+    {
+      actieveZone = mgr.getZone(zoneId).Id;
+      return RedirectToAction("Dashboard");
+      //return RedirectToAction("_ItemsPartial");
+      return View();
     }
     public ActionResult GetZone(int zoneId)
     {

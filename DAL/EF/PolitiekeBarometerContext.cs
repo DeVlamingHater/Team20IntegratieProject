@@ -60,6 +60,7 @@ namespace DAL.EF
         //Platformen
         public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Zone> Zones { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         //Posts
         public DbSet<Post> Posts { get; set; }

@@ -4,6 +4,7 @@ using Domain.Platformen;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace BL.Interfaces
 {
@@ -16,5 +17,11 @@ namespace BL.Interfaces
     void sendAlerts();
     Dashboard getDashboard(int gebruikerId);
     void changeZone(Zone zone);
+    IEnumerable<Item> getItems(int actieveZone);
+    IEnumerable<Zone> getZones(Dashboard dashboard);
+    Zone getZone(int zoneId);
+    void deleteZone(int zoneId);
+    Zone addZone();
+    void Validate(Zone zone);
   }
 }
