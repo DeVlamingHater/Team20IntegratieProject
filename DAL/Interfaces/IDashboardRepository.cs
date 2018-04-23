@@ -20,6 +20,6 @@ namespace DAL
     Dashboard getDashboard(int gebruikerId);
     void UpdateZone(Zone zone);
     void deleteZone(int zoneId);
-    IEnumerable<Item> getItems(Zone actieveZone);
+    IEnumerable<Item> getItems(int actieveZone);
   }
 }

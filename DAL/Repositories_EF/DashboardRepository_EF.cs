@@ -74,9 +74,9 @@ namespace DAL.Repositories_EF
       context.SaveChanges();
     }
 
-    public IEnumerable<Item> getItems(Zone actieveZone)
+    public IEnumerable<Item> getItems(int actieveZone)
     {
-      return context.Items.Where(r => r.Zone == actieveZone).AsEnumerable();
+      return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
     }
   }
 }

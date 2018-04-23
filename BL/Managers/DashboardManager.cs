@@ -33,7 +33,7 @@ namespace BL.Managers
       return dashboard;
     }
 
-    public IEnumerable<Item> getItems(Zone actieveZone)
+    public IEnumerable<Item> getItems(int actieveZone)
     {
       return dashboardRepository.getItems(actieveZone);
     }

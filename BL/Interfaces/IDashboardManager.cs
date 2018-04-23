@@ -17,7 +17,7 @@ namespace BL.Interfaces
     void sendAlerts();
     Dashboard getDashboard(int gebruikerId);
     void changeZone(Zone zone);
-    IEnumerable<Item> getItems(Zone actieveZone);
+    IEnumerable<Item> getItems(int actieveZone);
     IEnumerable<Zone> getZones(Dashboard dashboard);
     Zone getZone(int zoneId);
     void deleteZone(int zoneId);
