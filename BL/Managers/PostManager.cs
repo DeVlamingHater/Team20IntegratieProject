@@ -9,6 +9,8 @@ using System.Numerics;
 using MathNet.Numerics.Interpolation;
 using DAL.Repositories_EF;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace BL.Managers
 {
@@ -56,31 +58,11 @@ namespace BL.Managers
 
         }
 
-        public double calculateTrend(DataConfig dataConfig, Element element)
-        {
-            List<Post> posts = getDataConfigPosts(dataConfig).ToList();
-            //We hebben 2 arrays nodig => Datums & waardes
-            //We zouden de posts moeten sorteren op datum => loopen & waarde ++
-            //double[] dateVector = new double[posts.Count];
-            //double[] waardeVector = new double[posts.Count];
-            //int i = 0;
-            //foreach (Post post in posts)
-            //{
-            //    dateVector[i] = post.Date.Ticks;
-            //    waardeVector[i] = i + 1;
-            //    i++;
-            //}
-            //CubicSpline cs = CubicSpline.InterpolateNatural(dateVector, waardeVector);
-
-            return 0.0;
-
-        }
-
         public double calculateElementTrend(Element element)
         {
             List<Post> posts = postRepository.getElementPosts(element).ToList();
 
-            DateTime timeForTrending = posts.Max(p=>p.Date).Date.AddMinutes(-1);
+            DateTime timeForTrending = posts.Max(p=>p.Date).Date.AddHours(-1);
             posts.Sort();
             List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
             if (posts.Count != 0)
@@ -96,17 +78,14 @@ namespace BL.Managers
             return postRepository.getPosts().ToList().Count;
         }
 
-        public void updatePosts()
-        {
-            //PostsUpdaten
-            this.postRepository.updatePosts();
-            uowManager = new UnitOfWorkManager();
-            DashboardManager dashboardManager = new DashboardManager(uowManager);
-        }
-
         public void addJSONPosts(string responseString)
         {
             postRepository.addJSONPosts(responseString);
+        }
+
+        public void deleteOldPosts()
+        { 
+
         }
     }
 }
