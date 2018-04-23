@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
+using Domain.Dashboards;
+using Domain.Platformen;
 
 namespace DAL.Repositories_EF
 {
@@ -38,6 +40,43 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-       
+    public Dashboard getDashboard(int gebruikerId)
+    {
+      Dashboard dashboard = context.Dashboards.Include(db=>db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
+      return dashboard;
     }
+
+    public IEnumerable<Zone> getZones(int dashboardId)
+    {
+      return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
+    }
+
+    public Zone getZone(int zoneId)
+    {
+      return context.Zones.Find(zoneId);
+    }
+
+    public Zone addZone(Zone zone)
+    {
+      context.Zones.Add(zone);
+      context.SaveChanges();
+      return zone;
+    }
+    public void UpdateZone(Zone zone)
+    { 
+      // dit staat in supportcenter????:
+      // Do nothing! All data lives in memory, everything references the same objects!!
+    }
+    public void deleteZone(int zoneId)
+    {
+      Zone zone = getZone(zoneId);
+      context.Zones.Remove(zone);
+      context.SaveChanges();
+    }
+
+    public IEnumerable<Item> getItems(int actieveZone)
+    {
+      return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+    }
+  }
 }
