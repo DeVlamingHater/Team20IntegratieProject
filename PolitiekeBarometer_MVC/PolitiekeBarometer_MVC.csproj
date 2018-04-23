@@ -303,6 +303,7 @@
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\forgot-password.html" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\gulpfile.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\Index.html" />
+    <Content Include="Views\Home\Organisatie.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
@@ -371,7 +372,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\NewTab.cshtml" />
-    <Content Include="Views\Home\Element.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\SuperAdmin\AssignRole.cshtml" />
@@ -468,6 +468,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\_ItemsPartial.cshtml" />
+    <Content Include="Views\Home\Persoon.cshtml" />
+    <Content Include="Views\Home\Thema.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

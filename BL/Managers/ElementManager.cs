@@ -72,6 +72,9 @@ namespace BL.Managers
 
         }
 
-
+    public Element getElementById(int id)
+    {
+      return elementRepository.getElementByID(id);
     }
+  }
 }

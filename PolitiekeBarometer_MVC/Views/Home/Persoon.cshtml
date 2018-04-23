@@ -1,0 +1,13 @@
+﻿@model Domain.Persoon
+@{
+    ViewBag.Title = "Persoon";
+}
+
+<h2>Persoon</h2>
+<div>
+    @Html.DisplayFor(model => model.Naam)
+    @Html.DisplayFor(model => model.Organisatie.Naam)
+</div>
+<div>
+    Items
+</div>

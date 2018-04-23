@@ -53,6 +53,7 @@ namespace DAL.EF
         public DbSet<Grafiek> Grafieken { get; set; }
 
         //Elementen
+        public DbSet<Element> Elementen { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Persoon> Personen { get; set; }
         public DbSet<Thema> Themas { get; set; }

@@ -1,5 +1,6 @@
 ﻿
 using BL.Managers;
+using Domain;
 using Domain.Dashboards;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,6 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
 
     public ActionResult NewTab()
-    {
-      return View();
-    }
-
-    public ActionResult Element()
     {
       return View();
     }
@@ -79,6 +75,25 @@ namespace PolitiekeBarometer_MVC.Controllers
         mgr.changeZone(zone);
       }
     }*/
+    #endregion
+
+    #region Element
+    ElementManager Emgr = new ElementManager();
+    public ActionResult Organisatie(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      return View(element);
+    }
+    public ActionResult Persoon(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      return View(element);
+    }
+    public ActionResult Thema(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      return View(element);
+    }
     #endregion
   }
 }
