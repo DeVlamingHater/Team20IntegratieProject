@@ -21,5 +21,6 @@ namespace BL.Interfaces
         IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig);
 
         double calculateElementTrend(Element element);
+        void addJSONPosts(string responseString);
     }
 }

@@ -26,7 +26,7 @@ namespace DAL.Repositories_EF
 
         public void addPosts(List<Post> list)
         {
-            throw new NotImplementedException();
+            context.Posts.AddRange(list);
         }
 
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
@@ -119,7 +119,7 @@ namespace DAL.Repositories_EF
                     });
                     index++;
                 }
-                string naam = tweet.Politician[0] + " " + tweet.Politician[1];
+                string naam = tweet.Persons[0];
                 Persoon persoon;
                 try
                 {
@@ -226,6 +226,15 @@ namespace DAL.Repositories_EF
                 posts = context.Posts.ToList();
             }
             return posts;
+        }
+
+        public void addJSONPosts(string responseString)
+        {
+            List<Tweet> tweets = JsonConvert.DeserializeObject<List<Tweet>>(responseString);
+
+            List<Post> posts = ParseTweetsToPost(tweets);
+
+            addPosts(posts);
         }
     }
 }

@@ -48,9 +48,24 @@ namespace BL.Managers
 
         public List<Element> getTrendingElementen(int amount = 3)
         {
-            List<Element> elementenTrending = new List<Element>();
-            elementenTrending = elementRepository.getTrendingElementen(amount);
-            return elementenTrending;
+            List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
+            List<Element> elementen = new List<Element>();
+            for (int i = 0; i < amount; i++)
+            {
+                double maxTrend = 0.0;
+                Element maxElement = elementenTrending.First();
+                foreach (Element element in elementenTrending)
+                {
+                    if (element.Trend > maxTrend)
+                    {
+                        maxElement = element;
+                        maxTrend = maxElement.Trend;
+                    }
+                }
+                elementenTrending.Remove(maxElement);
+                elementen.Add(maxElement);
+            }
+            return elementen;
         }
        
 
@@ -64,14 +79,8 @@ namespace BL.Managers
             {
                 element.Trend = postManager.calculateElementTrend(element);
             }
-            elementen.Sort();
-            int index = 0;
-            elementen.ForEach(e => e.TrendingPlaats = index++);
+            //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
-            
-
         }
-
-
     }
 }

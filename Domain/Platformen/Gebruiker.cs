@@ -12,9 +12,12 @@ namespace Domain.Platformen
     {
         [Key]
         public int GebruikerId { get; set; }
-
+        [Required]
         public string Naam { get; set; }
+        [EmailAddress]
+        [Required]
         public string Email { get; set; }
+        []
         public string Wachtwoord { get; set; }
     }
 }

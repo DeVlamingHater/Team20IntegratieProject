@@ -7,7 +7,7 @@ namespace DAL
 {
     public class TweetDump
     {
-        [JsonProperty("records")]
+        [JsonProperty("")]
         public Tweet[] Tweet { get; set; }
     }
 }

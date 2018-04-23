@@ -10,6 +10,7 @@ using Domain.Platformen;
 
 namespace DAL.EF
 {
+
   class PolitiekeBarometerInitializer : DropCreateDatabaseAlways<PolitiekeBarometerContext>
   {
     protected override void Seed(PolitiekeBarometerContext context)

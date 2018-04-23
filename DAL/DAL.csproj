@@ -58,6 +58,7 @@
     <Compile Include="EF\PolitiekeBarometerConfiguration.cs" />
     <Compile Include="EF\PolitiekeBarometerContext.cs" />
     <Compile Include="EF\PolitiekeBarometerInitializer.cs" />
+    <Compile Include="Interfaces\Helper\Profile.cs" />
     <Compile Include="Interfaces\IDashboardRepository.cs" />
     <Compile Include="Interfaces\IElementRepository.cs" />
     <Compile Include="Interfaces\IPlatformRepository.cs" />

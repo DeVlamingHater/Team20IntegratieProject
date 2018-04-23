@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace PolitiekeBarometer_CA
         {
             Console.WriteLine("=====================");
             Console.WriteLine("MENU");
-            Console.WriteLine("1. Update Posts");
+            Console.WriteLine("1. Initialize Database");
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
             Console.WriteLine("4. API Update");
@@ -64,7 +65,7 @@ namespace PolitiekeBarometer_CA
                     switch (action)
                     {
                         case 1:
-                            updatePosts();
+                            initializeDatabase();
                             break;
                         case 2:
                             showAlerts();
@@ -73,7 +74,7 @@ namespace PolitiekeBarometer_CA
                             showElementen();
                             break;
                         case 4:
-                             updateAPIAsync();
+                            updateAPIAsync();
                             break;
                         case 5:
                             showTrending();
@@ -87,40 +88,32 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
-        private static void showTrending()
-        {
-            elementManager.setTrendingElementen();
-            List<Element> trendingElementen = elementManager.getTrendingElementen(3);
-            foreach (Element element in trendingElementen)
-            {
-                Console.WriteLine(element.Naam);
-                Console.WriteLine(element.Trend);
-                Console.WriteLine(element.TrendingPlaats);
-            }
-        }
-
-        private static async Task updateAPIAsync()
+        
+        private static async void updateAPIAsync()
         {
             HttpClient client = new HttpClient();
 
             client.BaseAddress = new Uri("http://kdg.textgain.com/query");
-            client.DefaultRequestHeaders.Add("X-API-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //     client.DefaultRequestHeaders.Authorization =
+            //new AuthenticationHeaderValue("aEN3K6VJPEoh3sMp9ZVA73kkr");
+            client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
-            Dictionary<string, string> values = new Dictionary<string, string>
+            Dictionary<string, string> values = new Dictionary<string, string>()
             {
                 {"since", "18 Apr 2018 08:00:00" }
             };
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            var response = await client.PostAsync("http://kdg.textgain.com/query", content);
+            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
             string responseString = await response.Content.ReadAsStringAsync();
             Console.WriteLine(responseString);
+            postManager.addJSONPosts(responseString);
+
         }
 
         private static void showElementen()
         {
-            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " + p.TrendingPlaats));
+            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " +p.Trend));
         }
 
         private static void showAlerts()
@@ -132,11 +125,22 @@ namespace PolitiekeBarometer_CA
             }
         }
 
-        private static void updatePosts()
+        private static void initializeDatabase()
         {
-            postManager.updatePosts();
+            
             //dashboardManager.sendAlerts();
         }
+        private static void showTrending()
+        {
+            elementManager.setTrendingElementen();
+            List<Element> trendingElementen = elementManager.getTrendingElementen(3);
+            foreach (Element element in trendingElementen)
+            {
+                Console.WriteLine(element.Naam);
+                Console.WriteLine(element.Trend);
+            }
+        }
+
     }
 }
 
