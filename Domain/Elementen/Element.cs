@@ -12,7 +12,6 @@ namespace Domain
         [Key]
         public int Id { get; set; }
         public string Naam { get; set; }
-        public int TrendingPlaats { get; set; }
         public double Trend { get; set; }
 
         public int CompareTo(Element other)

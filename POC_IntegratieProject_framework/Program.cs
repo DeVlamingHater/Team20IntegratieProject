@@ -43,7 +43,7 @@ namespace PolitiekeBarometer_CA
         {
             Console.WriteLine("=====================");
             Console.WriteLine("MENU");
-            Console.WriteLine("1. Update Posts");
+            Console.WriteLine("1. Initialize Database");
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
             Console.WriteLine("4. API Update");
@@ -65,7 +65,7 @@ namespace PolitiekeBarometer_CA
                     switch (action)
                     {
                         case 1:
-                            updatePosts();
+                            initializeDatabase();
                             break;
                         case 2:
                             showAlerts();
@@ -88,18 +88,7 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
-        private static void showTrending()
-        {
-            elementManager.setTrendingElementen();
-            List<Element> trendingElementen = elementManager.getTrendingElementen(3);
-            foreach (Element element in trendingElementen)
-            {
-                Console.WriteLine(element.Naam);
-                Console.WriteLine(element.Trend);
-                Console.WriteLine(element.TrendingPlaats);
-            }
-        }
-
+        
         private static async void updateAPIAsync()
         {
             HttpClient client = new HttpClient();
@@ -124,7 +113,7 @@ namespace PolitiekeBarometer_CA
 
         private static void showElementen()
         {
-            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " + p.TrendingPlaats));
+            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " +p.Trend));
         }
 
         private static void showAlerts()
@@ -136,11 +125,22 @@ namespace PolitiekeBarometer_CA
             }
         }
 
-        private static void updatePosts()
+        private static void initializeDatabase()
         {
-            postManager.updatePosts();
+            
             //dashboardManager.sendAlerts();
         }
+        private static void showTrending()
+        {
+            elementManager.setTrendingElementen();
+            List<Element> trendingElementen = elementManager.getTrendingElementen(3);
+            foreach (Element element in trendingElementen)
+            {
+                Console.WriteLine(element.Naam);
+                Console.WriteLine(element.Trend);
+            }
+        }
+
     }
 }
 

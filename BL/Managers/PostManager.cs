@@ -80,12 +80,13 @@ namespace BL.Managers
         {
             List<Post> posts = postRepository.getElementPosts(element).ToList();
 
-            DateTime timeForTrending =posts.Max(p=>p.Date).Date.AddMinutes(-1);
+            DateTime timeForTrending = posts.Max(p=>p.Date).Date.AddMinutes(-1);
             posts.Sort();
-            List<Post> trendPosts = posts.ToList();
+            List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
             if (posts.Count != 0)
             {
-                return trendPosts.Count / posts.Count();
+                double trend = (double) trendPosts.Count / posts.Count();
+                return trend;
             }
             else return 0;
         }

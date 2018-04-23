@@ -12,8 +12,27 @@ namespace DAL.EF
     [DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
     internal class PolitiekeBarometerContext : DbContext
     {
+        //Dashboards
+        public DbSet<Alert> Alerts { get; set; }
+        public DbSet<DataConfig> DataConfigs { get; set; }
+        public DbSet<Dashboard> Dashboards { get; set; }
+        public DbSet<Grafiek> Grafieken { get; set; }
+
+        //Elementen
+        public DbSet<Keyword> Keywords { get; set; }
+        public DbSet<Persoon> Personen { get; set; }
+        public DbSet<Thema> Themas { get; set; }
+        public DbSet<Organisatie> Organisaties { get; set; }
+        //Platformen
+        public DbSet<Gebruiker> Gebruikers { get; set; }
+
+        //Posts
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Parameter> Parameters { get; set; }
+        public DbSet<Waarde> Waardes { get; set; }
 
         private readonly bool delaySave;
+
         public PolitiekeBarometerContext(bool unitOfWorkPresent = false) : base("Politieke_BarometerDB")
         {
             delaySave = unitOfWorkPresent;
@@ -42,26 +61,6 @@ namespace DAL.EF
 
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
         }
-
-
-        //Alerts
-        public DbSet<Alert> Alerts { get; set; }
-        public DbSet<DataConfig> DataConfigs { get; set; }
-        public DbSet<Dashboard> Dashboards { get; set; }
-        public DbSet<Grafiek> Grafieken { get; set; }
-
-        //Elementen
-        public DbSet<Keyword> Keywords { get; set; }
-        public DbSet<Persoon> Personen { get; set; }
-        public DbSet<Thema> Themas { get; set; }
-        public DbSet<Organisatie> Organisaties { get; set; }
-        //Platformen
-        public DbSet<Gebruiker> Gebruikers { get; set; }
-
-        //Posts
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Parameter> Parameters { get; set; }
-        public DbSet<Waarde> Waardes { get; set; }
 
         public override int SaveChanges()
         {

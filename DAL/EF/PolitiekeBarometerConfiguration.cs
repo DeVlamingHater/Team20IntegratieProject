@@ -13,6 +13,6 @@ namespace DAL.EF
 
             this.SetProviderServices("System.Data.SqlClient", System.Data.Entity.SqlServer.SqlProviderServices.Instance);
 
-            }
+        }
     }
 }
