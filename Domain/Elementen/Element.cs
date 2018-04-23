@@ -11,6 +11,7 @@ namespace Domain
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string Naam { get; set; }
         public double Trend { get; set; }
 
