@@ -17,7 +17,7 @@ namespace Domain.Platformen
         [EmailAddress]
         [Required]
         public string Email { get; set; }
-        []
+        
         public string Wachtwoord { get; set; }
     }
 }

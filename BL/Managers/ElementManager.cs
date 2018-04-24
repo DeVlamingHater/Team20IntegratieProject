@@ -46,32 +46,11 @@ namespace BL.Managers
             return element;
         }
 
-        public List<Element> getTrendingElementen(int amount = 3)
-        {
-            List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
-            List<Element> elementen = new List<Element>();
-            for (int i = 0; i < amount; i++)
-            {
-                double maxTrend = 0.0;
-                Element maxElement = elementenTrending.First();
-                foreach (Element element in elementenTrending)
-                {
-                    if (element.Trend > maxTrend)
-                    {
-                        maxElement = element;
-                        maxTrend = maxElement.Trend;
-                    }
-                }
-                elementenTrending.Remove(maxElement);
-                elementen.Add(maxElement);
-            }
-            return elementen;
-        }
-       
-
         public void setTrendingElementen()
         {
-            PostManager postManager = new PostManager();
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            this.uowManager = unitOfWorkManager;
+            PostManager postManager = new PostManager(unitOfWorkManager);
 
             List<Element> elementen = getAllElementen();
 
@@ -81,6 +60,47 @@ namespace BL.Managers
             }
             //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
+        }
+        public List<Element> getTopTrending(List<Element> elementen, int amount)
+        {
+            List<Element> elementenTrending = new List<Element>();
+
+            for (int i = 0; i < amount; i++)
+            {
+                if (elementen.Count == 0)
+                {
+                    return elementenTrending;
+                }
+                double maxTrend = 0.0;
+                
+                Element maxElement = elementen.First();
+                foreach (Element element in elementen)
+                {
+                    if (element.Trend > maxTrend)
+                    {
+                        maxElement = element;
+                        maxTrend = maxElement.Trend;
+                    }
+                }
+                elementen.Remove(maxElement);
+                elementenTrending.Add(maxElement);
+            }
+            return elementenTrending;
+        }
+
+        public List<Element> getTrendingElementen(int amount = 3)
+        {
+            List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
+            List<Element> elementen = new List<Element>();
+            List<Element> personen = elementenTrending.Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
+            List<Element> themas = elementenTrending.Where(e => e.GetType().Equals(typeof(Thema))).ToList();
+            List<Element> organisaties = elementenTrending.Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
+
+            elementen.AddRange(getTopTrending(personen, amount));
+            elementen.AddRange(getTopTrending(themas, amount));
+            elementen.AddRange(getTopTrending(organisaties, amount));
+
+            return elementen;
         }
     }
 }

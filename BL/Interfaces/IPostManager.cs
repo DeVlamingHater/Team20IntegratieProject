@@ -3,6 +3,7 @@ using Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BL.Interfaces
 {
@@ -10,17 +11,18 @@ namespace BL.Interfaces
     {
         Double getHuidigeWaarde(DataConfig dataConfig);
 
-        void updatePosts();
-
         int getNextPostId();
 
         void addPosts(List<Post> list);
 
-        double calculateTrend(DataConfig dataConfig, Element element);
-
         IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig);
 
         double calculateElementTrend(Element element);
+
         void addJSONPosts(string responseString);
+
+        void deleteOldPosts();
+
+        Task<string> updatePosts();
     }
 }

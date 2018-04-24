@@ -69,6 +69,7 @@
     <Compile Include="Elementen\Persoon.cs" />
     <Compile Include="Elementen\Thema.cs" />
     <Compile Include="Elementen\Keyword.cs" />
+    <Compile Include="Platformen\Deelplatform.cs" />
     <Compile Include="Platformen\Gebruiker.cs" />
     <Compile Include="Posts\Parameter.cs" />
     <Compile Include="Posts\ParameterType.cs" />

@@ -18,7 +18,7 @@ namespace BL.Managers
         public UnitOfWorkManager uowManager;
         public DashboardManager()
         {
-      dashboardRepository = new DashboardRepository_EF();
+            dashboardRepository = new DashboardRepository_EF();
         }
 
         public DashboardManager(UnitOfWorkManager uowManager)
@@ -27,62 +27,52 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
-    public Dashboard getDashboard(int gebruikerId)
-    {
-      Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
-      return dashboard;
-    }
+        public Dashboard getDashboard(int gebruikerId)
+        {
+            Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
+            return dashboard;
+        }
 
-    public IEnumerable<Item> getItems(int actieveZone)
-    {
-      return dashboardRepository.getItems(actieveZone);
-    }
+        public IEnumerable<Item> getItems(int actieveZone)
+        {
+            return dashboardRepository.getItems(actieveZone);
+        }
 
-    public IEnumerable<Zone> getZones(Dashboard dashboard)
-    {
-      int dashboardId = dashboard.DashboardId;
-      return dashboardRepository.getZones(dashboardId);
-    }
-    public Zone getZone(int zoneId)
-    {
-      return dashboardRepository.getZone(zoneId);
-    }
+        public IEnumerable<Zone> getZones(Dashboard dashboard)
+        {
+            int dashboardId = dashboard.DashboardId;
+            return dashboardRepository.getZones(dashboardId);
+        }
+        public Zone getZone(int zoneId)
+        {
+            return dashboardRepository.getZone(zoneId);
+        }
 
-    public void deleteZone(int zoneId)
-    {
-      dashboardRepository.deleteZone(zoneId);
-    }
+        public void deleteZone(int zoneId)
+        {
+            dashboardRepository.deleteZone(zoneId);
+        }
 
-    public Zone addZone()
-    {
-      // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-      Dashboard dashboard = this.getDashboard(1);
-      IEnumerable<Zone> zones = this.getZones(dashboard);
-      Zone zone = new Zone()
-      {
-        Id = zones.Count() + 1,
-        Naam = "NewZone",
-        Dashboard = dashboard
-      };
-      return dashboardRepository.addZone(zone);
-    }
+        public Zone addZone()
+        {
+            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+            Dashboard dashboard = this.getDashboard(1);
+            IEnumerable<Zone> zones = this.getZones(dashboard);
+            Zone zone = new Zone()
+            {
+                Id = zones.Count() + 1,
+                Naam = "NewZone",
+                Dashboard = dashboard
+            };
+            return dashboardRepository.addZone(zone);
+        }
 
-    public void changeZone(Zone zone)
-    {
-      this.Validate(zone);
-      dashboardRepository.UpdateZone(zone);
-    }
+        public void changeZone(Zone zone)
+        {
+            dashboardRepository.UpdateZone(zone);
+        }
 
-    private void Validate(Zone zone)
-    {
-      List<ValidationResult> errors = new List<ValidationResult>();
-      bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, validateAllProperties: true);
-
-      if (!valid)
-        throw new ValidationException("Zone not valid!");
-    }
-
-    public List<Alert> getActiveAlerts()
+        public List<Alert> getActiveAlerts()
         {
             initNonExistingRepo(false);
             return dashboardRepository.getActiveAlerts().ToList();
@@ -164,9 +154,9 @@ namespace BL.Managers
             }
         }
 
-    void IDashboardManager.Validate(Zone zone)
-    {
-      throw new NotImplementedException();
+        void IDashboardManager.Validate(Zone zone)
+        {
+            throw new NotImplementedException();
+        }
     }
-  }
 }

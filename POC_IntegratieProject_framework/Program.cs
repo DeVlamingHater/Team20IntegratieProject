@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace PolitiekeBarometer_CA
 {
@@ -43,11 +44,11 @@ namespace PolitiekeBarometer_CA
         {
             Console.WriteLine("=====================");
             Console.WriteLine("MENU");
-            Console.WriteLine("1. Initialize Database");
+            Console.WriteLine("1. Show Trending");
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
             Console.WriteLine("4. API Update");
-            Console.WriteLine("5. Show Trending");
+            Console.WriteLine("5. ");
 
             DetectMenuAction();
         }
@@ -65,7 +66,7 @@ namespace PolitiekeBarometer_CA
                     switch (action)
                     {
                         case 1:
-                            initializeDatabase();
+                            showTrending();
                             break;
                         case 2:
                             showAlerts();
@@ -76,10 +77,7 @@ namespace PolitiekeBarometer_CA
                         case 4:
                             updateAPIAsync();
                             break;
-                        case 5:
-                            showTrending();
-                            break;
-                        default:
+                      default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
                             break;
@@ -88,48 +86,6 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
-        
-        private static async void updateAPIAsync()
-        {
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //     client.DefaultRequestHeaders.Authorization =
-            //new AuthenticationHeaderValue("aEN3K6VJPEoh3sMp9ZVA73kkr");
-            client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
-
-            Dictionary<string, string> values = new Dictionary<string, string>()
-            {
-                {"since", "18 Apr 2018 08:00:00" }
-            };
-            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
-            string responseString = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseString);
-            postManager.addJSONPosts(responseString);
-
-        }
-
-        private static void showElementen()
-        {
-            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " +p.Trend));
-        }
-
-        private static void showAlerts()
-        {
-            List<Alert> alerts = dashboardManager.getAllAlerts();
-
-            foreach (Alert alert in alerts)
-            {
-            }
-        }
-
-        private static void initializeDatabase()
-        {
-            
-            //dashboardManager.sendAlerts();
-        }
         private static void showTrending()
         {
             elementManager.setTrendingElementen();
@@ -140,7 +96,28 @@ namespace PolitiekeBarometer_CA
                 Console.WriteLine(element.Trend);
             }
         }
+        private static void showAlerts()
+        {
+            Console.WriteLine("Niet meer geïmplementeerd");
+        }
 
+        private static void showElementen()
+        {
+            elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " + p.Trend));
+        }
+
+        //TODO run on timer
+        private static async void updateAPIAsync()
+        {
+            string responseString = await postManager.updatePosts();
+            Console.WriteLine(responseString);
+            postManager.addJSONPosts(responseString);
+        }
+
+        public void deleteOldPosts()
+        {
+            postManager.deleteOldPosts();
+        }
     }
 }
 
