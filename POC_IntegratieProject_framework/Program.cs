@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace PolitiekeBarometer_CA
 {
@@ -109,16 +110,18 @@ namespace PolitiekeBarometer_CA
         private static async void updateAPIAsync()
         {
             HttpClient client = new HttpClient();
-
             client.BaseAddress = new Uri("http://kdg.textgain.com/query");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //     client.DefaultRequestHeaders.Authorization =
             //new AuthenticationHeaderValue("aEN3K6VJPEoh3sMp9ZVA73kkr");
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
+            DateTime sinceDT = DateTime.Now.AddHours(-1);
+            string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
+
             Dictionary<string, string> values = new Dictionary<string, string>()
             {
-                {"since", "18 Apr 2018 08:00:00" }
+                {"since", "23 Apr 2018 21:10:04" }
             };
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);

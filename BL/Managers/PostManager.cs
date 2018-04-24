@@ -61,16 +61,17 @@ namespace BL.Managers
         public double calculateElementTrend(Element element)
         {
             List<Post> posts = postRepository.getElementPosts(element).ToList();
-
-            DateTime timeForTrending = posts.Max(p=>p.Date).Date.AddHours(-1);
+            if (posts.Count == 0)
+            {
+                return 0.0;
+            }
+            DateTime timeForTrending = posts.Max(p => p.Date).Date.AddHours(-1);
             posts.Sort();
             List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
-            if (posts.Count != 0)
-            {
-                double trend = (double) trendPosts.Count / posts.Count();
-                return trend;
-            }
-            else return 0;
+            double trend = (double)trendPosts.Count / posts.Count();
+            return trend;
+
+
         }
 
         public int getNextPostId()
@@ -84,7 +85,7 @@ namespace BL.Managers
         }
 
         public void deleteOldPosts()
-        { 
+        {
 
         }
     }
