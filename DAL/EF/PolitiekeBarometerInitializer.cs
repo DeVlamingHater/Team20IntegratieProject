@@ -11,10 +11,17 @@ using Domain.Platformen;
 namespace DAL.EF
 {
 
-    class PolitiekeBarometerInitializer : DropCreateDatabaseAlways<PolitiekeBarometerContext>
+    class PolitiekeBarometerInitializer : DropCreateDatabaseIfModelChanges<PolitiekeBarometerContext>
     {
         protected override void Seed(PolitiekeBarometerContext context)
         {
+            #region Platformen
+            Platform platform1 = new Platform()
+            {
+                Historiek = new TimeSpan(7, 0, 0)
+            };
+            #endregion
+
             #region Deelplatformen
             Deelplatform deelplatform1 = new Deelplatform()
             {
@@ -268,6 +275,10 @@ namespace DAL.EF
             #region AddToDB
 
             #region AddPlatform
+            
+            #region AddPlatformen
+            context.Platformen.Add(platform1);
+            #endregion
 
             #region AddDeelplatformen
             context.Deelplatformen.Add(deelplatform1);

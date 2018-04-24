@@ -4,6 +4,8 @@ using DAL;
 using Domain;
 using Domain.Elementen;
 using Domain.Platformen;
+using Newtonsoft.Json;
+using POC_IntegratieProject_framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
@@ -19,7 +22,7 @@ namespace PolitiekeBarometer_CA
 {
     class Program
     {
-
+        private const string Path = "C:\\Users\\Samcl\\OneDrive\\Documenten\\integratieProject-Git\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json";
         private static IElementManager elementManager;
         private static IPostManager postManager;
         private static IDashboardManager dashboardManager;
@@ -48,7 +51,8 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("2. ShowAlerts");
             Console.WriteLine("3. ShowElementen");
             Console.WriteLine("4. API Update");
-            Console.WriteLine("5. ");
+            Console.WriteLine("5. Send Email");
+            Console.WriteLine("6. Add politici JSON");
 
             DetectMenuAction();
         }
@@ -77,13 +81,80 @@ namespace PolitiekeBarometer_CA
                         case 4:
                             updateAPIAsync();
                             break;
-                      default:
+                        case 5:
+                            sendEmail();
+                            break;
+                        case 6:
+                            addPoliticiJSON();
+                            break;
+                        default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
                             break;
                     }
                 }
             } while (inValidAction);
+        }
+
+        private static void addPoliticiJSON()
+        {
+            List<Element> elementen = new List<Element>();
+            List<PersoonParser> items;
+            using (StreamReader r = new StreamReader(Path))
+            {
+                string json = r.ReadToEnd();
+                items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
+            }
+            foreach (PersoonParser persoon in items)
+            {
+                Persoon politicus = new Persoon()
+                {
+                    DateOfBirth = persoon.dateOfBirth,
+                    District = persoon.district,
+                    Facebook = persoon.facebook,
+                    Gender = persoon.gender,
+                    Naam = persoon.full_name,
+                    Position = persoon.position,
+                    Level = persoon.level,
+                    Postal_code = persoon.postal_code,
+                    Site = persoon.site,
+                    Town = persoon.town,
+                    Twitter = persoon.twitter
+                };
+                Organisatie organisatie = (Organisatie)elementManager.getElementByNaam(persoon.organisation);
+                if (organisatie == null)
+                {
+                    organisatie = new Organisatie()
+                    {
+                        Naam = persoon.organisation,
+                        Personen = new List<Persoon>()
+                        {
+                            politicus
+                        }
+                    };
+                    elementManager.addOrganisatie(organisatie);
+                }
+                politicus.Organisatie = organisatie;
+                elementen.Add(politicus);
+            }
+            elementManager.addElementen(elementen);
+        }
+
+        private static void sendEmail()
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+            mail.From = new MailAddress("IntegratieProjectTeam20@gmail.com");
+            mail.To.Add("IntegratieProjectTeam20@gmail.com");
+            mail.Subject = "Test Mail";
+            mail.Body = "This is for testing SMTP mail from GMAIL";
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("IntegratieProjectTeam20@gmail.com", "Integratie20");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
         }
 
         private static void showTrending()
@@ -112,6 +183,7 @@ namespace PolitiekeBarometer_CA
             string responseString = await postManager.updatePosts();
             Console.WriteLine(responseString);
             postManager.addJSONPosts(responseString);
+            postManager.deleteOldPosts();
         }
 
         public void deleteOldPosts()

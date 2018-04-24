@@ -15,5 +15,6 @@ namespace DAL
         void addJSONPosts(string responseString);
         IEnumerable<Post> getPostsUntil(DateTime date);
         void deletePost(Post p);
+        void deleteOldPosts(TimeSpan historiek);
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 namespace BL.Managers
@@ -96,6 +97,11 @@ namespace BL.Managers
             return dashboardRepository.getAllAlerts().ToList();
         }
 
+        internal TimeSpan getHistoriek()
+        {
+            throw new NotImplementedException();
+        }
+
         public void sendAlerts()
         {
             initNonExistingRepo(true);
@@ -125,7 +131,24 @@ namespace BL.Managers
                 if (sendMelding)
                 {
                     Console.WriteLine("MELDING!!!");
+                    if (alert.EmailMelding)
+                    {
+                        MailMessage mail = new MailMessage();
+                        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                        mail.From = new MailAddress("IntegratieProjectTeam20@gmail.com");
+                        mail.To.Add("IntegratieProjectTeam20@gmail.com");
+                        mail.Subject = "Test Mail";
+                        mail.Body = "This is for testing SMTP mail from GMAIL";
+
+                        SmtpServer.Port = 587;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential("IntegratieProjectTeam20@gmail.com", "Integratie20");
+                        SmtpServer.EnableSsl = true;
+
+                        SmtpServer.Send(mail);
+                    }
                 }
+                
             }
 
         }
@@ -154,9 +177,14 @@ namespace BL.Managers
             }
         }
 
-        void IDashboardManager.Validate(Zone zone)
+        public void Validate(Zone zone)
         {
             throw new NotImplementedException();
+        }
+
+        TimeSpan IDashboardManager.getHistoriek()
+        {
+            return dashboardRepository.getPlatform().Historiek;
         }
     }
 }

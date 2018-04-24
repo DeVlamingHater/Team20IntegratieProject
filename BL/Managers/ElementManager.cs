@@ -34,15 +34,6 @@ namespace BL.Managers
         public Element getElementByNaam(string naam)
         {
             Element element = elementRepository.getElementByName(naam);
-
-            if (element == null)
-            {
-                element = new Persoon()
-                {
-                    Naam = naam
-                };
-                elementRepository.AddPersoon((Persoon)element);
-            }
             return element;
         }
 
@@ -72,7 +63,7 @@ namespace BL.Managers
                     return elementenTrending;
                 }
                 double maxTrend = 0.0;
-                
+
                 Element maxElement = elementen.First();
                 foreach (Element element in elementen)
                 {
@@ -101,6 +92,16 @@ namespace BL.Managers
             elementen.AddRange(getTopTrending(organisaties, amount));
 
             return elementen;
+        }
+
+        public void addElementen(List<Element> elementen)
+        {
+            elementRepository.addElementen(elementen);
+        }
+
+        public void addOrganisatie(Organisatie organisatie)
+        {
+            elementRepository.addOrganisatie(organisatie);
         }
     }
 }
