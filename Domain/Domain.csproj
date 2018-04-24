@@ -71,6 +71,7 @@
     <Compile Include="Elementen\Keyword.cs" />
     <Compile Include="Platformen\Deelplatform.cs" />
     <Compile Include="Platformen\Gebruiker.cs" />
+    <Compile Include="Platformen\Platform.cs" />
     <Compile Include="Posts\Parameter.cs" />
     <Compile Include="Posts\ParameterType.cs" />
     <Compile Include="Posts\Post.cs" />

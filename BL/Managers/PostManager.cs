@@ -87,7 +87,10 @@ namespace BL.Managers
 
         public void deleteOldPosts()
         {
+            IDashboardManager dashboardManager = new DashboardManager();
+            TimeSpan historiek = dashboardManager.getHistoriek();
 
+            postRepository.deleteOldPosts(historiek);
         }
 
         public async Task<string> updatePosts()
@@ -102,7 +105,8 @@ namespace BL.Managers
 
             Dictionary<string, string> values = new Dictionary<string, string>()
             {
-                {"since", "23 Apr 2018 21:10:04" }
+                {"since", "24 Apr 2018 8:00:00" },
+                {"until",  "20 Apr 2018 8:00:00"}
             };
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);

@@ -26,6 +26,7 @@ namespace DAL.EF
         public DbSet<Organisatie> Organisaties { get; set; }
         //Platformen
         public DbSet<Gebruiker> Gebruikers { get; set; }
+        public DbSet<Platform> Platformen { get; set; }
         public DbSet<Deelplatform> Deelplatformen { get; set; }
         //Posts
         public DbSet<Post> Posts { get; set; }

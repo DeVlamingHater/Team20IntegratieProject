@@ -14,7 +14,7 @@ namespace BL.Interfaces
         List<Element> getTrendingElementen(int amount);
 
         void setTrendingElementen();
-
-
+        void addElementen(List<Element> elementen);
+        void addOrganisatie(Organisatie organisatie);
     }
 }

@@ -12,5 +12,7 @@ namespace DAL
         IEnumerable<Element> getAllElementen();
         void AddPersoon(Persoon persoon);
         void setElement(Element element);
+        void addElementen(List<Element> elementen);
+        void addOrganisatie(Organisatie organisatie);
     }
 }

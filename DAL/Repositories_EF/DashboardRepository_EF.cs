@@ -84,5 +84,10 @@ namespace DAL.Repositories_EF
         {
             return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
         }
+
+        public Platform getPlatform()
+        {
+            return context.Platformen.First();
+        }
     }
 }
