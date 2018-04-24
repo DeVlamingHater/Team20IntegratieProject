@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Domain;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -26,8 +27,16 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    #region Dashboard
-    static int actieveZone;
+        public ActionResult Grafiek()
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            return View(elementen.ToList());
+        }
+
+        #region Dashboard
+        static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {

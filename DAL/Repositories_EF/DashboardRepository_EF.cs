@@ -27,12 +27,12 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Alert> getAllAlerts()
         {
-            return  context.Alerts.Include(a => a.DataConfig).ToList();
+            return context.Alerts.Include(a => a.DataConfig).ToList();
         }
 
         public IEnumerable<Alert> getActiveAlerts()
         {
-            return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a=>a.Status ==AlertStatus.ACTIEF).ToList<Alert>();
+            return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
@@ -40,43 +40,50 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-    public Dashboard getDashboard(int gebruikerId)
-    {
-      Dashboard dashboard = context.Dashboards.Include(db=>db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
-      return dashboard;
-    }
+        public Dashboard getDashboard(int gebruikerId)
+        {
+            Dashboard dashboard = context.Dashboards.Include(db => db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
+            return dashboard;
+        }
 
-    public IEnumerable<Zone> getZones(int dashboardId)
-    {
-      return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
-    }
+        public IEnumerable<Zone> getZones(int dashboardId)
+        {
+            return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
+        }
 
-    public Zone getZone(int zoneId)
-    {
-      return context.Zones.Find(zoneId);
-    }
+        public Zone getZone(int zoneId)
+        {
+            return context.Zones.Find(zoneId);
+        }
 
-    public Zone addZone(Zone zone)
-    {
-      context.Zones.Add(zone);
-      context.SaveChanges();
-      return zone;
-    }
-    public void UpdateZone(Zone zone)
-    { 
-      // dit staat in supportcenter????:
-      // Do nothing! All data lives in memory, everything references the same objects!!
-    }
-    public void deleteZone(int zoneId)
-    {
-      Zone zone = getZone(zoneId);
-      context.Zones.Remove(zone);
-      context.SaveChanges();
-    }
+        public Zone addZone(Zone zone)
+        {
+            context.Zones.Add(zone);
+            context.SaveChanges();
+            return zone;
+        }
+        public void UpdateZone(Zone zone)
+        {
+            // dit staat in supportcenter????:
+            // Do nothing! All data lives in memory, everything references the same objects!!
+        }
+        public void deleteZone(int zoneId)
+        {
+            Zone zone = getZone(zoneId);
+            IEnumerable<Item> items = getItems(zoneId);
+            context.Zones.Remove(zone);
+            for (int i = 0; i < items.Count(); i++)
+            {
+                Item item = items.ElementAt(i);
+                context.Items.Remove(item);
+            };
 
-    public IEnumerable<Item> getItems(int actieveZone)
-    {
-      return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+            context.SaveChanges();
+        }
+
+        public IEnumerable<Item> getItems(int actieveZone)
+        {
+            return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+        }
     }
-  }
 }
