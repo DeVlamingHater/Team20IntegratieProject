@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
 using Domain.Elementen;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
@@ -22,6 +23,34 @@ namespace DAL.Repositories_EF
         {
             context = unitOfWork.Context;
         }
+
+        public void addElementen(List<Element> elementen)
+        {
+            List<Persoon> personen = (List<Persoon>)elementen.Where(e => e.GetType().Equals(typeof(Persoon)));
+            List<Thema> themas = (List<Thema>)elementen.Where(e => e.GetType().Equals(typeof(Thema)));
+            List<Organisatie> organisaties = (List<Organisatie>)elementen.Where(e => e.GetType().Equals(typeof(Organisatie)));
+
+            if (personen.Count != 0)
+                context.Personen.AddRange(personen);
+
+            if (themas.Count != 0)
+                context.Themas.AddRange(themas);
+
+            if (organisaties.Count != 0)
+                context.Organisaties.AddRange(organisaties);
+        }
+
+        public void addOrganisatie(Organisatie organisatie)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
+            {
+                context.Organisaties.Add(organisatie);
+                context.SaveChanges();
+            }
+
+        }
+
         public void AddPersoon(Persoon persoon)
         {
             context.Personen.Add(persoon);
@@ -45,17 +74,6 @@ namespace DAL.Repositories_EF
         public Element getElementByName(string naam)
         {
             return null;
-        }
-
-        public List<Element> getTrendingElementen(int amount)
-        {
-            List<Element> elementenTrending = new List<Element>();
-
-            elementenTrending.AddRange(context.Personen.Where(p => p.TrendingPlaats < amount));
-            elementenTrending.AddRange(context.Organisaties.Where(p => p.TrendingPlaats < amount));
-            elementenTrending.AddRange(context.Themas.Where(p => p.TrendingPlaats < amount));
-
-            return elementenTrending;
         }
 
         public void setElement(Element element)

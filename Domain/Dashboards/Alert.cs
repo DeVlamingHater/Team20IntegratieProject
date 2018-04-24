@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Alert
+    public class Alert : IValidatableObject
     {
         [Key]
         public int AlertId { get; set; }
@@ -23,6 +23,7 @@ namespace Domain
         public double Waarde { get; set; }
 
         [Required]
+        [RegularExpression("[<,>][=]?")]
         public String Operator { get; set; }
 
         public Boolean ApplicatieMelding { get; set; }
@@ -32,5 +33,19 @@ namespace Domain
         public Boolean EmailMelding { get; set; }
 
         public Dashboard Dashboard { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            //Er moet minstens één soort melding ingesteld zijn
+            if (!ApplicatieMelding && !EmailMelding && !BrowserMelding)
+            {
+                string errormessage = "Er moet minstens één soort melding ingesteld zijn";
+                errors.Add(new ValidationResult(errormessage,
+                    new string[] {"ApplicatieMelding","EmailMelding","BrowserMelding" }));
+            }
+
+            return errors;
+        }
     }
 }

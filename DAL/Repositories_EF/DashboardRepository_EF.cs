@@ -8,6 +8,7 @@ using DAL.EF;
 using Domain;
 using Domain.Dashboards;
 using Domain.Platformen;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
@@ -64,26 +65,29 @@ namespace DAL.Repositories_EF
         }
         public void UpdateZone(Zone zone)
         {
-            // dit staat in supportcenter????:
-            // Do nothing! All data lives in memory, everything references the same objects!!
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, true);
+            if (valid)
+            {
+                context.Entry(zone).State = EntityState.Modified;
+                context.SaveChanges();
+            }
         }
         public void deleteZone(int zoneId)
         {
             Zone zone = getZone(zoneId);
-            IEnumerable<Item> items = getItems(zoneId);
             context.Zones.Remove(zone);
-            for (int i = 0; i < items.Count(); i++)
-            {
-                Item item = items.ElementAt(i);
-                context.Items.Remove(item);
-            };
-
             context.SaveChanges();
         }
 
         public IEnumerable<Item> getItems(int actieveZone)
         {
             return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+        }
+
+        public Platform getPlatform()
+        {
+            return context.Platformen.First();
         }
     }
 }

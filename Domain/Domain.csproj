@@ -61,6 +61,7 @@
     <Compile Include="Dashboards\DataConfig.cs" />
     <Compile Include="Dashboards\DataType.cs" />
     <Compile Include="Dashboards\Grafiek.cs" />
+    <Compile Include="Dashboards\GrafiekType.cs" />
     <Compile Include="Dashboards\Item.cs" />
     <Compile Include="Dashboards\Zone.cs" />
     <Compile Include="Elementen\Element.cs" />
@@ -68,7 +69,9 @@
     <Compile Include="Elementen\Persoon.cs" />
     <Compile Include="Elementen\Thema.cs" />
     <Compile Include="Elementen\Keyword.cs" />
+    <Compile Include="Platformen\Deelplatform.cs" />
     <Compile Include="Platformen\Gebruiker.cs" />
+    <Compile Include="Platformen\Platform.cs" />
     <Compile Include="Posts\Parameter.cs" />
     <Compile Include="Posts\ParameterType.cs" />
     <Compile Include="Posts\Post.cs" />
