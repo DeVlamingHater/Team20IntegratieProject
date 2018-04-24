@@ -17,7 +17,8 @@ namespace DAL.EF
         public DbSet<DataConfig> DataConfigs { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
         public DbSet<Grafiek> Grafieken { get; set; }
-
+        public DbSet<Zone> Zones { get; set; }
+        public DbSet<Item> Items { get; set; }
         //Elementen
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Persoon> Personen { get; set; }
@@ -25,8 +26,7 @@ namespace DAL.EF
         public DbSet<Organisatie> Organisaties { get; set; }
         //Platformen
         public DbSet<Gebruiker> Gebruikers { get; set; }
-        public DbSet<Zone> Zones { get; set; }
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Deelplatform> Deelplatformen { get; set; }
         //Posts
         public DbSet<Post> Posts { get; set; }
         public DbSet<Parameter> Parameters { get; set; }
@@ -62,10 +62,6 @@ namespace DAL.EF
 
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
         }
-
-
-
-     
 
         public override int SaveChanges()
         {

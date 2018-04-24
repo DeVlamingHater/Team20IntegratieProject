@@ -109,23 +109,7 @@ namespace PolitiekeBarometer_CA
         //TODO run on timer
         private static async void updateAPIAsync()
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //     client.DefaultRequestHeaders.Authorization =
-            //new AuthenticationHeaderValue("aEN3K6VJPEoh3sMp9ZVA73kkr");
-            client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
-
-            DateTime sinceDT = DateTime.Now.AddHours(-1);
-            string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
-
-            Dictionary<string, string> values = new Dictionary<string, string>()
-            {
-                {"since", "23 Apr 2018 21:10:04" }
-            };
-            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
-            string responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await postManager.updatePosts();
             Console.WriteLine(responseString);
             postManager.addJSONPosts(responseString);
         }

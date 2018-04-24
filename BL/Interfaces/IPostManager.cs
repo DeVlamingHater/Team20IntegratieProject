@@ -3,6 +3,7 @@ using Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BL.Interfaces
 {
@@ -21,5 +22,7 @@ namespace BL.Interfaces
         void addJSONPosts(string responseString);
 
         void deleteOldPosts();
+
+        Task<string> updatePosts();
     }
 }

@@ -11,6 +11,7 @@ using DAL.Repositories_EF;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace BL.Managers
 {
@@ -87,6 +88,26 @@ namespace BL.Managers
         public void deleteOldPosts()
         {
 
+        }
+
+        public async Task<string> updatePosts()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
+
+            DateTime sinceDT = DateTime.Now.AddHours(-1);
+            string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
+
+            Dictionary<string, string> values = new Dictionary<string, string>()
+            {
+                {"since", "23 Apr 2018 21:10:04" }
+            };
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
+            string responseString = await response.Content.ReadAsStringAsync();
+            return responseString;
         }
     }
 }
