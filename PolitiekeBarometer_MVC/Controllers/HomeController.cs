@@ -7,26 +7,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Domain;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-  public class HomeController : Controller
-  {
-    public ActionResult Index()
+    public class HomeController : Controller
     {
-      _PersonenDropDown();
+
+        public ActionResult Index()
+        {
+  _PersonenDropDown();
       _OrganisatieDropDown();
       _ThemaDropDown();
-      return View();
-    }
+            return View();
+        }
 
-    public ActionResult NewTab()
-    {
-      return View();
-    }
+        public ActionResult NewTab()
+        {
+            return View();
+        }
 
-    #region Dashboard
-    static int actieveZone;
+
+        public ActionResult Element()
+        {
+            return View();
+        }
+        
+        public ActionResult Grafiek()
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            return View(elementen.ToList());
+        }
+
+        #region Dashboard
+        static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -71,6 +87,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       return RedirectToAction("Dashboard");
       return View();
     }
+
     /*public ActionResult changeZone(int zoneid, Zone zone)
     {
       if (ModelState.IsValid)
@@ -141,4 +158,5 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     #endregion
   }
+
 }

@@ -5,20 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Platformen
 {
-    public abstract class Element : IComparable<Element>
+    public class Deelplatform
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string Naam { get; set; }
-        public double Trend { get; set; }
 
-        public int CompareTo(Element other)
-        {
-            return this.Trend.CompareTo(other.Trend);
-        }
+        public string Naam { get; set; }
+
+        public TimeSpan Historiek  { get; set; }
     }
 }
-

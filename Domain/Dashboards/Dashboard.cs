@@ -13,6 +13,7 @@ namespace Domain.Dashboards
         [Key]
         public int DashboardId { get; set; }
 
+        [Required]
         public Gebruiker Gebruiker { get; set; }
 
         public List<Zone> Zones { get; set; }

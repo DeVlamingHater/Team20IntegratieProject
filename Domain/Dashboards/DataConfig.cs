@@ -12,6 +12,7 @@ namespace Domain
         [Key]
         public int DataConfiguratieId { get; set; }
 
+        [Required]
         public DataType DataType { get; set; }
 
         [Required]

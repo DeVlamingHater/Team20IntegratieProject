@@ -7,19 +7,20 @@ using System.Text;
 
 namespace DAL
 {
-  public interface IDashboardRepository
-  {
+    public interface IDashboardRepository
+    {
 
-    IEnumerable<Alert> getActiveAlerts();
+        IEnumerable<Alert> getActiveAlerts();
 
-    DataConfig getAlertDataConfig(Alert alert);
-    IEnumerable<Alert> getAllAlerts();
-    IEnumerable<Zone> getZones(int dashboardId);
-    Zone getZone(int zoneId);
-    Zone addZone(Zone zone);
-    Dashboard getDashboard(int gebruikerId);
-    void UpdateZone(Zone zone);
-    void deleteZone(int zoneId);
-    IEnumerable<Item> getItems(int actieveZone);
-  }
+        DataConfig getAlertDataConfig(Alert alert);
+        IEnumerable<Alert> getAllAlerts();
+        IEnumerable<Zone> getZones(int dashboardId);
+        Zone getZone(int zoneId);
+        Zone addZone(Zone zone);
+        Dashboard getDashboard(int gebruikerId);
+        void UpdateZone(Zone zone);
+        void deleteZone(int zoneId);
+        IEnumerable<Item> getItems(int actieveZone);
+        Platform getPlatform();
+    }
 }

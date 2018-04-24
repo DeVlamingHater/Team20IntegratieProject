@@ -26,7 +26,8 @@ namespace DAL.Repositories_EF
 
         public void addPosts(List<Post> list)
         {
-            throw new NotImplementedException();
+            context.Posts.AddRange(list);
+            context.SaveChanges();
         }
 
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
@@ -70,37 +71,6 @@ namespace DAL.Repositories_EF
             return context.Posts;
         }
 
-        public void updatePosts()
-        {
-            string json = "";
-            try
-            {
-                using (StreamReader r = new StreamReader("textgaindump.json"))
-                {
-                    json = r.ReadToEnd();
-                }
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-            }
-
-            TweetDump tweetDump = JsonConvert.DeserializeObject<TweetDump>(json);
-            List<Tweet> tweets = new List<Tweet>(tweetDump.Tweet);
-            List<Post> posts = ParseTweetsToPost(tweets);
-
-            //TODO: voeg enkel de posts toe die na de laatste ophaaltijdstip zijn bijgevoegd
-
-
-            context.Posts.AddRange(posts);
-
-            //TODO: verwijder posts die ouder zijn dan de ingestelde historiek
-            context.SaveChanges();
-
-        }
-
-
         public List<Post> ParseTweetsToPost(List<Tweet> tweets)
         {
             int index = 0;
@@ -119,7 +89,7 @@ namespace DAL.Repositories_EF
                     });
                     index++;
                 }
-                string naam = tweet.Politician[0] + " " + tweet.Politician[1];
+                string naam = tweet.Persons[0];
                 Persoon persoon;
                 try
                 {
@@ -226,6 +196,33 @@ namespace DAL.Repositories_EF
                 posts = context.Posts.ToList();
             }
             return posts;
+        }
+
+        public void addJSONPosts(string responseString)
+        {
+            List<Tweet> tweets = JsonConvert.DeserializeObject<List<Tweet>>(responseString);
+
+            List<Post> posts = ParseTweetsToPost(tweets);
+
+            addPosts(posts);
+        }
+
+        public IEnumerable<Post> getPostsUntil(DateTime date)
+        {
+            return context.Posts.Where(p => p.Date.AddTicks(-date.Ticks).Ticks >= 0);
+        }
+
+        public void deletePost(Post p)
+        {
+            context.Posts.Remove(p);
+            context.SaveChanges();
+        }
+
+        public void deleteOldPosts(TimeSpan historiek)
+        {
+            DateTime until = DateTime.Now.Add(-historiek);
+            List<Post> oldPosts = context.Posts.Where(p => (p.Date.AddTicks(until.Ticks).Ticks < 0)).ToList();
+            context.Posts.RemoveRange(oldPosts);
         }
     }
 }

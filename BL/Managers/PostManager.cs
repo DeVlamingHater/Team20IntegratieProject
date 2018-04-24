@@ -9,6 +9,9 @@ using System.Numerics;
 using MathNet.Numerics.Interpolation;
 using DAL.Repositories_EF;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace BL.Managers
 {
@@ -56,38 +59,20 @@ namespace BL.Managers
 
         }
 
-        public double calculateTrend(DataConfig dataConfig, Element element)
-        {
-            List<Post> posts = getDataConfigPosts(dataConfig).ToList();
-            //We hebben 2 arrays nodig => Datums & waardes
-            //We zouden de posts moeten sorteren op datum => loopen & waarde ++
-            //double[] dateVector = new double[posts.Count];
-            //double[] waardeVector = new double[posts.Count];
-            //int i = 0;
-            //foreach (Post post in posts)
-            //{
-            //    dateVector[i] = post.Date.Ticks;
-            //    waardeVector[i] = i + 1;
-            //    i++;
-            //}
-            //CubicSpline cs = CubicSpline.InterpolateNatural(dateVector, waardeVector);
-
-            return 0.0;
-
-        }
-
         public double calculateElementTrend(Element element)
         {
             List<Post> posts = postRepository.getElementPosts(element).ToList();
-
-            DateTime timeForTrending = DateTime.Now.AddMonths(5);
-            posts.Sort();
-            List<Post> trendPosts = posts.ToList();
-            if (posts.Count != 0)
+            if (posts.Count == 0)
             {
-                return trendPosts.Count / posts.Count();
+                return 0.0;
             }
-            else return 0;
+            DateTime timeForTrending = posts.Max(p => p.Date).Date.AddHours(-1);
+            posts.Sort();
+            List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
+            double trend = (double)trendPosts.Count / posts.Count();
+            return trend;
+
+
         }
 
         public int getNextPostId()
@@ -95,14 +80,38 @@ namespace BL.Managers
             return postRepository.getPosts().ToList().Count;
         }
 
-        public void updatePosts()
+        public void addJSONPosts(string responseString)
         {
-            //PostsUpdaten
-            this.postRepository.updatePosts();
-            uowManager = new UnitOfWorkManager();
-            DashboardManager dashboardManager = new DashboardManager(uowManager);
+            postRepository.addJSONPosts(responseString);
         }
 
+        public void deleteOldPosts()
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            TimeSpan historiek = dashboardManager.getHistoriek();
 
+            postRepository.deleteOldPosts(historiek);
+        }
+
+        public async Task<string> updatePosts()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
+
+            DateTime sinceDT = DateTime.Now.AddHours(-1);
+            string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
+
+            Dictionary<string, string> values = new Dictionary<string, string>()
+            {
+                {"since", "24 Apr 2018 8:00:00" },
+                {"until",  "20 Apr 2018 8:00:00"}
+            };
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
+            string responseString = await response.Content.ReadAsStringAsync();
+            return responseString;
+        }
     }
 }
