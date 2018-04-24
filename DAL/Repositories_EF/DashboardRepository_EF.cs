@@ -70,7 +70,14 @@ namespace DAL.Repositories_EF
     public void deleteZone(int zoneId)
     {
       Zone zone = getZone(zoneId);
+      IEnumerable<Item> items = getItems(zoneId);
       context.Zones.Remove(zone);
+      for ( int i = 0; i < items.Count(); i++ )
+      {
+        Item item = items.ElementAt(i);
+        context.Items.Remove(item);
+      };
+      
       context.SaveChanges();
     }
 

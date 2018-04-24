@@ -37,6 +37,11 @@ namespace DAL.Repositories_EF
       return elementen;
     }
 
+    public IEnumerable<Persoon> getAllPersonen()
+    {
+      return context.Personen;
+    }
+
     public Element getElementByID(int elementId)
     {
       return context.Elementen.Find(elementId);

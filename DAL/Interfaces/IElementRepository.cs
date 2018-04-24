@@ -13,5 +13,6 @@ namespace DAL
         void AddPersoon(Persoon persoon);
         void setElement(Element element);
         List<Element> getTrendingElementen(int amount);
-    }
+    IEnumerable<Persoon> getAllPersonen();
+  }
 }

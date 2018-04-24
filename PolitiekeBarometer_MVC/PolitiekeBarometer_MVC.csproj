@@ -470,6 +470,9 @@
     <Content Include="Views\Home\_ItemsPartial.cshtml" />
     <Content Include="Views\Home\Persoon.cshtml" />
     <Content Include="Views\Home\Thema.cshtml" />
+    <Content Include="Views\Home\_PersonenDropDown.cshtml" />
+    <Content Include="Views\Home\_OrganisatieDropDown.cshtml" />
+    <Content Include="Views\Home\_ThemaDropDown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

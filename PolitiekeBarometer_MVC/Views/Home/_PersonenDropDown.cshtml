@@ -1,0 +1,17 @@
+﻿@model List<Domain.Persoon>
+@{
+    ViewBag.Title = "_PersonenDropDown";
+}
+
+<ul class="sidenav-second-level collapse" id="collapsePolitiekers">
+    @foreach (var persoon in Model)
+    {
+    <li>
+        
+        <a href="@Url.Action("Persoon",new { id = persoon.Id })">
+            @Html.DisplayFor(modelItem => persoon.Naam)
+        </a>
+    </li>
+    }
+</ul>
+

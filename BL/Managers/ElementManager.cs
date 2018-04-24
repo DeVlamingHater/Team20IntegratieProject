@@ -76,5 +76,10 @@ namespace BL.Managers
     {
       return elementRepository.getElementByID(id);
     }
+
+    public IEnumerable<Persoon> getAllPersonen()
+    {
+      return elementRepository.getAllPersonen();
+    }
   }
 }

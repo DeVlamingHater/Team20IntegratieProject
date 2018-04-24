@@ -14,6 +14,9 @@ namespace PolitiekeBarometer_MVC.Controllers
   {
     public ActionResult Index()
     {
+      _PersonenDropDown();
+      _OrganisatieDropDown();
+      _ThemaDropDown();
       return View();
     }
 
@@ -29,16 +32,16 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
       IEnumerable<Zone> zones = mgr.getZones(dashboard);
-       if (actieveZone == 0)
+      if (actieveZone == 0)
       {
         actieveZone = zones.First().Id;
       }
       return View(zones);
-      
+
     }
     public ActionResult _ItemsPartial()
     {
-     
+
       IEnumerable<Item> items = mgr.getItems(actieveZone);
       return PartialView(items);
     }
@@ -79,6 +82,48 @@ namespace PolitiekeBarometer_MVC.Controllers
 
     #region Element
     ElementManager Emgr = new ElementManager();
+    //public ActionResult fillDropdowns()
+    //{
+    //  List<Organisatie> organisaties = Emgr.getAllOrganisaties();
+
+    //  List<Thema> themas = Emgr.getAllThemas();
+
+    //  return View();
+    //}
+    public ActionResult _PersonenDropDown()
+    {
+      List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
+      List<Persoon> personen = new List<Domain.Persoon>();
+
+      foreach (Element element in elementen)
+      {
+        personen.Add((Persoon)element);
+      }
+      return PartialView(personen);
+    }
+
+    public ActionResult _ThemaDropDown()
+    {
+      List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
+      List<Thema> themas = new List<Domain.Thema>();
+      foreach (Element element in elementen)
+      {
+        themas.Add((Thema)element);
+      }
+      return PartialView(themas);
+    }
+
+    public ActionResult _OrganisatieDropDown()
+    {
+      List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
+      List<Organisatie> organisaties = new List<Domain.Organisatie>();
+      foreach (Element element in elementen)
+      {
+        organisaties.Add((Organisatie)element);
+      }
+      return PartialView(organisaties);
+    }
+
     public ActionResult Organisatie(int id)
     {
       Element element = Emgr.getElementById(id);
