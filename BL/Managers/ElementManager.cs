@@ -115,5 +115,5 @@ namespace BL.Managers
             elementRepository.addOrganisatie(organisatie);
         }
     }
-  }
+  
 }

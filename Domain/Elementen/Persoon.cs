@@ -32,5 +32,6 @@ namespace Domain
         public string Organisation { get; set; }
 
         public string Town { get; set; }
-    }
+   
+  }
 }
