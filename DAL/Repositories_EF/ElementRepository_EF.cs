@@ -39,48 +39,32 @@ namespace DAL.Repositories_EF
       return elementen;
     }
 
-        public ElementRepository_EF()
-        {
-            context = new PolitiekeBarometerContext();
-        }
-        public ElementRepository_EF(UnitOfWork unitOfWork)
-        {
-            context = unitOfWork.Context;
-        }
+    public void addElementen(List<Element> elementen)
+    {
+      List<Persoon> personen = (List<Persoon>)elementen.Where(e => e.GetType().Equals(typeof(Persoon)));
+      List<Thema> themas = (List<Thema>)elementen.Where(e => e.GetType().Equals(typeof(Thema)));
+      List<Organisatie> organisaties = (List<Organisatie>)elementen.Where(e => e.GetType().Equals(typeof(Organisatie)));
 
-        public void addElementen(List<Element> elementen)
-        {
-            List<Persoon> personen = (List<Persoon>)elementen.Where(e => e.GetType().Equals(typeof(Persoon)));
-            List<Thema> themas = (List<Thema>)elementen.Where(e => e.GetType().Equals(typeof(Thema)));
-            List<Organisatie> organisaties = (List<Organisatie>)elementen.Where(e => e.GetType().Equals(typeof(Organisatie)));
+      if (personen.Count != 0)
+        context.Personen.AddRange(personen);
 
-            if (personen.Count != 0)
-                context.Personen.AddRange(personen);
+      if (themas.Count != 0)
+        context.Themas.AddRange(themas);
 
-            if (themas.Count != 0)
-                context.Themas.AddRange(themas);
+      if (organisaties.Count != 0)
+        context.Organisaties.AddRange(organisaties);
+    }
 
-            if (organisaties.Count != 0)
-                context.Organisaties.AddRange(organisaties);
-        }
+    public void addOrganisatie(Organisatie organisatie)
+    {
+      List<ValidationResult> errors = new List<ValidationResult>();
+      if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
+      {
+        context.Organisaties.Add(organisatie);
+        context.SaveChanges();
+      }
 
-        public void addOrganisatie(Organisatie organisatie)
-        {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
-            {
-                context.Organisaties.Add(organisatie);
-                context.SaveChanges();
-            }
-
-        }
-
-        public void AddPersoon(Persoon persoon)
-        {
-            context.Personen.Add(persoon);
-            context.SaveChanges();
-        }
-
+    }
 
     public IEnumerable<Persoon> getAllPersonen()
     {
@@ -113,13 +97,6 @@ namespace DAL.Repositories_EF
     {
       context.Entry(element).State = EntityState.Modified;
       context.SaveChanges();
-
-        public void setElement(Element element)
-        {
-            context.Entry(element).State = EntityState.Modified;
-            context.SaveChanges();
-        }
-
     }
   }
 }
