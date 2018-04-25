@@ -57,6 +57,7 @@ namespace DAL.Repositories_EF
             return context.Zones.Find(zoneId);
         }
 
+
         public Zone addZone(Zone zone)
         {
             context.Zones.Add(zone);
@@ -77,6 +78,11 @@ namespace DAL.Repositories_EF
         {
             Zone zone = getZone(zoneId);
             context.Zones.Remove(zone);
+            for ( int i = 0; i < items.Count(); i++ )
+      {
+        Item item = items.ElementAt(i);
+        context.Items.Remove(item);
+      };
             context.SaveChanges();
         }
 
