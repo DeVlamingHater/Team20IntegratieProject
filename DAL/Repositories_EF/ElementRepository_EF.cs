@@ -11,9 +11,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
-    public class ElementRepository_EF : IElementRepository
-    {
-        PolitiekeBarometerContext context;
+  public class ElementRepository_EF : IElementRepository
+  {
+   
+       PolitiekeBarometerContext context;
 
         public ElementRepository_EF()
         {
@@ -77,5 +78,6 @@ namespace DAL.Repositories_EF
             context.Entry(element).State = EntityState.Modified;
             context.SaveChanges();
         }
-    }
+    
+  }
 }

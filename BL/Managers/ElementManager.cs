@@ -94,6 +94,17 @@ namespace BL.Managers
             return elementen;
         }
 
+
+    public Element getElementById(int id)
+    {
+      return elementRepository.getElementByID(id);
+    }
+
+    public IEnumerable<Persoon> getAllPersonen()
+    {
+      return elementRepository.getAllPersonen();
+      }
+
         public void addElementen(List<Element> elementen)
         {
             elementRepository.addElementen(elementen);
@@ -109,4 +120,5 @@ namespace BL.Managers
             personen.ForEach(p =>elementRepository.AddPersoon(p));
         }
     }
+  
 }

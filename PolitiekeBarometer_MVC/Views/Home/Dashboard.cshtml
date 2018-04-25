@@ -7,27 +7,42 @@
 <div id="dashboard">
     @* @if (Request.IsAuthenticated)
         {*@
-    <ul id="tabs">
-
+    
+    <div class="container">
         @foreach (var item in Model)
-        {
-            <li>
-                <a href="#tab">
-                    @Html.DisplayFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ActionLink("Z", "setActiveZone", new { zoneId = item.Id })
-                </a>
+            {
+            <div class="card bg-light">
+                <div  contenteditable = "true">
+                @Html.DisplayFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "card-header" }})
+                    </div>
+                    @Html.ActionLink("Z", "setActiveZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-body" } })
+                <div id="tab">
+                    @Html.Action("_ItemsPartial")
+                </div>
+
                 @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
 
-                @Html.ActionLink("x", "DeleteZone", new { zoneId = item.Id })
+                @Html.ActionLink("x", "DeleteZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-footer" } })
+            </div>
+        }
+        @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })
+    </div>
+    </div>
+<div class="container border-danger">
+    <ul class="nav nav-tabs nav-stacked" contenteditable="true">
+        @foreach (var zone in Model)
+        {
+            <li>
+                <button data-toggle="tab" href="#home" class="btn-dark">@Html.DisplayFor(modelItem => zone.Naam)</button>
             </li>
         }
-        <li> @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" }) </li>
     </ul>
-    <div id="tab">
-        @Html.Action("_ItemsPartial")
-    </div>
 
-    @*}
-        else
-        {*@
+    <div class="tab-content bg-light" style="border: 2px solid black">
+        <div id="home" class="tab-pane fade in active">
+            <h3>@Html.Action("_ItemsPartial")</h3>
+        </div>
+    </div>
 </div>
+
+

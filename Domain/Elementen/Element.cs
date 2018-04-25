@@ -14,8 +14,9 @@ namespace Domain
         [Required]
         public string Naam { get; set; }
         public double Trend { get; set; }
+        public int TrendingPlaats { get; set; }
 
-        public int CompareTo(Element other)
+       public int CompareTo(Element other)
         {
             return this.Trend.CompareTo(other.Trend);
         }
