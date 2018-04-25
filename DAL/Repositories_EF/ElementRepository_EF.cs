@@ -26,18 +26,7 @@ namespace DAL.Repositories_EF
 
         public void addElementen(List<Element> elementen)
         {
-            List<Persoon> personen = (List<Persoon>)elementen.Where(e => e.GetType().Equals(typeof(Persoon)));
-            List<Thema> themas = (List<Thema>)elementen.Where(e => e.GetType().Equals(typeof(Thema)));
-            List<Organisatie> organisaties = (List<Organisatie>)elementen.Where(e => e.GetType().Equals(typeof(Organisatie)));
-
-            if (personen.Count != 0)
-                context.Personen.AddRange(personen);
-
-            if (themas.Count != 0)
-                context.Themas.AddRange(themas);
-
-            if (organisaties.Count != 0)
-                context.Organisaties.AddRange(organisaties);
+            throw new NotImplementedException();
         }
 
         public void addOrganisatie(Organisatie organisatie)
@@ -48,9 +37,7 @@ namespace DAL.Repositories_EF
                 context.Organisaties.Add(organisatie);
                 context.SaveChanges();
             }
-
         }
-
         public void AddPersoon(Persoon persoon)
         {
             context.Personen.Add(persoon);
@@ -73,7 +60,16 @@ namespace DAL.Repositories_EF
 
         public Element getElementByName(string naam)
         {
-            return null;
+            Element element = (Element)context.Personen.FirstOrDefault(p=>p.Naam.Equals(naam));
+            if (element == null)
+            {
+                element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam));
+            }
+            if (element == null)
+            {
+                element = (Element)context.Themas.FirstOrDefault(p => p.Naam.Equals(naam));
+            }
+            return element;
         }
 
         public void setElement(Element element)

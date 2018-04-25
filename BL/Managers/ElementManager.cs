@@ -103,5 +103,10 @@ namespace BL.Managers
         {
             elementRepository.addOrganisatie(organisatie);
         }
+
+        public void addPersonen(List<Persoon> personen)
+        {
+            personen.ForEach(p =>elementRepository.AddPersoon(p));
+        }
     }
 }
