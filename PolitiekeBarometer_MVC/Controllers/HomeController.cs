@@ -1,5 +1,4 @@
-﻿
-using BL.Managers;
+﻿using BL.Managers;
 using Domain;
 using Domain.Dashboards;
 using System;
@@ -11,38 +10,38 @@ using Domain;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-    public class HomeController : Controller
-    {
+  public class HomeController : Controller
+  {
 
-        public ActionResult Index()
-        {
-  _PersonenDropDown();
+    public ActionResult Index()
+    {
+      _PersonenDropDown();
       _OrganisatieDropDown();
       _ThemaDropDown();
-            return View();
-        }
+      return View();
+    }
 
-        public ActionResult NewTab()
-        {
-            return View();
-        }
+    public ActionResult NewTab()
+    {
+      return View();
+    }
 
 
-        public ActionResult Element()
-        {
-            return View();
-        }
-        
-        public ActionResult Grafiek()
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen();
-            return View(elementen.ToList());
-        }
+    public ActionResult Element()
+    {
+      return View();
+    }
 
-        #region Dashboard
-        static int actieveZone;
+    public ActionResult Grafiek()
+    {
+      ElementManager mgr = new ElementManager();
+      List<Element> elementen = new List<Element>();
+      elementen = mgr.getTrendingElementen();
+      return View(elementen.ToList());
+    }
+
+    #region Dashboard
+    static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -129,6 +128,13 @@ namespace PolitiekeBarometer_MVC.Controllers
       }
       return PartialView(themas);
     }
+    public ActionResult _SearchPartial(string searchstring)
+    {
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen.AddRange(personen);
+      return PartialView(elementen);
+    }
 
     public ActionResult _OrganisatieDropDown()
     {
@@ -150,6 +156,22 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       Element element = Emgr.getElementById(id);
       return View(element);
+    }
+    public ActionResult setImage(string twitter)
+    {
+      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
+      return View(url);
+    }
+    public ActionResult setTwitter(string twitter)
+    {
+      string url = "https://twitter.com/" + twitter;
+      return View(url);
+    }
+    public ActionResult setOrganisatie(Organisatie organisatie)
+    {
+      string twitter = organisatie.Naam; //moet twitter worden;
+      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
+      return View(url);
     }
     public ActionResult Thema(int id)
     {
