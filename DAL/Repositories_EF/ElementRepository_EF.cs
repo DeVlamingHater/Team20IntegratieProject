@@ -41,8 +41,13 @@ namespace DAL.Repositories_EF
         }
         public void AddPersoon(Persoon persoon)
         {
-            context.Personen.Add(persoon);
-            context.SaveChanges();
+            List<ValidationResult> errors = new List<ValidationResult>();
+            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam).ToList();
+            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors) && context.Personen.Where(p=>p.Naam == persoon.Naam).Count()==0)
+            {
+                context.Personen.Add(persoon);
+                context.SaveChanges();
+            }
         }
 
         public IEnumerable<Element> getAllElementen()
@@ -54,8 +59,22 @@ namespace DAL.Repositories_EF
             return elementen;
         }
 
+        public IEnumerable<Persoon> getAllPersonen()
+        {
+            return context.Personen;
+        }
+
         public Element getElementByID(int elementId)
         {
+            Element element = (Element)context.Personen.FirstOrDefault(p => p.Id.Equals(elementId));
+            if (element == null)
+            {
+                element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
+            }
+            if (element == null)
+            {
+                element = (Element)context.Themas.FirstOrDefault(p => p.Id.Equals(elementId));
+            }
             return null;
         }
 
@@ -71,6 +90,11 @@ namespace DAL.Repositories_EF
                 element = (Element)context.Themas.FirstOrDefault(p => p.Naam.Equals(naam));
             }
             return element;
+        }
+
+        public List<Element> getTrendingElementen(int amount)
+        {
+            throw new NotImplementedException();
         }
 
         public void setElement(Element element)

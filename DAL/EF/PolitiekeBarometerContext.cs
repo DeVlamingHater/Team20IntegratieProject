@@ -32,7 +32,6 @@ namespace DAL.EF
         public DbSet<Post> Posts { get; set; }
         public DbSet<Parameter> Parameters { get; set; }
         public DbSet<Waarde> Waardes { get; set; }
-    public DbSet<Element> Elementen { get;  set; }
 
     private readonly bool delaySave;
 

@@ -152,10 +152,6 @@ namespace DAL.EF
                 Naam = "Vera Celis",
                 Organisatie = organisatie2
             };
-
-            organisatie1.Personen.Add(persoon1);
-            organisatie2.Personen.Add(persoon2);
-            organisatie2.Personen.Add(persoon3);
             #endregion
 
             #region Keywords
@@ -327,6 +323,7 @@ namespace DAL.EF
             #endregion
 
             #endregion
+           
             #region AddElementen
 
             #region AddKeywords
