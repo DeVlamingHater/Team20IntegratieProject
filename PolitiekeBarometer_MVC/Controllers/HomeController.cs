@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Domain;
+using Domain.Elementen;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -98,14 +99,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 
     #region Element
     ElementManager Emgr = new ElementManager();
-    //public ActionResult fillDropdowns()
-    //{
-    //  List<Organisatie> organisaties = Emgr.getAllOrganisaties();
-
-    //  List<Thema> themas = Emgr.getAllThemas();
-
-    //  return View();
-    //}
     public ActionResult _PersonenDropDown()
     {
       List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
@@ -133,6 +126,30 @@ namespace PolitiekeBarometer_MVC.Controllers
       List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null)
+        {
+          break;
+        }
+        else
+        {
+          for (int j = 0; j <= keywords.Count(); j++)
+          {
+            Keyword keyword = keywords.ElementAt(j);
+            if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+            {
+              elementen.Add(thema);
+              break;
+            }
+          }
+        }
+
+      }
+
       return PartialView(elementen);
     }
 

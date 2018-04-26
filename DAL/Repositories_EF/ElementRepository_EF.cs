@@ -70,6 +70,10 @@ namespace DAL.Repositories_EF
     {
       return context.Personen;
     }
+    public List<Thema> getAllThemas()
+    {
+      return context.Themas.ToList();
+    }
 
     public Element getElementByID(int elementId)
     {
@@ -98,5 +102,7 @@ namespace DAL.Repositories_EF
       context.Entry(element).State = EntityState.Modified;
       context.SaveChanges();
     }
+
+    
   }
 }
