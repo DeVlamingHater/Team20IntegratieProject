@@ -12,7 +12,7 @@ namespace Domain
     {
        
         public string Source { get; set; }
-        [Key]
+
         public long PostId { get; set; }
 
         public Persoon Persoon { get; set; }

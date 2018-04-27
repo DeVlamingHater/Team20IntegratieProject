@@ -220,8 +220,9 @@ namespace DAL.Repositories_EF
 
         public void deleteOldPosts(TimeSpan historiek)
         {
+            DateTime testUntil = DateTime.Now.Subtract(new TimeSpan(1,0,0,0));
             DateTime until = DateTime.Now.Add(-historiek);
-            List<Post> oldPosts = context.Posts.Where(p => (p.Date.Subtract(until).Ticks < 0)).ToList();
+            List<Post> oldPosts = context.Posts.Where(p => (p.Date < testUntil)).ToList();
             context.Posts.RemoveRange(oldPosts);
         }
     }
