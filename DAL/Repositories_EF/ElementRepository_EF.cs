@@ -80,7 +80,7 @@ namespace DAL.Repositories_EF
             {
                 element = (Element)context.Themas.FirstOrDefault(p => p.Id.Equals(elementId));
             }
-            return null;
+            return element;
         }
 
         public Element getElementByName(string naam)

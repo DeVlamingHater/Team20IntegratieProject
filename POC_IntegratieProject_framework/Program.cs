@@ -22,7 +22,7 @@ namespace PolitiekeBarometer_CA
 {
     class Program
     {
-        private const string Path = "C:\\Users\\Samcl\\OneDrive\\Documenten\\integratieProject-Git\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json";
+        private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
         private static IElementManager elementManager;
         private static IPostManager postManager;
         private static IDashboardManager dashboardManager;
