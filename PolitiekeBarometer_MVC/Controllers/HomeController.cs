@@ -176,19 +176,22 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setImage(string twitter)
     {
-      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
-      return View(url);
+      string twitter1 = twitter.Replace("@","");
+      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=bigger";
+      return Redirect(url);
     }
     public ActionResult setTwitter(string twitter)
     {
-      string url = "https://twitter.com/" + twitter;
-      return View(url);
+      string twitter1 = twitter.Replace("@","");
+      string url = "https://twitter.com/" + twitter1;
+      return Redirect(url);
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {
       string twitter = organisatie.Naam; //moet twitter worden;
+      //string twitter1 = twitter.Remove(0, 1);
       string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
-      return View(url);
+      return View(twitter);
     }
     public ActionResult Thema(int id)
     {
