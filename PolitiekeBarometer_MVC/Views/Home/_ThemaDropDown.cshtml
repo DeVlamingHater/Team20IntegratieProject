@@ -1,0 +1,18 @@
+﻿@model List<Domain.Thema>
+@{
+    ViewBag.Title = "_ThemaDropDown";
+}
+
+<ul class="sidenav-second-level collapse" id="collapseThemas">
+    @foreach (var thema in Model)
+    {
+        <li>
+
+            <a href="@Url.Action("Thema",new { id = thema.Id })">
+                @Html.DisplayFor(modelItem => thema.Naam)
+            </a>
+        </li>
+    }
+</ul>
+
+

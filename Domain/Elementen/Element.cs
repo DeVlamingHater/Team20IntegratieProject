@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,9 @@ namespace Domain
         [Required]
         public string Naam { get; set; }
         public double Trend { get; set; }
+        public int TrendingPlaats { get; set; }
 
-        public int CompareTo(Element other)
+       public int CompareTo(Element other)
         {
             return this.Trend.CompareTo(other.Trend);
         }

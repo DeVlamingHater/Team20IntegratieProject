@@ -8,41 +8,42 @@ using DAL.EF;
 using Domain;
 using Domain.Dashboards;
 using Domain.Platformen;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
-    public class DashboardRepository_EF : IDashboardRepository
+  public class DashboardRepository_EF : IDashboardRepository
+  {
+    PolitiekeBarometerContext context;
+
+    public DashboardRepository_EF()
     {
-        PolitiekeBarometerContext context;
+      context = new PolitiekeBarometerContext();
+    }
 
-        public DashboardRepository_EF()
-        {
-            context = new PolitiekeBarometerContext();
-        }
+    public DashboardRepository_EF(UnitOfWork unitOfWork)
+    {
+      context = unitOfWork.Context;
+    }
 
-        public DashboardRepository_EF(UnitOfWork unitOfWork)
-        {
-            context = unitOfWork.Context;
-        }
+    public IEnumerable<Alert> getAllAlerts()
+    {
+      return context.Alerts.Include(a => a.DataConfig).ToList();
+    }
 
-        public IEnumerable<Alert> getAllAlerts()
-        {
-            return  context.Alerts.Include(a => a.DataConfig).ToList();
-        }
+    public IEnumerable<Alert> getActiveAlerts()
+    {
+      return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+    }
 
-        public IEnumerable<Alert> getActiveAlerts()
-        {
-            return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a=>a.Status ==AlertStatus.ACTIEF).ToList<Alert>();
-        }
-
-        public DataConfig getAlertDataConfig(Alert alert)
-        {
-            return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
-        }
+    public DataConfig getAlertDataConfig(Alert alert)
+    {
+      return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
+    }
 
     public Dashboard getDashboard(int gebruikerId)
     {
-      Dashboard dashboard = context.Dashboards.Include(db=>db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
+      Dashboard dashboard = context.Dashboards.Include(db => db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
       return dashboard;
     }
 
@@ -56,6 +57,7 @@ namespace DAL.Repositories_EF
       return context.Zones.Find(zoneId);
     }
 
+
     public Zone addZone(Zone zone)
     {
       context.Zones.Add(zone);
@@ -63,20 +65,36 @@ namespace DAL.Repositories_EF
       return zone;
     }
     public void UpdateZone(Zone zone)
-    { 
-      // dit staat in supportcenter????:
-      // Do nothing! All data lives in memory, everything references the same objects!!
+    {
+      List<ValidationResult> errors = new List<ValidationResult>();
+      bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, true);
+      if (valid)
+      {
+        context.Entry(zone).State = EntityState.Modified;
+        context.SaveChanges();
+      }
     }
     public void deleteZone(int zoneId)
     {
       Zone zone = getZone(zoneId);
       context.Zones.Remove(zone);
+      IEnumerable<Item> items = getItems(zoneId);
+      for (int i = 0; i < items.Count(); i++)
+      {
+        Item item = items.ElementAt(i);
+        context.Items.Remove(item);
+      };
       context.SaveChanges();
     }
 
     public IEnumerable<Item> getItems(int actieveZone)
     {
       return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+    }
+
+    public Platform getPlatform()
+    {
+      return context.Platformen.First();
     }
   }
 }

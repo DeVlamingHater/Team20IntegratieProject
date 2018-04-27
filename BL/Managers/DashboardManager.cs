@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 namespace BL.Managers
@@ -18,7 +19,7 @@ namespace BL.Managers
         public UnitOfWorkManager uowManager;
         public DashboardManager()
         {
-      dashboardRepository = new DashboardRepository_EF();
+            dashboardRepository = new DashboardRepository_EF();
         }
 
         public DashboardManager(UnitOfWorkManager uowManager)
@@ -27,62 +28,52 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
-    public Dashboard getDashboard(int gebruikerId)
-    {
-      Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
-      return dashboard;
-    }
+        public Dashboard getDashboard(int gebruikerId)
+        {
+            Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
+            return dashboard;
+        }
 
-    public IEnumerable<Item> getItems(int actieveZone)
-    {
-      return dashboardRepository.getItems(actieveZone);
-    }
+        public IEnumerable<Item> getItems(int actieveZone)
+        {
+            return dashboardRepository.getItems(actieveZone);
+        }
 
-    public IEnumerable<Zone> getZones(Dashboard dashboard)
-    {
-      int dashboardId = dashboard.DashboardId;
-      return dashboardRepository.getZones(dashboardId);
-    }
-    public Zone getZone(int zoneId)
-    {
-      return dashboardRepository.getZone(zoneId);
-    }
+        public IEnumerable<Zone> getZones(Dashboard dashboard)
+        {
+            int dashboardId = dashboard.DashboardId;
+            return dashboardRepository.getZones(dashboardId);
+        }
+        public Zone getZone(int zoneId)
+        {
+            return dashboardRepository.getZone(zoneId);
+        }
 
-    public void deleteZone(int zoneId)
-    {
-      dashboardRepository.deleteZone(zoneId);
-    }
+        public void deleteZone(int zoneId)
+        {
+            dashboardRepository.deleteZone(zoneId);
+        }
 
-    public Zone addZone()
-    {
-      // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-      Dashboard dashboard = this.getDashboard(1);
-      IEnumerable<Zone> zones = this.getZones(dashboard);
-      Zone zone = new Zone()
-      {
-        Id = zones.Count() + 1,
-        Naam = "NewZone",
-        Dashboard = dashboard
-      };
-      return dashboardRepository.addZone(zone);
-    }
+        public Zone addZone()
+        {
+            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+            Dashboard dashboard = this.getDashboard(1);
+            IEnumerable<Zone> zones = this.getZones(dashboard);
+            Zone zone = new Zone()
+            {
+                Id = zones.Count() + 1,
+                Naam = "NewZone",
+                Dashboard = dashboard
+            };
+            return dashboardRepository.addZone(zone);
+        }
 
-    public void changeZone(Zone zone)
-    {
-      this.Validate(zone);
-      dashboardRepository.UpdateZone(zone);
-    }
+        public void changeZone(Zone zone)
+        {
+            dashboardRepository.UpdateZone(zone);
+        }
 
-    private void Validate(Zone zone)
-    {
-      List<ValidationResult> errors = new List<ValidationResult>();
-      bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, validateAllProperties: true);
-
-      if (!valid)
-        throw new ValidationException("Zone not valid!");
-    }
-
-    public List<Alert> getActiveAlerts()
+        public List<Alert> getActiveAlerts()
         {
             initNonExistingRepo(false);
             return dashboardRepository.getActiveAlerts().ToList();
@@ -104,6 +95,11 @@ namespace BL.Managers
         {
             initNonExistingRepo(false);
             return dashboardRepository.getAllAlerts().ToList();
+        }
+
+        internal TimeSpan getHistoriek()
+        {
+            throw new NotImplementedException();
         }
 
         public void sendAlerts()
@@ -135,7 +131,24 @@ namespace BL.Managers
                 if (sendMelding)
                 {
                     Console.WriteLine("MELDING!!!");
+                    if (alert.EmailMelding)
+                    {
+                        MailMessage mail = new MailMessage();
+                        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                        mail.From = new MailAddress("IntegratieProjectTeam20@gmail.com");
+                        mail.To.Add("IntegratieProjectTeam20@gmail.com");
+                        mail.Subject = "Test Mail";
+                        mail.Body = "This is for testing SMTP mail from GMAIL";
+
+                        SmtpServer.Port = 587;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential("IntegratieProjectTeam20@gmail.com", "Integratie20");
+                        SmtpServer.EnableSsl = true;
+
+                        SmtpServer.Send(mail);
+                    }
                 }
+                
             }
 
         }
@@ -164,9 +177,14 @@ namespace BL.Managers
             }
         }
 
-    void IDashboardManager.Validate(Zone zone)
-    {
-      throw new NotImplementedException();
+        public void Validate(Zone zone)
+        {
+            throw new NotImplementedException();
+        }
+
+        TimeSpan IDashboardManager.getHistoriek()
+        {
+            return dashboardRepository.getPlatform().Historiek;
+        }
     }
-  }
 }

@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
 using Domain.Elementen;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
-    public class ElementRepository_EF : IElementRepository
-    {
-        PolitiekeBarometerContext context;
+  public class ElementRepository_EF : IElementRepository
+  {
+   
+       PolitiekeBarometerContext context;
 
         public ElementRepository_EF()
         {
@@ -22,10 +24,30 @@ namespace DAL.Repositories_EF
         {
             context = unitOfWork.Context;
         }
+
+        public void addElementen(List<Element> elementen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addOrganisatie(Organisatie organisatie)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
+            {
+                context.Organisaties.Add(organisatie);
+                context.SaveChanges();
+            }
+        }
         public void AddPersoon(Persoon persoon)
         {
-            context.Personen.Add(persoon);
-            context.SaveChanges();
+            List<ValidationResult> errors = new List<ValidationResult>();
+            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam).ToList();
+            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors) && context.Personen.Where(p=>p.Naam == persoon.Naam).Count()==0)
+            {
+                context.Personen.Add(persoon);
+                context.SaveChanges();
+            }
         }
 
         public IEnumerable<Element> getAllElementen()
@@ -37,14 +59,42 @@ namespace DAL.Repositories_EF
             return elementen;
         }
 
+        public IEnumerable<Persoon> getAllPersonen()
+        {
+            return context.Personen;
+        }
+
         public Element getElementByID(int elementId)
         {
+            Element element = (Element)context.Personen.FirstOrDefault(p => p.Id.Equals(elementId));
+            if (element == null)
+            {
+                element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
+            }
+            if (element == null)
+            {
+                element = (Element)context.Themas.FirstOrDefault(p => p.Id.Equals(elementId));
+            }
             return null;
         }
 
         public Element getElementByName(string naam)
         {
-            return null;
+            Element element = (Element)context.Personen.FirstOrDefault(p=>p.Naam.Equals(naam));
+            if (element == null)
+            {
+                element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam));
+            }
+            if (element == null)
+            {
+                element = (Element)context.Themas.FirstOrDefault(p => p.Naam.Equals(naam));
+            }
+            return element;
+        }
+
+        public List<Element> getTrendingElementen(int amount)
+        {
+            throw new NotImplementedException();
         }
 
         public void setElement(Element element)
@@ -52,5 +102,6 @@ namespace DAL.Repositories_EF
             context.Entry(element).State = EntityState.Modified;
             context.SaveChanges();
         }
-    }
+    
+  }
 }
