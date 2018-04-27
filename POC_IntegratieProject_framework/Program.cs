@@ -98,7 +98,7 @@ namespace PolitiekeBarometer_CA
 
         private static void addPoliticiJSON()
         {
-            List<Element> elementen = new List<Element>();
+            List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
             using (StreamReader r = new StreamReader(Path))
             {
@@ -135,9 +135,9 @@ namespace PolitiekeBarometer_CA
                     elementManager.addOrganisatie(organisatie);
                 }
                 politicus.Organisatie = organisatie;
-                elementen.Add(politicus);
+                personen.Add(politicus);
             }
-            elementManager.addElementen(elementen);
+            elementManager.addPersonen(personen);
         }
 
         private static void sendEmail()
