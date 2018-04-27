@@ -306,11 +306,8 @@
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\forgot-password.html" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\gulpfile.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\Index.html" />
-
     <Content Include="Views\Home\Organisatie.cshtml" />
-
     <Content Include="Views\Home\Grafiek.cshtml" />
-
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
