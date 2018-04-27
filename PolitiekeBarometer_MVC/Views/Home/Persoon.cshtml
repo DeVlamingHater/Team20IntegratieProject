@@ -6,7 +6,9 @@
 <h2>Persoon</h2>
 <div>
     @Html.DisplayFor(model => model.Naam)
-    @Html.DisplayFor(model => model.Organisatie.Naam)
+    @*<img src="@Url.Action("setOrganisatie", new {twitter = Model.Organisatie})"/>*@
+    @*<img src="@Url.Action("setImage", new {twitter = Model.Twitter })"/>*@
+    @*<a href="@Url.Action("setTwitter", new { twitter = Model.Twitter })">Twitter: @Html.DisplayFor(model => model.Twitter)</a>*@
 </div>
 <div>
     Items
