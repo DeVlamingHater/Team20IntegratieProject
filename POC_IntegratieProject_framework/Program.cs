@@ -22,7 +22,14 @@ namespace PolitiekeBarometer_CA
 {
     class Program
     {
-        private const string Path = "C:\\Users\\Samcl\\OneDrive\\Documenten\\integratieProject-Git\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json";
+
+
+        private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
+        private static IElementManager elementManager;
+        private static IPostManager postManager;
+        private static IDashboardManager dashboardManager;
+        private static IPlatformManager platformManager;
+
         static void Main(string[] args)
         {
             HttpClient client = new HttpClient();
@@ -90,10 +97,12 @@ namespace PolitiekeBarometer_CA
 
         private static void addPoliticiJSON()
         {
+
             ElementManager elementManager = new ElementManager();
+
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
-            using (StreamReader r = new StreamReader(Path))
+            using (StreamReader r = new StreamReader("D:\\IntegratieProjectje\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json"))
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
@@ -112,7 +121,8 @@ namespace PolitiekeBarometer_CA
                     Postal_code = persoon.postal_code,
                     Site = persoon.site,
                     Town = persoon.town,
-                    Twitter = persoon.twitter
+                    Twitter = persoon.twitter,
+                    Trend = random.NextDouble()
                 };
                 Organisatie organisatie = (Organisatie)elementManager.getElementByNaam(persoon.organisation);
                 if (organisatie == null)

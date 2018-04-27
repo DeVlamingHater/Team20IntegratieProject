@@ -29,8 +29,8 @@
                                 (var element in
                                 Model)
 {
-    <li class="trend" hidden="hidden">@element.Trend</li>
-    <li class="naam" hidden="hidden">@element.Naam</li> <br />
+    <li class="trend">@element.Trend</li>
+    <li class="naam" >@element.Naam</li> <br />
 }
 
 
@@ -39,9 +39,17 @@
         var trends = [];
         var namen = [];
         var trends1 = document.getElementsByClassName("trend");
-        var namen1 = document.getElementsByClassName("naam");
+        var trends2 = [];
         for (var i = 0; i < trends1.length; i++) {
-            trends.push(trends1[i].innerHTML);
+            var getal = 0.5;
+            getal = parseFloat(trends1[i].innerHTML.replace(",", "."));
+            trends2.push(getal);
+        }
+        var namen1 = document.getElementsByClassName("naam");
+        for (var i = 0; i < trends2.length; i++) {
+            var getal = 0.5;
+            getal = trends2[i];
+            trends.push(getal);
             namen.push(namen1[i].innerHTML);
         }
         var ctx = document.getElementById("MyBarChart");
