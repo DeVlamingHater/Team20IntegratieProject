@@ -122,7 +122,6 @@ namespace PolitiekeBarometer_CA
                     Site = persoon.site,
                     Town = persoon.town,
                     Twitter = persoon.twitter,
-                    Trend = random.NextDouble()
                 };
                 Organisatie organisatie = (Organisatie)elementManager.getElementByNaam(persoon.organisation);
                 if (organisatie == null)
