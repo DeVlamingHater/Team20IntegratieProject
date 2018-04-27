@@ -105,7 +105,12 @@ namespace BL.Managers
       return elementRepository.getAllPersonen();
       }
 
-        public void addElementen(List<Element> elementen)
+    public List<Thema> getAllThemas()
+    {
+      return elementRepository.getAllThemas();
+    }
+
+    public void addElementen(List<Element> elementen)
         {
             elementRepository.addElementen(elementen);
         }

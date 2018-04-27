@@ -1,5 +1,4 @@
-﻿
-using BL.Managers;
+﻿using BL.Managers;
 using Domain;
 using Domain.Dashboards;
 using System;
@@ -7,41 +6,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Domain.Elementen;
+
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-    public class HomeController : Controller
-    {
+  public class HomeController : Controller
+  {
 
-        public ActionResult Index()
-        {
-  _PersonenDropDown();
+    public ActionResult Index()
+    {
+      _PersonenDropDown();
       _OrganisatieDropDown();
       _ThemaDropDown();
-            return View();
-        }
+      return View();
+    }
 
-        public ActionResult NewTab()
-        {
-            return View();
-        }
+    public ActionResult NewTab()
+    {
+      return View();
+    }
 
 
-        public ActionResult Element()
-        {
-            return View();
-        }
-        
-        public ActionResult Grafiek()
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen();
-            return View(elementen.ToList());
-        }
+    public ActionResult Element()
+    {
+      return View();
+    }
 
-        #region Dashboard
-        static int actieveZone;
+    public ActionResult Grafiek()
+    {
+      ElementManager mgr = new ElementManager();
+      List<Element> elementen = new List<Element>();
+      elementen = mgr.getTrendingElementen();
+      return View(elementen.ToList());
+    }
+
+    #region Dashboard
+    static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -98,14 +99,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 
     #region Element
     ElementManager Emgr = new ElementManager();
-    //public ActionResult fillDropdowns()
-    //{
-    //  List<Organisatie> organisaties = Emgr.getAllOrganisaties();
-
-    //  List<Thema> themas = Emgr.getAllThemas();
-
-    //  return View();
-    //}
     public ActionResult _PersonenDropDown()
     {
       List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
@@ -128,6 +121,37 @@ namespace PolitiekeBarometer_MVC.Controllers
       }
       return PartialView(themas);
     }
+    public ActionResult _SearchPartial(string searchstring)
+    {
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null)
+        {
+          break;
+        }
+        else
+        {
+          for (int j = 0; j <= keywords.Count(); j++)
+          {
+            Keyword keyword = keywords.ElementAt(j);
+            if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+            {
+              elementen.Add(thema);
+              break;
+            }
+          }
+        }
+
+      }
+
+      return PartialView(elementen);
+    }
 
     public ActionResult _OrganisatieDropDown()
     {
@@ -149,6 +173,25 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       Element element = Emgr.getElementById(id);
       return View(element);
+    }
+    public ActionResult setImage(string twitter)
+    {
+      string twitter1 = twitter.Replace("@","");
+      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=bigger";
+      return Redirect(url);
+    }
+    public ActionResult setTwitter(string twitter)
+    {
+      string twitter1 = twitter.Replace("@","");
+      string url = "https://twitter.com/" + twitter1;
+      return Redirect(url);
+    }
+    public ActionResult setOrganisatie(Organisatie organisatie)
+    {
+      string twitter = organisatie.Naam; //moet twitter worden;
+      //string twitter1 = twitter.Remove(0, 1);
+      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
+      return View(twitter);
     }
     public ActionResult Thema(int id)
     {

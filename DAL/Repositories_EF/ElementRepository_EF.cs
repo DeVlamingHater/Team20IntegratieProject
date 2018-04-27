@@ -63,6 +63,11 @@ namespace DAL.Repositories_EF
         {
             return context.Personen;
         }
+        
+        public List<Thema> getAllThemas()
+    {
+      return context.Themas.ToList();
+    }
 
         public Element getElementByID(int elementId)
         {
@@ -75,7 +80,7 @@ namespace DAL.Repositories_EF
             {
                 element = (Element)context.Themas.FirstOrDefault(p => p.Id.Equals(elementId));
             }
-            return null;
+            return element;
         }
 
         public Element getElementByName(string naam)

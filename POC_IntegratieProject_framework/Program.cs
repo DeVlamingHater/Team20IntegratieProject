@@ -22,17 +22,16 @@ namespace PolitiekeBarometer_CA
 {
     class Program
     {
-        private const string Path = "D\\IntegratieProjectje\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json";
+
+
+        private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
         private static IElementManager elementManager;
         private static IPostManager postManager;
         private static IDashboardManager dashboardManager;
         private static IPlatformManager platformManager;
+
         static void Main(string[] args)
         {
-            elementManager = new ElementManager();
-            postManager = new PostManager();
-            dashboardManager = new DashboardManager();
-            platformManager = new PlatformManager();
             HttpClient client = new HttpClient();
 
             Console.WriteLine("Politieke Barometer");
@@ -98,7 +97,9 @@ namespace PolitiekeBarometer_CA
 
         private static void addPoliticiJSON()
         {
-            Random random = new Random();
+
+            ElementManager elementManager = new ElementManager();
+
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
             using (StreamReader r = new StreamReader("D:\\IntegratieProjectje\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json"))
@@ -161,6 +162,7 @@ namespace PolitiekeBarometer_CA
 
         private static void showTrending()
         {
+            ElementManager elementManager = new ElementManager();
             elementManager.setTrendingElementen();
             List<Element> trendingElementen = elementManager.getTrendingElementen(3);
             foreach (Element element in trendingElementen)
@@ -176,12 +178,13 @@ namespace PolitiekeBarometer_CA
 
         private static void showElementen()
         {
+            ElementManager elementManager = new ElementManager();
             elementManager.getAllElementen().ForEach(p => Console.WriteLine(p.Naam + " " + p.Trend));
         }
 
-        //TODO run on timer
         private static async void updateAPIAsync()
         {
+            PostManager postManager = new PostManager();
             string responseString = await postManager.updatePosts();
             Console.WriteLine(responseString);
             postManager.addJSONPosts(responseString);
@@ -190,6 +193,7 @@ namespace PolitiekeBarometer_CA
 
         public void deleteOldPosts()
         {
+            PostManager postManager = new PostManager();
             postManager.deleteOldPosts();
         }
     }
