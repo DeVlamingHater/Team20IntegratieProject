@@ -102,7 +102,7 @@ namespace PolitiekeBarometer_CA
 
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
-            using (StreamReader r = new StreamReader("D:\\IntegratieProjectje\\Team20IntegratieProject\\POC_IntegratieProject_framework\\politici.json"))
+            using (StreamReader r = new StreamReader("D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json"))
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
@@ -122,7 +122,6 @@ namespace PolitiekeBarometer_CA
                     Site = persoon.site,
                     Town = persoon.town,
                     Twitter = persoon.twitter,
-                    Trend = random.NextDouble()
                 };
                 Organisatie organisatie = (Organisatie)elementManager.getElementByNaam(persoon.organisation);
                 if (organisatie == null)

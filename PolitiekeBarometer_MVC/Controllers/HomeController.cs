@@ -123,6 +123,11 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult _SearchPartial(string searchstring)
     {
+      if (searchstring is null)
+      {
+        List<Element> leeg = new List<Element>();
+        return PartialView(leeg);
+      }
       List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       elementen.AddRange(personen);
@@ -176,13 +181,16 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setImage(string twitter)
     {
-      string twitter1 = twitter.Replace("@","");
-      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=bigger";
+
+      string twitter1 = twitter.Replace("@", "");
+      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
       return Redirect(url);
+
+
     }
     public ActionResult setTwitter(string twitter)
     {
-      string twitter1 = twitter.Replace("@","");
+      string twitter1 = twitter.Replace("@", "");
       string url = "https://twitter.com/" + twitter1;
       return Redirect(url);
     }
