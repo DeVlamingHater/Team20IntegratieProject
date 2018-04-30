@@ -2,6 +2,7 @@
 using BL.Managers;
 using DAL;
 using Domain;
+using Domain.Dashboards;
 using Domain.Elementen;
 using Domain.Platformen;
 using Newtonsoft.Json;
@@ -86,6 +87,9 @@ namespace PolitiekeBarometer_CA
                         case 6:
                             addPoliticiJSON();
                             break;
+                        case 7:
+                            showGrafiekData();
+                            break;
                         default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
@@ -95,6 +99,31 @@ namespace PolitiekeBarometer_CA
             } while (inValidAction);
         }
 
+        private static void showGrafiekData()
+        {
+            ElementManager elementManager = new ElementManager();
+            Element testElement = elementManager.getElementByNaam("Theo Francken");
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                DataType = DataType.TOTAAL,
+                Elementen = new List<Element>()
+                {
+                    testElement
+                }
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                tijdschaal = new TimeSpan(1, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                }
+            };
+        string testData =    elementManager.getLineGraphData(testGrafiek);
+            Console.WriteLine(testData);
+        }
+
         private static void addPoliticiJSON()
         {
 
@@ -102,7 +131,9 @@ namespace PolitiekeBarometer_CA
 
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
-            using (StreamReader r = new StreamReader("D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json"))
+
+
+            using (StreamReader r = new StreamReader("politici.json"))
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
