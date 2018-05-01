@@ -135,25 +135,6 @@ namespace DAL.EF
             };
             #endregion{
 
-            #region Personen
-            Persoon persoon1 = new Persoon()
-            {
-                Naam = "Imade Annouri",
-                Organisatie = organisatie1
-            };
-
-            Persoon persoon2 = new Persoon()
-            {
-                Naam = "Caroline Bastiaens",
-                Organisatie = organisatie2
-            };
-            Persoon persoon3 = new Persoon()
-            {
-                Naam = "Vera Celis",
-                Organisatie = organisatie2
-            };
-            #endregion
-
             #region Keywords
             Keyword keyword1 = new Keyword()
             {
@@ -180,8 +161,6 @@ namespace DAL.EF
                 Elementen = new List<Element>()
             };
 
-            dataConfig1.Elementen.Add(persoon1);
-
             DataConfig dataConfig2 = new DataConfig
             {
                 DataType = DataType.TOTAAL,
@@ -203,8 +182,6 @@ namespace DAL.EF
                 DataType = DataType.TREND,
                 Elementen = new List<Element>()
             };
-
-            dataConfig4.Elementen.Add(persoon1);
 
             #endregion
 
@@ -333,12 +310,6 @@ namespace DAL.EF
             #region AddOrganisaties
             context.Organisaties.Add(organisatie1);
             context.Organisaties.Add(organisatie2);
-            #endregion
-
-            #region AddPersonen
-            context.Personen.Add(persoon1);
-            context.Personen.Add(persoon2);
-            context.Personen.Add(persoon3);
             #endregion
 
             #region AddThemas

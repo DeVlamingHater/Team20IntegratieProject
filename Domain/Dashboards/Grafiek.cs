@@ -14,6 +14,8 @@ namespace Domain.Dashboards
         [Required]
         public GrafiekType GrafiekType{ get; set; }
 
+        public TimeSpan tijdschaal { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

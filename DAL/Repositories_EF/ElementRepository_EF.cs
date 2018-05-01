@@ -11,10 +11,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
-  public class ElementRepository_EF : IElementRepository
-  {
-   
-       PolitiekeBarometerContext context;
+    public class ElementRepository_EF : IElementRepository
+    {
+
+        PolitiekeBarometerContext context;
 
         public ElementRepository_EF()
         {
@@ -43,10 +43,16 @@ namespace DAL.Repositories_EF
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam).ToList();
-            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors) && context.Personen.Where(p=>p.Naam == persoon.Naam).Count()==0)
+            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors))
             {
-                context.Personen.Add(persoon);
-                context.SaveChanges();
+                if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
+                {
+                    context.Personen.Add(persoon);
+                    context.SaveChanges();
+                }else{
+                    setPersoon(persoon);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -63,11 +69,11 @@ namespace DAL.Repositories_EF
         {
             return context.Personen;
         }
-        
+
         public List<Thema> getAllThemas()
-    {
-      return context.Themas.ToList();
-    }
+        {
+            return context.Themas.ToList();
+        }
 
         public Element getElementByID(int elementId)
         {
@@ -85,7 +91,7 @@ namespace DAL.Repositories_EF
 
         public Element getElementByName(string naam)
         {
-            Element element = (Element)context.Personen.FirstOrDefault(p=>p.Naam.Equals(naam));
+            Element element = (Element)context.Personen.FirstOrDefault(p => p.Naam.Equals(naam));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam));
@@ -101,12 +107,21 @@ namespace DAL.Repositories_EF
         {
             throw new NotImplementedException();
         }
+        public void setPersoon ( Persoon persoon)
+        {
+            Persoon persoonToSet =  context.Personen.First(p=>p.Naam.Equals(persoon.Naam));
+            int id = persoonToSet.Id;
 
+            persoonToSet = persoon;
+            persoonToSet.Id = id;
+            context.SaveChanges();
+
+        }
         public void setElement(Element element)
         {
             context.Entry(element).State = EntityState.Modified;
-            context.SaveChanges();
+           // context.SaveChanges();
         }
-    
-  }
+
+    }
 }

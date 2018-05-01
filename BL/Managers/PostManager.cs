@@ -93,6 +93,7 @@ namespace BL.Managers
             postRepository.deleteOldPosts(historiek);
         }
 
+
         public async Task<string> updatePosts()
         {
             HttpClient client = new HttpClient();
