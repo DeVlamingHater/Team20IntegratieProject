@@ -33,16 +33,24 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult Grafiek()
+    public ActionResult _BarGrafiekPartial()
     {
       ElementManager mgr = new ElementManager();
       List<Element> elementen = new List<Element>();
       elementen = mgr.getTrendingElementen();
-      return View(elementen.ToList());
+      return PartialView(elementen.ToList());
     }
 
-    #region Dashboard
-    static int actieveZone;
+        public ActionResult _LijnGrafiekPartial()
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            return PartialView(elementen.ToList());
+        }
+
+        #region Dashboard
+        static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {

@@ -108,7 +108,7 @@ namespace BL.Managers
             //    {"since", "27 Apr 2018 8:00:00" }
             //};
             //[{"since", "27 Apr 2018 8:00:00" }]
-            var q = new TextGainQueryDTO() { Since = "25 Apr 2018 8:00:00" };
+            var q = new TextGainQueryDTO() { since = "25 Apr 2018 8:00:00" };
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -120,7 +120,7 @@ namespace BL.Managers
     class TextGainQueryDTO
     {
         //public string Name { get; set; }
-        public string Since { get; set; }
+        public string since { get; set; }
         //public string Until { get; set; }
     }
 }
