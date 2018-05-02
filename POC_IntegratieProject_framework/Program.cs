@@ -132,6 +132,7 @@ namespace PolitiekeBarometer_CA
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
 
+
             using (StreamReader r = new StreamReader("politici.json"))
             {
                 string json = r.ReadToEnd();
