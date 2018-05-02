@@ -55,15 +55,22 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View(zones);
 
     }
-    public ActionResult _ItemsPartial()
+    //public ActionResult _ItemsPartial()
+    //{
+
+    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
+    //  return PartialView(items);
+    //}
+    public ActionResult _ItemsPartial(int zoneId)
     {
 
-      IEnumerable<Item> items = mgr.getItems(actieveZone);
+      IEnumerable<Item> items = mgr.getItems(zoneId);
       return PartialView(items);
     }
     public ActionResult setActiveZone(int zoneId)
     {
       actieveZone = mgr.getZone(zoneId).Id;
+      _ItemsPartial(actieveZone);
       return RedirectToAction("Dashboard");
       //return RedirectToAction("_ItemsPartial");
       return View();
@@ -177,7 +184,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     public ActionResult setImage(string twitter)
     {
       string twitter1 = twitter.Replace("@","");
-      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=bigger";
+      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
       return Redirect(url);
     }
     public ActionResult setTwitter(string twitter)
@@ -188,10 +195,13 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {
-      string twitter = organisatie.Naam; //moet twitter worden;
-      //string twitter1 = twitter.Remove(0, 1);
-      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
-      return View(twitter);
+        return View(organisatie.Naam);
+      
+
+      //string twitter = organisatie.Naam; //moet twitter worden;
+      ////string twitter1 = twitter.Remove(0, 1);
+      //string url = "https://twitter.com/" + twitter + "/profile_image?size=original";
+      //return View(twitter);
     }
     public ActionResult Thema(int id)
     {

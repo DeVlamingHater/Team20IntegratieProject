@@ -3,10 +3,45 @@
     ViewBag.Title = "Thema";
 }
 
-<h2>Thema</h2>
-<div>
-    @Html.DisplayFor(model => model.Naam)
+<div class="card mb-3" align="center">
+    <div class="card-body grid-container">
+        <div class="naam">
+            @Html.DisplayFor(model => model.Naam)
+        </div>
+        <div>
+            @*@Html.Action("setOrganisatie",new { organisatie = Model.Organisatie})*@
+        </div>
+
+        @*<img class="rounded-circle border foto" height="150" src="@Url.Action("setImage", new {twitter = Model.Twitter })" />
+
+        <a class="twitter" href="@Url.Action("setTwitter", new { twitter = Model.Twitter })" target="_blank"> twitter: @Html.DisplayFor(model => model.Twitter)</a>*@
+
+
+    </div>
 </div>
-<div>
-    Items
+<div class="row">
+    <div class="card mb-3">
+        <div class="card-header">
+            Item1
+        </div>
+        <div class="card-body">
+            itembody
+        </div>
+    </div>
+    <div class="card mb-3 col-sm-4 ">
+        <div class="card-header">
+            Item2
+        </div>
+        <div class="card-body">
+            itembody
+        </div>
+    </div>
+    <div class="card mb-3 col-sm-4">
+        <div class="card-header">
+            Item3
+        </div>
+        <div class="card-body">
+            itembody
+        </div>
+    </div>
 </div>
