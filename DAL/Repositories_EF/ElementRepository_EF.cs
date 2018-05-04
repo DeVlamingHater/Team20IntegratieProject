@@ -61,7 +61,10 @@ namespace DAL.Repositories_EF
             List<Element> elementen = new List<Element>();
             elementen.AddRange(context.Themas);
             elementen.AddRange(context.Organisaties);
-            elementen.AddRange(context.Personen);
+
+            List<Persoon> personen = context.Personen.ToList();
+            personen.Sort(Element.compareByNaam);
+            elementen.AddRange(personen);
             return elementen;
         }
 
@@ -120,8 +123,12 @@ namespace DAL.Repositories_EF
         public void setElement(Element element)
         {
             context.Entry(element).State = EntityState.Modified;
-           // context.SaveChanges();
+            context.SaveChanges();
         }
 
+        public void deleteAllPersonen()
+        {
+            context.Personen.RemoveRange(context.Personen);
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace Domain
         [Required]
         public double Waarde { get; set; }
 
+        public TimeSpan Interval { get; set; }
+
         [Required]
         [RegularExpression("[<,>][=]?")]
         public String Operator { get; set; }

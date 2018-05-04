@@ -4,6 +4,7 @@ using DAL.Repositories_EF;
 using Domain;
 using Domain.Dashboards;
 using Domain.Platformen;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,8 @@ namespace BL.Managers
 {
     public class DashboardManager : IDashboardManager
     {
+        public static int NUMBERDATAPOINTS = 12;
+
         IDashboardRepository dashboardRepository;
         public UnitOfWorkManager uowManager;
         public DashboardManager()
@@ -177,14 +180,37 @@ namespace BL.Managers
             }
         }
 
-        public void Validate(Zone zone)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         TimeSpan IDashboardManager.getHistoriek()
         {
             return dashboardRepository.getPlatform().Historiek;
+        }
+        public string getLineGraphData(Grafiek grafiek)
+        {
+            PostManager postManager = new PostManager();
+            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
+
+            Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
+
+            foreach (DataConfig dataConfig in dataConfigs)
+            {
+                DateTime start = DateTime.Now;
+                for (int i = 0; i < NUMBERDATAPOINTS; i++)
+                {
+                    List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+
+                    DateTime eind = start.Add(grafiek.tijdschaal);
+
+                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p=>p.Date.Subtract(eind).TotalDays<0).ToList();
+
+                    data.Add(start, posts.Count);
+
+                    start = start.Subtract(grafiek.tijdschaal);
+                }
+                data.Reverse();
+            }
+            return JsonConvert.SerializeObject(data).ToString();
         }
     }
 }

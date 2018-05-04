@@ -20,6 +20,7 @@ namespace BL.Interfaces
         void addOrganisatie(Organisatie organisatie);
         void addPersonen(List<Persoon> personen);
 
-        string getLineGraphData(Grafiek grafiek);
+        List<Persoon> readJSONPersonen();
+        void deleteAllPersonen();
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="Interfaces\IPostManager.cs" />
     <Compile Include="Managers\DashboardManager.cs" />
     <Compile Include="Managers\ElementManager.cs" />
+    <Compile Include="Managers\Helper\PersoonParser.cs" />
     <Compile Include="Managers\PlatformManager.cs" />
     <Compile Include="Managers\PostManager.cs" />
     <Compile Include="Managers\UnitOfWorkManager.cs" />
