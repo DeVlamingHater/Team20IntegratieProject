@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-   
-   
+
+
     @Styles.Render("~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css")
-    
+
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom fonts for this template-->
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
         <a class="navbar-brand" @Html.ActionLink("Home", "Index", "Home")
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
 
@@ -76,33 +76,45 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <form class="form-inline my-2 my-lg-0 mr-lg-2">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Zoeken naar...">
-                            <span class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
+
+                    @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))
+                    {
+            <div class="form-group">
+                @Html.Label("searchstring", "searchstring", new { @class = "sr-only" })
+                @Html.TextBox("searchstring", null, new { @class = "form-control" })
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    }
                 </li>
+                        @*<li class="nav-item">
+                <form class="form-inline my-2 my-lg-0 mr-lg-2">
+                <div class="input-group">
+                <input class="form-control" type="text" placeholder="Zoeken naar...">
+                <span class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                <i class="fa fa-search"></i>
+                </button>
+                </span>
+                </div>
+                </form>
+                </li>*@
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                    <a class="nav-link" href='@Url.Action("Login", "Account")'>
                         <i class="fa fa-fw fa-sign-out"></i>Login
                     </a>
                 </li>
             </ul>
         </div>
-  <ul>
+        <ul>
 
-    @if (User.IsInRole("SuperAdmin"))
-            {
-        <li>@Html.ActionLink("SuperAdmin", "Index", "SuperAdmin")</li>}
-    @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
-            {
-        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>}
-    </ul>
+        @if (User.IsInRole("SuperAdmin"))
+        {
+            <li>@Html.ActionLink("SuperAdmin", "Index", "SuperAdmin")</li>}
+        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+        {
+            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>}
+        </ul>
     </nav>
     <!-- /.content-wrapper-->
     @RenderBody()
@@ -150,9 +162,9 @@
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-datatables.min.js"></script>
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-charts.min.js"></script>
 
-        @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-  
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
