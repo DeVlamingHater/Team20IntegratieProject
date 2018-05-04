@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Domain.Elementen;
-
+using System.Data.SqlClient;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -22,27 +22,69 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult NewTab()
+        public ActionResult Test()
+        {
+            ElementManager mgr = new ElementManager();
+            List<string> namen = new List<string>();
+            List<int> ids = new List<int>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                ids.Add(element.Id);
+            }
+           Json(ViewBag.Namen = namen);
+            ViewBag.Lengte = namen.Count();
+            ViewBag.Ids = ids;
+            return View();
+        }
+
+
+        public ActionResult NewTab()
     {
       return View();
     }
 
-
-    public ActionResult Element()
+        public ActionResult Element()
     {
       return View();
     }
 
-    public ActionResult Grafiek()
+    public ActionResult _BarGrafiekPartial()
     {
       ElementManager mgr = new ElementManager();
       List<Element> elementen = new List<Element>();
       elementen = mgr.getTrendingElementen();
-      return View(elementen.ToList());
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            return PartialView(elementen.ToList());
     }
 
-    #region Dashboard
-    static int actieveZone;
+        public ActionResult _LijnGrafiekPartial()
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            return PartialView(elementen.ToList());
+        }
+
+        #region Dashboard
+        static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -55,15 +97,22 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View(zones);
 
     }
-    public ActionResult _ItemsPartial()
+    //public ActionResult _ItemsPartial()
+    //{
+
+    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
+    //  return PartialView(items);
+    //}
+    public ActionResult _ItemsPartial(int zoneId)
     {
 
-      IEnumerable<Item> items = mgr.getItems(actieveZone);
+      IEnumerable<Item> items = mgr.getItems(zoneId);
       return PartialView(items);
     }
     public ActionResult setActiveZone(int zoneId)
     {
       actieveZone = mgr.getZone(zoneId).Id;
+      _ItemsPartial(actieveZone);
       return RedirectToAction("Dashboard");
       //return RedirectToAction("_ItemsPartial");
       return View();
@@ -123,6 +172,11 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult _SearchPartial(string searchstring)
     {
+      if (searchstring is null)
+      {
+        List<Element> leeg = new List<Element>();
+        return PartialView(leeg);
+      }
       List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
       elementen.AddRange(personen);
@@ -176,22 +230,29 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setImage(string twitter)
     {
+
       string twitter1 = twitter.Replace("@","");
-      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=bigger";
+
+      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
       return Redirect(url);
+
+
     }
     public ActionResult setTwitter(string twitter)
     {
-      string twitter1 = twitter.Replace("@","");
+      string twitter1 = twitter.Replace("@", "");
       string url = "https://twitter.com/" + twitter1;
       return Redirect(url);
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {
-      string twitter = organisatie.Naam; //moet twitter worden;
-      //string twitter1 = twitter.Remove(0, 1);
-      string url = "https://twitter.com/" + twitter + "/profile_image?size=bigger";
-      return View(twitter);
+        return View(organisatie.Naam);
+      
+
+      //string twitter = organisatie.Naam; //moet twitter worden;
+      ////string twitter1 = twitter.Remove(0, 1);
+      //string url = "https://twitter.com/" + twitter + "/profile_image?size=original";
+      //return View(twitter);
     }
     public ActionResult Thema(int id)
     {
