@@ -33,18 +33,17 @@ namespace DAL.Repositories_EF
 
     public IEnumerable<Alert> getActiveAlerts()
     {
-      return context.Alerts.Include(a => a.DataConfig.Elementen).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+      return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
     }
 
     public DataConfig getAlertDataConfig(Alert alert)
     {
-      return context.Alerts.Include(a => a.DataConfig.Elementen).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
+      return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
     }
 
     public Dashboard getDashboard(int gebruikerId)
     {
-      Dashboard dashboard = context.Dashboards.Include(db => db.Gebruiker).Single(r => r.Gebruiker.GebruikerId == gebruikerId);
-      return dashboard;
+            throw new NotImplementedException();
     }
 
     public IEnumerable<Zone> getZones(int dashboardId)

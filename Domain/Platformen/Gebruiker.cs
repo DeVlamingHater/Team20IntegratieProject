@@ -11,13 +11,11 @@ namespace Domain.Platformen
     public class Gebruiker
     {
         [Key]
-        public int GebruikerId { get; set; }
+        public string GebruikerId { get; set; }
         [Required]
         public string Naam { get; set; }
         [EmailAddress]
         [Required]
         public string Email { get; set; }
-        
-        public string Wachtwoord { get; set; }
     }
 }

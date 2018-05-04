@@ -36,16 +36,14 @@ namespace DAL.EF
             {
                 Email = "sam.claessen@student.kdg.be",
                 Naam = "Sam Claessen",
-                GebruikerId = 1,
-                Wachtwoord = "wachtwoord"
+                GebruikerId = "1"
             };
 
             Gebruiker gebruiker2 = new Domain.Platformen.Gebruiker
             {
                 Email = "thomas.somers@student.kdg.be",
                 Naam = "Thomas Somers",
-                GebruikerId = 2,
-                Wachtwoord = "123"
+                GebruikerId = "2"
             };
             #endregion
 
@@ -140,96 +138,6 @@ namespace DAL.EF
             keyword1.Themas.Add(thema1);
             #endregion
 
-            #region DataConfigs
-            DataConfig dataConfig1 = new DataConfig
-            {
-                DataConfiguratieId = 0,
-                DataType = DataType.TOTAAL,
-                Elementen = new List<Element>()
-            };
-
-            DataConfig dataConfig2 = new DataConfig
-            {
-                DataType = DataType.TOTAAL,
-                Elementen = new List<Element>()
-            };
-
-            DataConfig dataConfig3 = new DataConfig
-            {
-                DataType = DataType.TOTAAL,
-                Elementen = new List<Element>()
-            };
-
-            dataConfig3.Elementen.Add(thema1);
-
-            DataConfig dataConfig4 = new DataConfig
-            {
-                DataType = DataType.TREND,
-                Elementen = new List<Element>()
-            };
-
-            #endregion
-
-            #region Alerts
-            Alert alert1 = new Alert
-            {
-                ApplicatieMelding = true,
-                BrowserMelding = true,
-                EmailMelding = true,
-                Waarde = 50,
-                Operator = "<",
-                Status = AlertStatus.ACTIEF,
-                DataConfig = dataConfig1,
-                Dashboard = dashboard1
-            };
-
-            Alert alert2 = new Alert
-            {
-                ApplicatieMelding = true,
-                BrowserMelding = true,
-                EmailMelding = true,
-                Waarde = 50,
-                Operator = "<",
-                Status = AlertStatus.ACTIEF,
-                DataConfig = dataConfig2,
-                Dashboard = dashboard1
-            };
-            Alert alert3 = new Alert
-            {
-                ApplicatieMelding = false,
-                BrowserMelding = true,
-                EmailMelding = false,
-                Waarde = 50,
-                Operator = "<",
-                Status = AlertStatus.ACTIEF,
-                DataConfig = dataConfig3,
-                Dashboard = dashboard2
-            };
-
-            Alert alert4 = new Alert
-            {
-                ApplicatieMelding = false,
-                BrowserMelding = false,
-                EmailMelding = true,
-                Waarde = -4,
-                Operator = ">",
-                Status = AlertStatus.ACTIEF,
-                DataConfig = dataConfig4,
-                Dashboard = dashboard2
-            };
-            Alert alert5 = new Alert
-            {
-                ApplicatieMelding = true,
-                BrowserMelding = false,
-                EmailMelding = false,
-                Waarde = 50,
-                Operator = "<",
-                Status = AlertStatus.INACTIEF,
-                DataConfig = dataConfig1,
-                Dashboard = dashboard2
-            };
-            #endregion
-
             #region AddToDB
 
             #region AddPlatform
@@ -268,21 +176,6 @@ namespace DAL.EF
             #endregion
 
             #region AddDashboard
-
-            #region AddDataConfigs
-            context.DataConfigs.Add(dataConfig1);
-            context.DataConfigs.Add(dataConfig2);
-            context.DataConfigs.Add(dataConfig3);
-            context.DataConfigs.Add(dataConfig4);
-            #endregion
-
-            #region AddAlerts
-            context.Alerts.Add(alert1);
-            context.Alerts.Add(alert2);
-            context.Alerts.Add(alert3);
-            context.Alerts.Add(alert4);
-            context.Alerts.Add(alert5);
-            #endregion
 
             #endregion
            
