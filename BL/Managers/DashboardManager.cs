@@ -189,28 +189,29 @@ namespace BL.Managers
             DataConfig testDataConfig = new DataConfig()
             {
                 DataConfiguratieId = 100,
-                DataType = Domain.DataType.TOTAAL,
-                Elementen = new List<Element>()
-                {
+                Element=
                     testElement
-                }
+                
             };
             Grafiek testGrafiek = new Grafiek()
             {
-                tijdschaal = new TimeSpan(1, 0, 0, 0),
+                DataType = Domain.DataType.TOTAAL,
+
+                Tijdschaal = new TimeSpan(1, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                     testDataConfig
                 }
             };
             grafiek = testGrafiek;
-            Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
+            Dictionary<string, string> data = new Dictionary<string, string>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-
+            int index = 0;
             foreach (DataConfig dataConfig in dataConfigs)
             {
-                Dictionary<DateTime, double> data = new Dictionary<DateTime, double>();
+                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
                 DateTime start = DateTime.Now;
+                
                 for (int i = 0; i < NUMBERDATAPOINTS; i++)
                 {
                     List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
@@ -224,7 +225,7 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            data.Add(start, posts.Count);
+                            grafiekData.Add(start, posts.Count);
                             break;
                         case Domain.DataType.TREND:
                            
@@ -233,17 +234,18 @@ namespace BL.Managers
                             break;
                         case Domain.DataType.SENTIMENT:
                             double average = posts.Average(p=>p.Sentiment[0] * p.Sentiment[1]);
-                            data.Add(start, average);
+                            grafiekData.Add(start, average);
                             break;
                         default:
                             break;
                     }
                     start = start.Subtract(grafiek.Tijdschaal);
                 }
-                string dataString = JsonConvert.SerializeObject(data).ToString();
-                keyValues.Add(index.ToString(), dataString);
+                string dataString = JsonConvert.SerializeObject(grafiekData).ToString();
+                data.Add(index.ToString(), dataString);
+                index++;
             }
-            return JsonConvert.SerializeObject(keyValues).ToString();
+            return JsonConvert.SerializeObject(data).ToString();
         }
 
         public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
