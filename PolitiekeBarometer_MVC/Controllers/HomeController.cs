@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Domain.Elementen;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -49,7 +50,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult _BarGrafiekPartial()
+    public ActionResult _BarGrafiekPartial(int index)
     {
       ElementManager mgr = new ElementManager();
       List<Element> elementen = new List<Element>();
@@ -63,10 +64,41 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             Json(ViewBag.Namen = namen);
             Json(ViewBag.Trending = trends);
+            ViewBag.Index = index;
             return PartialView(elementen.ToList());
     }
 
-        public ActionResult _LijnGrafiekPartial()
+        public ActionResult _LijnGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            //elementen = mgr.getTrendingElementen();
+            //List<string> namen = new List<string>();
+            //List<double> trends = new List<double>();
+            //foreach (Element element in mgr.getTrendingElementen())
+            //{
+            //    namen.Add(element.Naam);
+            //    trends.Add(element.Trend);
+            //}
+            //Json(ViewBag.Namen = namen);
+            //Json(ViewBag.Trending = trends);
+            DashboardManager dashboardManager = new DashboardManager();
+            string dataString = dashboardManager.getLineGraphData(new Grafiek());
+            Dictionary<DateTime, int> data = JsonConvert.DeserializeObject<Dictionary<DateTime, int>>(dataString);
+            List<string> datums = new List<string>();
+            for (int i = 0;i < data.Keys.Count;i++)
+            {
+                DateTime myDate = data.Keys.ElementAt(i);
+                String test = myDate.ToString("HH:00 - dd MMM yyyy");
+                datums.Add(test);
+            }
+            Json(ViewBag.Namen = datums);
+            Json(ViewBag.Trending = data.Values);
+            ViewBag.Index = index;
+            return PartialView(elementen.ToList());
+
+        }
+        public ActionResult _TaartGrafiekPartial(int index)
         {
             ElementManager mgr = new ElementManager();
             List<Element> elementen = new List<Element>();
@@ -80,6 +112,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             Json(ViewBag.Namen = namen);
             Json(ViewBag.Trending = trends);
+            ViewBag.Index = index;
             return PartialView(elementen.ToList());
         }
 
