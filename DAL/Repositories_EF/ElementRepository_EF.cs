@@ -108,7 +108,29 @@ namespace DAL.Repositories_EF
 
         public List<Element> getTrendingElementen(int amount)
         {
-            throw new NotImplementedException();
+            List<Element> elementenTrending = new List<Element>();
+            List<Element> elementen = getAllElementen().ToList();
+            for (int i = 0; i < amount; i++)
+            {
+                if (elementen.Count == 0)
+                {
+                    return elementenTrending;
+                }
+                double maxTrend = 0.0;
+
+                Element maxElement = elementen.First();
+                foreach (Element element in elementen)
+                {
+                    if (element.Trend > maxTrend)
+                    {
+                        maxElement = element;
+                        maxTrend = maxElement.Trend;
+                    }
+                }
+                elementen.Remove(maxElement);
+                elementenTrending.Add(maxElement);
+            }
+            return elementenTrending;
         }
         public void setPersoon ( Persoon persoon)
         {

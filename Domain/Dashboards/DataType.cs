@@ -10,6 +10,7 @@ namespace Domain
     {
         TOTAAL,
         TREND,
-        KRUISING
+        KRUISING,
+        SENTIMENT
     }
 }
