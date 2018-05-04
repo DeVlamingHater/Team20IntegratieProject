@@ -10,7 +10,7 @@ namespace Domain.Dashboards
     public class Filter
     {
         [Key]
-        public int FilterId { get; set; }
+        public int FilterID{ get; set; }
 
         public double Waarde { get; set; }
 
