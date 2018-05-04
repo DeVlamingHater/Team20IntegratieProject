@@ -60,8 +60,8 @@ namespace DAL.Repositories_EF
         {
             List<Element> elementen = new List<Element>();
             elementen.AddRange(context.Themas);
-            elementen.AddRange(context.Organisaties);
-            elementen.AddRange(context.Personen);
+            elementen.AddRange(context.Organisaties.Include(o=>o.Personen));
+            elementen.AddRange(context.Personen.Include(p=>p.Organisatie));
             return elementen;
         }
 
@@ -77,7 +77,7 @@ namespace DAL.Repositories_EF
 
         public Element getElementByID(int elementId)
         {
-            Element element = (Element)context.Personen.FirstOrDefault(p => p.Id.Equals(elementId));
+            Element element = (Element)context.Personen.Include(p=>p.Organisatie).FirstOrDefault(p => p.Id.Equals(elementId));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
