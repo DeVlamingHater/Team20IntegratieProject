@@ -3,24 +3,40 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2>  @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })
-<div id="dashboard">
+<h2>Dashboard</h2> 
+@*<div id="dashboard">
     @* @if (Request.IsAuthenticated)
-        {*@
+        {
     @foreach (var zone in Model)
     {
         <div class="card mb-3" align="center">
-            <div class="card-header">
+            <button class="card-header" onclick="visible(@zone.Id)">
                 @Html.DisplayFor(modelItem => zone.Naam, new { htmlAttributes = new { @class = "card-header" } })
                 @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { htmlAttributes = new { @class = "card-footer" } })
-            </div>
-            <div class="card-body">
+            </button>
+            <div class="card-body" id="@zone.Id" style="display:none">
                 @Html.Action("_ItemsPartial", new { zoneId = zone.Id })
             </div>
-        </div>
-    }
+        </div>*@
 
-
+    <script>
+        var id = 0;
+        function visible(zone) {
+            var items = document.getElementById(zone);
+            if (items.style.display == 'none') {
+                items.style.display = 'block';
+                if (id != 0 && id != zone) {
+                    var item = document.getElementById(id);
+                    item.style.display = 'none'; 
+                }
+                id = zone;
+            } else
+            {
+                items.style.display = 'none';
+            }
+            
+        }
+    </script>
     @*<div class="container">
         @foreach (var item in Model)
         {
@@ -51,19 +67,19 @@
         @foreach (var zone in Model)
         {
             <li>
-                <button data-toggle="tab" @*href="#zone"*@ onclick="openCity(event,'zone')" class="btn-dark tab-links">
+                <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class="tab-links">
                     @Html.DisplayFor(modelItem => zone.Naam)
                 </button>
                 @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
 
             </li>
         }
-        <li><button data-toggle="tab" href="#zone" onclick="myfunction()" class="btn-dark">@Html.ActionLink("plus", "AddZone")</button></li>
+        <li>@Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })</li>
     </ul>
     @foreach (var zone in Model)
     {
-        <div class="tab-content bg-light" style="border: 2px solid black">
-            <div id="zone" class="tab-pane" visibility="visible">
+        <div class="tab-content bg-light">
+            <div id="@zone.Id" class="tab-pane" style="display:none">
                 <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>
             </div>
         </div>
