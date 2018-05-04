@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Domain;
+using Domain.Dashboards;
 using System;
 using System.Collections.Generic;
 using System.Text;

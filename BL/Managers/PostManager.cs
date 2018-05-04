@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Domain.Dashboards;
 
 namespace BL.Managers
 {
@@ -44,19 +45,7 @@ namespace BL.Managers
 
         public double getHuidigeWaarde(DataConfig dataConfig)
         {
-            List<Post> posts = getDataConfigPosts(dataConfig).ToList();
-            switch (dataConfig.DataType)
-            {
-                case DataType.TOTAAL:
-                    return posts.Count;
-                case DataType.TREND:
-                    //Kijken naar de tijdstippen en de trend berekenen
-                    //double trend = calculateTrend(dataConfig, element);
-                    return 0.0;
-                default:
-                    return 0.0;
-            }
-
+            throw new NotImplementedException();
         }
 
         public double calculateElementTrend(Element element)
@@ -113,6 +102,8 @@ namespace BL.Managers
             string responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
+
+        
     }
     class TextGainQueryDTO
     {

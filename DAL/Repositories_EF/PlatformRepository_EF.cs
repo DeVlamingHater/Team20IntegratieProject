@@ -21,9 +21,19 @@ namespace DAL.Repositories_EF
             context = unitOfWork.Context;
         }
 
-    public Gebruiker getGebruiker(int gebruikerId)
-    {
-      throw new NotImplementedException();
+        public void createGebruiker(string id, string name, string email)
+        {
+            context.Gebruikers.Add(new Gebruiker()
+            {
+                GebruikerId = id,
+                Naam = name,
+                Email = email
+            });
+        }
+
+        public Gebruiker getGebruiker(int gebruikerId)
+        {
+            throw new NotImplementedException();
+        }
     }
-  }
 }
