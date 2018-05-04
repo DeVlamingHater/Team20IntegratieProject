@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Domain.Elementen;
-
+using System.Data.SqlClient;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -22,13 +22,29 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult NewTab()
+        public ActionResult Test()
+        {
+            ElementManager mgr = new ElementManager();
+            List<string> namen = new List<string>();
+            List<int> ids = new List<int>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                ids.Add(element.Id);
+            }
+           Json(ViewBag.Namen = namen);
+            ViewBag.Lengte = namen.Count();
+            ViewBag.Ids = ids;
+            return View();
+        }
+
+
+        public ActionResult NewTab()
     {
       return View();
     }
 
-
-    public ActionResult Element()
+        public ActionResult Element()
     {
       return View();
     }
@@ -38,7 +54,16 @@ namespace PolitiekeBarometer_MVC.Controllers
       ElementManager mgr = new ElementManager();
       List<Element> elementen = new List<Element>();
       elementen = mgr.getTrendingElementen();
-      return PartialView(elementen.ToList());
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            return PartialView(elementen.ToList());
     }
 
         public ActionResult _LijnGrafiekPartial()
@@ -46,6 +71,15 @@ namespace PolitiekeBarometer_MVC.Controllers
             ElementManager mgr = new ElementManager();
             List<Element> elementen = new List<Element>();
             elementen = mgr.getTrendingElementen();
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
             return PartialView(elementen.ToList());
         }
 
