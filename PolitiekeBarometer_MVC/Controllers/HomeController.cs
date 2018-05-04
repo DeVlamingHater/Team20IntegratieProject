@@ -103,7 +103,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     testDataConfig
                 }
       };
-      string dataString = dashboardManager.getLineGraphData(testGrafiek);
+      string dataString = dashboardManager.getGraphData(testGrafiek);
      // Dictionary<string, int> data = JsonConvert.DeserializeObject<Dictionary<string, int>>(dataString);
 
       Json(ViewBag.Namen = data.Keys);
