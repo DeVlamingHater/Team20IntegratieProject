@@ -309,7 +309,7 @@ namespace BL.Managers
 
         private string getOtherGraphData(Grafiek grafiek)
         {
-            
+            return "";
         }
     }
 }
