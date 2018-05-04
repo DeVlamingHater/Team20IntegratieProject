@@ -90,7 +90,7 @@ namespace BL.Managers
             IDashboardManager dashboardManager = new DashboardManager();
             TimeSpan historiek = dashboardManager.getHistoriek();
 
-            postRepository.deleteOldPosts(historiek);
+           // postRepository.deleteOldPosts(historiek);
         }
 
 
@@ -101,15 +101,11 @@ namespace BL.Managers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
-            DateTime sinceDT = DateTime.Now.AddHours(-1);
+            DateTime sinceDT = DateTime.Now.AddDays(-7);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            //Dictionary<string, string> values = new Dictionary<string, string>()
-            //{
-            //    {"since", "27 Apr 2018 8:00:00" }
-            //};
-            //[{"since", "27 Apr 2018 8:00:00" }]
-            var q = new TextGainQueryDTO() { since = "25 Apr 2018 8:00:00" };
+            var q = new TextGainQueryDTO() { since = sinceS ,
+            name = "Bart De Wever"};
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -120,7 +116,7 @@ namespace BL.Managers
     }
     class TextGainQueryDTO
     {
-        //public string Name { get; set; }
+        public string name { get; set; }
         public string since { get; set; }
         //public string Until { get; set; }
     }

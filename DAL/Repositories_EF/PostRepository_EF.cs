@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
 using Domain.Elementen;
+using System.Data.Entity;
 using Newtonsoft.Json;
 
 namespace DAL.Repositories_EF
@@ -33,16 +34,16 @@ namespace DAL.Repositories_EF
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
         {
             List<Element> elementen = dataConfig.Elementen;
-            List<Post> posts = context.Posts.ToList<Post>();
+            List<Post> posts = context.Posts.Include(p=>p.Personen).ToList();
             foreach (Element element in elementen)
             {
                 if (element.GetType().Equals(typeof(Persoon)))
                 {
-                    posts = posts.Where(p => p.Persoon.Naam == element.Naam).ToList();
+                    posts = posts.Where(p=>p.Personen.Any(pers=>pers.Equals(element))).ToList();
                 }
                 else if (element.GetType().Equals(typeof(Organisatie)))
                 {
-                    posts = posts.Where(p => p.Persoon.Organisatie != null && p.Persoon.Organisatie.Id == element.Id).ToList();
+                    posts = posts.Where(p => p.Personen.Where(pers=>pers.Organisatie.Equals(element)).Count() != 0).ToList();
                 }
                 else if (element.GetType().Equals(typeof(Thema)))
                 {
@@ -80,6 +81,7 @@ namespace DAL.Repositories_EF
                 Post post = new Post();
                 post.PostId = tweet.TweetId;
                 post.Keywords = new List<Keyword>();
+                post.Personen = new List<Persoon>();
                 foreach (string word in tweet.Words)
                 {
                     post.Keywords.Add(new Keyword()
@@ -89,21 +91,31 @@ namespace DAL.Repositories_EF
                     });
                     index++;
                 }
-                string naam = tweet.Persons[0];
-                Persoon persoon;
-                try
+                foreach (string naam in tweet.Persons)
                 {
-                    persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
-                }
-                catch (Exception)
-                {
+                    Persoon persoon;
+                    try
+                    {
+                        persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
+                    }
+                    catch (Exception)
+                    {
 
-                    persoon = null;
+                        persoon = null;
+                    }
+                    if (persoon != null)
+                    {
+                        post.Personen.Add(persoon);
+                    }
+                    else
+                    {
+                        post.Personen.Add(new Persoon()
+                        {
+                            Naam = naam
+                        });
+                    }
                 }
-                if (persoon != null)
-                {
-                    post.Persoon = persoon;
-                }
+               
                 post.Source = "Twitter";
                 post.Date = tweet.Date;
                 posts.Add(post);
@@ -185,11 +197,11 @@ namespace DAL.Repositories_EF
             List<Post> posts = new List<Post>();
             if (element.GetType().Equals(typeof(Persoon)))
             {
-                posts = context.Posts.Where(p => p.Persoon.Naam == element.Naam).ToList();
+                posts = context.Posts.Where(p => p.Personen.Where(pers=>pers.Naam == element.Naam).Count()!=0).ToList();
             }
             else if (element.GetType().Equals(typeof(Organisatie)))
             {
-                posts = context.Posts.Where(p => p.Persoon.Organisatie != null && p.Persoon.Organisatie.Id == element.Id).ToList();
+                posts = context.Posts.Where(p => p.Personen.Where(pers=>pers.Organisatie.Naam.Equals(element.Naam)).Count() != 0).ToList();
             }
             else if (element.GetType().Equals(typeof(Thema)))
             {
@@ -220,7 +232,7 @@ namespace DAL.Repositories_EF
 
         public void deleteOldPosts(TimeSpan historiek)
         {
-            DateTime testUntil = DateTime.Now.Subtract(new TimeSpan(1,0,0,0));
+            DateTime testUntil = DateTime.Now.Subtract(new TimeSpan(7,0,0,0));
             DateTime until = DateTime.Now.Add(-historiek);
             List<Post> oldPosts = context.Posts.Where(p => (p.Date < testUntil)).ToList();
             context.Posts.RemoveRange(oldPosts);

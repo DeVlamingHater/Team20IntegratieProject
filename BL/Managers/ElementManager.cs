@@ -4,8 +4,10 @@ using DAL.Repositories_EF;
 using Domain;
 using Domain.Dashboards;
 using Newtonsoft.Json;
+using POC_IntegratieProject_framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -128,28 +130,55 @@ namespace BL.Managers
             personen.ForEach(p => elementRepository.AddPersoon(p));
         }
 
-        public string getLineGraphData(Grafiek grafiek)
+        public List<Persoon> readJSONPersonen()
         {
-            PostManager postManager = new PostManager();
-            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-         
-            Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
+            List<Persoon> personen = new List<Persoon>();
+            List<PersoonParser> items;
 
-            foreach (DataConfig dataConfig in dataConfigs)
+            using (StreamReader r = new StreamReader("politici.json"))
             {
-                List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
-                DateTime start = DateTime.Now;
-                for (int i = 0; i < NUMBERDATAPOINTS; i++)
-                {
-                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).ToList();
-
-                    data.Add(start, posts.Count);
-                    
-                   start = start.Subtract(grafiek.tijdschaal);
-                }
-                data.Reverse();
+                string json = r.ReadToEnd();
+                items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
             }
-            return JsonConvert.SerializeObject(data).ToString();
+            foreach (PersoonParser persoon in items)
+            {
+                Persoon politicus = new Persoon()
+                {
+                    DateOfBirth = persoon.dateOfBirth,
+                    District = persoon.district,
+                    Facebook = persoon.facebook,
+                    Gender = persoon.gender,
+                    Naam = persoon.full_name,
+                    Position = persoon.position,
+                    Level = persoon.level,
+                    Postal_code = persoon.postal_code,
+                    Site = persoon.site,
+                    Town = persoon.town,
+                    Twitter = persoon.twitter,
+                };
+                Organisatie organisatie = (Organisatie)getElementByNaam(persoon.organisation);
+                if (organisatie == null)
+                {
+                    organisatie = new Organisatie()
+                    {
+                        Naam = persoon.organisation,
+                        Personen = new List<Persoon>()
+                        {
+                            politicus
+                        }
+                    };
+                    addOrganisatie(organisatie);
+                }
+                politicus.Organisatie = organisatie;
+                personen.Add(politicus);
+            }
+            return personen;
+
+        }
+
+        public void deleteAllPersonen()
+        {
+            elementRepository.deleteAllPersonen();
         }
     }
 

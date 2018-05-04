@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public abstract class Element : IComparable<Element>
+    public abstract class Element
     {
+        public static Comparison<Element> compareByNaam = delegate (Element element1, Element element2)
+        {
+            return element1.Naam.CompareTo(element2.Naam);
+        };
         [Key]
         public int Id { get; set; }
         [Required]
@@ -17,9 +21,16 @@ namespace Domain
         public double Trend { get; set; }
         public int TrendingPlaats { get; set; }
 
-       public int CompareTo(Element other)
+        public override bool Equals(object obj)
         {
-            return this.Trend.CompareTo(other.Trend);
+            var element = obj as Element;
+            return element != null &&
+                   Naam == element.Naam;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1386946022 + EqualityComparer<string>.Default.GetHashCode(Naam);
         }
     }
 }

@@ -122,19 +122,6 @@ namespace DAL.EF
             };
             #endregion
 
-            #region Organisatie
-            Organisatie organisatie1 = new Organisatie()
-            {
-                Naam = "NVA",
-                Personen = new List<Persoon>()
-            };
-            Organisatie organisatie2 = new Organisatie()
-            {
-                Naam = "GROEN",
-                Personen = new List<Persoon>()
-            };
-            #endregion{
-
             #region Keywords
             Keyword keyword1 = new Keyword()
             {
@@ -166,8 +153,6 @@ namespace DAL.EF
                 DataType = DataType.TOTAAL,
                 Elementen = new List<Element>()
             };
-
-            dataConfig2.Elementen.Add(organisatie2);
 
             DataConfig dataConfig3 = new DataConfig
             {
@@ -305,11 +290,6 @@ namespace DAL.EF
 
             #region AddKeywords
             context.Keywords.Add(keyword1);
-            #endregion
-
-            #region AddOrganisaties
-            context.Organisaties.Add(organisatie1);
-            context.Organisaties.Add(organisatie2);
             #endregion
 
             #region AddThemas
