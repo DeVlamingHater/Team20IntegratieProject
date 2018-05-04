@@ -104,8 +104,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 }
       };
       string dataString = dashboardManager.getLineGraphData(testGrafiek);
-     // Dictionary<string, int> data = JsonConvert.DeserializeObject<Dictionary<string, int>>(dataString);
 
+      Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+      Dictionary<string, int> data = JsonConvert.DeserializeObject<Dictionary<string, int>>(dataconfigs.First().Value);
       Json(ViewBag.Namen = data.Keys);
       Json(ViewBag.Trending = data.Values);
       ViewBag.Index = index;
