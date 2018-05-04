@@ -4,25 +4,11 @@
 }
 
 <h2>_ItemsPartial</h2>
-@*<ul>
+<ul>
     @foreach (var item in Model)
     {
-        <li>
-            @Html.DisplayFor(modelItem => item.Id)
-    </li>
-}
-</ul>*@
-
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="card mb-3" >
-            <div class="card-header">
-                @Html.DisplayFor(modelItem => item.Id)
-            </div>
-            <div class="card-body">
-            </div>
-        </div>
+      <li>@Html.DisplayFor(modelItem => item.Id)
+        </li>
     }
-    </div>
+</ul>
 

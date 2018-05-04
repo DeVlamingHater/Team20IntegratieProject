@@ -210,7 +210,16 @@ namespace PolitiekeBarometer_MVC.Controllers
       string url = "https://twitter.com/" + twitter1;
       return Redirect(url);
     }
-   
+    public ActionResult setOrganisatie(Organisatie organisatie)
+    {
+        return View(organisatie.Naam);
+      
+
+      //string twitter = organisatie.Naam; //moet twitter worden;
+      ////string twitter1 = twitter.Remove(0, 1);
+      //string url = "https://twitter.com/" + twitter + "/profile_image?size=original";
+      //return View(twitter);
+    }
     public ActionResult Thema(int id)
     {
       Element element = Emgr.getElementById(id);
