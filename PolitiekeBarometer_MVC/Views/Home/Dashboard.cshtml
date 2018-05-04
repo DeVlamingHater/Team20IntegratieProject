@@ -3,7 +3,7 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2> 
+<h2>Dashboard</h2>
 @*<div id="dashboard">
     @* @if (Request.IsAuthenticated)
         {
@@ -19,63 +19,48 @@
             </div>
         </div>*@
 
-    <script>
-        var id = 0;
-        function visible(zone) {
-            var items = document.getElementById(zone);
-            if (items.style.display == 'none') {
-                items.style.display = 'block';
-                if (id != 0 && id != zone) {
-                    var item = document.getElementById(id);
-                    item.style.display = 'none'; 
-                }
-                id = zone;
-            } else
+
+@*<div class="container">
+            @foreach (var item in Model)
             {
-                items.style.display = 'none';
-            }
-            
-        }
-    </script>
-    @*<div class="container">
-        @foreach (var item in Model)
-        {
-            <div class="card bg-light">
-                <div contenteditable="true">
-                    @Html.DisplayFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "card-header" } })
+                <div class="card bg-light">
+                    <div contenteditable="true">
+                        @Html.DisplayFor(modelItem => item.Naam, new { htmlAttributes = new { @class = "card-header" } })
+                    </div>
+                    @Html.ActionLink("setActive", "setActiveZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-body" } })
+
+
+                    @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
+
+                    @Html.ActionLink("x", "DeleteZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-footer" } })
                 </div>
-                @Html.ActionLink("setActive", "setActiveZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-body" } })
+            }
+            @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })
+        </div>
+        <div id="tab">
 
-
-                @Html.ValidationMessageFor(modelItem => item.Naam, "", new { @class = "text-danger" })
-
-                @Html.ActionLink("x", "DeleteZone", new { zoneId = item.Id }, new { htmlAttributes = new { @class = "card-footer" } })
-            </div>
-        }
-        @Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })
-    </div>
-    <div id="tab">
-
-    </div>
-</div>*@
+        </div>
+    </div>*@
 
 
 
 <div class="container border-danger">
 
-    <ul class="nav nav-tabs nav-stacked">
+    
         @foreach (var zone in Model)
         {
-            <li>
-                <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class="tab-links">
-                    @Html.DisplayFor(modelItem => zone.Naam)
-                </button>
-                @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
+            
+                <div class="btn-group">
+                    <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class=" btn btn-primary">
+                        @Html.DisplayFor(modelItem => zone.Naam)
+                    </button>
+                    @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
+                </div>
 
-            </li>
+            
         }
-        <li>@Html.ActionLink("plus", "AddZone", null, new { @class = "newtab" })</li>
-    </ul>
+        @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
+    
     @foreach (var zone in Model)
     {
         <div class="tab-content bg-light">
@@ -86,24 +71,19 @@
     }
 </div>
 <script>
-      function openCity(evt, cityName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
+    var id = 0;
+    function visible(zone) {
+        var items = document.getElementById(zone);
+        if (items.style.display == 'none') {
+            items.style.display = 'block';
+            if (id != 0 && id != zone) {
+                var item = document.getElementById(id);
+                item.style.display = 'none';
+            }
+            id = zone;
+        } else {
+            items.style.display = 'none';
         }
 
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tab-links");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " active";
     }
 </script>
