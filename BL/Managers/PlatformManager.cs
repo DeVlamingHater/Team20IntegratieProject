@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BL.Managers
 {
-    public class PlatformManager : Interfaces.IPlatformManager
+    public class PlatformManager : IPlatformManager
     {
         IPlatformRepository platformRepository;
 
@@ -25,9 +25,14 @@ namespace BL.Managers
             platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
         public Gebruiker getGebruiker(int gebruikerId)
-    {
-      Gebruiker gebruiker = platformRepository.getGebruiker(gebruikerId);
-      return gebruiker;
-    }
+        {
+            Gebruiker gebruiker = platformRepository.getGebruiker(gebruikerId);
+            return gebruiker;
+        }
+
+        public void createGebruiker(string id, string name, string email)
+        {
+            platformRepository.createGebruiker(id, name, email);
+        }
     }
 }

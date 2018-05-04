@@ -14,7 +14,13 @@ namespace Domain.Dashboards
         [Required]
         public GrafiekType GrafiekType{ get; set; }
 
-        public TimeSpan tijdschaal { get; set; }
+        public TimeSpan Tijdschaal { get; set; }
+
+        public int AantalDataPoints { get; set; }
+
+        public DataType DataType { get; set; }
+                
+        public List<Filter> Filters { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

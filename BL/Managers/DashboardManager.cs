@@ -100,11 +100,6 @@ namespace BL.Managers
             return dashboardRepository.getAllAlerts().ToList();
         }
 
-        internal TimeSpan getHistoriek()
-        {
-            throw new NotImplementedException();
-        }
-
         public void sendAlerts()
         {
             initNonExistingRepo(true);
@@ -151,7 +146,7 @@ namespace BL.Managers
                         SmtpServer.Send(mail);
                     }
                 }
-                
+
             }
 
         }
@@ -180,14 +175,13 @@ namespace BL.Managers
             }
         }
 
-        
-
         TimeSpan IDashboardManager.getHistoriek()
         {
             return dashboardRepository.getPlatform().Historiek;
         }
         public string getLineGraphData(Grafiek grafiek)
         {
+
             PostManager postManager = new PostManager();
             
             IElementManager elementManager = new ElementManager();
@@ -212,24 +206,103 @@ namespace BL.Managers
             grafiek = testGrafiek;
             Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
+
             foreach (DataConfig dataConfig in dataConfigs)
             {
+                Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
                 DateTime start = DateTime.Now;
                 for (int i = 0; i < NUMBERDATAPOINTS; i++)
                 {
                     List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
 
-                    DateTime eind = start.Add(grafiek.tijdschaal);
+                    DateTime eind = start.Add(grafiek.Tijdschaal);
 
-                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p=>p.Date.Subtract(eind).TotalDays<0).ToList();
+                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
-                    data.Add(start, posts.Count);
+                    filterPosts(posts, grafiek.Filters);
 
-                    start = start.Subtract(grafiek.tijdschaal);
+                    switch (grafiek.DataType)
+                    {
+                        case Domain.DataType.TOTAAL:
+                            data.Add(start, posts.Count);
+                            break;
+                        case Domain.DataType.TREND:
+                            break;
+                        case Domain.DataType.KRUISING:
+                            break;
+                        default:
+                            break;
+                    }
+                    start = start.Subtract(grafiek.Tijdschaal);
                 }
-                data.Reverse();
+                string dataString = JsonConvert.SerializeObject(data).ToString();
+                keyValues.Add(index.ToString(), dataString);
             }
-            return JsonConvert.SerializeObject(data).ToString();
+            return JsonConvert.SerializeObject(keyValues).ToString();
+        }
+
+        public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
+        {
+            if (filters == null)
+            {
+                return posts;
+            }
+            foreach (Filter filter in filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.SINCE:
+                        posts = posts.Where(p => p.Date.AddHours(filter.Waarde).Ticks > 0).ToList();
+                        break;
+                    case FilterType.UNTIL:
+                        posts = posts.Where(p => p.Date.AddHours(filter.Waarde).Ticks < 0).ToList();
+                        break;
+                    case FilterType.SENTIMENT:
+                        switch (filter.Operator)
+                        {
+                            case "<":
+                                posts = posts.Where(p => p.Sentiment[0] < filter.Waarde).ToList();
+                                break;
+                            case ">":
+                                posts = posts.Where(p => p.Sentiment[0] > filter.Waarde).ToList();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case FilterType.AGE:
+                        posts = posts.Where(p => p.Age.Equals(filter.Waarde)).ToList();
+                        break;
+                    case FilterType.RETWEET:
+                        posts = posts.Where(p=>p.Retweet == true).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return posts;
+        }
+
+        public string getGrafiekData(Grafiek grafiek)
+        {
+            IPostManager postManager = new PostManager();
+            StringBuilder response = new StringBuilder("");
+            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
+
+            switch (grafiek.GrafiekType)
+            {
+                case GrafiekType.STAAF:
+                    break;
+                case GrafiekType.LIJN:
+                    string data = getLineGraphData(grafiek);
+                    response.Append(data);
+                    break;
+                case GrafiekType.PIE:
+                    break;
+                default:
+                    break;
+            }
+            return response.ToString();
         }
     }
 }

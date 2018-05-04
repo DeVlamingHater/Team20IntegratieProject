@@ -19,7 +19,6 @@ namespace BL.Managers
 
         UnitOfWorkManager uowManager;
 
-        private static int NUMBERDATAPOINTS = 12;
         public ElementManager(UnitOfWorkManager uowManager)
         {
             this.uowManager = uowManager;

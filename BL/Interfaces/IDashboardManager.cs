@@ -29,5 +29,7 @@ namespace BL.Interfaces
         TimeSpan getHistoriek();
         string getLineGraphData(Grafiek grafiek);
 
+        string getGrafiekData(Grafiek grafiek);
+        List<Post> filterPosts(List<Post> posts, List<Filter> filters);
     }
 }

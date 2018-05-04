@@ -17,6 +17,7 @@ namespace DAL.EF
         public DbSet<DataConfig> DataConfigs { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
         public DbSet<Grafiek> Grafieken { get; set; }
+        public DbSet<Filter> Filters { get; set; }
         public DbSet<Zone> Zones { get; set; }
         public DbSet<Item> Items { get; set; }
         //Elementen
@@ -30,8 +31,6 @@ namespace DAL.EF
         public DbSet<Deelplatform> Deelplatformen { get; set; }
         //Posts
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Parameter> Parameters { get; set; }
-        public DbSet<Waarde> Waardes { get; set; }
 
     private readonly bool delaySave;
 
@@ -57,13 +56,17 @@ namespace DAL.EF
 
             modelBuilder.Entity<Alert>().HasRequired<DataConfig>(a => a.DataConfig);
 
-            modelBuilder.Entity<DataConfig>().HasMany<Element>(dc => dc.Elementen);
+            modelBuilder.Entity<DataConfig>().HasRequired<Element>(dc => dc.Element);
 
             modelBuilder.Entity<Grafiek>().HasMany<DataConfig>(g => g.Dataconfigs);
 
             modelBuilder.Entity<Dashboard>().HasMany<Zone>(db=>db.Zones);
-
+            
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
+
+            modelBuilder.Entity<Filter>().HasRequired<Grafiek>(f => f.Grafiek);
+
+            modelBuilder.Entity<Grafiek>().HasMany<Filter>(g => g.Filters);
         }
 
         public override int SaveChanges()

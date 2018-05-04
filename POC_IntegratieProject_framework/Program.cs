@@ -105,31 +105,37 @@ namespace PolitiekeBarometer_CA
         private static void showGrafiekData()
         {
             ElementManager elementManager = new ElementManager();
-            DashboardManager dashboardManager= new DashboardManager();
+            DashboardManager dashboardManager = new DashboardManager();
             Element testElement = elementManager.getElementByNaam("Bart De Wever");
             DataConfig testDataConfig = new DataConfig()
             {
                 DataConfiguratieId = 100,
-                DataType = DataType.TOTAAL,
-                Elementen = new List<Element>()
-                {
-                    testElement
-                }
+                Element = testElement
+
             };
             Grafiek testGrafiek = new Grafiek()
             {
-                tijdschaal = new TimeSpan(1, 0, 0, 0),
+                DataType = DataType.TOTAAL,
+                Tijdschaal = new TimeSpan(1, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                     testDataConfig
-                }
+                },
+                GrafiekType=GrafiekType.LIJN
             };
-            string testData =    dashboardManager.getLineGraphData(testGrafiek);
-            Dictionary<DateTime, int> data = JsonConvert.DeserializeObject<Dictionary<DateTime, int>>(testData);
-            foreach (KeyValuePair<DateTime, int> item in data)
+            string testData = dashboardManager.getGrafiekData(testGrafiek);
+            Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(testData);
+            foreach (KeyValuePair<string, string> item in data)
             {
-                Console.WriteLine("DAG: " +item.Key.Day + " WAARDE: " + item.Value);
+                Console.WriteLine("Dataconfig" + item.Key);
+                Dictionary<DateTime, int> lijnData = JsonConvert.DeserializeObject<Dictionary<DateTime, int>>(item.Value);
+                foreach (KeyValuePair<DateTime, int> lijnItem in lijnData)
+                {
+                    Console.WriteLine("DAG: " + lijnItem.Key.Day + " WAARDE: " + lijnItem.Value);
+                }
+
             }
+
         }
 
         private static void addPoliticiJSON()
@@ -169,6 +175,7 @@ namespace PolitiekeBarometer_CA
                 Console.WriteLine(element.Trend);
             }
         }
+
         private static void showAlerts()
         {
             Console.WriteLine("Niet meer geïmplementeerd");

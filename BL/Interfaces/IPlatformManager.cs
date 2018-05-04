@@ -6,5 +6,6 @@ namespace BL.Interfaces
 {
     public interface IPlatformManager
     {
+        void createGebruiker(string id, string name, string email);
     }
 }
