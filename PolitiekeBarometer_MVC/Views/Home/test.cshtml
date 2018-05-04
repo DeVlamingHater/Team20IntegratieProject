@@ -2,12 +2,10 @@
 <h3>@ViewBag.Namen[0]</h3>
 <h3>@ViewBag.Ids[0]</h3>
 <button type="button" onclick="test()">klik</button>
+<p id="test">jesse</p>
 
 <script>
-    function test() {
-        var p = document.getElementById("demo");
-        var namen = [];
-        namen = @Html.Raw(Json.Encode(ViewBag.Namen));
-        p.innerHTML = namen[1];
+   function test() {
+        document.getElementById("test").innerHTML = "test";
     }
 </script>
