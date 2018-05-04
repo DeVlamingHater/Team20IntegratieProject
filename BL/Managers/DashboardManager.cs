@@ -189,10 +189,29 @@ namespace BL.Managers
         public string getLineGraphData(Grafiek grafiek)
         {
             PostManager postManager = new PostManager();
-            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-
+            
+            IElementManager elementManager = new ElementManager();
+            Element testElement = elementManager.getElementByNaam("Bart De Wever");
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                DataType = Domain.DataType.TOTAAL,
+                Elementen = new List<Element>()
+                {
+                    testElement
+                }
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                tijdschaal = new TimeSpan(1, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                }
+            };
+            grafiek = testGrafiek;
             Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
-
+            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             foreach (DataConfig dataConfig in dataConfigs)
             {
                 DateTime start = DateTime.Now;

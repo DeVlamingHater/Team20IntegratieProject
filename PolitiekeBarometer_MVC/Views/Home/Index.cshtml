@@ -102,12 +102,13 @@
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
-        @Html.Action("_LijnGrafiekPartial")
+        @Html.Action("_LijnGrafiekPartial",new { index = 0 })
         <div class="row">
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div> 
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div>
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div> 
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div> 
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div> 
         </div>
+        @Html.Action("_TaartGrafiekPartial", new { index = 0 })
         </div>
     
     <!-- /.container-fluid-->
