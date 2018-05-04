@@ -93,6 +93,7 @@ namespace BL.Managers
             postRepository.deleteOldPosts(historiek);
         }
 
+
         public async Task<string> updatePosts()
         {
             HttpClient client = new HttpClient();
@@ -103,15 +104,24 @@ namespace BL.Managers
             DateTime sinceDT = DateTime.Now.AddHours(-1);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            Dictionary<string, string> values = new Dictionary<string, string>()
-            {
-                {"since", "24 Apr 2018 8:00:00" },
-                {"until",  "20 Apr 2018 8:00:00"}
-            };
-            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", content);
+            //Dictionary<string, string> values = new Dictionary<string, string>()
+            //{
+            //    {"since", "27 Apr 2018 8:00:00" }
+            //};
+            //[{"since", "27 Apr 2018 8:00:00" }]
+            var q = new TextGainQueryDTO() { since = "25 Apr 2018 8:00:00" };
+            //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
+            StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", jsonContent);
             string responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
+    }
+    class TextGainQueryDTO
+    {
+        //public string Name { get; set; }
+        public string since { get; set; }
+        //public string Until { get; set; }
     }
 }

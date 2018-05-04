@@ -2,6 +2,8 @@
 using DAL;
 using DAL.Repositories_EF;
 using Domain;
+using Domain.Dashboards;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace BL.Managers
 
         UnitOfWorkManager uowManager;
 
+        private static int NUMBERDATAPOINTS = 12;
         public ElementManager(UnitOfWorkManager uowManager)
         {
             this.uowManager = uowManager;
@@ -95,15 +98,20 @@ namespace BL.Managers
         }
 
 
-    public Element getElementById(int id)
-    {
-      return elementRepository.getElementByID(id);
-    }
+        public Element getElementById(int id)
+        {
+            return elementRepository.getElementByID(id);
+        }
 
-    public IEnumerable<Persoon> getAllPersonen()
-    {
-      return elementRepository.getAllPersonen();
-      }
+        public IEnumerable<Persoon> getAllPersonen()
+        {
+            return elementRepository.getAllPersonen();
+        }
+
+        public List<Thema> getAllThemas()
+        {
+            return elementRepository.getAllThemas();
+        }
 
         public void addElementen(List<Element> elementen)
         {
@@ -117,8 +125,32 @@ namespace BL.Managers
 
         public void addPersonen(List<Persoon> personen)
         {
-            personen.ForEach(p =>elementRepository.AddPersoon(p));
+            personen.ForEach(p => elementRepository.AddPersoon(p));
+        }
+
+        public string getLineGraphData(Grafiek grafiek)
+        {
+            PostManager postManager = new PostManager();
+            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
+         
+            Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
+
+            foreach (DataConfig dataConfig in dataConfigs)
+            {
+                List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+                DateTime start = DateTime.Now;
+                for (int i = 0; i < NUMBERDATAPOINTS; i++)
+                {
+                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).ToList();
+
+                    data.Add(start, posts.Count);
+                    
+                   start = start.Subtract(grafiek.tijdschaal);
+                }
+                data.Reverse();
+            }
+            return JsonConvert.SerializeObject(data).ToString();
         }
     }
-  
+
 }

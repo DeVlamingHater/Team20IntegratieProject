@@ -1,29 +1,19 @@
 ﻿@model IList<Domain.Element>
+
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div class="content-wrapper">
-    <div class="container-fluid">
-        <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active">Charts</li>
-        </ol>
+    ViewBag.Title = "_BarGrafiekPartial";
+ }
         <!-- Example Bar Chart Card-->
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-bar-chart"></i> Bar Chart Example
             </div>
             <div class="card-body">
-                <canvas id="MyBarChart" width="100" height="50"></canvas>
+                <canvas class="MyBarChart" width="100" height="50"></canvas>
                 <button onclick="makeGraph()">Laad grafiek</button>
             </div>
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
-    </div>
-</div>
 
 @foreach
                                 (var element in
@@ -35,25 +25,29 @@
 
 
 <script>
+    var index = 0;
     function makeGraph() {
-        var trends = [];
-        var namen = [];
         var trends1 = document.getElementsByClassName("trend");
         var namen1 = document.getElementsByClassName("naam");
-        for (var i = 0; i < trends1.length; i++) {
-            trends.push(trends1[i].innerHTML);
-            namen.push(namen1[i].innerHTML);
+        var trends2 = [];
+        var namen2 = [];
+        for (var i = 0; i < trends1.length / document.getElementsByClassName("MyBarChart").length; i++) {
+            var getal = 0.5;
+            getal = parseFloat(trends1[i].innerHTML.replace(",", "."));
+            trends2.push(getal);
+            namen2.push(namen1[i].innerHTML)
         }
-        var ctx = document.getElementById("MyBarChart");
+        var ctx = document.getElementsByClassName("MyBarChart")[index];
+        index = index + 1;
         var myLineChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: namen,
+                labels: namen2,
                 datasets: [{
                     label: "Trending",
                     backgroundColor: "rgba(2,117,216,1)",
                     borderColor: "rgba(2,117,216,1)",
-                    data: trends,
+                    data: trends2,
                 }],
             },
             options: {

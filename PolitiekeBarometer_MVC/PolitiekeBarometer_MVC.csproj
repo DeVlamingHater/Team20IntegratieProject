@@ -326,6 +326,7 @@
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\Index.html" />
     <Content Include="Views\Home\Organisatie.cshtml" />
     <Content Include="Views\Home\Grafiek.cshtml" />
+    <Content Include="Views\Home\_BarGrafiekPartial.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
@@ -495,6 +496,8 @@
     <Content Include="Views\Home\_PersonenDropDown.cshtml" />
     <Content Include="Views\Home\_OrganisatieDropDown.cshtml" />
     <Content Include="Views\Home\_ThemaDropDown.cshtml" />
+    <Content Include="Views\Home\_SearchPartial.cshtml" />
+    <Content Include="Views\Home\_LijnGrafiekPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Domain;
+using Domain.Dashboards;
 
 namespace BL.Interfaces
 {
     public interface IElementManager
     {
         Element getElementByNaam(string naam);
-    Element getElementById(int id);
+        Element getElementById(int id);
 
         List<Element> getAllElementen();
 
@@ -18,5 +19,7 @@ namespace BL.Interfaces
         void addElementen(List<Element> elementen);
         void addOrganisatie(Organisatie organisatie);
         void addPersonen(List<Persoon> personen);
+
+        string getLineGraphData(Grafiek grafiek);
     }
 }
