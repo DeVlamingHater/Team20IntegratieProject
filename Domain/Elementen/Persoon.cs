@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Persoon : Element
+    public class Persoon : Element, IComparable<Persoon>
     {
         public Organisatie Organisatie { get; set; }
        
@@ -32,6 +32,12 @@ namespace Domain
         public string Organisation { get; set; }
 
         public string Town { get; set; }
-   
-  }
+
+        public List<Post> Posts{ get; set; }
+
+        public int CompareTo(Persoon other)
+        {
+            return this.Naam.CompareTo(other.Naam);
+        }
+    }
 }

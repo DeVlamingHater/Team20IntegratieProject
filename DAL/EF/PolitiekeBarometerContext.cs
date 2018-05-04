@@ -49,6 +49,8 @@ namespace DAL.EF
             modelBuilder.Entity<Keyword>().HasMany<Thema>(t => t.Themas);
 
             modelBuilder.Entity<Post>().HasMany<Keyword>(kw => kw.Keywords);
+            modelBuilder.Entity<Post>().HasMany<Persoon>(p =>p.Personen);
+            modelBuilder.Entity<Persoon>().HasMany<Post>(p => p.Posts);
             modelBuilder.Entity<Keyword>().HasMany<Post>(t => t.Posts);
 
             modelBuilder.Entity<Organisatie>().HasMany<Persoon>(p => p.Personen);

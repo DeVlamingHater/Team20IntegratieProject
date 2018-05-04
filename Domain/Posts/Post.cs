@@ -15,7 +15,7 @@ namespace Domain
 
         public long PostId { get; set; }
 
-        public Persoon Persoon { get; set; }
+        public List<Persoon> Personen{ get; set; }
 
         public List<Keyword> Keywords { get; set; }
 

@@ -10,39 +10,25 @@
     </div>
     <div class="card-body">
         <canvas class="MyLineChart" width="100" height="50"></canvas>
-        <button onclick="makeGraph()">Laad grafiek</button>
+        <button onclick="makeLineGraph()">Laad grafiek</button>
     </div>
     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 
-@foreach
-                                            (var element in
-                                            Model)
-{
-    <li class="trend" hidden="hidden">@element.Trend</li>
-    <li class="naam" hidden="hidden">@element.Naam</li> <br />
-}
-
 <script>
     var index = 0;
-    function makeGraph() {
-        var trends1 = document.getElementsByClassName("trend");
-        var namen1 = document.getElementsByClassName("naam");
-        var trends2 = [];
-        var namen2 = [];
-        for (var i = 0; i < trends1.length / document.getElementsByClassName("MyLineChart").length; i++) {
-            var getal = 0.5;
-            getal = parseFloat(trends1[i].innerHTML.replace(",", "."));
-            trends2.push(getal);
-            namen2.push(namen1[i].innerHTML)
-        }
-        var ctx = document.getElementsByClassName("myLineChart")[index];
+       var namen = [];
+    namen = @Html.Raw(Json.Encode(ViewBag.Namen));
+    var trends = [];
+        trends = @Html.Raw(Json.Encode(ViewBag.Trending));
+    function makeLineGraph() {
+        var ctx = document.getElementsByClassName("MyLineChart")[index];
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+                labels: namen,
                 datasets: [{
-                    label: "Sessions",
+                    labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
                     lineTension: 0.3,
                     backgroundColor: "rgba(2,117,216,0.2)",
                     borderColor: "rgba(2,117,216,1)",
@@ -53,7 +39,7 @@
                     pointHoverBackgroundColor: "rgba(2,117,216,1)",
                     pointHitRadius: 20,
                     pointBorderWidth: 2,
-                    data: trends2,
+                    data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
                 }],
             },
             options: {
@@ -81,7 +67,7 @@
                     }],
                 },
                 legend: {
-                    display: false
+                    display: true
                 }
             }
         });
