@@ -23,29 +23,29 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-        public ActionResult Test()
-        {
-            ElementManager mgr = new ElementManager();
-            List<string> namen = new List<string>();
-            List<int> ids = new List<int>();
-            foreach (Element element in mgr.getTrendingElementen())
-            {
-                namen.Add(element.Naam);
-                ids.Add(element.Id);
-            }
-           Json(ViewBag.Namen = namen);
-            ViewBag.Lengte = namen.Count();
-            ViewBag.Ids = ids;
-            return View();
-        }
+    public ActionResult Test()
+    {
+      ElementManager mgr = new ElementManager();
+      List<string> namen = new List<string>();
+      List<int> ids = new List<int>();
+      foreach (Element element in mgr.getTrendingElementen())
+      {
+        namen.Add(element.Naam);
+        ids.Add(element.Id);
+      }
+      Json(ViewBag.Namen = namen);
+      ViewBag.Lengte = namen.Count();
+      ViewBag.Ids = ids;
+      return View();
+    }
 
 
-        public ActionResult NewTab()
+    public ActionResult NewTab()
     {
       return View();
     }
 
-        public ActionResult Element()
+    public ActionResult Element()
     {
       return View();
     }
@@ -55,69 +55,83 @@ namespace PolitiekeBarometer_MVC.Controllers
       ElementManager mgr = new ElementManager();
       List<Element> elementen = new List<Element>();
       elementen = mgr.getTrendingElementen();
-            List<string> namen = new List<string>();
-            List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen())
-            {
-                namen.Add(element.Naam);
-                trends.Add(element.Trend);
-            }
-            Json(ViewBag.Namen = namen);
-            Json(ViewBag.Trending = trends);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
+      List<string> namen = new List<string>();
+      List<double> trends = new List<double>();
+      foreach (Element element in mgr.getTrendingElementen())
+      {
+        namen.Add(element.Naam);
+        trends.Add(element.Trend);
+      }
+      Json(ViewBag.Namen = namen);
+      Json(ViewBag.Trending = trends);
+      ViewBag.Index = index;
+      return PartialView(elementen.ToList());
     }
 
-        public ActionResult _LijnGrafiekPartial(int index)
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            //elementen = mgr.getTrendingElementen();
-            //List<string> namen = new List<string>();
-            //List<double> trends = new List<double>();
-            //foreach (Element element in mgr.getTrendingElementen())
-            //{
-            //    namen.Add(element.Naam);
-            //    trends.Add(element.Trend);
-            //}
-            //Json(ViewBag.Namen = namen);
-            //Json(ViewBag.Trending = trends);
-            DashboardManager dashboardManager = new DashboardManager();
-            string dataString = dashboardManager.getLineGraphData(new Grafiek());
-            Dictionary<DateTime, int> data = JsonConvert.DeserializeObject<Dictionary<DateTime, int>>(dataString);
-            List<string> datums = new List<string>();
-            for (int i = 0;i < data.Keys.Count;i++)
-            {
-                DateTime myDate = data.Keys.ElementAt(i);
-                String test = myDate.ToString("HH:00 - dd MMM yyyy");
-                datums.Add(test);
-            }
-            Json(ViewBag.Namen = datums);
-            Json(ViewBag.Trending = data.Values);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
+    public ActionResult _LijnGrafiekPartial(int index)
+    {
+      ElementManager mgr = new ElementManager();
+      List<Element> elementen = new List<Element>();
+      //elementen = mgr.getTrendingElementen();
+      //List<string> namen = new List<string>();
+      //List<double> trends = new List<double>();
+      //foreach (Element element in mgr.getTrendingElementen())
+      //{
+      //    namen.Add(element.Naam);
+      //    trends.Add(element.Trend);
+      //}
+      //Json(ViewBag.Namen = namen);
+      //Json(ViewBag.Trending = trends);
 
-        }
-        public ActionResult _TaartGrafiekPartial(int index)
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen();
-            List<string> namen = new List<string>();
-            List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen())
-            {
-                namen.Add(element.Naam);
-                trends.Add(element.Trend);
-            }
-            Json(ViewBag.Namen = namen);
-            Json(ViewBag.Trending = trends);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
-        }
+      
+      Element testElement = mgr.getElementByNaam("Bart De Wever");
+      DashboardManager dashboardManager = new DashboardManager();
+      DataConfig testDataConfig = new DataConfig()
+      {
+        DataConfiguratieId = 100,
+        Element =
+             testElement
 
-        #region Dashboard
-        static int actieveZone;
+      };
+      Grafiek testGrafiek = new Grafiek()
+      {
+        DataType = Domain.DataType.TOTAAL,
+
+        Tijdschaal = new TimeSpan(1, 0, 0, 0),
+        Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                }
+      };
+      string dataString = dashboardManager.getLineGraphData(testGrafiek);
+     // Dictionary<string, int> data = JsonConvert.DeserializeObject<Dictionary<string, int>>(dataString);
+
+      Json(ViewBag.Namen = data.Keys);
+      Json(ViewBag.Trending = data.Values);
+      ViewBag.Index = index;
+      return PartialView(elementen.ToList());
+
+    }
+    public ActionResult _TaartGrafiekPartial(int index)
+    {
+      ElementManager mgr = new ElementManager();
+      List<Element> elementen = new List<Element>();
+      elementen = mgr.getTrendingElementen();
+      List<string> namen = new List<string>();
+      List<double> trends = new List<double>();
+      foreach (Element element in mgr.getTrendingElementen())
+      {
+        namen.Add(element.Naam);
+        trends.Add(element.Trend);
+      }
+      Json(ViewBag.Namen = namen);
+      Json(ViewBag.Trending = trends);
+      ViewBag.Index = index;
+      return PartialView(elementen.ToList());
+    }
+
+    #region Dashboard
+    static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -264,7 +278,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     public ActionResult setImage(string twitter)
     {
 
-      string twitter1 = twitter.Replace("@","");
+      string twitter1 = twitter.Replace("@", "");
 
       string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
       return Redirect(url);
@@ -279,8 +293,8 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {
-        return View(organisatie.Naam);
-      
+      return View(organisatie.Naam);
+
 
       //string twitter = organisatie.Naam; //moet twitter worden;
       ////string twitter1 = twitter.Remove(0, 1);
