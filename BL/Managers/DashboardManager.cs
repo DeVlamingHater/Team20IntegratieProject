@@ -209,7 +209,7 @@ namespace BL.Managers
 
             foreach (DataConfig dataConfig in dataConfigs)
             {
-                Dictionary<DateTime, int> data = new Dictionary<DateTime, int>();
+                Dictionary<DateTime, double> data = new Dictionary<DateTime, double>();
                 DateTime start = DateTime.Now;
                 for (int i = 0; i < NUMBERDATAPOINTS; i++)
                 {
@@ -227,8 +227,13 @@ namespace BL.Managers
                             data.Add(start, posts.Count);
                             break;
                         case Domain.DataType.TREND:
+                           
                             break;
                         case Domain.DataType.KRUISING:
+                            break;
+                        case Domain.DataType.SENTIMENT:
+                            double average = posts.Average(p=>p.Sentiment[0] * p.Sentiment[1]);
+                            data.Add(start, average);
                             break;
                         default:
                             break;
@@ -289,20 +294,22 @@ namespace BL.Managers
             StringBuilder response = new StringBuilder("");
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
 
-            switch (grafiek.GrafiekType)
+            if (grafiek.GrafiekType == GrafiekType.LIJN)
             {
-                case GrafiekType.STAAF:
-                    break;
-                case GrafiekType.LIJN:
-                    string data = getLineGraphData(grafiek);
-                    response.Append(data);
-                    break;
-                case GrafiekType.PIE:
-                    break;
-                default:
-                    break;
+                string data = getLineGraphData(grafiek);
+                response.Append(data);
             }
+            else if (grafiek.GrafiekType == GrafiekType.PIE||grafiek.GrafiekType ==GrafiekType.STAAF)
+            {
+                string data = getOtherGraphData(grafiek);
+            }
+           
             return response.ToString();
+        }
+
+        private string getOtherGraphData(Grafiek grafiek)
+        {
+            
         }
     }
 }
