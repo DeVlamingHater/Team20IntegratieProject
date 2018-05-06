@@ -95,7 +95,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       };
       Grafiek testGrafiek = new Grafiek()
       {
-        DataType = Domain.DataType.TOTAAL,
+        DataType = DataType.TOTAAL,
 
         Tijdschaal = new TimeSpan(1, 0, 0, 0),
         Dataconfigs = new List<DataConfig>()
@@ -103,11 +103,13 @@ namespace PolitiekeBarometer_MVC.Controllers
                     testDataConfig
                 }
       };
-      string dataString = dashboardManager.getLineGraphData(testGrafiek);
+
+      string dataString = dashboardManager.getGraphData(testGrafiek);
+
 
       Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
 
-      Dictionary<string, int> data = JsonConvert.DeserializeObject<Dictionary<string, int>>(dataconfigs.First().Value);
+      Dictionary<string, double> data = JsonConvert.DeserializeObject<Dictionary<string, double>>(dataconfigs.First().Value);
       Json(ViewBag.Namen = data.Keys);
       Json(ViewBag.Trending = data.Values);
       ViewBag.Index = index;

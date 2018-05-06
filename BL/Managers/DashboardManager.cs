@@ -145,6 +145,10 @@ namespace BL.Managers
 
                         SmtpServer.Send(mail);
                     }
+                    if (alert.ApplicatieMelding)
+                    {
+                        
+                    }
                 }
 
             }
@@ -190,16 +194,19 @@ namespace BL.Managers
             int index = 0;
             foreach (DataConfig dataConfig in dataConfigs)
             {
-                Dictionary<string, int> grafiekData = new Dictionary<string, int>();
-                DateTime start = DateTime.Now;
-                
-                for (int i = 0; i < NUMBERDATAPOINTS; i++)
+                //Dictionary van de Data, bevat geformateerde datum en double voor de data
+                Dictionary<string, double> grafiekData = new Dictionary<string, double>();
+
+                DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
+
+                TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
+
+                for (int i = 0; i < grafiek.AantalDataPoints; i++)
                 {
                     List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
                     int totaal = posts.Count();
 
-                    DateTime eind = start.Add(grafiek.Tijdschaal);
-
+                    DateTime eind = start.Add(interval);
                     posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
                     posts = filterPosts(posts, grafiek.Filters);
@@ -207,19 +214,20 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(dateString, posts.Count);
+                            grafiekData.Add(dateString, (double)posts.Count);
                             break;
                         case Domain.DataType.TREND:
-                            grafiekData.Add(dateString, posts.Count / totaal);
+                            double dataPoint = (double)posts.Count / (double)totaal;
+                            grafiekData.Add(dateString, dataPoint);
                             break;
                         case Domain.DataType.SENTIMENT:
-                            int average = (int)posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
+                            double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
                             grafiekData.Add(dateString, average);
                             break;
                         default:
                             break;
                     }
-                    start = start.Subtract(grafiek.Tijdschaal);
+                    start = start.Add(interval);
                 }
                 string dataString = JsonConvert.SerializeObject(grafiekData);
                 data.Add(index.ToString(), dataString);
