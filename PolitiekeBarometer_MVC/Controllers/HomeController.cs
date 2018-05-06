@@ -49,6 +49,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       return View();
     }
+    #region Grafieken
 
     public ActionResult _BarGrafiekPartial(int index)
     {
@@ -132,12 +133,29 @@ namespace PolitiekeBarometer_MVC.Controllers
       return PartialView(elementen.ToList());
     }
 
+    public ActionResult bewerkGrafiek()
+    {
+      // nog implementeren
+      return View();
+    }
+    public ActionResult maakAllert()
+    {
+      //nog implementeren
+      return View();
+    }
+    public ActionResult saveGrafiek()
+    {
+      //nog implementeren
+      return View();
+    }
+    #endregion
+
     #region Dashboard
     static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
-      Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
+      Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
       IEnumerable<Zone> zones = mgr.getZones(dashboard);
       if (actieveZone == 0)
       {

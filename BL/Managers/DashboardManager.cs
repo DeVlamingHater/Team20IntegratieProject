@@ -31,9 +31,9 @@ namespace BL.Managers
       dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
     }
 
-    public Dashboard getDashboard(int gebruikerId)
+    public Dashboard getDashboard(string gebruikersNaam)
     {
-      Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
+      Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
       return dashboard;
     }
 
@@ -60,7 +60,7 @@ namespace BL.Managers
     public Zone addZone()
     {
       // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-      Dashboard dashboard = this.getDashboard(1);
+      Dashboard dashboard = this.getDashboard("Sam Claessen");
       IEnumerable<Zone> zones = this.getZones(dashboard);
       Zone zone = new Zone()
       {
