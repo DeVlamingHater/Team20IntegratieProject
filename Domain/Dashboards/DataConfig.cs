@@ -15,5 +15,7 @@ namespace Domain
         [Required]
         public Element Element { get; set; }
 
+        public Element Vergelijking { get; set; }
+
     }
 }
