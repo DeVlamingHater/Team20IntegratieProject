@@ -24,8 +24,6 @@ namespace Domain.Dashboards
 
     public enum FilterType
     {
-        SINCE, 
-        UNTIL,
         SENTIMENT,
         AGE,
         RETWEET

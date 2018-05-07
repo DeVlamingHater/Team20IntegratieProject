@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Domain.Elementen;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
+using BL.Interfaces;
+using Microsoft.AspNet.Identity;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -39,59 +41,62 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
+        public ActionResult Element()
+        {
+            return View();
+        }
+
+        public ActionResult NewTab()
+        {
+            return View();
+        }
+        public ActionResult _BarGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            ViewBag.Index = index;
+            return PartialView(elementen.ToList());
+        }
+
+        public ActionResult Alerts()
+        {
+            return View();
+        }
+
+        public ActionResult _LijnGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            //elementen = mgr.getTrendingElementen();
+            //List<string> namen = new List<string>();
+            //List<double> trends = new List<double>();
+            //foreach (Element element in mgr.getTrendingElementen())
+            //{
+            //    namen.Add(element.Naam);
+            //    trends.Add(element.Trend);
+            //}
+            //Json(ViewBag.Namen = namen);
+            //Json(ViewBag.Trending = trends);
 
 
-    public ActionResult Element()
-    {
-      return View();
-    }
+            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            DashboardManager dashboardManager = new DashboardManager();
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                Element =
+                   testElement
 
-    public ActionResult NewTab()
-    {
-      return View();
-    }
-
-    public ActionResult _BarGrafiekPartial(int index)
-    {
-      ElementManager mgr = new ElementManager();
-      List<Element> elementen = new List<Element>();
-      elementen = mgr.getTrendingElementen();
-      List<string> namen = new List<string>();
-      List<double> trends = new List<double>();
-      foreach (Element element in mgr.getTrendingElementen())
-      {
-        namen.Add(element.Naam);
-        trends.Add(element.Trend);
-      }
-      Json(ViewBag.Namen = namen);
-      Json(ViewBag.Trending = trends);
-      ViewBag.Index = index;
-      return PartialView(elementen.ToList());
-    }
-
-    public ActionResult _LijnGrafiekPartial(int index)
-    {
-      ElementManager mgr = new ElementManager();
-      List<Element> elementen = new List<Element>();
-      //elementen = mgr.getTrendingElementen();
-      //List<string> namen = new List<string>();
-      //List<double> trends = new List<double>();
-      //foreach (Element element in mgr.getTrendingElementen())
-      //{
-      //    namen.Add(element.Naam);
-      //    trends.Add(element.Trend);
-      //}
-      //Json(ViewBag.Namen = namen);
-      //Json(ViewBag.Trending = trends);
-
-
-      Element testElement = mgr.getElementByNaam("Bart De Wever");
-      DashboardManager dashboardManager = new DashboardManager();
-      DataConfig testDataConfig = new DataConfig()
-      {
-        DataConfiguratieId = 100,
-        Element =
-             testElement
 
       };
       Grafiek testGrafiek = new Grafiek()
@@ -124,101 +129,103 @@ namespace PolitiekeBarometer_MVC.Controllers
       ViewBag.Index = index;
       return PartialView(elementen.ToList());
 
-    }
-    public ActionResult _TaartGrafiekPartial(int index)
-    {
-      ElementManager mgr = new ElementManager();
-      List<Element> elementen = new List<Element>();
-      elementen = mgr.getTrendingElementen();
-      List<string> namen = new List<string>();
-      List<double> trends = new List<double>();
-      foreach (Element element in mgr.getTrendingElementen())
-      {
-        namen.Add(element.Naam);
-        trends.Add(element.Trend);
-      }
-      Json(ViewBag.Namen = namen);
-      Json(ViewBag.Trending = trends);
-      ViewBag.Index = index;
-      return PartialView(elementen.ToList());
-    }
-    public ActionResult bewerkGrafiek()
-    {
-      // nog implementeren
-      return View();
-    }
-    public ActionResult maakAllert()
-    {
-      //nog implementeren
-      return View();
-    }
-    public ActionResult saveGrafiek()
-    {
-      //nog implementeren
-      return View();
-    }
+        }
+        public ActionResult _TaartGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            ViewBag.Index = index;
+            return PartialView(elementen.ToList());
+        }
+        public ActionResult bewerkGrafiek()
+        {
+            // nog implementeren
+            return View();
+        }
+        public ActionResult maakAllert()
+        {
+            //nog implementeren
+            return View();
+        }
+        public ActionResult saveGrafiek()
+        {
+            //nog implementeren
+            return View();
+        }
 
-    #region Dashboard
-    static int actieveZone;
-    DashboardManager mgr = new DashboardManager();
-    public ActionResult Dashboard()
-    {
-      Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
-      IEnumerable<Zone> zones = mgr.getZones(dashboard);
-      if (actieveZone == 0)
-      {
-        actieveZone = zones.First().Id;
-      }
-      return View(zones);
-    }
-    //public ActionResult _ItemsPartial()
-    //{
+        static int actieveZone;
+        public ActionResult Dashboard()
+        {
+            IDashboardManager mgr = new DashboardManager();
+            Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
+            IEnumerable<Zone> zones = mgr.getZones(dashboard);
+            if (actieveZone == 0)
+            {
+                actieveZone = zones.First().Id;
+            }
+            return View(zones);
+        }
+        //public ActionResult _ItemsPartial()
+        //{
 
-    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
-    //  return PartialView(items);
-    //}
-    public ActionResult _ItemsPartial(int zoneId)
-    {
+        //  IEnumerable<Item> items = mgr.getItems(actieveZone);
+        //  return PartialView(items);
+        //}
+        public ActionResult _ItemsPartial(int zoneId)
+        {
+            IDashboardManager mgr = new DashboardManager();
+            IEnumerable<Item> items = mgr.getItems(zoneId);
+            return PartialView(items);
+        }
+        public ActionResult setActiveZone(int zoneId)
+        {
+            IDashboardManager mgr = new DashboardManager();
+            actieveZone = mgr.getZone(zoneId).Id;
+            _ItemsPartial(actieveZone);
+            return RedirectToAction("Dashboard");
+            //return RedirectToAction("_ItemsPartial");
+            return View();
+        }
+        public ActionResult GetZone(int zoneId)
+        {
+            IDashboardManager mgr = new DashboardManager();
+            Zone zone = mgr.getZone(zoneId);
+            return View(zone);
+        }
+        public ActionResult AddZone()
+        {
+            IDashboardManager mgr = new DashboardManager();
+            Zone zone = mgr.addZone();
+            //GEBRUIKER NOG JUISTE MANIER VINDEN
+            this.Dashboard();
+            return RedirectToAction("Dashboard");
+            return View();
+        }
+        public ActionResult DeleteZone(int zoneId)
+        {
+            IDashboardManager mgr = new DashboardManager();
+            mgr.deleteZone(zoneId);
+            return RedirectToAction("Dashboard");
+            return View();
+        }
 
-      IEnumerable<Item> items = mgr.getItems(zoneId);
-      return PartialView(items);
-    }
-    public ActionResult setActiveZone(int zoneId)
-    {
-      actieveZone = mgr.getZone(zoneId).Id;
-      _ItemsPartial(actieveZone);
-      return RedirectToAction("Dashboard");
-      //return RedirectToAction("_ItemsPartial");
-      return View();
-    }
-    public ActionResult GetZone(int zoneId)
-    {
-      Zone zone = mgr.getZone(zoneId);
-      return View(zone);
-    }
-    public ActionResult AddZone()
-    {
-      Zone zone = mgr.addZone();
-      //GEBRUIKER NOG JUISTE MANIER VINDEN
-      this.Dashboard();
-      return RedirectToAction("Dashboard");
-      return View();
-    }
-    public ActionResult DeleteZone(int zoneId)
-    {
-      mgr.deleteZone(zoneId);
-      return RedirectToAction("Dashboard");
-      return View();
-    }
-
-    /*public ActionResult changeZone(int zoneid, Zone zone)
-    {
-      if (ModelState.IsValid)
-      {
-        mgr.changeZone(zone);
-      }
-    }*/
-    #endregion
+        /*public ActionResult changeZone(int zoneid, Zone zone)
+        {
+          if (ModelState.IsValid)
+          {
+            mgr.changeZone(zone);
+          }
+        }*/
 
     #region Element
     ElementManager Emgr = new ElementManager();
@@ -273,13 +280,34 @@ namespace PolitiekeBarometer_MVC.Controllers
               elementen.Add(thema);
               break;
             }
-          }
+            List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            elementen.AddRange(personen);
+            List<Thema> themas = Emgr.getAllThemas();
+            for (int i = 0; i < themas.Count(); i++)
+            {
+                Thema thema = themas.ElementAt(i);
+                List<Keyword> keywords = thema.Keywords;
+                if (keywords is null)
+                {
+                    break;
+                }
+                else
+                {
+                    for (int j = 0; j <= keywords.Count(); j++)
+                    {
+                        Keyword keyword = keywords.ElementAt(j);
+                        if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+                        {
+                            elementen.Add(thema);
+                            break;
+                        }
+                    }
+                }
+            }
+            return PartialView(elementen);
         }
 
-      }
-
-      return PartialView(elementen);
-    }
 
     public ActionResult _OrganisatieDropDown()
     {
