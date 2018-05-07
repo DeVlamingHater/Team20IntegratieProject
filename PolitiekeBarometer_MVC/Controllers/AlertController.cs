@@ -16,7 +16,8 @@ namespace PolitiekeBarometer_MVC.Controllers
        public ActionResult Alerts()
         {
             IDashboardManager dashboardManager = new DashboardManager();
-
+          string username =  System.Web.HttpContext.Current.User.Identity.GetUserName();
+            dashboardManager.getDashboard(username);
             return View(dashboardManager.getActiveAlerts());
         }
     }

@@ -243,7 +243,6 @@
     <Compile Include="Migrations\201803301023055_Name.Designer.cs">
       <DependentUpon>201803301023055_Name.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -529,6 +528,10 @@
     <ProjectReference Include="..\BL\BL.csproj">
       <Project>{73EAB191-FE2B-400E-89CE-499F187F5044}</Project>
       <Name>BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{867cb698-799c-43a6-948a-26f068c130e0}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{8FD40279-6C0C-47BF-B57C-248B268FAA85}</Project>

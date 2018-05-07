@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
+using DAL.EF;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PolitiekeBarometer_MVC.Models;
@@ -14,7 +15,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminController : Controller
     {
-        ApplicationDbContext context = new ApplicationDbContext();
+        PolitiekeBarometerContext context = new PolitiekeBarometerContext();
 
         // GET: Admin
         public ActionResult Index()
@@ -78,7 +79,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             string username = form["txtUserName"];
             string role = form["RoleName"];
-            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            ApplicationUser user = (ApplicationUser)context.Users.Where(u => u.UserName.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             userManager.AddToRole(user.Id, role);
             return View("Index");

@@ -12,11 +12,18 @@ namespace Domain.Dashboards
         [Key]
         public int MeldingId { get; set; }
 
+        public bool IsPositive { get; set; }
+
+        public string Titel { get; set; }
+
+        public string Message { get; set; }
+
         public Alert Alert { get; set; }
 
         public DateTime MeldingDateTime { get; set; }
 
         public bool IsActive { get; set; }
+
 
     }
 }
