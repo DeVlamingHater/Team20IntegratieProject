@@ -3,17 +3,18 @@
     ViewBag.Title = "_SearchPartial";
 }
 
-@*<ul class="sidenav-second-level collapse" id="searchresults">*@
-@foreach (var element in Model)
-{
 
-    <a class="dropdown-item" href="#">
-        <div class="dropdown-message small">
+    @foreach (var element in Model)
+    {
+
+        <li>
             @if (element.GetType().Equals(typeof(Domain.Organisatie)))
             {
+
                 <a href="@Url.Action("Organisatie", new { id = element.Id })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
+
             }
 
             @if (element.GetType().Equals(typeof(Domain.Persoon)))
@@ -21,18 +22,19 @@
                 <a href="@Url.Action("Persoon", new { id = element.Id })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
+
             }
 
             @if (element.GetType().Equals(typeof(Domain.Thema)))
             {
+
                 <a href="@Url.Action("Thema", new { id = element.Id })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
-            }
-        </div>
 
-    </a>
-}
-test
-@*</ul>*@
+            }
+        </li>
+    }
+
+
 

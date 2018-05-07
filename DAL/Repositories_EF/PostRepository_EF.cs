@@ -123,12 +123,16 @@ namespace DAL.Repositories_EF
                 post.Keywords = new List<Keyword>();
                 foreach (string word in tweet.Words)
                 {
-                    post.Keywords.Add(new Keyword()
+                    Keyword keyword = context.Keywords.FirstOrDefault(k=>k.KeywordNaam == word);
+                    if (keyword == null)
                     {
-                        KeywordId = index,
-                        KeywordNaam = word
-                    });
-                    index++;
+                        keyword = new Keyword()
+                        {
+                            KeywordNaam = word
+                        };
+                    }
+                    post.Keywords.Add(keyword);
+
                 }
                 #endregion
 

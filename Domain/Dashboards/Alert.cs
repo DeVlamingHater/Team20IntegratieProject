@@ -38,6 +38,8 @@ namespace Domain
 
         public Dashboard Dashboard { get; set; }
 
+        public List<Melding> Meldingen { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

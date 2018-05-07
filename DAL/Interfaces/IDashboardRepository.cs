@@ -23,5 +23,7 @@ namespace DAL
         IEnumerable<Item> getItems(int actieveZone);
         Platform getPlatform();
         void addGrafiek(Grafiek grafiek);
+        void addMelding(Melding melding);
+        IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
     }
 }
