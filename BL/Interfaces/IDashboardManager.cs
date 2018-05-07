@@ -27,7 +27,7 @@ namespace BL.Interfaces
         void changeZone(Zone zone);
 
         TimeSpan getHistoriek();
-        string getLineGraphData(Grafiek grafiek);
+        string getGraphData(Grafiek grafiek);
 
         string getGrafiekData(Grafiek grafiek);
         List<Post> filterPosts(List<Post> posts, List<Filter> filters);

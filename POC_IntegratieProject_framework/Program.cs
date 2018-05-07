@@ -116,12 +116,13 @@ namespace PolitiekeBarometer_CA
             Grafiek testGrafiek = new Grafiek()
             {
                 DataType = DataType.TOTAAL,
-                Tijdschaal = new TimeSpan(1, 0, 0, 0),
+                Tijdschaal = new TimeSpan(7, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                     testDataConfig
                 },
-                GrafiekType=GrafiekType.LIJN
+                GrafiekType=GrafiekType.LIJN,
+                AantalDataPoints = 12
             };
             string testData = dashboardManager.getGrafiekData(testGrafiek);
             Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(testData);
