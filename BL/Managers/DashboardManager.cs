@@ -40,8 +40,8 @@ namespace BL.Managers
 
     public IEnumerable<Item> getItems(int actieveZone)
     {
-        public static int NUMBERDATAPOINTS = 12;
 
+  }
     public IEnumerable<Zone> getZones(Dashboard dashboard)
     {
       int dashboardId = dashboard.DashboardId;
@@ -70,13 +70,6 @@ namespace BL.Managers
       };
       return dashboardRepository.addZone(zone);
     }
-
-
-        public DashboardManager(UnitOfWorkManager uowManager)
-        {
-            this.uowManager = uowManager;
-            dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
-        }
 
         public void changeZone(Zone zone)
         {
