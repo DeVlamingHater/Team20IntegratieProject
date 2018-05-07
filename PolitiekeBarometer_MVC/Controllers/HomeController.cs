@@ -41,10 +41,54 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult Element()
-    {
-      return View();
-    }
+        public JsonResult getGrafiekData(string grafiekType, int zone, string datum, string dataType)
+        {
+            saveGrafiek(grafiekType, zone, datum, dataType);
+            return Json(new
+            {
+                result = "OK"
+            });
+        }
+
+        public ActionResult saveGrafiek(string grafiekType, int zone, string datum, string dataType)
+        {
+            //nog implementeren
+            int datapoints = 1;
+            if(grafiekType == "line")
+            {
+                datapoints = 15;
+            }
+            ElementManager mgr = new ElementManager();
+            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            DashboardManager dashboardManager = new DashboardManager();
+            GrafiekType grafiektype = (GrafiekType)Enum.Parse(typeof(GrafiekType), grafiekType.ToUpper());
+            DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                Element =
+                   testElement
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                Zone = dashboardManager.getZone(zone),
+                GrafiekType = grafiektype,
+                DataType = datatype,
+                Tijdschaal = new TimeSpan(7, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                },
+                AantalDataPoints = datapoints
+            };
+            dashboardManager.addGrafiek(testGrafiek);
+            return View();
+        }
+
+        public ActionResult Element()
+        {
+            return View();
+        }
 
     public ActionResult NewTab()
     {
@@ -73,40 +117,33 @@ namespace PolitiekeBarometer_MVC.Controllers
       return View();
     }
 
-    public ActionResult _LijnGrafiekPartial(int index)
-    {
-      ElementManager mgr = new ElementManager();
-      List<Element> elementen = new List<Element>();
-      //elementen = mgr.getTrendingElementen();
-      //List<string> namen = new List<string>();
-      //List<double> trends = new List<double>();
-      //foreach (Element element in mgr.getTrendingElementen())
-      //{
-      //    namen.Add(element.Naam);
-      //    trends.Add(element.Trend);
-      //}
-      //Json(ViewBag.Namen = namen);
-      //Json(ViewBag.Trending = trends);
+
+        public ActionResult _LijnGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            //elementen = mgr.getTrendingElementen();
+            //List<string> namen = new List<string>();
+            //List<double> trends = new List<double>();
+            //foreach (Element element in mgr.getTrendingElementen())
+            //{
+            //    namen.Add(element.Naam);
+            //    trends.Add(element.Trend);
+            //}
+            //Json(ViewBag.Namen = namen);
+            //Json(ViewBag.Trending = trends);
 
 
-      Element testElement = mgr.getElementByNaam("Bart De Wever");
-      DashboardManager dashboardManager = new DashboardManager();
-      DataConfig testDataConfig = new DataConfig()
-      {
-        DataConfiguratieId = 100,
-        Element =
-             testElement
-
-
-      };
-      Grafiek testGrafiek = new Grafiek()
-      {
-        DataType = DataType.TOTAAL,
+            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            DashboardManager dashboardManager = new DashboardManager();
+           
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = DataType.TOTAAL,
 
         Tijdschaal = new TimeSpan(7, 0, 0, 0),
         Dataconfigs = new List<DataConfig>()
                 {
-                    testDataConfig
                 },
         AantalDataPoints = 12
       };
@@ -130,39 +167,35 @@ namespace PolitiekeBarometer_MVC.Controllers
       return PartialView(elementen.ToList());
 
 
-    }
-    public ActionResult _TaartGrafiekPartial(int index)
-    {
-      ElementManager mgr = new ElementManager();
-      List<Element> elementen = new List<Element>();
-      elementen = mgr.getTrendingElementen();
-      List<string> namen = new List<string>();
-      List<double> trends = new List<double>();
-      foreach (Element element in mgr.getTrendingElementen())
-      {
-        namen.Add(element.Naam);
-        trends.Add(element.Trend);
-      }
-      Json(ViewBag.Namen = namen);
-      Json(ViewBag.Trending = trends);
-      ViewBag.Index = index;
-      return PartialView(elementen.ToList());
-    }
-    public ActionResult bewerkGrafiek()
-    {
-      // nog implementeren
-      return View();
-    }
-    public ActionResult maakAllert()
-    {
-      //nog implementeren
-      return View();
-    }
-    public ActionResult saveGrafiek()
-    {
-      //nog implementeren
-      return View();
-    }
+        }
+        public ActionResult _TaartGrafiekPartial(int index)
+        {
+            ElementManager mgr = new ElementManager();
+            List<Element> elementen = new List<Element>();
+            elementen = mgr.getTrendingElementen();
+            List<string> namen = new List<string>();
+            List<double> trends = new List<double>();
+            foreach (Element element in mgr.getTrendingElementen())
+            {
+                namen.Add(element.Naam);
+                trends.Add(element.Trend);
+            }
+            Json(ViewBag.Namen = namen);
+            Json(ViewBag.Trending = trends);
+            ViewBag.Index = index;
+            return PartialView(elementen.ToList());
+        }
+        public ActionResult bewerkGrafiek()
+        {
+            // nog implementeren
+            return View();
+        }
+        public ActionResult maakAllert()
+        {
+            //nog implementeren
+            return View();
+        }
+        
 
     static int actieveZone;
     public ActionResult Dashboard()

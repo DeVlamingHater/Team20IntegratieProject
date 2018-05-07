@@ -18,6 +18,7 @@
         </div>
     }
     @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
+    <canvas id="grafiek"></canvas>
     @foreach (var zone in Model)
     {
         <div class="tab-content bg-light">
@@ -50,10 +51,10 @@
                 <a onclick="GrafiekType(1)"><i class="fa fa-line-chart" style="font-size: 80px"></i></a>
                 <a onclick="GrafiekType(2)"><i class="fa fa-bar-chart" style="font-size: 80px"></i></a>
                 <a onclick="GrafiekType(3)"><i class="fa fa-pie-chart" style="font-size: 80px"></i></a>
-                <select id="dataType" onchange="Zone()">
+                <select id="zone" onchange="Zone(this.value)">
 @foreach (var zone in Model)
 {
-    <option value="@zone.Naam">@zone.Naam</option>
+    <option value="@zone.Id">@zone.Naam</option>
 }
                 </select>
             </div>
@@ -78,8 +79,9 @@
                 Welk datatype kies je?
                 <br />
                 <select id="dataType" onchange="DataType()">
-                    <option value="aantal">aantal</option>
+                    <option value="totaal">totaal</option>
                     <option value="sentiment">sentiment</option>
+                    <option value="trend">trend</option>
                 </select>
                 <br />
                 Van <input type="date" onchange="Datum()" id="begin"> Tot <input type="date" onchange="Datum()" id="einde">
@@ -91,7 +93,7 @@
         </div>
     </div>
 </div>
-
+<input type="submit" value="Grafiek Opslaan" id="maakGrafiek" />
 <script>
     var id = 0;
     function visible(zone) {
@@ -109,139 +111,156 @@
 
     }
 </script>
-<script>
-    var grafiekType = 1;
-    var data;
-    var datum = [];
-    document.addEventListener('DOMContentLoaded', function () {
-    }, false);
-    function TaartGrafiek() {
-        var ctx = document.getElementById("grafiek");
+@section scripts{
+    <script type="text/javascript">
+        var grafiekType = "";
+        var data = 0;
+        var datum = [];
+        var zoneID = 1;
+        $(document).ready(function () {
+            $("#maakGrafiek").click(function () {
+                var f = {};
+                f.url = '@Url.Action("getGrafiekData", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ grafiekType: grafiekType, zone: zoneID, datum: datum.toString(), dataType: data });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("success");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+            });
+        });
+        function TaartGrafiek() {
+            var ctx = document.getElementById("grafiek");
 
-        var myPieChart = new Chart(ctx, {
-            type: grafiekType,
-            data: {
-                labels: ["Blue", "Red", "Yellow", "Green"],
-                datasets: [{
-                    data: [12.21, 15.58, 11.25, 8.32],
-                    backgroundColor: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-                        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-                        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-                        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-                        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-                        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-                        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
-                        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-                        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
-                        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
-                }],
-            },
-        });
-    }
-    function BarGrafiek() {
-        var ctx = document.getElementById("grafiek");
-        var myLineChart = new Chart(ctx, {
-            type: grafiekType,
-            data: {
-                labels: datum,
-                datasets: [{
-                    label: "Trending",
-                    backgroundColor: "rgba(2,117,216,1)",
-                    borderColor: "rgba(2,117,216,1)",
-                    data: [4215, 5312, 6251, 7841, 9821, 14984],
-                }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        time: {
-                            unit: 'month'
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        ticks: {
-                            maxTicksLimit: 6
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            max: 20000,
-                            maxTicksLimit: 10
-                        },
-                        gridLines: {
-                            display: true
-                        }
+            var myPieChart = new Chart(ctx, {
+                type: grafiekType,
+                data: {
+                    labels: ["Blue", "Red", "Yellow", "Green"],
+                    datasets: [{
+                        data: [12.21, 15.58, 11.25, 8.32],
+                        backgroundColor: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+                            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                            '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+                            '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                            '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+                            '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                            '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+                            '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                            '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+                            '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
                     }],
                 },
-                legend: {
-                    display: true
-                }
-            }
-        });
-    }
-    function LijnGrafiek() {
-        var ctx = document.getElementById("grafiek");
-        var myLineChart = new Chart(ctx, {
-            type: grafiekType,
-            data: {
-                labels: datum,
-                datasets: [{
-                    label: "Sessions",
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(2,117,216,0.2)",
-                    borderColor: "rgba(2,117,216,1)",
-                    pointRadius: 5,
-                    pointBackgroundColor: "rgba(2,117,216,1)",
-                    pointBorderColor: "rgba(255,255,255,0.8)",
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                    pointHitRadius: 20,
-                    pointBorderWidth: 2,
-                    data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
-                }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        time: {
-                            unit: 'date'
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        ticks: {
-                            maxTicksLimit: 7
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            max: 40000,
-                            maxTicksLimit: 5
-                        },
-                        gridLines: {
-                            color: "rgba(0, 0, 0, .125)",
-                        }
+            });
+        }
+        function BarGrafiek() {
+            var ctx = document.getElementById("grafiek");
+            var myLineChart = new Chart(ctx, {
+                type: grafiekType,
+                data: {
+                    labels: datum,
+                    datasets: [{
+                        label: "Trending",
+                        backgroundColor: "rgba(2,117,216,1)",
+                        borderColor: "rgba(2,117,216,1)",
+                        data: [4215, 5312, 6251, 7841, 9821, 14984],
                     }],
                 },
-                legend: {
-                    display: false
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'month'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 20000,
+                                maxTicksLimit: 10
+                            },
+                            gridLines: {
+                                display: true
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: true
+                    }
                 }
-            }
-        });
-    }
-    function GrafiekType(type) {
-        grafiekType = type;
-    }
-    function DataType() {
-        data = document.getElementById("dataType").value;
-    }
-    function Datum() {
-        var begin = new Date(document.getElementById("begin").value);
-        var einde = new Date(document.getElementById("einde").value);
-        // date array
+            });
+        }
+        function LijnGrafiek() {
+            var ctx = document.getElementById("grafiek");
+            var myLineChart = new Chart(ctx, {
+                type: grafiekType,
+                data: {
+                    labels: datum,
+                    datasets: [{
+                        label: "Sessions",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(2,117,216,0.2)",
+                        borderColor: "rgba(2,117,216,1)",
+                        pointRadius: 5,
+                        pointBackgroundColor: "rgba(2,117,216,1)",
+                        pointBorderColor: "rgba(255,255,255,0.8)",
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                        pointHitRadius: 20,
+                        pointBorderWidth: 2,
+                        data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+                    }],
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'date'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 40000,
+                                maxTicksLimit: 5
+                            },
+                            gridLines: {
+                                color: "rgba(0, 0, 0, .125)",
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        }
+        function GrafiekType(type) {
+            grafiekType = type;
+        }
+        function DataType() {
+            data = document.getElementById("dataType").value;
+        }
+        function Datum() {
+            var begin = new Date(document.getElementById("begin").value);
+            var einde = new Date(document.getElementById("einde").value);
+            // date array
             var
                 arr = new Array(),
                 dt = new Date(begin);
@@ -251,24 +270,27 @@
                 dt.setDate(dt.getDate() + 1);
             }
             datum = arr;
-    }
-    function MaakGrafiek() {
-        var div = document.getElementById("grafiek");
-        switch (grafiekType) {
-            case 1:
-                grafiekType = "line";
-                Datum();
-                LijnGrafiek();
-                break;
-            case 2:
-                grafiekType = "bar";
-                Datum();
-                BarGrafiek();
-                break;
-            case 3:
-                grafiekType = "pie";
-                TaartGrafiek();
         }
-    }
-
-</script>
+        function MaakGrafiek() {
+            var div = document.getElementById("grafiek");
+            switch (grafiekType) {
+                case 1:
+                    grafiekType = "line";
+                    Datum();
+                    LijnGrafiek();
+                    break;
+                case 2:
+                    grafiekType = "bar";
+                    Datum();
+                    BarGrafiek();
+                    break;
+                case 3:
+                    grafiekType = "pie";
+                    TaartGrafiek();
+            }
+        }
+        function Zone(id) {
+            zoneID = id;
+        }
+    </script>
+}
