@@ -129,6 +129,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.Index = index;
             return PartialView(elementen.ToList());
 
+
         }
         public ActionResult _TaartGrafiekPartial(int index)
         {
@@ -182,6 +183,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         //  return PartialView(items);
         //}
         public ActionResult _ItemsPartial(int zoneId)
+
         {
             IDashboardManager mgr = new DashboardManager();
             IEnumerable<Item> items = mgr.getItems(zoneId);
