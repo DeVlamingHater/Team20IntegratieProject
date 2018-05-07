@@ -38,7 +38,10 @@ namespace BL.Managers
             return dashboard;
         }
 
-
+        public void addGrafiek(Grafiek grafiek)
+        {
+             dashboardRepository.addGrafiek(grafiek);
+        }
         public IEnumerable<Item> getItems(int actieveZone)
         {
             return null;
