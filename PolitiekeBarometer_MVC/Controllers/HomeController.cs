@@ -359,7 +359,7 @@ elementen = elementen.GetRange(0,5);
       {
         Thema thema = themas.ElementAt(i);
         List<Keyword> keywords = thema.Keywords;
-        if (keywords is null)
+        if (keywords is null) { }
      
 
       }

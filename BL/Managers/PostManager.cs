@@ -140,6 +140,7 @@ namespace BL.Managers
         public IEnumerable<Post> getAllPosts()
         {
             return postRepository.getPosts();
+        }
         public double getAlertWaarde(Alert alert)
         {
             return 0.0;

@@ -278,7 +278,7 @@ namespace BL.Managers
                         DateTime eind = start.Add(interval);
                         posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
-                        posts = filterPosts(posts, grafiek.Filters);
+                        posts = postManager.filterPosts(posts, grafiek.Filters);
                         switch (grafiek.DataType)
                         {
                             case Domain.DataType.TOTAAL:
