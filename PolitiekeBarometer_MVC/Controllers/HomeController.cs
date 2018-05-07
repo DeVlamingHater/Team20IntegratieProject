@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using Domain.Elementen;
 using System.Data.SqlClient;
 using Newtonsoft.Json;
-using BL.Interfaces;
-using Microsoft.AspNet.Identity;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -43,15 +41,21 @@ namespace PolitiekeBarometer_MVC.Controllers
 
 
 
-        public ActionResult Element()
-        {
-            return View();
-        }
+    public ActionResult Element()
+    {
+      return View();
+    }
 
         public ActionResult NewTab()
         {
             return View();
         }
+
+        public ActionResult Element()
+        {
+            return View();
+        }
+
         public ActionResult _BarGrafiekPartial(int index)
         {
             ElementManager mgr = new ElementManager();
@@ -68,11 +72,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             Json(ViewBag.Trending = trends);
             ViewBag.Index = index;
             return PartialView(elementen.ToList());
-        }
-
-        public ActionResult Alerts()
-        {
-            return View();
         }
 
         public ActionResult _LijnGrafiekPartial(int index)
@@ -149,33 +148,34 @@ namespace PolitiekeBarometer_MVC.Controllers
             return PartialView(elementen.ToList());
         }
         public ActionResult bewerkGrafiek()
-        {
-            // nog implementeren
-            return View();
-        }
-        public ActionResult maakAllert()
-        {
-            //nog implementeren
-            return View();
-        }
-        public ActionResult saveGrafiek()
-        {
-            //nog implementeren
-            return View();
-        }
+    {
+      // nog implementeren
+      return View();
+    }
+    public ActionResult maakAllert()
+    {
+      //nog implementeren
+      return View();
+    }
+    public ActionResult saveGrafiek()
+    {
+      //nog implementeren
+      return View();
+    }
+    #endregion
 
+        #region Dashboard
         static int actieveZone;
+        DashboardManager mgr = new DashboardManager();
         public ActionResult Dashboard()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
-            IEnumerable<Zone> zones = mgr.getZones(dashboard);
-            if (actieveZone == 0)
-            {
-                actieveZone = zones.First().Id;
-            }
-            return View(zones);
-        }
+    {
+      Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
+      IEnumerable<Zone> zones = mgr.getZones(dashboard);
+      if (actieveZone == 0)
+      {
+        actieveZone = zones.First().Id;
+      }
+      return View(zones);
         //public ActionResult _ItemsPartial()
         //{
 
@@ -184,13 +184,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         //}
         public ActionResult _ItemsPartial(int zoneId)
         {
-            IDashboardManager mgr = new DashboardManager();
+
             IEnumerable<Item> items = mgr.getItems(zoneId);
             return PartialView(items);
         }
         public ActionResult setActiveZone(int zoneId)
         {
-            IDashboardManager mgr = new DashboardManager();
             actieveZone = mgr.getZone(zoneId).Id;
             _ItemsPartial(actieveZone);
             return RedirectToAction("Dashboard");
@@ -199,13 +198,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult GetZone(int zoneId)
         {
-            IDashboardManager mgr = new DashboardManager();
             Zone zone = mgr.getZone(zoneId);
             return View(zone);
         }
         public ActionResult AddZone()
         {
-            IDashboardManager mgr = new DashboardManager();
             Zone zone = mgr.addZone();
             //GEBRUIKER NOG JUISTE MANIER VINDEN
             this.Dashboard();
@@ -214,7 +211,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult DeleteZone(int zoneId)
         {
-            IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
             return RedirectToAction("Dashboard");
             return View();
@@ -227,6 +223,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             mgr.changeZone(zone);
           }
         }*/
+        #endregion
 
         #region Element
         ElementManager Emgr = new ElementManager();
@@ -283,7 +280,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                         }
                     }
                 }
+
             }
+
             return PartialView(elementen);
         }
 

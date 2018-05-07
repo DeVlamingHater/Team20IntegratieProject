@@ -31,7 +31,5 @@ namespace BL.Interfaces
 
         string getGrafiekData(Grafiek grafiek);
         List<Post> filterPosts(List<Post> posts, List<Filter> filters);
-        Grafiek createGrafiek(Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
-     
     }
 }

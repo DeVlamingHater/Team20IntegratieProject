@@ -20,10 +20,13 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>44363</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -226,7 +229,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\AlertController.cs" />
     <Compile Include="Controllers\AndroidApiController.cs" />
     <Compile Include="Controllers\AndroidController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -328,9 +330,6 @@
     <Content Include="Views\Home\Organisatie.cshtml" />
     <Content Include="Views\Home\Grafiek.cshtml" />
     <Content Include="Views\Home\_BarGrafiekPartial.cshtml" />
-    <Content Include="Views\Alert\AlertDetail.cshtml" />
-    <Content Include="Views\Alert\Index.cshtml" />
-    <Content Include="Views\Alert\Alerts.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
