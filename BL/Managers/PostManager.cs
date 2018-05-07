@@ -93,8 +93,7 @@ namespace BL.Managers
             DateTime sinceDT = DateTime.Now.AddDays(-7);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            var q = new TextGainQueryDTO() { since = sinceS,
-            };
+            var q = new TextGainQueryDTO() {};
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");

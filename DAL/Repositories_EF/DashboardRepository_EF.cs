@@ -43,8 +43,10 @@ namespace DAL.Repositories_EF
 
     public Dashboard getDashboard(string gebruikersNaam)
     {
+
       return context.Dashboards.Single(d => d.Gebruiker.Naam == gebruikersNaam) ;
     }
+
 
     public IEnumerable<Zone> getZones(int dashboardId)
     {
