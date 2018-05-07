@@ -3,11 +3,8 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>Dashboard</h2>
 
-
-
-<div class="container border-danger">
+<div style="margin:20px">
 
     @foreach (var zone in Model)
     {
@@ -22,6 +19,18 @@
     }
     @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
     <canvas id="grafiek"></canvas>
+    @foreach (var zone in Model)
+    {
+        <div class="tab-content bg-light">
+            <div id="@zone.Id" class="tab-pane" style="display:none">
+                @if (zone.Items != null && zone.Items.Count!=0)
+                {
+                    <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3> 
+                }
+            </div>
+            ﻿<canvas id="grafiek"></canvas>
+        </div>
+    }
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
         Maak Grafiek
     </button>

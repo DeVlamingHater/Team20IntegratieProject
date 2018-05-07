@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{8FD40279-6C0C-47BF-B57C-248B268FAA85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolitiekeBarometer_MVC", "PolitiekeBarometer_MVC\PolitiekeBarometer_MVC.csproj", "{F1334C7A-243D-4D3B-A8B9-914E618C95EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{867CB698-799C-43A6-948A-26F068C130E0} = {867CB698-799C-43A6-948A-26F068C130E0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolitiekeBarometer_CA", "POC_IntegratieProject_framework\PolitiekeBarometer_CA.csproj", "{5F412920-9299-48E6-AAC2-22F8E3FAD23B}"
 EndProject

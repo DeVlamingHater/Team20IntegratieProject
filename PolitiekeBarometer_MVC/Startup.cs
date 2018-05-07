@@ -10,7 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using PolitiekeBarometer_MVC.Models;
 using PolitiekeBarometer_MVC.Providers;
-
+using DAL.EF;
 [assembly: OwinStartupAttribute(typeof(PolitiekeBarometer_MVC.Startup))]
 namespace PolitiekeBarometer_MVC
 {
@@ -48,7 +48,7 @@ namespace PolitiekeBarometer_MVC
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(PolitiekeBarometerContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
@@ -69,7 +69,7 @@ namespace PolitiekeBarometer_MVC
 
         private void createUserAndRoles()
         {
-            ApplicationDbContext context = new ApplicationDbContext();
+             PolitiekeBarometerContext context= new PolitiekeBarometerContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
@@ -79,9 +79,16 @@ namespace PolitiekeBarometer_MVC
                 roleManager.Create(role);
 
                 var user = new ApplicationUser();
-                user.Name = "Thomas SuperAdmin";
+                user.Name = "Thomas Somers";
                 user.UserName = "thomas.somers@student.kdg.be";
                 user.Email = "thomas.somers@student.kdg.be";
+
+                user.Gebruiker = new Domain.Platformen.Gebruiker()
+                {
+                    Email = user.Email,
+                    GebruikerId = user.Id,
+                    Naam = user.UserName
+                };
                 string pwd = "ThomasSuperAdmin20";
 
                 var newuser = userManager.Create(user, pwd);
@@ -101,7 +108,12 @@ namespace PolitiekeBarometer_MVC
                 user.UserName = "thomas.somers@live.nl";
                 user.Email = "thomas.somers@live.nl";
                 string pwd = "ThomasAdmin20";
-
+                user.Gebruiker = new Domain.Platformen.Gebruiker()
+                {
+                    Email = user.Email,
+                    GebruikerId = user.Id,
+                    Naam = user.UserName
+                };
                 var newuser = userManager.Create(user, pwd);
                 if (newuser.Succeeded)
                 {

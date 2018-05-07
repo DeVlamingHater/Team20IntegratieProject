@@ -9,11 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using BL.Interfaces;
 using BL.Managers;
+using DAL.EF;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json.Linq;
 using PolitiekeBarometer_MVC.Models;
+using DAL.EF;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -168,7 +170,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                 if (status == true)
                 {
-                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded && status)
                     {

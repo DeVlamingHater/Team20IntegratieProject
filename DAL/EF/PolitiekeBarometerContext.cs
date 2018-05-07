@@ -6,14 +6,42 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Text;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DAL.EF
 {
-    //[DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
-    internal class PolitiekeBarometerContext : DbContext
+    public class ApplicationUser : IdentityUser
     {
+        public string Name { get; set; }
+        public Gebruiker Gebruiker { get; set; }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            return userIdentity;
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
+        }
+    }
+    //[DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
+    public class PolitiekeBarometerContext : IdentityDbContext
+    {public static PolitiekeBarometerContext Create()
+        {
+            return new PolitiekeBarometerContext();
+        }
         //Dashboards
         public DbSet<Alert> Alerts { get; set; }
+        public DbSet<Melding> Meldingen { get; set; }
         public DbSet<DataConfig> DataConfigs { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
         public DbSet<Grafiek> Grafieken { get; set; }
@@ -23,6 +51,9 @@ namespace DAL.EF
         //Elementen
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Persoon> Personen { get; set; }
+
+        
+
         public DbSet<Thema> Themas { get; set; }
         public DbSet<Organisatie> Organisaties { get; set; }
         //Platformen
@@ -65,8 +96,14 @@ namespace DAL.EF
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
 
             modelBuilder.Entity<Filter>().HasRequired<Grafiek>(f => f.Grafiek);
-
+            
             modelBuilder.Entity<Grafiek>().HasMany<Filter>(g => g.Filters);
+
+            modelBuilder.Entity<Alert>().HasMany<Melding>(a => a.Meldingen);
+
+            modelBuilder.Entity<Melding>().HasRequired<Alert>(m => m.Alert);
+
+            modelBuilder.Entity<ApplicationUser>().HasRequired<Gebruiker>(g=>g.Gebruiker);
         }
 
         public override int SaveChanges()

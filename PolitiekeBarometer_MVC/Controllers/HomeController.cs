@@ -199,8 +199,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Dashboard()
         {
             IDashboardManager mgr = new DashboardManager();
-            Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
-            IEnumerable<Zone> zones = mgr.getZones(dashboard);
+            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
+            Dashboard dashboard = mgr.getDashboard(email); //aanpassen naar gebruikerId
+            List<Zone> zones = dashboard.Zones;
             if (actieveZone == 0)
             {
                 actieveZone = zones.First().Id;
@@ -238,13 +239,16 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult AddZone()
         {
             IDashboardManager mgr = new DashboardManager();
-            Zone zone = mgr.addZone();
+            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
+            Dashboard dashboard = mgr.getDashboard(email);
+            Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
+
             this.Dashboard();
             return RedirectToAction("Dashboard");
             return View();
         }
-        public ActionResult DeleteZone(int zoneId)
+ public ActionResult DeleteZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
@@ -273,52 +277,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             return PartialView(personen);
         }
-
-        public ActionResult _ThemaDropDown()
-        {
-            List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
-            List<Thema> themas = new List<Domain.Thema>();
-            foreach (Element element in elementen)
-            {
-                themas.Add((Thema)element);
-            }
-            return PartialView(themas);
-        }
-        public ActionResult _SearchPartial(string searchstring)
-        {
-            if (searchstring is null)
-            {
-                List<Element> leeg = new List<Element>();
-                return PartialView(leeg);
-            }
-            List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
-            List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
-            elementen.AddRange(personen);
-            List<Thema> themas = Emgr.getAllThemas();
-            for (int i = 0; i < themas.Count(); i++)
-            {
-                Thema thema = themas.ElementAt(i);
-                List<Keyword> keywords = thema.Keywords;
-                if (keywords is null)
-                {
-                    break;
-                }
-                else
-                {
-                    for (int j = 0; j <= keywords.Count(); j++)
-                    {
-                        Keyword keyword = keywords.ElementAt(j);
-                        if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
-                        {
-                            elementen.Add(thema);
-                            break;
-                        }
-                    }
-                }
-            }
-            return PartialView(elementen);
-        }
-
         public ActionResult _OrganisatieDropDown()
         {
             List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
@@ -329,6 +287,94 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             return PartialView(organisaties);
         }
+        
+
+    public ActionResult _ThemaDropDown()
+    {
+      List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
+      List<Thema> themas = new List<Domain.Thema>();
+      foreach (Element element in elementen)
+      {
+        themas.Add((Thema)element);
+      }
+      return PartialView(themas);
+    }
+    public ActionResult _SearchPartial(string searchstring = "test")
+    {
+      if (searchstring is null)
+      {
+        List<Element> leeg = new List<Element>();
+        return PartialView(leeg);
+      }
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen = elementen.OrderBy(o => o.Trend).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      personen = personen.OrderBy(o => o.Trend).ToList();
+      elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null)
+           {
+          break;
+        }
+        else
+        {
+          for (int j = 0; j <= keywords.Count(); j++)
+          {
+            Keyword keyword = keywords.ElementAt(j);
+            if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+            {
+              elementen.Add(thema);
+              break;
+            }
+          }
+        }
+      }
+      if( elementen.Count() > 5)
+      {
+elementen = elementen.GetRange(0,5);
+      }
+      
+      return PartialView(elementen);
+    }
+    
+    public ActionResult Search(string searchstring = "test")
+    {
+      if (searchstring == "test")
+      {
+        List<Element> leeg = new List<Element>();
+        ViewBag.Lijst = leeg;
+        return View();
+      }
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen = elementen.OrderBy(o => o.Trend).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      personen = personen.OrderBy(o => o.Trend).ToList();
+      elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null)
+     
+
+      }
+      if (elementen.Count() > 5)
+      {
+        elementen = elementen.GetRange(0, 5);
+      }
+      List<string> lijst = new List<string>();
+      foreach(Element element in elementen)
+      {
+        lijst.Add(element.Naam);
+      }
+      ViewBag.Lijst = lijst;
+      return View();
+    }
 
         public ActionResult Organisatie(int id)
         {

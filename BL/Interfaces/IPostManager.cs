@@ -27,6 +27,8 @@ namespace BL.Interfaces
         Task<string> updatePosts();
 
         IEnumerable<Post> getAllPosts();
-
+      
+        double getAlertWaarde(Alert alert);
+        List<Post> filterPosts(List<Post> posts, List<Filter> filters);
     }
 }

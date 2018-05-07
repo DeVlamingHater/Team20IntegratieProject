@@ -43,8 +43,36 @@ namespace DAL.Repositories_EF
 
         public Dashboard getDashboard(string gebruikersNaam)
         {
+            Dashboard dashboard = null;
 
-            return context.Dashboards.Single(d => d.Gebruiker.Naam == gebruikersNaam);
+            Gebruiker gebruiker = context.Gebruikers.Single(g => g.Email == gebruikersNaam);
+            List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
+            if (dashboards.Count != 0)
+            {
+                dashboard = dashboards.First();
+
+            }
+            if (dashboard == null)
+            {
+
+                dashboard = new Dashboard()
+                {
+                    Gebruiker = gebruiker,
+                    Zones = new List<Zone>()
+                    {
+                        new Zone()
+                        {
+                            Dashboard = dashboard,
+                            Items = new List<Item>(),
+                            Naam = "Zone 1"
+                        }
+                    }
+                };
+                context.Dashboards.Add(dashboard);
+                context.SaveChanges();
+            }
+            return dashboard;
+
         }
 
 
@@ -107,6 +135,16 @@ namespace DAL.Repositories_EF
                 context.SaveChanges();
             }
 
+        }
+
+        public void addMelding(Melding melding)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
+        {
+            return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
         }
     }
 }
