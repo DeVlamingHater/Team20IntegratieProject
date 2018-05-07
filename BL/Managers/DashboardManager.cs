@@ -147,7 +147,7 @@ namespace BL.Managers
                     }
                     if (alert.ApplicatieMelding)
                     {
-                        
+
                     }
                 }
 
@@ -157,9 +157,7 @@ namespace BL.Managers
 
         public void initNonExistingRepo(bool createWithUnitOfWork = false)
         {
-            // De onderstaande logica is enkel uit te voeren als er nog geen repo bestaat. 
-            //Als we een repo met UoW willen gebruiken en als er nog geen uowManager bestaat
-            // dan maken we de uowManager aan en gebruiken we de context daaruit om de repo aan te maken.
+            
             if (dashboardRepository == null)
             {
                 if (createWithUnitOfWork)
@@ -170,7 +168,6 @@ namespace BL.Managers
                     }
                     dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
                 }
-                // Als we niet met UoW willen werken, dan maken we een repo aan als die nog niet bestaat.
                 else
                 {
                     dashboardRepository = new DashboardRepository_EF();
@@ -179,7 +176,7 @@ namespace BL.Managers
             }
         }
 
-        TimeSpan IDashboardManager.getHistoriek()
+        public TimeSpan getHistoriek()
         {
             return dashboardRepository.getPlatform().Historiek;
         }
@@ -195,7 +192,7 @@ namespace BL.Managers
             foreach (DataConfig dataConfig in dataConfigs)
             {
                 //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                Dictionary<string, double> grafiekData = new Dictionary<string, double>();
+                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
 
                 DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
 
@@ -210,19 +207,18 @@ namespace BL.Managers
                     posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
                     posts = filterPosts(posts, grafiek.Filters);
-                    string dateString = start.ToString("d MMM yyyy ");
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(dateString, (double)posts.Count);
+                            grafiekData.Add(start, (double)posts.Count);
                             break;
                         case Domain.DataType.TREND:
                             double dataPoint = (double)posts.Count / (double)totaal;
-                            grafiekData.Add(dateString, dataPoint);
+                            grafiekData.Add(start, dataPoint);
                             break;
                         case Domain.DataType.SENTIMENT:
                             double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
-                            grafiekData.Add(dateString, average);
+                            grafiekData.Add(start, average);
                             break;
                         default:
                             break;

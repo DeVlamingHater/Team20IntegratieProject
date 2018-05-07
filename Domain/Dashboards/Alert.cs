@@ -13,6 +13,8 @@ namespace Domain
         [Key]
         public int AlertId { get; set; }
 
+        public DataType DataType { get; set; }
+
         [Required]
         public AlertStatus Status { get; set; }
 
