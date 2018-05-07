@@ -38,6 +38,7 @@ namespace BL.Managers
             return dashboard;
         }
 
+
         public IEnumerable<Item> getItems(int actieveZone)
         {
             return null;
