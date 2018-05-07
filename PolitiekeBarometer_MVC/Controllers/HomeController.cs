@@ -135,11 +135,10 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             Element testElement = mgr.getElementByNaam("Bart De Wever");
             DashboardManager dashboardManager = new DashboardManager();
-           
+
             Grafiek testGrafiek = new Grafiek()
             {
                 DataType = DataType.TOTAAL,
-
                 Tijdschaal = new TimeSpan(7, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {

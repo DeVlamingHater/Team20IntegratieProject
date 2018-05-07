@@ -99,7 +99,14 @@ namespace DAL.Repositories_EF
 
         public void addGrafiek(Grafiek grafiek)
         {
-            context.Grafieken.Add(grafiek);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(grafiek, new ValidationContext(grafiek), errors, true);
+            if (valid)
+            {
+                context.Grafieken.Add(grafiek);
+                context.SaveChanges();
+            }
+
         }
     }
 }
