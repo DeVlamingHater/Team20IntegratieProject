@@ -18,6 +18,41 @@ namespace BL.Managers
 {
     public class PostManager : IPostManager
     {
+        public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
+        {
+            if (filters == null)
+            {
+                return posts;
+            }
+            foreach (Filter filter in filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.SENTIMENT:
+                        switch (filter.Operator)
+                        {
+                            case "<":
+                                posts = posts.Where(p => p.Sentiment[0] < filter.Waarde).ToList();
+                                break;
+                            case ">":
+                                posts = posts.Where(p => p.Sentiment[0] > filter.Waarde).ToList();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case FilterType.AGE:
+                        posts = posts.Where(p => p.Age.Equals(filter.Waarde)).ToList();
+                        break;
+                    case FilterType.RETWEET:
+                        posts = posts.Where(p => p.Retweet == true).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return posts;
+        }
         IPostRepository postRepository;
 
         UnitOfWorkManager uowManager;
@@ -93,8 +128,7 @@ namespace BL.Managers
             DateTime sinceDT = DateTime.Now.AddDays(-7);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            var q = new TextGainQueryDTO() { since = sinceS,
-            };
+            var q = new TextGainQueryDTO() {};
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -103,7 +137,10 @@ namespace BL.Managers
             return responseString;
         }
 
-        
+        public double getAlertWaarde(Alert alert)
+        {
+            return 0.0;
+        }
     }
     class TextGainQueryDTO
     {

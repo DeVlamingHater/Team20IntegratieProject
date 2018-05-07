@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Domain.Alert>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AlertId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicatieMelding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrowserMelding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailMelding)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AlertId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicatieMelding)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BrowserMelding)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailMelding)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.AlertId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.AlertId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.AlertId })
+        </td>
+    </tr>
+    }
+</table>
+
