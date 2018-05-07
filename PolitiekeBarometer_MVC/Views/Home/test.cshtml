@@ -53,12 +53,6 @@
         }
 </style>
 
-<div class="form-group dropdown">
-    <input type="text" class="form-control" id="searchString"/>
-    <button id="searchbutton" class="btn btn-primary " onclick="searchFunction()"><i class="fa fa-search"></i></button>
-    <ul class="dropdown-menu" id="searchlist"></ul>
-
-</div>
 ﻿<canvas id="maakGrafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -123,8 +117,8 @@
             </div>
             <div class="modal-body">
                 <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
-                <div class="form-group dropdown">
-                    <input type="text" class="form-control" id="searchString" />
+                <div class="form-group dropdown form-inline" >
+                    <input type="text" class="form-control" id="searchString"/>
                     <button id="searchbutton" class="btn btn-primary " onclick="searchFunction()"><i class="fa fa-search"></i></button>
                     <ul class="dropdown-menu" id="searchlist"></ul>
 
