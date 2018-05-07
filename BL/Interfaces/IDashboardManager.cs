@@ -28,10 +28,8 @@ namespace BL.Interfaces
 
         TimeSpan getHistoriek();
         string getGraphData(Grafiek grafiek);
-
-        string getGrafiekData(Grafiek grafiek);
         List<Post> filterPosts(List<Post> posts, List<Filter> filters);
-        Grafiek createGrafiek(Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
+        Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
      
     }
 }

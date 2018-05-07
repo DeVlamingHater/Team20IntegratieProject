@@ -71,8 +71,6 @@ namespace BL.Managers
             return dashboardRepository.addZone(zone);
         }
 
-
-
         public void changeZone(Zone zone)
         {
             dashboardRepository.UpdateZone(zone);
@@ -80,13 +78,11 @@ namespace BL.Managers
 
         public List<Alert> getActiveAlerts()
         {
-            initNonExistingRepo(false);
             return dashboardRepository.getActiveAlerts().ToList();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
         {
-            initNonExistingRepo(false);
             return alert.DataConfig;
         }
 
@@ -98,13 +94,11 @@ namespace BL.Managers
 
         public List<Alert> getAllAlerts()
         {
-            initNonExistingRepo(false);
             return dashboardRepository.getAllAlerts().ToList();
         }
 
         public void sendAlerts()
         {
-            initNonExistingRepo(true);
             PostManager postManager = new PostManager(uowManager);
             List<Alert> activeAlerts = getActiveAlerts();
             foreach (Alert alert in activeAlerts)
@@ -149,12 +143,15 @@ namespace BL.Managers
                     }
                     if (alert.ApplicatieMelding)
                     {
-
+                        createMelding(alert);
                     }
                 }
-
             }
+        }
 
+        private void createMelding(Alert alert)
+        {
+            throw new NotImplementedException();
         }
 
         public void initNonExistingRepo(bool createWithUnitOfWork = false)
@@ -174,7 +171,6 @@ namespace BL.Managers
                 {
                     dashboardRepository = new DashboardRepository_EF();
                 }
-
             }
         }
 
@@ -184,7 +180,6 @@ namespace BL.Managers
         }
         public string getGraphData(Grafiek grafiek)
         {
-
             PostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
@@ -270,29 +265,11 @@ namespace BL.Managers
             return posts;
         }
 
-        public string getGrafiekData(Grafiek grafiek)
-        {
-            IPostManager postManager = new PostManager();
-            StringBuilder response = new StringBuilder("");
-            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-
-            if (grafiek.GrafiekType == GrafiekType.LIJN)
-            {
-                string data = getGraphData(grafiek);
-                response.Append(data);
-            }
-            else if (grafiek.GrafiekType == GrafiekType.PIE || grafiek.GrafiekType == GrafiekType.STAAF)
-            {
-                string data = getGraphData(grafiek);
-            }
-
-            return response.ToString();
-        }
-
-        public Grafiek createGrafiek(Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
+        public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
         { 
             Grafiek grafiek = new Grafiek()
             {
+                GrafiekType = grafiekType,
                 DataType = dataType,
                 AantalDataPoints = aantalDataPoints,
                 Tijdschaal = Tijdschaal,
