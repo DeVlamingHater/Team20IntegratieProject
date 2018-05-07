@@ -40,8 +40,8 @@ namespace BL.Managers
 
     public IEnumerable<Item> getItems(int actieveZone)
     {
-
-  }
+      return dashboardRepository.getItems(actieveZone);
+    }
     public IEnumerable<Zone> getZones(Dashboard dashboard)
     {
       int dashboardId = dashboard.DashboardId;
