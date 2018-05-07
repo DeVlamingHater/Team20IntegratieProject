@@ -244,7 +244,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       }
       return PartialView(themas);
     }
-    public ActionResult _SearchPartial(string searchstring)
+    public ActionResult _SearchPartial(string searchstring = "test")
     {
       if (searchstring is null)
       {
@@ -252,7 +252,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         return PartialView(leeg);
       }
       List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen = elementen.OrderBy(o => o.Trend).ToList();
       List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      personen = personen.OrderBy(o => o.Trend).ToList();
       elementen.AddRange(personen);
       List<Thema> themas = Emgr.getAllThemas();
       for (int i = 0; i < themas.Count(); i++)
@@ -277,9 +279,62 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
 
       }
-
+      if( elementen.Count() > 5)
+      {
+elementen = elementen.GetRange(0,5);
+      }
+      
       return PartialView(elementen);
     }
+    public ActionResult Search(string searchstring = "test")
+    {
+      if (searchstring == "test")
+      {
+        List<Element> leeg = new List<Element>();
+        ViewBag.Lijst = leeg;
+        return View();
+      }
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen = elementen.OrderBy(o => o.Trend).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      personen = personen.OrderBy(o => o.Trend).ToList();
+      elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null)
+        {
+          break;
+        }
+        else
+        {
+          for (int j = 0; j <= keywords.Count(); j++)
+          {
+            Keyword keyword = keywords.ElementAt(j);
+            if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+            {
+              elementen.Add(thema);
+              break;
+            }
+          }
+        }
+
+      }
+      if (elementen.Count() > 5)
+      {
+        elementen = elementen.GetRange(0, 5);
+      }
+      List<string> lijst = new List<string>();
+      foreach(Element element in elementen)
+      {
+        lijst.Add(element.Naam);
+      }
+      ViewBag.Lijst = lijst;
+      return View();
+    }
+
 
     public ActionResult _OrganisatieDropDown()
     {
