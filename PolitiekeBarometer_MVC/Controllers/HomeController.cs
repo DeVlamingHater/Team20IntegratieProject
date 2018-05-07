@@ -41,6 +41,50 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View();
         }
 
+        public JsonResult getGrafiekData(string grafiekType, int zone, string datum, string dataType)
+        {
+            saveGrafiek(grafiekType, zone, datum, dataType);
+            return Json(new
+            {
+                result = "OK"
+            });
+        }
+
+        public ActionResult saveGrafiek(string grafiekType, int zone, string datum, string dataType)
+        {
+            //nog implementeren
+            int datapoints = 1;
+            if(grafiekType == "line")
+            {
+                datapoints = 15;
+            }
+            ElementManager mgr = new ElementManager();
+            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            DashboardManager dashboardManager = new DashboardManager();
+            GrafiekType grafiektype = (GrafiekType)Enum.Parse(typeof(GrafiekType), grafiekType.ToUpper());
+            DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                Element =
+                   testElement
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                Zone = dashboardManager.getZone(zone),
+                GrafiekType = grafiektype,
+                DataType = datatype,
+                Tijdschaal = new TimeSpan(7, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                },
+                AantalDataPoints = datapoints
+            };
+            dashboardManager.addGrafiek(testGrafiek);
+            return View();
+        }
+
         public ActionResult Element()
         {
             return View();
@@ -91,14 +135,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             Element testElement = mgr.getElementByNaam("Bart De Wever");
             DashboardManager dashboardManager = new DashboardManager();
-            DataConfig testDataConfig = new DataConfig()
-            {
-                DataConfiguratieId = 100,
-                Element =
-                   testElement
-
-
-            };
+           
             Grafiek testGrafiek = new Grafiek()
             {
                 DataType = DataType.TOTAAL,
@@ -106,7 +143,6 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Tijdschaal = new TimeSpan(7, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
-                    testDataConfig
                 },
                 AantalDataPoints = 12
             };
@@ -158,11 +194,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //nog implementeren
             return View();
         }
-        public ActionResult saveGrafiek()
-        {
-            //nog implementeren
-            return View();
-        }
+        
 
         static int actieveZone;
         public ActionResult Dashboard()

@@ -2,8 +2,8 @@
 {
     public enum GrafiekType
     {
-        STAAF,
-        LIJN,
+        BAR,
+        LINE,
         PIE
     }
 }

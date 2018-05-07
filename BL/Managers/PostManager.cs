@@ -114,7 +114,7 @@ namespace BL.Managers
             IDashboardManager dashboardManager = new DashboardManager();
             TimeSpan historiek = dashboardManager.getHistoriek();
 
-           // postRepository.deleteOldPosts(historiek);
+            // postRepository.deleteOldPosts(historiek);
         }
 
 
@@ -128,7 +128,7 @@ namespace BL.Managers
             DateTime sinceDT = DateTime.Now.AddDays(-7);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            var q = new TextGainQueryDTO() {};
+            var q = new TextGainQueryDTO() { };
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -137,6 +137,9 @@ namespace BL.Managers
             return responseString;
         }
 
+        public IEnumerable<Post> getAllPosts()
+        {
+            return postRepository.getPosts();
         public double getAlertWaarde(Alert alert)
         {
             return 0.0;

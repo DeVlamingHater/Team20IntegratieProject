@@ -35,7 +35,6 @@ namespace DAL.Repositories_EF
         {
             Element element = dataConfig.Element;
             List<Post> posts = context.Posts.Include(p => p.Personen).ToList();
-
             if (element.GetType().Equals(typeof(Persoon)))
             {
                 posts = posts.Where(p => p.Personen.Any(pers => pers.Equals(element))).ToList();
