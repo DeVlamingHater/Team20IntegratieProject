@@ -62,7 +62,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             Element testElement = mgr.getElementByNaam("Bart De Wever");
             DashboardManager dashboardManager = new DashboardManager();
             GrafiekType grafiektype = (GrafiekType)Enum.Parse(typeof(GrafiekType), grafiekType.ToUpper());
-            DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType);
+            DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
             DataConfig testDataConfig = new DataConfig()
             {
                 DataConfiguratieId = 100,
@@ -81,6 +81,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 },
                 AantalDataPoints = datapoints
             };
+            dashboardManager.addGrafiek(testGrafiek);
             return View();
         }
 
