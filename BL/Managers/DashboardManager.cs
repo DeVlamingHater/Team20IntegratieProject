@@ -15,61 +15,62 @@ using System.Text;
 namespace BL.Managers
 {
 
-  public class DashboardManager : IDashboardManager
-  {
-    public static int NUMBERDATAPOINTS = 12;
+    public class DashboardManager : IDashboardManager
+    {
+        public static int NUMBERDATAPOINTS = 12;
 
-    IDashboardRepository dashboardRepository;
-    public UnitOfWorkManager uowManager;
-    public DashboardManager()
-    {
-      dashboardRepository = new DashboardRepository_EF();
-    }
+        IDashboardRepository dashboardRepository;
+        public UnitOfWorkManager uowManager;
+        public DashboardManager()
+        {
+            dashboardRepository = new DashboardRepository_EF();
+        }
 
-    public DashboardManager(UnitOfWorkManager uowManager)
-    {
-      this.uowManager = uowManager;
-      dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
-    }
+        public DashboardManager(UnitOfWorkManager uowManager)
+        {
+            this.uowManager = uowManager;
+            dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
+        }
 
-    public Dashboard getDashboard(string gebruikersNaam)
-    {
-      Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
-      return dashboard;
-    }
+        public Dashboard getDashboard(string gebruikersNaam)
+        {
+            Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
+            return dashboard;
+        }
 
-    public IEnumerable<Item> getItems(int actieveZone)
-    {
-      return dashboardRepository.getItems(actieveZone);
-    }
-    public IEnumerable<Zone> getZones(Dashboard dashboard)
-    {
-      int dashboardId = dashboard.DashboardId;
-      return dashboardRepository.getZones(dashboardId);
-    }
-    public Zone getZone(int zoneId)
-    {
-      return dashboardRepository.getZone(zoneId);
-    }
 
-    public void deleteZone(int zoneId)
-    {
-      dashboardRepository.deleteZone(zoneId);
-    }
-   
-    public Zone addZone()
-    {
-      // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-      Dashboard dashboard = this.getDashboard("Sam Claessen");
-      IEnumerable<Zone> zones = this.getZones(dashboard);
-      Zone zone = new Zone()
-      {
-        Id = zones.Count() + 1,
-        Naam = "NewZone",
-        Dashboard = dashboard
-      };
-      return dashboardRepository.addZone(zone);
-    }
+        public IEnumerable<Item> getItems(int actieveZone)
+        {
+            return null;
+        }
+        public IEnumerable<Zone> getZones(Dashboard dashboard)
+        {
+            int dashboardId = dashboard.DashboardId;
+            return dashboardRepository.getZones(dashboardId);
+        }
+        public Zone getZone(int zoneId)
+        {
+            return dashboardRepository.getZone(zoneId);
+        }
+
+        public void deleteZone(int zoneId)
+        {
+            dashboardRepository.deleteZone(zoneId);
+        }
+
+        public Zone addZone()
+        {
+            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+            Dashboard dashboard = this.getDashboard("Sam Claessen");
+            IEnumerable<Zone> zones = this.getZones(dashboard);
+            Zone zone = new Zone()
+            {
+                Id = zones.Count() + 1,
+                Naam = "NewZone",
+                Dashboard = dashboard
+            };
+            return dashboardRepository.addZone(zone);
+        }
 
         public void changeZone(Zone zone)
         {
@@ -78,13 +79,11 @@ namespace BL.Managers
 
         public List<Alert> getActiveAlerts()
         {
-            initNonExistingRepo(false);
             return dashboardRepository.getActiveAlerts().ToList();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
         {
-            initNonExistingRepo(false);
             return alert.DataConfig;
         }
 
@@ -96,13 +95,11 @@ namespace BL.Managers
 
         public List<Alert> getAllAlerts()
         {
-            initNonExistingRepo(false);
             return dashboardRepository.getAllAlerts().ToList();
         }
 
         public void sendAlerts()
         {
-            initNonExistingRepo(true);
             PostManager postManager = new PostManager(uowManager);
             List<Alert> activeAlerts = getActiveAlerts();
             foreach (Alert alert in activeAlerts)
@@ -147,17 +144,20 @@ namespace BL.Managers
                     }
                     if (alert.ApplicatieMelding)
                     {
-
+                        createMelding(alert);
                     }
                 }
-
             }
+        }
 
+        private void createMelding(Alert alert)
+        {
+            throw new NotImplementedException();
         }
 
         public void initNonExistingRepo(bool createWithUnitOfWork = false)
         {
-            
+
             if (dashboardRepository == null)
             {
                 if (createWithUnitOfWork)
@@ -172,7 +172,6 @@ namespace BL.Managers
                 {
                     dashboardRepository = new DashboardRepository_EF();
                 }
-
             }
         }
 
@@ -182,7 +181,6 @@ namespace BL.Managers
         }
         public string getGraphData(Grafiek grafiek)
         {
-
             PostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
@@ -242,12 +240,6 @@ namespace BL.Managers
             {
                 switch (filter.Type)
                 {
-                    case FilterType.SINCE:
-                        posts = posts.Where(p => p.Date.AddHours(filter.Waarde).Ticks > 0).ToList();
-                        break;
-                    case FilterType.UNTIL:
-                        posts = posts.Where(p => p.Date.AddHours(filter.Waarde).Ticks < 0).ToList();
-                        break;
                     case FilterType.SENTIMENT:
                         switch (filter.Operator)
                         {
@@ -274,23 +266,20 @@ namespace BL.Managers
             return posts;
         }
 
-        public string getGrafiekData(Grafiek grafiek)
-        {
-            IPostManager postManager = new PostManager();
-            StringBuilder response = new StringBuilder("");
-            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-
-            if (grafiek.GrafiekType == GrafiekType.LIJN)
+        public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
+        { 
+            Grafiek grafiek = new Grafiek()
             {
-                string data = getGraphData(grafiek);
-                response.Append(data);
-            }
-            else if (grafiek.GrafiekType == GrafiekType.PIE || grafiek.GrafiekType == GrafiekType.STAAF)
-            {
-                string data = getGraphData(grafiek);
-            }
-
-            return response.ToString();
+                GrafiekType = grafiekType,
+                DataType = dataType,
+                AantalDataPoints = aantalDataPoints,
+                Tijdschaal = Tijdschaal,
+                Zone = getZone(zoneId),
+                Filters = new List<Filter>(filters),
+                Dataconfigs = new List<DataConfig>(dataConfigs)
+            };
+            dashboardRepository.addGrafiek(grafiek);
+            return grafiek;
         }
     }
 }

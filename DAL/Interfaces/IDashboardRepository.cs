@@ -22,5 +22,6 @@ namespace DAL
         void deleteZone(int zoneId);
         IEnumerable<Item> getItems(int actieveZone);
         Platform getPlatform();
+        void addGrafiek(Grafiek grafiek);
     }
 }
