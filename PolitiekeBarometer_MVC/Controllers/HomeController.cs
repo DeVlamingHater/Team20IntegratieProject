@@ -40,6 +40,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
 
 
+
+    public ActionResult Element()
+    {
+      return View();
+    }
+
         public ActionResult NewTab()
         {
             return View();
@@ -112,6 +118,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
 
+
             List<string> dates = new List<string>();
             foreach (DateTime item in data.Keys)
             {
@@ -140,21 +147,35 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.Index = index;
             return PartialView(elementen.ToList());
         }
+        public ActionResult bewerkGrafiek()
+    {
+      // nog implementeren
+      return View();
+    }
+    public ActionResult maakAllert()
+    {
+      //nog implementeren
+      return View();
+    }
+    public ActionResult saveGrafiek()
+    {
+      //nog implementeren
+      return View();
+    }
+    #endregion
 
         #region Dashboard
         static int actieveZone;
         DashboardManager mgr = new DashboardManager();
         public ActionResult Dashboard()
-        {
-            Dashboard dashboard = mgr.getDashboard(1); //aanpassen naar gebruikerId
-            IEnumerable<Zone> zones = mgr.getZones(dashboard);
-            if (actieveZone == 0)
-            {
-                actieveZone = zones.First().Id;
-            }
-            return View(zones);
-
-        }
+    {
+      Dashboard dashboard = mgr.getDashboard("Sam Claessen"); //aanpassen naar gebruikerId
+      IEnumerable<Zone> zones = mgr.getZones(dashboard);
+      if (actieveZone == 0)
+      {
+        actieveZone = zones.First().Id;
+      }
+      return View(zones);
         //public ActionResult _ItemsPartial()
         //{
 

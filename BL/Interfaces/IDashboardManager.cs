@@ -16,7 +16,7 @@ namespace BL.Interfaces
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
         void sendAlerts();
-        Dashboard getDashboard(int gebruikerId);
+        Dashboard getDashboard(string gebruikersNaam);
 
         IEnumerable<Item> getItems(int actieveZone);
 

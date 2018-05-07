@@ -14,61 +14,68 @@ using System.Text;
 
 namespace BL.Managers
 {
-    public class DashboardManager : IDashboardManager
+
+  public class DashboardManager : IDashboardManager
+  {
+    public static int NUMBERDATAPOINTS = 12;
+
+    IDashboardRepository dashboardRepository;
+    public UnitOfWorkManager uowManager;
+    public DashboardManager()
+    {
+      dashboardRepository = new DashboardRepository_EF();
+    }
+
+    public DashboardManager(UnitOfWorkManager uowManager)
+    {
+      this.uowManager = uowManager;
+      dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
+    }
+
+    public Dashboard getDashboard(string gebruikersNaam)
+    {
+      Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
+      return dashboard;
+    }
+
+    public IEnumerable<Item> getItems(int actieveZone)
     {
         public static int NUMBERDATAPOINTS = 12;
 
-        IDashboardRepository dashboardRepository;
-        public UnitOfWorkManager uowManager;
-        public DashboardManager()
-        {
-            dashboardRepository = new DashboardRepository_EF();
-        }
+    public IEnumerable<Zone> getZones(Dashboard dashboard)
+    {
+      int dashboardId = dashboard.DashboardId;
+      return dashboardRepository.getZones(dashboardId);
+    }
+    public Zone getZone(int zoneId)
+    {
+      return dashboardRepository.getZone(zoneId);
+    }
+
+    public void deleteZone(int zoneId)
+    {
+      dashboardRepository.deleteZone(zoneId);
+    }
+
+    public Zone addZone()
+    {
+      // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+      Dashboard dashboard = this.getDashboard("Sam Claessen");
+      IEnumerable<Zone> zones = this.getZones(dashboard);
+      Zone zone = new Zone()
+      {
+        Id = zones.Count() + 1,
+        Naam = "NewZone",
+        Dashboard = dashboard
+      };
+      return dashboardRepository.addZone(zone);
+    }
+
 
         public DashboardManager(UnitOfWorkManager uowManager)
         {
             this.uowManager = uowManager;
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
-        }
-
-        public Dashboard getDashboard(int gebruikerId)
-        {
-            Dashboard dashboard = dashboardRepository.getDashboard(gebruikerId);
-            return dashboard;
-        }
-
-        public IEnumerable<Item> getItems(int actieveZone)
-        {
-            return dashboardRepository.getItems(actieveZone);
-        }
-
-        public IEnumerable<Zone> getZones(Dashboard dashboard)
-        {
-            int dashboardId = dashboard.DashboardId;
-            return dashboardRepository.getZones(dashboardId);
-        }
-        public Zone getZone(int zoneId)
-        {
-            return dashboardRepository.getZone(zoneId);
-        }
-
-        public void deleteZone(int zoneId)
-        {
-            dashboardRepository.deleteZone(zoneId);
-        }
-
-        public Zone addZone()
-        {
-            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-            Dashboard dashboard = this.getDashboard(1);
-            IEnumerable<Zone> zones = this.getZones(dashboard);
-            Zone zone = new Zone()
-            {
-                Id = zones.Count() + 1,
-                Naam = "NewZone",
-                Dashboard = dashboard
-            };
-            return dashboardRepository.addZone(zone);
         }
 
         public void changeZone(Zone zone)

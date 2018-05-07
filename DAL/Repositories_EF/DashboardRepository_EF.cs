@@ -41,10 +41,12 @@ namespace DAL.Repositories_EF
       return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
     }
 
-    public Dashboard getDashboard(int gebruikerId)
+    public Dashboard getDashboard(string gebruikersNaam)
     {
-            return context.Dashboards.Find(gebruikerId);
-        }
+
+      return context.Dashboards.Single(d => d.Gebruiker.Naam == gebruikersNaam) ;
+    }
+
 
     public IEnumerable<Zone> getZones(int dashboardId)
     {
