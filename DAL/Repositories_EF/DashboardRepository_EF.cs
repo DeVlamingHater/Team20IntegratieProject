@@ -12,90 +12,95 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Repositories_EF
 {
-  public class DashboardRepository_EF : IDashboardRepository
-  {
-    PolitiekeBarometerContext context;
-
-    public DashboardRepository_EF()
+    public class DashboardRepository_EF : IDashboardRepository
     {
-      context = new PolitiekeBarometerContext();
-    }
+        PolitiekeBarometerContext context;
 
-    public DashboardRepository_EF(UnitOfWork unitOfWork)
-    {
-      context = unitOfWork.Context;
-    }
+        public DashboardRepository_EF()
+        {
+            context = new PolitiekeBarometerContext();
+        }
 
-    public IEnumerable<Alert> getAllAlerts()
-    {
-      return context.Alerts.Include(a => a.DataConfig).ToList();
-    }
+        public DashboardRepository_EF(UnitOfWork unitOfWork)
+        {
+            context = unitOfWork.Context;
+        }
 
-    public IEnumerable<Alert> getActiveAlerts()
-    {
-      return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
-    }
+        public IEnumerable<Alert> getAllAlerts()
+        {
+            return context.Alerts.Include(a => a.DataConfig).ToList();
+        }
 
-    public DataConfig getAlertDataConfig(Alert alert)
-    {
-      return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
-    }
+        public IEnumerable<Alert> getActiveAlerts()
+        {
+            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+        }
 
-    public Dashboard getDashboard(string gebruikersNaam)
-    {
+        public DataConfig getAlertDataConfig(Alert alert)
+        {
+            return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
+        }
 
-      return context.Dashboards.Single(d => d.Gebruiker.Naam == gebruikersNaam) ;
-    }
+        public Dashboard getDashboard(string gebruikersNaam)
+        {
 
-
-    public IEnumerable<Zone> getZones(int dashboardId)
-    {
-      return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
-    }
-
-    public Zone getZone(int zoneId)
-    {
-      return context.Zones.Find(zoneId);
-    }
+            return context.Dashboards.Single(d => d.Gebruiker.Naam == gebruikersNaam);
+        }
 
 
-    public Zone addZone(Zone zone)
-    {
-      context.Zones.Add(zone);
-      context.SaveChanges();
-      return zone;
-    }
-    public void UpdateZone(Zone zone)
-    {
-      List<ValidationResult> errors = new List<ValidationResult>();
-      bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, true);
-      if (valid)
-      {
-        context.Entry(zone).State = EntityState.Modified;
-        context.SaveChanges();
-      }
-    }
-    public void deleteZone(int zoneId)
-    {
-      Zone zone = getZone(zoneId);
-      context.Zones.Remove(zone);
-      IEnumerable<Item> items = getItems(zoneId);
-      for (int i = 0; i < items.Count(); i++)
-      {
-        Item item = items.ElementAt(i);
-        context.Items.Remove(item);
-      };
-      context.SaveChanges();
-    }
+        public IEnumerable<Zone> getZones(int dashboardId)
+        {
+            return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
+        }
 
-    public IEnumerable<Item> getItems(int actieveZone)
-    {
-      return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
-    }
+        public Zone getZone(int zoneId)
+        {
+            return context.Zones.Find(zoneId);
+        }
 
-    public Platform getPlatform()
-    {
-      return context.Platformen.First();
+
+        public Zone addZone(Zone zone)
+        {
+            context.Zones.Add(zone);
+            context.SaveChanges();
+            return zone;
+        }
+        public void UpdateZone(Zone zone)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(zone, new ValidationContext(zone), errors, true);
+            if (valid)
+            {
+                context.Entry(zone).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+        public void deleteZone(int zoneId)
+        {
+            Zone zone = getZone(zoneId);
+            context.Zones.Remove(zone);
+            IEnumerable<Item> items = getItems(zoneId);
+            for (int i = 0; i < items.Count(); i++)
+            {
+                Item item = items.ElementAt(i);
+                context.Items.Remove(item);
+            };
+            context.SaveChanges();
+        }
+
+        public IEnumerable<Item> getItems(int actieveZone)
+        {
+            return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+        }
+
+        public Platform getPlatform()
+        {
+            return context.Platformen.First();
+        }
+
+        public void addGrafiek(Grafiek grafiek)
+        {
+            context.Grafieken.Add(grafiek);
+        }
     }
-  }
 }

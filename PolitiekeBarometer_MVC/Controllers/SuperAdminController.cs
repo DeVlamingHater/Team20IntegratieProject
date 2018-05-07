@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BL.Interfaces;
+using BL.Managers;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PolitiekeBarometer_MVC.Models;
 using System;
@@ -40,7 +42,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             user.Email = email;
             string pwd = password;
 
+            IPlatformManager platformManager = new PlatformManager();
+            
             var newuser = userManager.Create(user, pwd);
+           ;
+
+            platformManager.createGebruiker(userManager.Users.First(u => u.Email == user.Email).Id, user.Name, user.Email);
             return View("Index");
         }
         public ActionResult CreateRole()
