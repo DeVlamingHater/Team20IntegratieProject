@@ -357,6 +357,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         lijst.Add(element.Naam);
       }
       ViewBag.Lijst = lijst;
+      return Json(new
+      {
+        resut = "OK"
+      });
       return View();
     }
 
