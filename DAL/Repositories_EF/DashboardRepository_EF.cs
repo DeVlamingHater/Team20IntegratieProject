@@ -43,8 +43,8 @@ namespace DAL.Repositories_EF
 
     public Dashboard getDashboard(int gebruikerId)
     {
-            throw new NotImplementedException();
-    }
+            return context.Dashboards.Find(gebruikerId);
+        }
 
     public IEnumerable<Zone> getZones(int dashboardId)
     {
