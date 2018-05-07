@@ -124,7 +124,7 @@ namespace PolitiekeBarometer_CA
                 GrafiekType=GrafiekType.LIJN,
                 AantalDataPoints = 12
             };
-            string testData = dashboardManager.getGrafiekData(testGrafiek);
+            string testData = dashboardManager.getGraphData(testGrafiek);
             Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(testData);
             foreach (KeyValuePair<string, string> item in data)
             {
