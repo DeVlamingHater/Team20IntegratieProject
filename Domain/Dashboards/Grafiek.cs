@@ -31,7 +31,12 @@ namespace Domain.Dashboards
                 errors.Add(new ValidationResult(errorMessage,
                     new string[]{"Dataconfigs"}));
             }
-
+            if (AantalDataPoints <=0)
+            {
+                string errorMessage = "DataPoints moeten positief zijn";
+                errors.Add(new ValidationResult(errorMessage,
+                    new string[] { "AantalDataPoints" }));
+            }
             return errors;
         }
     }
