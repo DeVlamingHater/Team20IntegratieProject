@@ -140,14 +140,16 @@ namespace BL.Managers
         public IEnumerable<Post> getAllPosts()
         {
             return postRepository.getPosts();
+        }
         public double getAlertWaarde(Alert alert)
         {
             return 0.0;
         }
-    }
-    class TextGainQueryDTO
-    {
-        public string since { get; set; }
-        //public string Until { get; set; }
+
+        class TextGainQueryDTO
+        {
+            public string since { get; set; }
+            //public string Until { get; set; }
+        }
     }
 }

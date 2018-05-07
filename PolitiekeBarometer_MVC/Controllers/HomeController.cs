@@ -140,11 +140,11 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 DataType = DataType.TOTAAL,
 
-                Tijdschaal = new TimeSpan(7, 0, 0, 0),
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                 },
-                AantalDataPoints = 12
+                AantalDataPoints = 30
             };
 
             string dataString = dashboardManager.getGraphData(testGrafiek);
@@ -361,6 +361,9 @@ elementen = elementen.GetRange(0,5);
         Thema thema = themas.ElementAt(i);
         List<Keyword> keywords = thema.Keywords;
         if (keywords is null)
+                {
+
+                }
      
 
       }
