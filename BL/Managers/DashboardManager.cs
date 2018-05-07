@@ -56,7 +56,7 @@ namespace BL.Managers
     {
       dashboardRepository.deleteZone(zoneId);
     }
-
+   
     public Zone addZone()
     {
       // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST

@@ -151,15 +151,15 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       //nog implementeren
       return View();
-    }
-    public ActionResult saveGrafiek()
-    {
-      //nog implementeren
-      return View();
-    }
+        }
+        public ActionResult saveGrafiek()
+        {
+            //nog implementeren
+            return View();
+        }
 
-    #region Dashboard
-    static int actieveZone;
+        #region Dashboard
+        static int actieveZone;
     DashboardManager mgr = new DashboardManager();
     public ActionResult Dashboard()
     {
@@ -171,13 +171,17 @@ namespace PolitiekeBarometer_MVC.Controllers
       }
       return View(zones);
     }
-    //public ActionResult _ItemsPartial()
-    //{
+        public string MyTestMethod()
+        {
+            return "Test String";
+        }
+        //public ActionResult _ItemsPartial()
+        //{
 
-    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
-    //  return PartialView(items);
-    //}
-    public ActionResult _ItemsPartial(int zoneId)
+        //  IEnumerable<Item> items = mgr.getItems(actieveZone);
+        //  return PartialView(items);
+        //}
+        public ActionResult _ItemsPartial(int zoneId)
     {
 
       IEnumerable<Item> items = mgr.getItems(zoneId);
