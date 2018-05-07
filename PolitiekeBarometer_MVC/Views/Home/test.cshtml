@@ -1,3 +1,59 @@
+
+﻿<p id="demo">A Paragraph</p>
+<h3>@ViewBag.Namen[0]</h3>
+<h3>@ViewBag.Ids[0]</h3>
+<style>
+    .item1 {
+        grid-area: header;
+        grid-column: 1 / span 3;
+        grid-row: 1
+    }
+
+    .item2 {
+        grid-area: menu;
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .item3 {
+        grid-area: main;
+        grid-column: 2;
+        grid-row: 2
+    }
+
+    .item4 {
+        grid-area: right;
+        grid-column: 3;
+        grid-row: 2
+    }
+
+    .item5 {
+        grid-area: footer;
+        grid-column: 1 / span 3;
+        grid-row: 3
+    }
+
+    .grid-container {
+        max-width: 90%;
+        min-width:90%;
+        width:90%;
+        margin:auto;
+        display: grid;
+        grid-gap: 10px;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+    
+        .grid-container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            overflow: auto;
+            resize: both;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 30px;
+        }
+
+</style>
 ﻿<canvas id="grafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -54,6 +110,38 @@
 </div>
 
 
+<div class="grid-container">
+    <div class="item1" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag1" draggable="true" ondragstart="drag(event)">@Html.Action("_LijnGrafiekPartial", new { index = 0 })</div></div>
+    <div class="item2" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag2" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div></div>
+    <div class="item3" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div></div>
+    <div class="item4" id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag4" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div></div>
+    <div class="item5" id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag5" draggable="true" ondragstart="drag(event)">@Html.Action("_TaartGrafiekPartial", new { index = 0 })</div></div>
+</div>
+    
+    @*<div class="row">
+            <div class="col-sm-4" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div>
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
+        </div>*@
+    
+</div>
+
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var grid = ev.target;
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+</script>
 <script>
     var grafiekType = 1;
     var data;

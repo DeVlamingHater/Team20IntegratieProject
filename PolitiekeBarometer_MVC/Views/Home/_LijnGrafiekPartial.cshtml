@@ -11,8 +11,32 @@
     <div class="card-body">
         <canvas class="MyLineChart" width="100" height="50"></canvas>
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    <div class="card-footer small text-muted">
+        <div class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-edit"></i></button>
+                <button href="@Url.Action("saveGrafiek")" class="btn btn-default"><i class="fa fa-save"></i></button>
+                <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+            </div>
+            <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction()"><i id="menu" class="fa fa-bars"></i></button>
+        </div>
+    </div>
 </div>
+<script>
+    var open = false;
+    function menuFunction() {
+        var menu = document.getElementById("menu")
+        if (open == false) {
+            menu.className = "fa fa-close";
+            document.getElementById("menuIcons").style.visibility = 'visible';
+            open = true;
+        } else {
+            menu.className = "fa fa-bars";
+            document.getElementById("menuIcons").style.visibility = "hidden";
+            open = false;
+        }
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
