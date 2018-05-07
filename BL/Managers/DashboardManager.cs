@@ -40,7 +40,7 @@ namespace BL.Managers
 
         public void addGrafiek(Grafiek grafiek)
         {
-             dashboardRepository.addGrafiek(grafiek);
+            dashboardRepository.addGrafiek(grafiek);
         }
         public IEnumerable<Item> getItems(int actieveZone)
         {
@@ -190,18 +190,16 @@ namespace BL.Managers
             Dictionary<string, string> data = new Dictionary<string, string>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
-            foreach (DataConfig dataConfig in dataConfigs)
+            if (dataConfigs.Count == 0)
             {
-                //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
+                 Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
 
                 DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
-
                 TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
 
                 for (int i = 0; i < grafiek.AantalDataPoints; i++)
                 {
-                    List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+                    List<Post> posts = postManager.getAllPosts().ToList();
                     int totaal = posts.Count();
 
                     DateTime eind = start.Add(interval);
@@ -226,10 +224,51 @@ namespace BL.Managers
                     }
                     start = start.Add(interval);
                 }
-                string dataString = JsonConvert.SerializeObject(grafiekData);
-                data.Add(index.ToString(), dataString);
-                index++;
             }
+            else
+            {
+                foreach (DataConfig dataConfig in dataConfigs)
+                {
+                    //Dictionary van de Data, bevat geformateerde datum en double voor de data
+                    Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
+
+                    DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
+
+                    TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
+
+                    for (int i = 0; i < grafiek.AantalDataPoints; i++)
+                    {
+                        List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+                        int totaal = posts.Count();
+
+                        DateTime eind = start.Add(interval);
+                        posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
+
+                        posts = filterPosts(posts, grafiek.Filters);
+                        switch (grafiek.DataType)
+                        {
+                            case Domain.DataType.TOTAAL:
+                                grafiekData.Add(start, (double)posts.Count);
+                                break;
+                            case Domain.DataType.TREND:
+                                double dataPoint = (double)posts.Count / (double)totaal;
+                                grafiekData.Add(start, dataPoint);
+                                break;
+                            case Domain.DataType.SENTIMENT:
+                                double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
+                                grafiekData.Add(start, average);
+                                break;
+                            default:
+                                break;
+                        }
+                        start = start.Add(interval);
+                    }
+                    string dataString = JsonConvert.SerializeObject(grafiekData);
+                    data.Add(index.ToString(), dataString);
+                    index++;
+                }
+            }
+
             return JsonConvert.SerializeObject(data).ToString();
         }
 
@@ -270,7 +309,7 @@ namespace BL.Managers
         }
 
         public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
-        { 
+        {
             Grafiek grafiek = new Grafiek()
             {
                 GrafiekType = grafiekType,

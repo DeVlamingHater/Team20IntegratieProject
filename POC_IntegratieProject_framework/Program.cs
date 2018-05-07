@@ -121,7 +121,7 @@ namespace PolitiekeBarometer_CA
                 {
                     testDataConfig
                 },
-                GrafiekType=GrafiekType.LIJN,
+                GrafiekType=GrafiekType.LINE,
                 AantalDataPoints = 12
             };
             string testData = dashboardManager.getGraphData(testGrafiek);
