@@ -348,7 +348,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             if (searchstring == "test")
             {
                 List<Element> leeg = new List<Element>();
-                ViewBag.Lijst = leeg;
+                ViewBag.Test = "test";
                 return View();
             }
             List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
@@ -391,11 +391,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 lijst.Add(element.Naam);
             }
-            ViewBag.Lijst = lijst;
-            return Json(new
-            {
-                resut = "OK"
-            });
+            return Json(lijst);
             return View();
         }
 
