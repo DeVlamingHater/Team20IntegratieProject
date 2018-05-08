@@ -343,6 +343,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             return PartialView(elementen);
         }
 
+
         public ActionResult Search(string searchstring = "test")
         {
             if (searchstring == "test")
@@ -375,7 +376,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                 lijst.Add(element.Naam);
             }
             ViewBag.Lijst = lijst;
-            return View();
+   return Json(
+        lijst
+       );
         }
 
         [HttpPost]

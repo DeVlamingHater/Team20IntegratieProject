@@ -55,7 +55,6 @@
             font-size: 30px;
         }
 </style>
-
 ﻿<canvas id="maakGrafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -120,10 +119,13 @@
             </div>
             <div class="modal-body">
                 <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
-                <div class="form-group dropdown form-inline" >
-                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()"/>
-                    <button onclick="searchFunction()" id="searchbutton" class="btn btn-primary" ><i class="fa fa-search"></i></button>
-                    <ul class="dropdown-menu" id="searchlist"></ul>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()" />
+                        <button id="searchbutton" onclick="searchFunction()" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                    <ul class="list-group" id="searchlist" style="margin:auto;width:90%">
+                        </ul>
 
                 </div>
             </div>
@@ -170,7 +172,7 @@
 
 
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $(document).ready(function () {
         $("#searchString").keyup(function () {
@@ -181,30 +183,19 @@
                 f.dataType = "json";
                 f.data = JSON.stringify({ searchstring: searchtekst });
                 f.contentType = "application/json";
-                //f.success = function (response) {
-                //    alert("success");
-                //};
+                f.success = function (response) {
+                    
+                    searchFunction(response);
+                };
                 //f.error = function (response) {
                 //    alert("failed");
                 //};
                 $.ajax(f);
           });
        });
-</script>
-    }
-<script>
-    function searchFunction() {
-        alert("aangeroepen");
-        var elementen = @ViewBag.Lijst;
-        alert(elementen);
-        var ul = document.getElementById("searchlist");
-        for (i = 0; i < elementen.Length; i++) {
-            var li = document.createElement("li");
-            li.innerHTML = elementen[i];
-            ul.appendChild(li);
-        };
-    }
-</script>
+    </script>
+}
+
 <script>
     function allowDrop(ev) {
         ev.preventDefault();
@@ -220,6 +211,27 @@
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
     }
+</script>
+<script>
+    function searchFunction(response) {
+       var ul = document.getElementById("searchlist");
+       ul.innerHTML = "";
+       for (i = 0; i < response.length; i++) {
+
+           var li = document.createElement("li");
+           var a = document.createElement("a");
+           var link = "filterElement(\""+ response[i] + "\")";
+           a.innerHTML = response[i];
+           a.setAttribute("id", response[i]);
+           a.setAttribute("onclick", link)
+           ul.appendChild(li);
+           li.appendChild(a);
+        };
+    }
+    function filterElement(elementNaam) {
+        alert(elementNaam)
+    }
+
 </script>
 <script>
     var grafiekType = 1;
