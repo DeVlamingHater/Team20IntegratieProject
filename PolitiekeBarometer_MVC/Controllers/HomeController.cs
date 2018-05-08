@@ -348,14 +348,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             if (searchstring == "test")
             {
                 List<Element> leeg = new List<Element>();
-                ViewBag.Test = "test";
+                ViewBag.Lijst = leeg;
                 return View();
             }
             List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             elementen = elementen.OrderBy(o => o.Trend).ToList();
-
-            List<Persoon> personen = Emgr.getAllPersonen().ToList();
-            personen = personen.Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             personen = personen.OrderBy(o => o.Trend).ToList();
             elementen.AddRange(personen);
             List<Thema> themas = Emgr.getAllThemas();
@@ -363,25 +361,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 Thema thema = themas.ElementAt(i);
                 List<Keyword> keywords = thema.Keywords;
-                if (keywords is null)
-                {
-                    break;
-                }
-                else
-                {
-                    for (int j = 0; j <= keywords.Count(); j++)
-                    {
-                        Keyword keyword = keywords.ElementAt(j);
-                        if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
-                        {
-                            elementen.Add(thema);
-                            break;
-                        }
-                    }
-                }
+                if (keywords is null) { }
+
+
             }
-
-
             if (elementen.Count() > 5)
             {
                 elementen = elementen.GetRange(0, 5);
@@ -391,10 +374,18 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 lijst.Add(element.Naam);
             }
-            return Json(lijst);
+            ViewBag.Lijst = lijst;
             return View();
         }
-      
+
+        [HttpPost]
+        public ActionResult getElementen()
+        {
+            IElementManager elementManager = new ElementManager();
+
+            List<Element> elementen = elementManager.getAllElementen();
+            return Json(elementen);
+        }
 
         public ActionResult Organisatie(int id)
         {
