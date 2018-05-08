@@ -215,18 +215,18 @@ namespace PolitiekeBarometer_MVC.Controllers
         //  IEnumerable<Item> items = mgr.getItems(actieveZone);
         //  return PartialView(items);
         //}
-        public ActionResult _ItemsPartial(int zoneId)
+        //public ActionResult _ItemsPartial(int zoneId)
 
-        {
-            IDashboardManager mgr = new DashboardManager();
-            IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
-            return PartialView(grafieken);
-        }
+        //{
+        //    IDashboardManager mgr = new DashboardManager();
+        //    IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
+        //    return PartialView(grafieken);
+        //}
         public ActionResult setActiveZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             actieveZone = mgr.getZone(zoneId).Id;
-            _ItemsPartial(actieveZone);
+            //_ItemsPartial(actieveZone);
             return RedirectToAction("Dashboard");
             //return RedirectToAction("_ItemsPartial");
             return View();
