@@ -83,7 +83,7 @@ namespace DAL.Repositories_EF
 
         public Zone getZone(int zoneId)
         {
-            return context.Zones.Find(zoneId);
+            return context.Zones.Include(z=>z.Dashboard).First(z=>z.Id==zoneId);
         }
 
         public Zone addZone(Zone zone)
@@ -131,6 +131,7 @@ namespace DAL.Repositories_EF
             bool valid = Validator.TryValidateObject(grafiek, new ValidationContext(grafiek), errors, true);
             if (valid)
             {
+                grafiek.Filters = new List<Filter>();
                 context.Grafieken.Add(grafiek);
                 context.SaveChanges();
             }

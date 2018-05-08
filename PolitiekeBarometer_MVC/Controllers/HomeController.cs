@@ -65,7 +65,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
             DataConfig testDataConfig = new DataConfig()
             {
-                DataConfiguratieId = 100,
                 Element =
                    testElement
             };
@@ -74,7 +73,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Zone = dashboardManager.getZone(zone),
                 GrafiekType = grafiektype,
                 DataType = datatype,
-                Tijdschaal = new TimeSpan(7, 0, 0, 0),
+                Tijdschaal = new TimeSpan(7, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                     testDataConfig
@@ -205,10 +204,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = mgr.getDashboard(email); //aanpassen naar gebruikerId
             List<Zone> zones = dashboard.Zones;
-            if (actieveZone == 0)
-            {
-                actieveZone = zones.First().Id;
-            }
+            //if (actieveZone == 0)
+            //{
+            //    actieveZone = zones.First().Id;
+            //}
             return View(zones);
         }
         //public ActionResult _ItemsPartial()
