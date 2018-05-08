@@ -39,12 +39,7 @@ namespace DAL.EF
                 GebruikerId = "1"
             };
 
-            Gebruiker gebruiker2 = new Domain.Platformen.Gebruiker
-            {
-                Email = "thomas.somers@student.kdg.be",
-                Naam = "Thomas Somers",
-                GebruikerId = "2"
-            };
+           
             #endregion
 
             #region Dashboard
@@ -55,11 +50,7 @@ namespace DAL.EF
                 Gebruiker = gebruiker1
             };
 
-            Dashboard dashboard2 = new Dashboard()
-            {
-                DashboardId = 2,
-                Gebruiker = gebruiker2
-            };
+           
             #endregion
 
             #region Zone
@@ -152,12 +143,10 @@ namespace DAL.EF
 
             #region AddGebruikers
             context.Gebruikers.Add(gebruiker1);
-            context.Gebruikers.Add(gebruiker2);
             #endregion
 
             #region addDashboards
             context.Dashboards.Add(dashboard1);
-            context.Dashboards.Add(dashboard2);
             #endregion
 
             #region AddZones

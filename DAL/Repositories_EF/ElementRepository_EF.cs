@@ -48,21 +48,20 @@ namespace DAL.Repositories_EF
                 if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
                 {
                     context.Personen.Add(persoon);
-                    context.SaveChanges();
                 }else{
                     setPersoon(persoon);
-                    context.SaveChanges();
                 }
             }
+            context.SaveChanges();
         }
 
         public IEnumerable<Element> getAllElementen()
         {
             List<Element> elementen = new List<Element>();
             elementen.AddRange(context.Themas);
-            elementen.AddRange(context.Organisaties);
+            elementen.AddRange(context.Organisaties.Include(o=>o.Personen));
 
-            List<Persoon> personen = context.Personen.ToList();
+            List<Persoon> personen = context.Personen.Include(p=>p.Organisatie).ToList();
             personen.Sort(Element.compareByNaam);
             elementen.AddRange(personen);
             return elementen;
@@ -70,7 +69,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Persoon> getAllPersonen()
         {
-            return context.Personen;
+            return context.Personen.Include(p=>p.Organisatie).Include("Organisatie");
         }
 
         public List<Thema> getAllThemas()

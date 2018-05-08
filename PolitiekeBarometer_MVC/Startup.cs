@@ -73,7 +73,7 @@ namespace PolitiekeBarometer_MVC
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            if (!roleManager.RoleExists("SuperAdmin"))
+            if (   !roleManager.RoleExists("SuperAdmin"))
             {
                 var role = new IdentityRole("SuperAdmin");
                 roleManager.Create(role);
@@ -82,12 +82,13 @@ namespace PolitiekeBarometer_MVC
                 user.Name = "Thomas Somers";
                 user.UserName = "thomas.somers@student.kdg.be";
                 user.Email = "thomas.somers@student.kdg.be";
+                user.EmailConfirmed = true;
 
                 user.Gebruiker = new Domain.Platformen.Gebruiker()
                 {
                     Email = user.Email,
                     GebruikerId = user.Id,
-                    Naam = user.UserName
+                    Naam = user.Name
                 };
                 string pwd = "ThomasSuperAdmin20";
 
@@ -107,12 +108,13 @@ namespace PolitiekeBarometer_MVC
                 user.Name = "Thomas Admin";
                 user.UserName = "thomas.somers@live.nl";
                 user.Email = "thomas.somers@live.nl";
+                user.EmailConfirmed = true;
                 string pwd = "ThomasAdmin20";
                 user.Gebruiker = new Domain.Platformen.Gebruiker()
                 {
                     Email = user.Email,
                     GebruikerId = user.Id,
-                    Naam = user.UserName
+                    Naam = user.Name
                 };
                 var newuser = userManager.Create(user, pwd);
                 if (newuser.Succeeded)

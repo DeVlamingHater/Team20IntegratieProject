@@ -31,6 +31,9 @@ namespace BL.Interfaces
         TimeSpan getHistoriek();
         string getGraphData(Grafiek grafiek);
         Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
-        
+        void addAlert(Alert testAlert);
+        IEnumerable<Alert> getDashboardAlerts(Dashboard testDashboard);
+        Melding createMelding(Alert alert, double waarde);
+
     }
 }

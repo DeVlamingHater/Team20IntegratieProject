@@ -45,7 +45,7 @@ namespace DAL.Repositories_EF
         {
             Dashboard dashboard = null;
 
-            Gebruiker gebruiker = context.Gebruikers.Single(g => g.Email == gebruikersNaam);
+            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == gebruikersNaam);
             List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
             if (dashboards.Count != 0)
             {
@@ -83,9 +83,8 @@ namespace DAL.Repositories_EF
 
         public Zone getZone(int zoneId)
         {
-            return context.Zones.Find(zoneId);
+            return context.Zones.Include(z=>z.Dashboard).First(z=>z.Id==zoneId);
         }
-
 
         public Zone addZone(Zone zone)
         {
@@ -118,7 +117,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Item> getItems(int actieveZone)
         {
-            return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+            return context.Items.Where(r => r.Zone.Id == actieveZone);
         }
 
         public Platform getPlatform()
@@ -128,7 +127,15 @@ namespace DAL.Repositories_EF
 
         public void addGrafiek(Grafiek grafiek)
         {
-            context.Grafieken.Add(grafiek);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(grafiek, new ValidationContext(grafiek), errors, true);
+            if (valid)
+            {
+                grafiek.Filters = new List<Filter>();
+                context.Grafieken.Add(grafiek);
+                context.SaveChanges();
+            }
+
         }
 
         public void addMelding(Melding melding)
@@ -139,6 +146,22 @@ namespace DAL.Repositories_EF
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
             return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
+        }
+
+        public void addAlert(Alert alert)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(alert, new ValidationContext(alert), errors, true);
+            if (valid)
+            {
+                context.Entry(alert).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
+        {
+            return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.DashboardId == dashboard.DashboardId);
         }
     }
 }

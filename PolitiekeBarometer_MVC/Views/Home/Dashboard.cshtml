@@ -1,10 +1,56 @@
-﻿@model  IEnumerable<Domain.Dashboards.Zone>
-@{
-    ViewBag.Title = "Dashboard";
-}
+﻿@model IEnumerable<Domain.Dashboards.Zone>
+<style>
+    .item1 {
+        grid-area: header;
+        grid-column: 1 / span 3;
+        grid-row: 1
+    }
 
+    .item2 {
+        grid-area: menu;
+        grid-column: 1;
+        grid-row: 2;
+    }
 
-<div style="margin:20px">
+    .item3 {
+        grid-area: main;
+        grid-column: 2;
+        grid-row: 2
+    }
+
+    .item4 {
+        grid-area: right;
+        grid-column: 3;
+        grid-row: 2
+    }
+
+    .item5 {
+        grid-area: footer;
+        grid-column: 1 / span 3;
+        grid-row: 3
+    }
+
+    .grid-container {
+        max-width: 90%;
+        min-width: 90%;
+        width: 90%;
+        margin: auto;
+        display: grid;
+        grid-gap: 10px;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+
+        .grid-container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            overflow: auto;
+            resize: both;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 30px;
+        }
+</style>
+<div class="container border-danger">
 
     @foreach (var zone in Model)
     {
@@ -22,40 +68,29 @@
     {
         <div class="tab-content bg-light">
             <div id="@zone.Id" class="tab-pane" style="display:none">
-                @if (zone.Items != null && zone.Items.Count!=0)
-                {
-                    <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3> 
-                }
+                @*<h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>*@
             </div>
-            ﻿<canvas id="grafiek"></canvas>
         </div>
     }
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-        Maak Grafiek
-    </button>
 </div>
+﻿<canvas id="maakGrafiek"></canvas>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+    Maak Grafiek
+</button>
 
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Stap 1</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 1: Welk type grafiek kies je?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                Welk type grafiek kies je?
-                <br />
-                <a onclick="GrafiekType(1)"><i class="fa fa-line-chart" style="font-size: 80px"></i></a>
-                <a onclick="GrafiekType(2)"><i class="fa fa-bar-chart" style="font-size: 80px"></i></a>
-                <a onclick="GrafiekType(3)"><i class="fa fa-pie-chart" style="font-size: 80px"></i></a>
-                <select id="dataType" onchange="Zone()">
-@foreach (var zone in Model)
-{
-    <option value="@zone.Naam">@zone.Naam</option>
-}
-                </select>
+            <div class="modal-body" style="align-self:center">
+                <button class="btn btn-default" onclick="GrafiekType(1)"><i class="fa fa-line-chart" style="font-size: 80px"></i></button>
+                <button class="btn btn-default" onclick="GrafiekType(2)"><i class="fa fa-bar-chart" style="font-size: 80px"></i></button>
+                <button class="btn btn-default" onclick="GrafiekType(3)"><i class="fa fa-pie-chart" style="font-size: 80px"></i></button>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
@@ -69,56 +104,195 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Stap 2</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Stap 2: Kies je data</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                Welk datatype kies je?
-                <br />
-                <select id="dataType" onchange="DataType()">
+                <label for="dataType">Welk datatype kies je?</label>
+                <select id="dataType" class="form-control" onchange="DataType()">
                     <option value="aantal">aantal</option>
                     <option value="sentiment">sentiment</option>
+                    <option value="trend">trend</option>
                 </select>
                 <br />
-                Van <input type="date" onchange="Datum()" id="begin"> Tot <input type="date" onchange="Datum()" id="einde">
+                <label for="begin">Van:</label><input class="form-control" type="date" id="begin">
+                <label for="einde">Tot:</label><input class="form-control" type="date" id="einde">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="MaakGrafiek()">Maak Grafiek</button>
+                <button type="button" onclick="MaakGrafiek()" data-dismiss="modal" data-toggle="modal">Volgende</button>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 3: Voeg je filters toe</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
+                <div id="searchBar" onload="fillFunction()" class="form-group dropdown form-inline">
+                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()" />
 
-<script>
-    var id = 0;
-    function visible(zone) {
-        var items = document.getElementById(zone);
-        if (items.style.display == 'none') {
-            items.style.display = 'block';
-            if (id != 0 && id != zone) {
-                var item = document.getElementById(id);
-                item.style.display = 'none';
-            }
-            id = zone;
-        } else {
-            items.style.display='none';
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ToonGrafiek()" data-toggle="modal" data-target="#myModal4">Toon Grafiek</button>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 4: Dit is het resultaat</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ﻿<canvas id="toonGrafiek"></canvas>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
+                <button type="button" id="maakGrafiek" data-dismiss="modal" onclick="MaakGrafiek()">Maak Grafiek</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="grafiekOpslaan">Grafiek opslaan</button>
+<p id="testdata">testdata</p>
+@*<div class="grid-container">
+        <div class="item1" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag1" draggable="true" ondragstart="drag(event)">@Html.Action("_LijnGrafiekPartial", new { index = 0 })</div></div>
+        <div class="item2" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag2" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div></div>
+        <div class="item3" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div></div>
+        <div class="item4" id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag4" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div></div>
+        <div class="item5" id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag5" draggable="true" ondragstart="drag(event)">@Html.Action("_TaartGrafiekPartial", new { index = 0 })</div></div>
+    </div>*@
+
+@*<div class="row">
+        <div class="col-sm-4" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div>
+        <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
+        <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
+    </div>*@
+
+@*@section scripts{
+        <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $("#searchString").keyup(function () {
+                var searchtekst = document.getElementById("searchString").value;
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    fillFunction(response)
+                };
+                    //f.error = function (response) {
+                    //    alert("failed");
+                //};
+                $.ajax(f).done(function (response) {
+                    alert(response);
+                });
+            });
+        });
+
+        </script>
+    }*@
+@*<script>
+        window.onload = fillFunction;
+        function fillFunction()
+        {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("getElementen", "Home")',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result)
+                    {
+                        alert(result);
+                    },
+                    done: function (result) {
+                        alert(result);
+                    }
+            });
+
         }
 
-    }
-</script>
+        function searchFunction(response) {
+                    alert("aangeroepen");
+            var elementen = @ViewBag.Lijst;
+            alert(response);
+                    var ul = document.getElementById("searchlist");
+                    for (i = 0; i < elementen.Length; i++) {
+                        var li = document.createElement("a");
+                        li.innerHTML = elementen[i];
+                        li.className = "dropdown-item";
+                    }
+                    ul.value = "test";
+                    ul.appendChild(li);
+                    }
+    </script>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var grid = ev.target;
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>*@
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#grafiekOpslaan").click(function () {
+                var f = {};
+                f.url = '@Url.Action("getGrafiekData", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ grafiekType: grafiekType, zone: zoneID, datum: datum.toString(), dataType: data });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("success");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+            });
+        });
+
+    </script>
+}
 <script>
     var grafiekType = 1;
-    var data;
-    var datum = [];
-    document.addEventListener('DOMContentLoaded', function () {
-    }, false);
-    function TaartGrafiek() {
-        var ctx = document.getElementById("grafiek");
-
-        var myPieChart = new Chart(ctx, {
+    var data = "";
+    var datum = "";
+    var zoneID = 1;
+    function TaartGrafiek(plaats) {
+        var ctx = plaats;
+        var myChart = new Chart(ctx, {
             type: grafiekType,
             data: {
                 labels: ["Blue", "Red", "Yellow", "Green"],
@@ -138,9 +312,9 @@
             },
         });
     }
-    function BarGrafiek() {
-        var ctx = document.getElementById("grafiek");
-        var myLineChart = new Chart(ctx, {
+    function BarGrafiek(plaats) {
+        var ctx = plaats;
+        var myChart = new Chart(ctx, {
             type: grafiekType,
             data: {
                 labels: datum,
@@ -181,9 +355,9 @@
             }
         });
     }
-    function LijnGrafiek() {
-        var ctx = document.getElementById("grafiek");
-        var myLineChart = new Chart(ctx, {
+    function LijnGrafiek(plaats) {
+        var ctx = plaats;
+        var myChart = new Chart(ctx, {
             type: grafiekType,
             data: {
                 labels: datum,
@@ -242,33 +416,53 @@
         var begin = new Date(document.getElementById("begin").value);
         var einde = new Date(document.getElementById("einde").value);
         // date array
-            var
-                arr = new Array(),
-                dt = new Date(begin);
 
-            while (dt <= einde) {
-                arr.push(new Date(dt).toLocaleDateString());
-                dt.setDate(dt.getDate() + 1);
-            }
-            datum = arr;
+
+        var
+            arr = new Array(),
+            dt = new Date(begin);
+
+        while (dt <= einde) {
+            arr.push(new Date(dt).toDateString());
+            dt.setDate(dt.getDate() + 1);
+        }
+        datum = arr;
+
     }
+    //function ToonGrafiek() {
+    //    var div = document.getElementById("toonGrafiek");
+    //    switch (grafiekType) {
+    //        case 1:
+    //            grafiekType = "line";
+    //            LijnGrafiek(div);
+    //            break;
+    //        case 2:
+    //            grafiekType = "bar";
+    //            BarGrafiek(div);
+    //            break;
+    //        case 3:
+    //            grafiekType = "pie";
+    //            TaartGrafiek(div);
+    //    }
+    //}
     function MaakGrafiek() {
-        var div = document.getElementById("grafiek");
+        var div = document.getElementById("maakGrafiek");
         switch (grafiekType) {
             case 1:
                 grafiekType = "line";
                 Datum();
-                LijnGrafiek();
+                LijnGrafiek(div);
                 break;
             case 2:
                 grafiekType = "bar";
                 Datum();
-                BarGrafiek();
+                BarGrafiek(div);
                 break;
             case 3:
                 grafiekType = "pie";
-                TaartGrafiek();
+                TaartGrafiek(div);
         }
     }
 
 </script>
+
