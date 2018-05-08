@@ -141,6 +141,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 DataType = DataType.TOTAAL,
 
+
                 Tijdschaal = new TimeSpan(30, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
@@ -394,6 +395,50 @@ namespace PolitiekeBarometer_MVC.Controllers
             return Json(lijst);
             return View();
         }
+      }
+      if( elementen.Count() > 5)
+      {
+elementen = elementen.GetRange(0,5);
+      }
+      
+      return PartialView(elementen);
+    }
+    
+    public ActionResult Search(string searchstring = "test")
+    {
+      if (searchstring == "test")
+      {
+        List<Element> leeg = new List<Element>();
+        ViewBag.Lijst = leeg;
+        return View();
+      }
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      elementen = elementen.OrderBy(o => o.Trend).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      personen = personen.OrderBy(o => o.Trend).ToList();
+      elementen.AddRange(personen);
+      List<Thema> themas = Emgr.getAllThemas();
+      for (int i = 0; i < themas.Count(); i++)
+      {
+        Thema thema = themas.ElementAt(i);
+        List<Keyword> keywords = thema.Keywords;
+        if (keywords is null) { }
+     
+
+      }
+      if (elementen.Count() > 5)
+      {
+        elementen = elementen.GetRange(0, 5);
+      }
+      List<string> lijst = new List<string>();
+      foreach(Element element in elementen)
+      {
+        lijst.Add(element.Naam);
+      }
+      ViewBag.Lijst = lijst;
+      return View();
+    }
+
 
         public ActionResult Organisatie(int id)
         {
