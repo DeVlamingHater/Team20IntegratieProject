@@ -1,4 +1,5 @@
-﻿<style>
+﻿@model IEnumerable<Domain.Dashboards.Zone>
+<style>
     .item1 {
         grid-area: header;
         grid-column: 1 / span 3;
@@ -49,7 +50,29 @@
             font-size: 30px;
         }
 </style>
+<div class="container border-danger">
 
+    @foreach (var zone in Model)
+    {
+        <div class="btn-group">
+            <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class=" btn btn-primary">
+                @Html.DisplayFor(modelItem => zone.Naam)
+
+            </button>
+            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
+
+        </div>
+    }
+    @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
+    @foreach (var zone in Model)
+    {
+        <div class="tab-content bg-light">
+            <div id="@zone.Id" class="tab-pane" style="display:none">
+                @*<h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>*@
+            </div>
+        </div>
+    }
+</div>
 ﻿<canvas id="maakGrafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -150,12 +173,12 @@
 <button id="grafiekOpslaan">Grafiek opslaan</button>
 <p id="testdata">testdata</p>
 @*<div class="grid-container">
-    <div class="item1" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag1" draggable="true" ondragstart="drag(event)">@Html.Action("_LijnGrafiekPartial", new { index = 0 })</div></div>
-    <div class="item2" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag2" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div></div>
-    <div class="item3" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div></div>
-    <div class="item4" id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag4" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div></div>
-    <div class="item5" id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag5" draggable="true" ondragstart="drag(event)">@Html.Action("_TaartGrafiekPartial", new { index = 0 })</div></div>
-</div>*@
+        <div class="item1" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag1" draggable="true" ondragstart="drag(event)">@Html.Action("_LijnGrafiekPartial", new { index = 0 })</div></div>
+        <div class="item2" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag2" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div></div>
+        <div class="item3" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div></div>
+        <div class="item4" id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag4" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div></div>
+        <div class="item5" id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag5" draggable="true" ondragstart="drag(event)">@Html.Action("_TaartGrafiekPartial", new { index = 0 })</div></div>
+    </div>*@
 
 @*<div class="row">
         <div class="col-sm-4" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div>
@@ -164,82 +187,82 @@
     </div>*@
 
 @*@section scripts{
-    <script type="text/javascript">
-    $(document).ready(function ()
-    {
-        $("#searchString").keyup(function () {
-            var searchtekst = document.getElementById("searchString").value;
-            var f = {};
-            f.url = '@Url.Action("Search", "Home")';
-            f.type = "POST";
-            f.dataType = "json";
-            f.data = JSON.stringify({ searchstring: searchtekst });
-            f.contentType = "application/json";
-            f.success = function (response) {
-                fillFunction(response)
-            };
-                //f.error = function (response) {
-                //    alert("failed");
-            //};
-            $.ajax(f).done(function (response) {
-                alert(response);
+        <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $("#searchString").keyup(function () {
+                var searchtekst = document.getElementById("searchString").value;
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    fillFunction(response)
+                };
+                    //f.error = function (response) {
+                    //    alert("failed");
+                //};
+                $.ajax(f).done(function (response) {
+                    alert(response);
+                });
             });
         });
-    });
 
-    </script>
-}*@
+        </script>
+    }*@
 @*<script>
-    window.onload = fillFunction;
-    function fillFunction()
-    {
-        $.ajax(
-            {
-                type: "POST",
-                url: '@Url.Action("getElementen", "Home")',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (result)
+        window.onload = fillFunction;
+        function fillFunction()
+        {
+            $.ajax(
                 {
-                    alert(result);
-                },
-                done: function (result) {
-                    alert(result);
-                }
-        });
+                    type: "POST",
+                    url: '@Url.Action("getElementen", "Home")',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result)
+                    {
+                        alert(result);
+                    },
+                    done: function (result) {
+                        alert(result);
+                    }
+            });
 
-    }
+        }
 
-    function searchFunction(response) {
-                alert("aangeroepen");
-        var elementen = @ViewBag.Lijst;
-        alert(response);
-                var ul = document.getElementById("searchlist");
-                for (i = 0; i < elementen.Length; i++) {
-                    var li = document.createElement("a");
-                    li.innerHTML = elementen[i];
-                    li.className = "dropdown-item";
-                }
-                ul.value = "test";
-                ul.appendChild(li);
-                }
-</script>
-<script>
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
+        function searchFunction(response) {
+                    alert("aangeroepen");
+            var elementen = @ViewBag.Lijst;
+            alert(response);
+                    var ul = document.getElementById("searchlist");
+                    for (i = 0; i < elementen.Length; i++) {
+                        var li = document.createElement("a");
+                        li.innerHTML = elementen[i];
+                        li.className = "dropdown-item";
+                    }
+                    ul.value = "test";
+                    ul.appendChild(li);
+                    }
+    </script>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
 
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
 
-    function drop(ev) {
-        ev.preventDefault();
-        var grid = ev.target;
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-    }
-</script>*@
+        function drop(ev) {
+            ev.preventDefault();
+            var grid = ev.target;
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>*@
 @section scripts{
     <script type="text/javascript">
         $(document).ready(function () {
@@ -262,11 +285,11 @@
 
     </script>
 }
- <script>   
-        var grafiekType = 1;
-        var data = "";
-        var datum = "";
-        var zoneID = 1;
+<script>
+    var grafiekType = 1;
+    var data = "";
+    var datum = "";
+    var zoneID = 1;
     function TaartGrafiek(plaats) {
         var ctx = plaats;
         var myChart = new Chart(ctx, {
@@ -393,17 +416,17 @@
         var begin = new Date(document.getElementById("begin").value);
         var einde = new Date(document.getElementById("einde").value);
         // date array
-   
 
-            var
-                arr = new Array(),
-                dt = new Date(begin);
 
-            while (dt <= einde) {
-                arr.push(new Date(dt).toDateString());
-                dt.setDate(dt.getDate() + 1);
-            }
-            datum = arr;
+        var
+            arr = new Array(),
+            dt = new Date(begin);
+
+        while (dt <= einde) {
+            arr.push(new Date(dt).toDateString());
+            dt.setDate(dt.getDate() + 1);
+        }
+        datum = arr;
 
     }
     //function ToonGrafiek() {
@@ -441,5 +464,5 @@
         }
     }
 
-    </script>
+</script>
 
