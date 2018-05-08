@@ -1,4 +1,10 @@
-﻿using System;
+﻿using BL.Interfaces;
+using BL.Managers;
+using DAL.EF;
+using Domain.Platformen;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,8 +14,41 @@ using System.Web.Http;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
+
+    [Authorize]
     public class AndroidApiController : ApiController
     {
+
+        [HttpGet]
+        public String Get()
+        {
+            String tekst = "hallo";
+            return tekst;
+
+        }
+
+
+
+
+        [HttpGet]
+        public String Get(string email)
+        {
+            IPlatformManager platformManager = new PlatformManager();
+            DashboardManager dashboardManager = new DashboardManager();
+
+            Gebruiker gebruiker = platformManager.getGebruiker(email);
+
+
+            return gebruiker.Naam;
+
+        }
+
+
+
+
+
+
+
         //[HttpGet]
         //[Authorize(Roles ="Admin,SuperAdmin",Claims="Platform|1")]
         //public IEnumerable<string> Get()
@@ -23,6 +62,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //}
 
 
-        
+
     }
 }

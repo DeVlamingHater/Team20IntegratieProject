@@ -31,9 +31,9 @@ namespace DAL.Repositories_EF
             });
         }
 
-        public Gebruiker getGebruiker(int gebruikerId)
+        public Gebruiker getGebruiker(string email)
         {
-            throw new NotImplementedException();
+            return context.Gebruikers.First(g=>g.Email == email);
         }
     }
 }
