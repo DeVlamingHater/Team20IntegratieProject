@@ -24,9 +24,9 @@ namespace BL.Managers
             this.uowManager = uowManager;
             platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
-        public Gebruiker getGebruiker(int gebruikerId)
+        public Gebruiker getGebruiker(string email)
         {
-            Gebruiker gebruiker = platformRepository.getGebruiker(gebruikerId);
+            Gebruiker gebruiker = platformRepository.getGebruiker(email);
             return gebruiker;
         }
 

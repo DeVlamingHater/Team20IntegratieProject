@@ -27,96 +27,96 @@
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
 
-        <ul class="navbar-nav ml-auto">
-        @if (User.IsInRole("SuperAdmin"))
+            <ul class="navbar-nav ml-auto">
+                @if (User.IsInRole("SuperAdmin"))
     {
-        <li class="nav-item">
-        <a class="nav-link" href="/SuperAdmin/Index">SuperAdmin</a>
+            <li class="nav-item">
+                <a class="nav-link" href="/SuperAdmin/Index">SuperAdmin</a>
 
-        </li>
+            </li>
 }
-        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
     {
-        <li class="nav-item">
-        <a class="nav-link" href="/Admin/Index">Admin</a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Index">Admin</a>
+            </li>
 }
-        @if (Request.IsAuthenticated)
+                @if (Request.IsAuthenticated)
     {
 
-        <li class="nav-item dropdown" id="alertDropDown" onload="createAlerts()">
+            <li class="nav-item dropdown" id="alertDropDown" onload="createAlerts()">
 
-        <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-fw fa-bell"></i>
-        <span class="d-lg-none">
-        Alerts
-        <span class="badge badge-pill badge-warning">6 New</span>
-        </span>
-        <span class="indicator text-warning d-none d-lg-block">
-        <i class="fa fa-fw fa-circle"></i>
-        </span>
-        </a>
+                <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-fw fa-bell"></i>
+                    <span class="d-lg-none">
+                        Alerts
+                        <span class="badge badge-pill badge-warning">6 New</span>
+                    </span>
+                    <span class="indicator text-warning d-none d-lg-block">
+                        <i class="fa fa-fw fa-circle"></i>
+                    </span>
+                </a>
 
-        <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-        <h6 class="dropdown-header">New Alerts:</h6>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">
-        <span class="text-success">
-        <strong>
+                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                    <h6 class="dropdown-header">New Alerts:</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-success">
+                            <strong>
 
-        <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
-        </strong>
-        </span>
+                                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
+                            </strong>
+                        </span>
 
-        <span class="small float-right text-muted">11:21 AM</span>
-        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">
-        <span class="text-danger">
-        <strong>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-danger">
+                            <strong>
 
-        <i class="fa fa-long-arrow-down fa-fw"></i>Status Update
-        </strong>
-        </span>
-        <span class="small float-right text-muted">11:21 AM</span>
-        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-        </a>
+                                <i class="fa fa-long-arrow-down fa-fw"></i>Status Update
+                            </strong>
+                        </span>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                    </a>
 
-        <div class="dropdown-divider"></div>
+                    <div class="dropdown-divider"></div>
 
-        <a class="dropdown-item" href="#">
-        <span class="text-success">
-        <strong>
-        <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
-        </strong>
-        </span>
-        <span class="small float-right text-muted">11:21 AM</span>
-        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-        </a>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-success">
+                            <strong>
+                                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
+                            </strong>
+                        </span>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                    </a>
 
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item small">@Html.ActionLink("View all alerts", "Alerts", "Alert")</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item small">@Html.ActionLink("View all alerts", "Alerts", "Alert")</a>
 
-        </div>
+                </div>
 
-        </li>
+            </li>
 }
-        <li class="nav-item">
+                <li class="nav-item">
 
-        @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))
-    {
-        <div class="form-group">
-        @Html.Label("searchstring", "searchstring", new { @class = "sr-only" })
-        @Html.TextBox("searchstring", null, new { @class = "form-control" })
-        </div>
+                    @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="form-group">
+                @Html.Label("searchstring", "searchstring", new { @class = "sr-only" })
+                @Html.TextBox("searchstring", null, new { @class = "form-control" })
+            </div>
 
-        <button type="submit" class="btn btn-primary">
-        <i class="fa fa-search"></i>
-        </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+            </button>
 }
-        </li>
-        @*<li class="nav-item">
+                </li>
+                @*<li class="nav-item">
         <form class="form-inline my-2 my-lg-0 mr-lg-2">
         <div class="input-group">
         <input class="form-control" type="text" placeholder="Zoeken naar...">
@@ -128,26 +128,34 @@
         </div>
         </form>
         </li>*@
-        @if (!Request.IsAuthenticated)
-    {
-        <li class="nav-item">
-        <a class="nav-link" href='@Url.Action("Login", "Account")'>
-        <i class="fa fa-fw fa-sign-in"></i>Login
-        </a>
-        </li>
-}
-        @if (Request.IsAuthenticated)
-    {
-        <li class="nav-item">
-        <a class="nav-link" href='@Html.ActionLink("LogOff", "LogOff", "Account")'>
-        <i class="fa fa-fw fa-sign-out"></i>Log Off
-        </a>
-        </li>
-    }
-        </ul>
-        </div>
 
-    </nav>
+
+                @*@if (!Request.IsAuthenticated)
+    {
+            <li class="nav-item">
+                <a class="nav-link" href='@Url.Action("Login", "Account")'>
+                    <i class="fa fa-fw fa-sign-in"></i>Login
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='@Url.Action("Register", "Account")'>
+                    <i class="fa fa-fw fa-sign-in"></i>Register
+                </a>
+            </li>
+}*@
+                @*@if (Request.IsAuthenticated)
+    {
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-fw fa-sign-out"></i>LogOff
+                </a>
+            </li>
+}*@
+                @Html.Partial("_LoginPartial")
+            </ul>
+                </div>
+               
+</nav>
 	<!-- /.content-wrapper-->
 	@RenderBody()
 	<footer class="card-footer">
@@ -174,7 +182,7 @@
 				<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+					<a class="btn btn-primary" href='@Url.Action("LogOff", "Account")'>Logout</a>
 				</div>
 			</div>
 		</div>
