@@ -328,5 +328,9 @@ namespace BL.Managers
         {
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
+        public IEnumerable<Grafiek> getGrafieken(int zone)
+        {
+            return dashboardRepository.getGrafieken(zone);
+        }
     }
 }

@@ -1,4 +1,8 @@
-﻿<style>
+﻿@model  IEnumerable<Domain.Dashboards.Zone>
+@{
+    ViewBag.Title = "Dashboard";
+}
+<style>
     .item1 {
         grid-area: header;
         grid-column: 1 / span 3;
@@ -49,7 +53,29 @@
             font-size: 30px;
         }
 </style>
+@foreach (var zone in Model)
+{
+    <div class="btn-group">
+        <button data-toggle="tab" href="@zone.Id" class=" btn btn-primary">
+            @Html.DisplayFor(modelItem => zone.Naam)
+        </button>
+        @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
 
+    </div>
+}
+@Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
+@foreach (var zone in Model)
+{
+    <div class="tab-content bg-light">
+        <div id="@zone.Id" class="tab-pane">
+            @if (zone.Items != null && zone.Items.Count != 0)
+            {
+                <h3>hallo</h3>
+            }
+        </div>
+        ﻿<canvas id="grafiek"></canvas>
+    </div>
+}
 ﻿<canvas id="maakGrafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -127,7 +153,7 @@
         </div>
     </div>
 </div>
-    </div>
+
 <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -440,6 +466,20 @@
                 TaartGrafiek(div);
         }
     }
+     var id = 0;
+     //function visible(zone) {
+     //    var items = document.getElementById(zone);
+     //    if (items.style.display == 'none') {
+     //        items.style.display = 'block';
+     //        if (id != 0 && id != zone) {
+     //            var item = document.getElementById(id);
+     //            item.style.display = 'none';
+     //        }
+     //        id = zone;
+     //    } else {
+     //        items.style.display = 'none';
+     //    }
 
+     //}
     </script>
 

@@ -16,7 +16,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 {
     public class HomeController : Controller
     {
-
         public ActionResult Index()
         {
             _PersonenDropDown();
@@ -220,8 +219,8 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         {
             IDashboardManager mgr = new DashboardManager();
-            IEnumerable<Item> items = mgr.getItems(zoneId);
-            return PartialView(items);
+            IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
+            return PartialView(grafieken);
         }
         public ActionResult setActiveZone(int zoneId)
         {

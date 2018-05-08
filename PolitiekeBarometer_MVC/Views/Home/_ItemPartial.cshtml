@@ -1,0 +1,89 @@
+﻿@model IList<Domain.Element>
+
+@{
+    ViewBag.Title = "_ItemPartial";
+}
+<!-- Example Bar Chart Card-->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-bar-chart"></i> Bar Chart Example
+    </div>
+    <div class="card-body">
+        <canvas class="MyBarChart" width="100" height="50"></canvas>
+    </div>
+    <div class="card-footer small text-muted">
+        <div class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-edit"></i></button>
+                <button href="@Url.Action("saveGrafiek")" class="btn btn-default"><i class="fa fa-save"></i></button>
+                <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+            </div>
+            <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction(event)"><i id="menu" class="fa fa-bars"></i></button>
+        </div>
+    </div>
+</div>
+<script>
+    var open = false;
+    function menuFunction(ev) {
+        var menu = document.getElementById("menu");
+        if (open == false) {
+            menu.className = "fa fa-close";
+            document.getElementById("menuIcons").style.visibility = 'visible';
+            open = true;
+        } else {
+            menu.className = "fa fa-bars";
+            document.getElementById("menuIcons").style.visibility = "hidden";
+            open = false;
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+            var namen = [];
+            namen = @Html.Raw(Json.Encode(ViewBag.Namen));
+            var trends = [];
+            trends = @Html.Raw(Json.Encode(ViewBag.Trending));
+            var ctx = document.getElementsByClassName("MyBarChart")[@ViewBag.Index];
+            var myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: namen,
+                    datasets: [{
+                        label: "Trending",
+                        backgroundColor: "rgba(2,117,216,1)",
+                        borderColor: "rgba(2,117,216,1)",
+                        data: trends,
+                    }],
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'month'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 1,
+                                maxTicksLimit: 10
+                            },
+                            gridLines: {
+                                display: true
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: true
+                    }
+                }
+            });
+    }, false);
+</script>
