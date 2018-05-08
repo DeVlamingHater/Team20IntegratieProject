@@ -1,62 +1,74 @@
-﻿@model  IEnumerable<Domain.Dashboards.Zone>
-@{
-    ViewBag.Title = "Dashboard";
-}
-
-
-<div style="margin:20px">
-
-    @foreach (var zone in Model)
-    {
-        <div class="btn-group">
-            <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class=" btn btn-primary">
-                @Html.DisplayFor(modelItem => zone.Naam)
-
-            </button>
-            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
-
-        </div>
+﻿<p id="demo">A Paragraph</p>
+<style>
+    .item1 {
+        grid-area: header;
+        grid-column: 1 / span 3;
+        grid-row: 1
     }
-    @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
-    <canvas id="grafiek"></canvas>
-    @foreach (var zone in Model)
-    {
-        <div class="tab-content bg-light">
-            <div id="@zone.Id" class="tab-pane" style="display:none">
-                @if (zone.Items != null && zone.Items.Count!=0)
-                {
-                    <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3> 
-                }
-            </div>
-            ﻿<canvas id="grafiek"></canvas>
-        </div>
+
+    .item2 {
+        grid-area: menu;
+        grid-column: 1;
+        grid-row: 2;
     }
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-        Maak Grafiek
-    </button>
-</div>
+
+    .item3 {
+        grid-area: main;
+        grid-column: 2;
+        grid-row: 2
+    }
+
+    .item4 {
+        grid-area: right;
+        grid-column: 3;
+        grid-row: 2
+    }
+
+    .item5 {
+        grid-area: footer;
+        grid-column: 1 / span 3;
+        grid-row: 3
+    }
+
+    .grid-container {
+        max-width: 90%;
+        min-width: 90%;
+        width: 90%;
+        margin: auto;
+        display: grid;
+        grid-gap: 10px;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+
+        .grid-container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            overflow: auto;
+            resize: both;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 30px;
+        }
+</style>
+
+﻿<canvas id="maakGrafiek"></canvas>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+    Maak Grafiek
+</button>
 
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Stap 1</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 1: Welk type grafiek kies je?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                Welk type grafiek kies je?
-                <br />
-                <a onclick="GrafiekType(1)"><i class="fa fa-line-chart" style="font-size: 80px"></i></a>
-                <a onclick="GrafiekType(2)"><i class="fa fa-bar-chart" style="font-size: 80px"></i></a>
-                <a onclick="GrafiekType(3)"><i class="fa fa-pie-chart" style="font-size: 80px"></i></a>
-                <select id="zone" onchange="Zone(this.value)">
-@foreach (var zone in Model)
-{
-    <option value="@zone.Id">@zone.Naam</option>
-}
-                </select>
+            <div class="modal-body" style="align-self:center">
+                <button class="btn btn-default" onclick="GrafiekType(1)"><i class="fa fa-line-chart" style="font-size: 80px"></i></button>
+                <button class="btn btn-default" onclick="GrafiekType(2)"><i class="fa fa-bar-chart" style="font-size: 80px"></i></button>
+                <button class="btn btn-default" onclick="GrafiekType(3)"><i class="fa fa-pie-chart" style="font-size: 80px"></i></button>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
@@ -70,21 +82,78 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Stap 2</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Stap 2: Kies je data</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                Welk datatype kies je?
-                <br />
-                <select id="dataType" onchange="DataType()">
-                    <option value="totaal">totaal</option>
-                    <option value="sentiment">sentiment</option>
-                    <option value="trend">trend</option>
+                <label for="dataType">Welk datatype kies je?</label>
+                <select id="dataType" class="form-control" onchange="DataType()">
+                    <option value="volvo">aantal</option>
+                    <option value="saab">sentiment</option>
                 </select>
                 <br />
-                Van <input type="date" onchange="Datum()" id="begin"> Tot <input type="date" onchange="Datum()" id="einde">
+                <label for="begin">Van:</label><input class="form-control" type="date" id="begin" value="begin">
+                <label for="einde">Tot:</label><input class="form-control" type="date" id="einde" value="einde">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#myModal3">Volgende</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 3: Voeg je filters toe</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
+                <div class="form-group dropdown form-inline">
+                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()" />
+                    <a onclick="fillFunction()" id="searchbutton" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+
+                </div>
+               
+                <div id="searchlist" class="dropdown-menu" aria-labelledby="searchList">
+                    <h6 class="dropdown-header">New Alerts:</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-success">
+                            <strong>
+
+                                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
+                            </strong>
+                        </span>
+
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ToonGrafiek()" data-toggle="modal" data-target="#myModal4">Toon Grafiek</button>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Stap 4: Dit is het resultaat</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ﻿<canvas id="toonGrafiek"></canvas>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
@@ -93,29 +162,86 @@
         </div>
     </div>
 </div>
-<input type="submit" value="Grafiek Opslaan" id="maakGrafiek" />
-<script>
-    var id = 0;
-    function visible(zone) {
-        var items = document.getElementById(zone);
-        if (items.style.display == 'none') {
-            items.style.display = 'block';
-            if (id != 0 && id != zone) {
-                var item = document.getElementById(id);
-                item.style.display = 'none';
-            }
-            id = zone;
-        } else {
-            items.style.display='none';
-        }
 
-    }
-</script>
+<div class="grid-container">
+    <div class="item1" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag1" draggable="true" ondragstart="drag(event)">@Html.Action("_LijnGrafiekPartial", new { index = 0 })</div></div>
+    <div class="item2" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag2" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div></div>
+    <div class="item3" id="div3" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div></div>
+    <div class="item4" id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag4" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div></div>
+    <div class="item5" id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"><div class="" id="drag5" draggable="true" ondragstart="drag(event)">@Html.Action("_TaartGrafiekPartial", new { index = 0 })</div></div>
+</div>
+
+@*<div class="row">
+        <div class="col-sm-4" id="drag3" draggable="true" ondragstart="drag(event)">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div>
+        <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
+        <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
+    </div>*@
+
+
 @section scripts{
     <script type="text/javascript">
-        var grafiekType = "";
-        var data = 0;
-        var datum = [];
+
+    $(document).ready(function ()
+    {
+        $("#searchString").keyup(function () {
+            var searchtekst = document.getElementById("searchString").value;
+            var f = {};
+            f.url = '@Url.Action("Search", "Home")';
+            f.type = "POST";
+            f.dataType = "json";
+            f.data = JSON.stringify({ searchstring: searchtekst });
+            f.contentType = "application/json";
+            f.success = function (response) {
+                fillFunction(response)
+            };
+                //f.error = function (response) {
+                //    alert("failed");
+            //};
+            $.ajax(f).done(function (response) {
+                alert(response);
+            });
+        });
+    });
+
+    </script>
+}
+<script>
+    function fillFunction(response) {
+                alert("aangeroepen");
+        var elementen = @ViewBag.Lijst;
+        alert(response);
+                var ul = document.getElementById("searchlist");
+                for (i = 0; i < elementen.Length; i++) {
+                    var li = document.createElement("a");
+                    li.innerHTML = elementen[i];
+                    li.className = "dropdown-item";
+                }
+                ul.value = "test";
+                ul.appendChild(li);
+                };
+    }
+   
+</script>
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var grid = ev.target;
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+</script>
+<script>
+    var grafiekType = 1;
+    var data;
+    var datum = [];
         var zoneID = 1;
         $(document).ready(function () {
             $("#maakGrafiek").click(function () {
@@ -133,164 +259,184 @@
                 };
                 $.ajax(f);
             });
-        });
-        function TaartGrafiek() {
-            var ctx = document.getElementById("grafiek");
+    });
 
-            var myPieChart = new Chart(ctx, {
-                type: grafiekType,
-                data: {
-                    labels: ["Blue", "Red", "Yellow", "Green"],
-                    datasets: [{
-                        data: [12.21, 15.58, 11.25, 8.32],
-                        backgroundColor: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-                            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-                            '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-                            '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-                            '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-                            '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-                            '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
-                            '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-                            '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
-                            '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
+    document.addEventListener('DOMContentLoaded', function () {
+    }, false);
+    function TaartGrafiek(plaats) {
+        var ctx = plaats;
+
+        var myChart = new Chart(ctx, {
+            type: grafiekType,
+            data: {
+                labels: ["Blue", "Red", "Yellow", "Green"],
+                datasets: [{
+                    data: [12.21, 15.58, 11.25, 8.32],
+                    backgroundColor: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+                        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+                        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+                        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+                        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+                        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
+                }],
+            },
+        });
+    }
+    function BarGrafiek(plaats) {
+        var ctx = plaats;
+        var myChart = new Chart(ctx, {
+            type: grafiekType,
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June"],
+                datasets: [{
+                    label: "Trending",
+                    backgroundColor: "rgba(2,117,216,1)",
+                    borderColor: "rgba(2,117,216,1)",
+                    data: [4215, 5312, 6251, 7841, 9821, 14984],
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'month'
+                        },
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 6
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: 20000,
+                            maxTicksLimit: 10
+                        },
+                        gridLines: {
+                            display: true
+                        }
                     }],
                 },
-            });
-        }
-        function BarGrafiek() {
-            var ctx = document.getElementById("grafiek");
-            var myLineChart = new Chart(ctx, {
-                type: grafiekType,
-                data: {
-                    labels: datum,
-                    datasets: [{
-                        label: "Trending",
-                        backgroundColor: "rgba(2,117,216,1)",
-                        borderColor: "rgba(2,117,216,1)",
-                        data: [4215, 5312, 6251, 7841, 9821, 14984],
-                    }],
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            time: {
-                                unit: 'month'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 6
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                                max: 20000,
-                                maxTicksLimit: 10
-                            },
-                            gridLines: {
-                                display: true
-                            }
-                        }],
-                    },
-                    legend: {
-                        display: true
-                    }
+                legend: {
+                    display: true
                 }
-            });
-        }
-        function LijnGrafiek() {
-            var ctx = document.getElementById("grafiek");
-            var myLineChart = new Chart(ctx, {
-                type: grafiekType,
-                data: {
-                    labels: datum,
-                    datasets: [{
-                        label: "Sessions",
-                        lineTension: 0.3,
-                        backgroundColor: "rgba(2,117,216,0.2)",
-                        borderColor: "rgba(2,117,216,1)",
-                        pointRadius: 5,
-                        pointBackgroundColor: "rgba(2,117,216,1)",
-                        pointBorderColor: "rgba(255,255,255,0.8)",
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                        pointHitRadius: 20,
-                        pointBorderWidth: 2,
-                        data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+            }
+        });
+    }
+    function LijnGrafiek(plaats) {
+        var ctx = plaats;
+        var myChart = new Chart(ctx, {
+            type: grafiekType,
+            data: {
+                labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+                datasets: [{
+                    label: "Sessions",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(2,117,216,0.2)",
+                    borderColor: "rgba(2,117,216,1)",
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(2,117,216,1)",
+                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                    pointHitRadius: 20,
+                    pointBorderWidth: 2,
+                    data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            max: 40000,
+                            maxTicksLimit: 5
+                        },
+                        gridLines: {
+                            color: "rgba(0, 0, 0, .125)",
+                        }
                     }],
                 },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            time: {
-                                unit: 'date'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 7
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                                max: 40000,
-                                maxTicksLimit: 5
-                            },
-                            gridLines: {
-                                color: "rgba(0, 0, 0, .125)",
-                            }
-                        }],
-                    },
-                    legend: {
-                        display: false
-                    }
+                legend: {
+                    display: false
                 }
-            });
-        }
-        function GrafiekType(type) {
-            grafiekType = type;
-        }
-        function DataType() {
-            data = document.getElementById("dataType").value;
-        }
-        function Datum() {
-            var begin = new Date(document.getElementById("begin").value);
-            var einde = new Date(document.getElementById("einde").value);
-            // date array
+            }
+        });
+    }
+    function GrafiekType(type) {
+        grafiekType = type;
+    }
+    function DataType() {
+        data = document.getElementById("dataType").value;
+    }
+    function Datum() {
+        var begin = new Date(document.getElementById("begin").value);
+        var einde = new Date(document.getElementById("einde").value);
+        // date array
+        var getDateArray = function (begin, einde) {
+
             var
                 arr = new Array(),
                 dt = new Date(begin);
 
-            while (dt <= einde) {
-                arr.push(new Date(dt).toLocaleDateString());
+            while (dt <= end) {
+                arr.push(new Date(dt));
                 dt.setDate(dt.getDate() + 1);
             }
-            datum = arr;
+            return arr;
         }
-        function MaakGrafiek() {
-            var div = document.getElementById("grafiek");
-            switch (grafiekType) {
-                case 1:
-                    grafiekType = "line";
-                    Datum();
-                    LijnGrafiek();
-                    break;
-                case 2:
-                    grafiekType = "bar";
-                    Datum();
-                    BarGrafiek();
-                    break;
-                case 3:
-                    grafiekType = "pie";
-                    TaartGrafiek();
-            }
+
+    }
+    function ToonGrafiek() {
+        var div = document.getElementById("toonGrafiek");
+        switch (grafiekType) {
+            case 1:
+                grafiekType = "line";
+                LijnGrafiek(div);
+                break;
+            case 2:
+                grafiekType = "bar";
+                BarGrafiek(div);
+                break;
+            case 3:
+                grafiekType = "pie";
+                TaartGrafiek(div);
         }
-        function Zone(id) {
-            zoneID = id;
+    }
+    function MaakGrafiek() {
+        var div = document.getElementById("maakGrafiek");
+        switch (grafiekType) {
+            case 1:
+                grafiekType = "line";
+                LijnGrafiek(div);
+                break;
+            case 2:
+                grafiekType = "bar";
+                BarGrafiek(div);
+                break;
+            case 3:
+                grafiekType = "pie";
+                TaartGrafiek(div);
         }
-    </script>
-}
+    }
+
+</script>
+
+

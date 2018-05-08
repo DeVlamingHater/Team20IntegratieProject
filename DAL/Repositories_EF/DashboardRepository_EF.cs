@@ -45,7 +45,7 @@ namespace DAL.Repositories_EF
         {
             Dashboard dashboard = null;
 
-            Gebruiker gebruiker = context.Gebruikers.Single(g => g.Email == gebruikersNaam);
+            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == gebruikersNaam);
             List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
             if (dashboards.Count != 0)
             {

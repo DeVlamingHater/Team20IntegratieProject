@@ -145,10 +145,11 @@ namespace BL.Managers
         {
             return 0.0;
         }
-    }
-    class TextGainQueryDTO
-    {
-        public string since { get; set; }
-        //public string Until { get; set; }
+
+        class TextGainQueryDTO
+        {
+            public string since { get; set; }
+            //public string Until { get; set; }
+        }
     }
 }

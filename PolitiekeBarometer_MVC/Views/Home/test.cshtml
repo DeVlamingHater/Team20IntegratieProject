@@ -121,8 +121,8 @@
             <div class="modal-body">
                 <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
                 <div class="form-group dropdown form-inline" >
-                    <input type="text" class="form-control" id="searchString"/>
-                    <button id="searchbutton" class="btn btn-primary " onclick="searchFunction()"><i class="fa fa-search"></i></button>
+                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()"/>
+                    <button onclick="searchFunction()" id="searchbutton" class="btn btn-primary" ><i class="fa fa-search"></i></button>
                     <ul class="dropdown-menu" id="searchlist"></ul>
 
                 </div>
@@ -168,10 +168,35 @@
         <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
     </div>*@
 
+
+@section scripts{
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#searchString").keyup(function () {
+            var searchtekst = document.getElementById("searchString").value;
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                //f.success = function (response) {
+                //    alert("success");
+                //};
+                //f.error = function (response) {
+                //    alert("failed");
+                //};
+                $.ajax(f);
+          });
+       });
+</script>
+    }
 <script>
-    var searchtekst = document.getElementById("searchString").value;
     function searchFunction() {
+        alert("aangeroepen");
         var elementen = @ViewBag.Lijst;
+        alert(elementen);
         var ul = document.getElementById("searchlist");
         for (i = 0; i < elementen.Length; i++) {
             var li = document.createElement("li");
@@ -179,34 +204,7 @@
             ul.appendChild(li);
         };
     }
-    @*function sendSearch() {
-        var searchtekst = document.getElementById("searchstring").value;
-
-    }*@
 </script>
-@section scripts{
-<script type="text/javascript">
-    var searchtekst = document.getElementById("searchString").value;
-    $(document).ready(function () {
-        $("#searchbutton").click(function () {
-               alert(searchtekst)
-                var f = {};
-                f.url = '@Url.Action("Search", "Home")';
-                f.type = "POST";
-                f.dataType = "json";
-                f.data = JSON.stringify({ searchstring: searchtekst });
-                f.contentType = "application/json";
-                f.success = function (response) {
-                    alert("success");
-                };
-                f.error = function (response) {
-                    alert("failed");
-                };
-                $.ajax(f);
-          });
-       });
-</script>
-    }
 <script>
     function allowDrop(ev) {
         ev.preventDefault();
@@ -372,7 +370,6 @@
 
     }
     function ToonGrafiek() {
-        var div
         var div = document.getElementById("toonGrafiek");
         switch (grafiekType) {
             case 1:
