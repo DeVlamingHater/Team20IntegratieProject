@@ -13,6 +13,8 @@ namespace Domain
         [Key]
         public int AlertId { get; set; }
 
+        public DataType DataType { get; set; }
+
         [Required]
         public AlertStatus Status { get; set; }
 
@@ -21,6 +23,8 @@ namespace Domain
 
         [Required]
         public double Waarde { get; set; }
+
+        public TimeSpan Interval { get; set; }
 
         [Required]
         [RegularExpression("[<,>][=]?")]
@@ -33,6 +37,8 @@ namespace Domain
         public Boolean EmailMelding { get; set; }
 
         public Dashboard Dashboard { get; set; }
+
+        public List<Melding> Meldingen { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

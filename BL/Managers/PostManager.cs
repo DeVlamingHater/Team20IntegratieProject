@@ -12,11 +12,47 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Domain.Dashboards;
 
 namespace BL.Managers
 {
     public class PostManager : IPostManager
     {
+        public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
+        {
+            if (filters == null)
+            {
+                return posts;
+            }
+            foreach (Filter filter in filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.SENTIMENT:
+                        switch (filter.Operator)
+                        {
+                            case "<":
+                                posts = posts.Where(p => p.Sentiment[0] < filter.Waarde).ToList();
+                                break;
+                            case ">":
+                                posts = posts.Where(p => p.Sentiment[0] > filter.Waarde).ToList();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case FilterType.AGE:
+                        posts = posts.Where(p => p.Age.Equals(filter.Waarde)).ToList();
+                        break;
+                    case FilterType.RETWEET:
+                        posts = posts.Where(p => p.Retweet == true).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return posts;
+        }
         IPostRepository postRepository;
 
         UnitOfWorkManager uowManager;
@@ -44,19 +80,7 @@ namespace BL.Managers
 
         public double getHuidigeWaarde(DataConfig dataConfig)
         {
-            List<Post> posts = getDataConfigPosts(dataConfig).ToList();
-            switch (dataConfig.DataType)
-            {
-                case DataType.TOTAAL:
-                    return posts.Count;
-                case DataType.TREND:
-                    //Kijken naar de tijdstippen en de trend berekenen
-                    //double trend = calculateTrend(dataConfig, element);
-                    return 0.0;
-                default:
-                    return 0.0;
-            }
-
+            throw new NotImplementedException();
         }
 
         public double calculateElementTrend(Element element)
@@ -90,7 +114,7 @@ namespace BL.Managers
             IDashboardManager dashboardManager = new DashboardManager();
             TimeSpan historiek = dashboardManager.getHistoriek();
 
-            postRepository.deleteOldPosts(historiek);
+            // postRepository.deleteOldPosts(historiek);
         }
 
 
@@ -101,15 +125,10 @@ namespace BL.Managers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
-            DateTime sinceDT = DateTime.Now.AddHours(-1);
+            DateTime sinceDT = DateTime.Now.AddDays(-7);
             string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
 
-            //Dictionary<string, string> values = new Dictionary<string, string>()
-            //{
-            //    {"since", "27 Apr 2018 8:00:00" }
-            //};
-            //[{"since", "27 Apr 2018 8:00:00" }]
-            var q = new TextGainQueryDTO() { since = "25 Apr 2018 8:00:00" };
+            var q = new TextGainQueryDTO() { };
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -117,11 +136,20 @@ namespace BL.Managers
             string responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
-    }
-    class TextGainQueryDTO
-    {
-        //public string Name { get; set; }
-        public string since { get; set; }
-        //public string Until { get; set; }
+
+        public IEnumerable<Post> getAllPosts()
+        {
+            return postRepository.getPosts();
+        }
+        public double getAlertWaarde(Alert alert)
+        {
+            return 0.0;
+        }
+
+        class TextGainQueryDTO
+        {
+            public string since { get; set; }
+            //public string Until { get; set; }
+        }
     }
 }

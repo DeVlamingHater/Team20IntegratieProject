@@ -14,7 +14,13 @@ namespace Domain.Dashboards
         [Required]
         public GrafiekType GrafiekType{ get; set; }
 
-        public TimeSpan tijdschaal { get; set; }
+        public TimeSpan Tijdschaal { get; set; }
+
+        public int AantalDataPoints { get; set; }
+
+        public DataType DataType { get; set; }
+                
+        public List<Filter> Filters { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -25,7 +31,12 @@ namespace Domain.Dashboards
                 errors.Add(new ValidationResult(errorMessage,
                     new string[]{"Dataconfigs"}));
             }
-
+            if (AantalDataPoints <=0)
+            {
+                string errorMessage = "DataPoints moeten positief zijn";
+                errors.Add(new ValidationResult(errorMessage,
+                    new string[] { "AantalDataPoints" }));
+            }
             return errors;
         }
     }

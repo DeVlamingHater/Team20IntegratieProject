@@ -60,14 +60,17 @@ namespace DAL.Repositories_EF
         {
             List<Element> elementen = new List<Element>();
             elementen.AddRange(context.Themas);
-            elementen.AddRange(context.Organisaties);
-            elementen.AddRange(context.Personen);
+            elementen.AddRange(context.Organisaties.Include(o=>o.Personen));
+
+            List<Persoon> personen = context.Personen.Include(p=>p.Organisatie).ToList();
+            personen.Sort(Element.compareByNaam);
+            elementen.AddRange(personen);
             return elementen;
         }
 
         public IEnumerable<Persoon> getAllPersonen()
         {
-            return context.Personen;
+            return context.Personen.Include(p=>p.Organisatie).Include("Organisatie");
         }
 
         public List<Thema> getAllThemas()
@@ -105,7 +108,29 @@ namespace DAL.Repositories_EF
 
         public List<Element> getTrendingElementen(int amount)
         {
-            throw new NotImplementedException();
+            List<Element> elementenTrending = new List<Element>();
+            List<Element> elementen = getAllElementen().ToList();
+            for (int i = 0; i < amount; i++)
+            {
+                if (elementen.Count == 0)
+                {
+                    return elementenTrending;
+                }
+                double maxTrend = 0.0;
+
+                Element maxElement = elementen.First();
+                foreach (Element element in elementen)
+                {
+                    if (element.Trend > maxTrend)
+                    {
+                        maxElement = element;
+                        maxTrend = maxElement.Trend;
+                    }
+                }
+                elementen.Remove(maxElement);
+                elementenTrending.Add(maxElement);
+            }
+            return elementenTrending;
         }
         public void setPersoon ( Persoon persoon)
         {
@@ -120,8 +145,12 @@ namespace DAL.Repositories_EF
         public void setElement(Element element)
         {
             context.Entry(element).State = EntityState.Modified;
-           // context.SaveChanges();
+            context.SaveChanges();
         }
 
+        public void deleteAllPersonen()
+        {
+            context.Personen.RemoveRange(context.Personen);
+        }
     }
 }

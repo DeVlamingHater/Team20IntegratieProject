@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DAL.EF;
 using Domain;
 using Domain.Elementen;
+using System.Data.Entity;
 using Newtonsoft.Json;
 
 namespace DAL.Repositories_EF
@@ -32,23 +33,21 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
         {
-            List<Element> elementen = dataConfig.Elementen;
-            List<Post> posts = context.Posts.ToList<Post>();
-            foreach (Element element in elementen)
+            Element element = dataConfig.Element;
+            List<Post> posts = context.Posts.Include(p => p.Personen).ToList();
+            if (element.GetType().Equals(typeof(Persoon)))
             {
-                if (element.GetType().Equals(typeof(Persoon)))
-                {
-                    posts = posts.Where(p => p.Persoon.Naam == element.Naam).ToList();
-                }
-                else if (element.GetType().Equals(typeof(Organisatie)))
-                {
-                    posts = posts.Where(p => p.Persoon.Organisatie != null && p.Persoon.Organisatie.Id == element.Id).ToList();
-                }
-                else if (element.GetType().Equals(typeof(Thema)))
-                {
-                    posts = posts.Where(p => checkKeywords(p, element)).ToList();
-                }
+                posts = posts.Where(p => p.Personen.Any(pers => pers.Equals(element))).ToList();
             }
+            else if (element.GetType().Equals(typeof(Organisatie)))
+            {
+                posts = posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
+            }
+            else if (element.GetType().Equals(typeof(Thema)))
+            {
+                posts = posts.Where(p => checkKeywords(p, element)).ToList();
+            }
+
             //TODO filteren op filters => parameters en waarden van posts
             return posts;
         }
@@ -79,103 +78,81 @@ namespace DAL.Repositories_EF
             {
                 Post post = new Post();
                 post.PostId = tweet.TweetId;
+
+                post.Urls = tweet.Urls;
+
+                post.Sentiment = tweet.Sentiment;
+
+                #region Personen
+                post.Personen = new List<Persoon>();
+                foreach (string naam in tweet.Persons)
+                {
+                    Persoon persoon;
+                    try
+                    {
+                        persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
+                    }
+                    catch (Exception)
+                    {
+
+                        persoon = null;
+                    }
+                    if (persoon != null)
+                    {
+                        post.Personen.Add(persoon);
+                    }
+                    else
+                    {
+                        post.Personen.Add(new Persoon()
+                        {
+                            Naam = naam
+                        });
+                    }
+                }
+                #endregion
+
+                post.Hashtags = tweet.Hashtags;
+
+                post.Retweet = tweet.Retweet;
+
+                post.Themes = tweet.Themes;
+
+                post.Source = tweet.source;
+
+                #region Keywords
                 post.Keywords = new List<Keyword>();
                 foreach (string word in tweet.Words)
                 {
-                    post.Keywords.Add(new Keyword()
+                    Keyword keyword = context.Keywords.FirstOrDefault(k=>k.KeywordNaam == word);
+                    if (keyword == null)
                     {
-                        KeywordId = index,
-                        KeywordNaam = word
-                    });
-                    index++;
+                        keyword = new Keyword()
+                        {
+                            KeywordNaam = word
+                        };
+                    }
+                    post.Keywords.Add(keyword);
+
                 }
-                string naam = tweet.Persons[0];
-                Persoon persoon;
-                try
-                {
-                    persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
-                }
-                catch (Exception)
-                {
-
-                    persoon = null;
-                }
-                if (persoon != null)
-                {
-                    post.Persoon = persoon;
-                }
-                post.Source = "Twitter";
-                post.Date = tweet.Date;
-                posts.Add(post);
-                #region parameters
-                //    List<Waarde> waardenUrls = new List<Waarde>();
-                //    index = 0;
-                //    foreach (string url in tweet.Urls)
-                //    {
-                //        Waarde waarde = new Waarde()
-                //        {
-                //            Value = url,
-                //            Parameter = ElementManager.getParameter("urls"),
-                //            WaardeId = index
-
-                //        };
-                //        index++;
-                //    }
-                //    post.Parameters.Add(new Parameter()
-                //    {
-                //        Naam = "urls",
-                //        ParameterId = 1,
-                //        ParameterType = ParameterType.STRING,
-                //        Post = post,
-                //        Waarden = waardenUrls
-
-                //    };
-
-                //    List<Waarde> waardenHashtags = new List<Waarde>();
-                //    index = 0;
-                //    foreach (string hashtag in tweet.Hashtags)
-                //    {
-                //        Waarde waarde = new Waarde()
-                //        {
-                //            Value = hashtag,
-                //            Parameter = ElementManager.getParameter("hashtags"),
-                //            WaardeId = index
-                //        };
-                //        index++;
-                //    }
-
-                //    post.Parameters.Add(new Parameter()
-                //    {
-                //        Naam = "hashtags",
-                //        ParameterId = 2,
-                //        ParameterType = ParameterType.STRING,
-                //        Post = post,
-                //        Waarden = waardenHashtags
-                //    });
-
-                //    List<Waarde> waardenMentions = new List<Waarde>();
-                //    index = 0;
-                //    foreach (string waarde in tweet.Mentions)
-                //    {
-                //        Waarde waarde = new Waarde()
-                //        {
-                //            Value = waarde,
-                //            Parameter = ElementManager.getParameter("hashtags"),
-                //            WaardeId = index
-                //        };
-                //        index++;
-                //    }
-
-                //    post.Parameters.Add(new Parameter()
-                //    {
-                //        Naam = "hashtags",
-                //        ParameterId = 2,
-                //        ParameterType = ParameterType.STRING,
-                //        Post = post,
-                //        Waarden = waardenMentions
-                //    });
-                //};
                 #endregion
+
+                post.Mentions = tweet.Mentions;
+
+                #region Profile
+                post.Age = tweet.Profile.age;
+
+                post.Gender = tweet.Profile.gender;
+
+                post.Education = tweet.Profile.education;
+
+                post.Language = tweet.Profile.education;
+
+                post.Personality = tweet.Profile.personality;
+                #endregion
+
+                post.Date = tweet.Date;
+
+                posts.Add(post);
             }
             return posts;
         }
@@ -185,11 +162,11 @@ namespace DAL.Repositories_EF
             List<Post> posts = new List<Post>();
             if (element.GetType().Equals(typeof(Persoon)))
             {
-                posts = context.Posts.Where(p => p.Persoon.Naam == element.Naam).ToList();
+                posts = context.Posts.Where(p => p.Personen.Where(pers => pers.Naam == element.Naam).Count() != 0).ToList();
             }
             else if (element.GetType().Equals(typeof(Organisatie)))
             {
-                posts = context.Posts.Where(p => p.Persoon.Organisatie != null && p.Persoon.Organisatie.Id == element.Id).ToList();
+                posts = context.Posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Naam.Equals(element.Naam)).Count() != 0).ToList();
             }
             else if (element.GetType().Equals(typeof(Thema)))
             {
@@ -220,7 +197,7 @@ namespace DAL.Repositories_EF
 
         public void deleteOldPosts(TimeSpan historiek)
         {
-            DateTime testUntil = DateTime.Now.Subtract(new TimeSpan(1,0,0,0));
+            DateTime testUntil = DateTime.Now.Subtract(new TimeSpan(7, 0, 0, 0));
             DateTime until = DateTime.Now.Add(-historiek);
             List<Post> oldPosts = context.Posts.Where(p => (p.Date < testUntil)).ToList();
             context.Posts.RemoveRange(oldPosts);

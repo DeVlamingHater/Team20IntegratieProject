@@ -4,7 +4,7 @@
 }
 
 
-<div class="card mb-3" align="center">
+<div class="card mb-3" align="center" style="margin:20px">
     <div class="card-body grid-container">
         <div class="naam">
             @Html.DisplayFor(model => model.Naam)
@@ -16,7 +16,7 @@
             }
             else
             {
-              @Html.Action("setOrganisatie", new { organisatie = Model.Organisatie })
+              @Html.DisplayFor(model => model.Organisatie)
             }
         </div>
        
@@ -27,9 +27,9 @@
         
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin:20px">
     <div class="card mb-3">
-        <div class="card-header">
+        <div class="card-header" style="margin:20px">
             Item1
         </div>
         <div class="card-body">

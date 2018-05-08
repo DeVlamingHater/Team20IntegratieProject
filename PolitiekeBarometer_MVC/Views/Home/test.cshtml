@@ -1,4 +1,9 @@
+
+<input type="submit" value="click me" id="maakGrafiek" />
+
 ﻿<p id="demo">A Paragraph</p>
+<h3>@ViewBag.Namen[0]</h3>
+<h3>@ViewBag.Ids[0]</h3>
 <style>
     .item1 {
         grid-area: header;
@@ -115,32 +120,18 @@
             </div>
             <div class="modal-body">
                 <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
-                <div class="form-group dropdown form-inline">
-                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()" />
-                    <a onclick="fillFunction()" id="searchbutton" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i></a>
+                <div class="form-group dropdown form-inline" >
+                    <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()"/>
+                    <button onclick="searchFunction()" id="searchbutton" class="btn btn-primary" ><i class="fa fa-search"></i></button>
+                    <ul class="dropdown-menu" id="searchlist"></ul>
 
-                </div>
-               
-                <div id="searchlist" class="dropdown-menu" aria-labelledby="searchList">
-                    <h6 class="dropdown-header">New Alerts:</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-                        <span class="text-success">
-                            <strong>
-
-                                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
-                            </strong>
-                        </span>
-
-                        <span class="small float-right text-muted">11:21 AM</span>
-                        <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-                    </a>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ToonGrafiek()" data-toggle="modal" data-target="#myModal4">Toon Grafiek</button>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ToonGrafiek()" data-toggle="modal" data-target="#myModal4">Toon Grafiek</button>
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,48 +170,40 @@
 
 
 @section scripts{
-    <script type="text/javascript">
+<script type="text/javascript">
 
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         $("#searchString").keyup(function () {
             var searchtekst = document.getElementById("searchString").value;
-            var f = {};
-            f.url = '@Url.Action("Search", "Home")';
-            f.type = "POST";
-            f.dataType = "json";
-            f.data = JSON.stringify({ searchstring: searchtekst });
-            f.contentType = "application/json";
-            f.success = function (response) {
-                fillFunction(response)
-            };
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                //f.success = function (response) {
+                //    alert("success");
+                //};
                 //f.error = function (response) {
                 //    alert("failed");
-            //};
-            $.ajax(f).done(function (response) {
-                alert(response);
-            });
-        });
-    });
-
-    </script>
-}
-<script>
-    function fillFunction(response) {
-                alert("aangeroepen");
-        var elementen = @ViewBag.Lijst;
-        alert(response);
-                var ul = document.getElementById("searchlist");
-                for (i = 0; i < elementen.Length; i++) {
-                    var li = document.createElement("a");
-                    li.innerHTML = elementen[i];
-                    li.className = "dropdown-item";
-                }
-                ul.value = "test";
-                ul.appendChild(li);
-                };
+                //};
+                $.ajax(f);
+          });
+       });
+</script>
     }
-   
+<script>
+    function searchFunction() {
+        alert("aangeroepen");
+        var elementen = @ViewBag.Lijst;
+        alert(elementen);
+        var ul = document.getElementById("searchlist");
+        for (i = 0; i < elementen.Length; i++) {
+            var li = document.createElement("li");
+            li.innerHTML = elementen[i];
+            ul.appendChild(li);
+        };
+    }
 </script>
 <script>
     function allowDrop(ev) {
@@ -242,24 +225,6 @@
     var grafiekType = 1;
     var data;
     var datum = [];
-        var zoneID = 1;
-        $(document).ready(function () {
-            $("#maakGrafiek").click(function () {
-                var f = {};
-                f.url = '@Url.Action("getGrafiekData", "Home")';
-                f.type = "POST";
-                f.dataType = "json";
-                f.data = JSON.stringify({ grafiekType: grafiekType, zone: zoneID, datum: datum.toString(), dataType: data });
-                f.contentType = "application/json";
-                f.success = function (response) {
-                    alert("success");
-                };
-                f.error = function (response) {
-                    alert("failed");
-                };
-                $.ajax(f);
-            });
-    });
 
     document.addEventListener('DOMContentLoaded', function () {
     }, false);
@@ -437,6 +402,4 @@
         }
     }
 
-</script>
-
-
+}

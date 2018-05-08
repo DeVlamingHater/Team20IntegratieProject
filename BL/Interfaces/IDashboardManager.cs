@@ -11,17 +11,26 @@ namespace BL.Interfaces
     public interface IDashboardManager
     {
         Gebruiker getAlertGebruiker(Alert alert);
+
         List<Alert> getActiveAlerts();
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
         void sendAlerts();
-        Dashboard getDashboard(int gebruikerId);
-        void changeZone(Zone zone);
+        IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
+
+        Dashboard getDashboard(string gebruikersNaam);
+
         IEnumerable<Item> getItems(int actieveZone);
+
         IEnumerable<Zone> getZones(Dashboard dashboard);
         Zone getZone(int zoneId);
         void deleteZone(int zoneId);
-        Zone addZone();
+        Zone addZone(Dashboard dashboard);
+        void changeZone(Zone zone);
+
         TimeSpan getHistoriek();
+        string getGraphData(Grafiek grafiek);
+        Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
+        
     }
 }

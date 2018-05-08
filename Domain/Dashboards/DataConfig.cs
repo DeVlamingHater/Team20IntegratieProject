@@ -13,10 +13,9 @@ namespace Domain
         public int DataConfiguratieId { get; set; }
 
         [Required]
-        public DataType DataType { get; set; }
+        public Element Element { get; set; }
 
-        [Required]
-        public List<Element> Elementen { get; set; }
+        public Element Vergelijking { get; set; }
 
     }
 }

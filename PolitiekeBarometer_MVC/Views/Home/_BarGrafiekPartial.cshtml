@@ -2,83 +2,89 @@
 
 @{
     ViewBag.Title = "_BarGrafiekPartial";
- }
-        <!-- Example Bar Chart Card-->
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fa fa-bar-chart"></i> Bar Chart Example
-            </div>
-            <div class="card-body">
-                <canvas class="MyBarChart" width="100" height="50"></canvas>
-                <button onclick="makeGraph()">Laad grafiek</button>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-
-@foreach
-                                (var element in
-                                Model)
-{
-    <li class="trend" hidden="hidden">@element.Trend</li>
-    <li class="naam" hidden="hidden">@element.Naam</li> <br />
 }
-
+<!-- Example Bar Chart Card-->
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-bar-chart"></i> Bar Chart Example
+    </div>
+    <div class="card-body">
+        <canvas class="MyBarChart" width="100" height="50"></canvas>
+    </div>
+    <div class="card-footer small text-muted">
+        <div class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button href="@Url.Action("bewerkGrafiek")"class="btn btn-default"><i class="fa fa-edit"></i></button>
+                <button href="@Url.Action("saveGrafiek")"class="btn btn-default"><i class="fa fa-save"></i></button>
+                <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+            </div>
+            <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction(event)"><i id="menu" class="fa fa-bars"></i></button>
+        </div>
+    </div>
+</div>
+<script>
+    var open = false;
+    function menuFunction(ev) {
+        var menu = document.getElementById("menu");
+        if (open == false) {
+            menu.className = "fa fa-close";
+            document.getElementById("menuIcons").style.visibility = 'visible';
+            open = true;
+        } else {
+            menu.className = "fa fa-bars";
+            document.getElementById("menuIcons").style.visibility = "hidden";
+            open = false;
+        }
+    }
+</script>
 
 <script>
-    var index = 0;
-    function makeGraph() {
-        var trends1 = document.getElementsByClassName("trend");
-        var namen1 = document.getElementsByClassName("naam");
-        var trends2 = [];
-        var namen2 = [];
-        for (var i = 0; i < trends1.length / document.getElementsByClassName("MyBarChart").length; i++) {
-            var getal = 0.5;
-            getal = parseFloat(trends1[i].innerHTML.replace(",", "."));
-            trends2.push(getal);
-            namen2.push(namen1[i].innerHTML)
-        }
-        var ctx = document.getElementsByClassName("MyBarChart")[index];
-        index = index + 1;
-        var myLineChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: namen2,
-                datasets: [{
-                    label: "Trending",
-                    backgroundColor: "rgba(2,117,216,1)",
-                    borderColor: "rgba(2,117,216,1)",
-                    data: trends2,
-                }],
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        time: {
-                            unit: 'month'
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        ticks: {
-                            maxTicksLimit: 6
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            max: 1,
-                            maxTicksLimit: 10
-                        },
-                        gridLines: {
-                            display: true
-                        }
+    document.addEventListener('DOMContentLoaded', function () {
+            var namen = [];
+            namen = @Html.Raw(Json.Encode(ViewBag.Namen));
+            var trends = [];
+            trends = @Html.Raw(Json.Encode(ViewBag.Trending));
+            var ctx = document.getElementsByClassName("MyBarChart")[@ViewBag.Index];
+            var myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: namen,
+                    datasets: [{
+                        label: "Trending",
+                        backgroundColor: "rgba(2,117,216,1)",
+                        borderColor: "rgba(2,117,216,1)",
+                        data: trends,
                     }],
                 },
-                legend: {
-                    display: true
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'month'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 1,
+                                maxTicksLimit: 10
+                            },
+                            gridLines: {
+                                display: true
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: true
+                    }
                 }
-            }
-        });
-    }
+            });
+    }, false);
 </script>
 

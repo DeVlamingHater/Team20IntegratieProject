@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Domain;
+using Domain.Dashboards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,5 +25,10 @@ namespace BL.Interfaces
         void deleteOldPosts();
 
         Task<string> updatePosts();
+
+        IEnumerable<Post> getAllPosts();
+      
+        double getAlertWaarde(Alert alert);
+        List<Post> filterPosts(List<Post> posts, List<Filter> filters);
     }
 }

@@ -18,6 +18,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
+using Newtonsoft;
 
 namespace PolitiekeBarometer_CA
 {
@@ -26,10 +27,6 @@ namespace PolitiekeBarometer_CA
 
 
         private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
-        private static IElementManager elementManager;
-        private static IPostManager postManager;
-        private static IDashboardManager dashboardManager;
-        private static IPlatformManager platformManager;
 
         static void Main(string[] args)
         {
@@ -37,6 +34,12 @@ namespace PolitiekeBarometer_CA
 
             Console.WriteLine("Politieke Barometer");
             bool afsluiten = false;
+
+            addPoliticiJSON();
+            Console.WriteLine("Personen geupdate");
+            updateAPIAsync();
+            Console.WriteLine("Posts opgehaald");
+
             while (!afsluiten)
             {
                 showMenu();
@@ -102,75 +105,47 @@ namespace PolitiekeBarometer_CA
         private static void showGrafiekData()
         {
             ElementManager elementManager = new ElementManager();
-            Element testElement = elementManager.getElementByNaam("Theo Francken");
+            DashboardManager dashboardManager = new DashboardManager();
+            Element testElement = elementManager.getElementByNaam("Bart De Wever");
             DataConfig testDataConfig = new DataConfig()
             {
                 DataConfiguratieId = 100,
-                DataType = DataType.TOTAAL,
-                Elementen = new List<Element>()
-                {
-                    testElement
-                }
+                Element = testElement
+
             };
             Grafiek testGrafiek = new Grafiek()
             {
-                tijdschaal = new TimeSpan(1, 0, 0),
+                DataType = DataType.TOTAAL,
+                Tijdschaal = new TimeSpan(7, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
                     testDataConfig
-                }
+                },
+                GrafiekType=GrafiekType.LINE,
+                AantalDataPoints = 12
             };
-        string testData =    elementManager.getLineGraphData(testGrafiek);
-            Console.WriteLine(testData);
+            string testData = dashboardManager.getGraphData(testGrafiek);
+            Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(testData);
+            foreach (KeyValuePair<string, string> item in data)
+            {
+                Console.WriteLine("Dataconfig" + item.Key);
+                Dictionary<DateTime, int> lijnData = JsonConvert.DeserializeObject<Dictionary<DateTime, int>>(item.Value);
+                foreach (KeyValuePair<DateTime, int> lijnItem in lijnData)
+                {
+                    Console.WriteLine("DAG: " + lijnItem.Key.Day + " WAARDE: " + lijnItem.Value);
+                }
+
+            }
+
         }
 
         private static void addPoliticiJSON()
         {
 
-            ElementManager elementManager = new ElementManager();
+            IElementManager elementManager = new ElementManager();
 
-            List<Persoon> personen = new List<Persoon>();
-            List<PersoonParser> items;
-
-
-            using (StreamReader r = new StreamReader("politici.json"))
-            {
-                string json = r.ReadToEnd();
-                items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);
-            }
-            foreach (PersoonParser persoon in items)
-            {
-                Persoon politicus = new Persoon()
-                {
-                    DateOfBirth = persoon.dateOfBirth,
-                    District = persoon.district,
-                    Facebook = persoon.facebook,
-                    Gender = persoon.gender,
-                    Naam = persoon.full_name,
-                    Position = persoon.position,
-                    Level = persoon.level,
-                    Postal_code = persoon.postal_code,
-                    Site = persoon.site,
-                    Town = persoon.town,
-                    Twitter = persoon.twitter,
-                };
-                Organisatie organisatie = (Organisatie)elementManager.getElementByNaam(persoon.organisation);
-                if (organisatie == null)
-                {
-                    organisatie = new Organisatie()
-                    {
-                        Naam = persoon.organisation,
-                        Personen = new List<Persoon>()
-                        {
-                            politicus
-                        }
-                    };
-                    elementManager.addOrganisatie(organisatie);
-                }
-                politicus.Organisatie = organisatie;
-                personen.Add(politicus);
-            }
-            elementManager.addPersonen(personen);
+            elementManager.deleteAllPersonen();
+            elementManager.addPersonen(elementManager.readJSONPersonen());
         }
 
         private static void sendEmail()
@@ -201,6 +176,7 @@ namespace PolitiekeBarometer_CA
                 Console.WriteLine(element.Trend);
             }
         }
+
         private static void showAlerts()
         {
             Console.WriteLine("Niet meer geïmplementeerd");
@@ -216,7 +192,6 @@ namespace PolitiekeBarometer_CA
         {
             PostManager postManager = new PostManager();
             string responseString = await postManager.updatePosts();
-            Console.WriteLine(responseString);
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
         }

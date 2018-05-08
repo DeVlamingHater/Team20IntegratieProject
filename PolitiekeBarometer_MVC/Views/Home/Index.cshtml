@@ -13,103 +13,108 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
 
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-    <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-    <a class="nav-link" href="~/Home/Dashboard">
-    <i class="fa fa-fw fas fa-wrench"></i>
-    <span class="nav-link-text">Mijn Dashboard</span>
-    </a>
-    </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
-    <a class="nav-link" href="charts.html">
-    <i class="fa fa-fw fas fa-bell"></i>
-    <span class="nav-link-text">Mijn Alerts</span>
-    </a>
-    </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Politiekers">
-    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePolitiekers" data-parent="#exampleAccordion">
-    <i class="fa fa-fw fas fa-users"></i>
-    <span class="nav-link-text">Politiekers</span>
-    </a>
-    @Html.Action("_PersonenDropDown")
-    @*<ul class="sidenav-second-level collapse" id="collapsePolitiekers">
-    <li>
-    <a href="navbar.html">Bart de Wever</a>
-    </li>
-    <li>
-    <a href="cards.html">Kris Peeters</a>
-    </li>
-    <li>
-    <a href="cards.html">@Html.ActionLink("Imade Annouri", "Persoon", new { id = 2 })</a>
-    </li>
-    </ul>*@
-    </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Partijen">
-    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePartijen" data-parent="#exampleAccordion">
-    <i class="fa fa-fw far fa-circle"></i>
-    <span class="nav-link-text">Partijen</span>
-    </a>
-    @Html.Action("_OrganisatieDropDown")
-    @*<ul class="sidenav-second-level collapse" id="collapsePartijen">
-    <li>
-    <a href="navbar.html">@Html.ActionLink("N-VA", "Organisatie", new { id = 1 })</a>
-    </li>
-    <li>
-    <a href="cards.html">CD&V</a>
-    </li>
-    <li>
-    <a href="cards.html">Groen</a>
-    </li>
-    </ul>*@
-    </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themas">
-        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fal fa-book"></i>
-            <span class="nav-link-text">Thema's</span>
-        </a>
-        @Html.Action("_ThemaDropDown")
-        @*<ul class="sidenav-second-level collapse" id="collapseThemas">
-            <li>
-                <a href="login.html">Verkeer</a>
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            @if (Request.IsAuthenticated)
+            {
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="~/Home/Dashboard">
+                        <i class="fa fa-fw fas fa-wrench"></i>
+                        <span class="nav-link-text">Mijn Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
+                    <a class="nav-link" onclick="" href="charts.html">
+                        <i class="fa fa-fw fas fa-bell"></i>
+                        <span class="nav-link-text">Mijn Alerts</span>
+                    </a>
+                </li>
+            }
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Politiekers">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePolitiekers" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fas fa-users"></i>
+                    <span class="nav-link-text">Politiekers</span>
+                </a>
+                @Html.Action("_PersonenDropDown")
+                @*<ul class="sidenav-second-level collapse" id="collapsePolitiekers">
+                    <li>
+                    <a href="navbar.html">Bart de Wever</a>
+                    </li>
+                    <li>
+                    <a href="cards.html">Kris Peeters</a>
+                    </li>
+                    <li>
+                    <a href="cards.html">@Html.ActionLink("Imade Annouri", "Persoon", new { id = 2 })</a>
+                    </li>
+                    </ul>*@
             </li>
-            <li>
-                <a href="register.html">Gezondheid</a>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Partijen">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePartijen" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw far fa-circle"></i>
+                    <span class="nav-link-text">Partijen</span>
+                </a>
+                @Html.Action("_OrganisatieDropDown")
+                @*<ul class="sidenav-second-level collapse" id="collapsePartijen">
+                    <li>
+                    <a href="navbar.html">@Html.ActionLink("N-VA", "Organisatie", new { id = 1 })</a>
+                    </li>
+                    <li>
+                    <a href="cards.html">CD&V</a>
+                    </li>
+                    <li>
+                    <a href="cards.html">Groen</a>
+                    </li>
+                    </ul>*@
             </li>
-            <li>
-                <a href="forgot-password.html">Defensie</a>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themas">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fal fa-book"></i>
+                    <span class="nav-link-text">Thema's</span>
+                </a>
+                @Html.Action("_ThemaDropDown")
+                @*<ul class="sidenav-second-level collapse" id="collapseThemas">
+                        <li>
+                            <a href="login.html">Verkeer</a>
+                        </li>
+                        <li>
+                            <a href="register.html">Gezondheid</a>
+                        </li>
+                        <li>
+                            <a href="forgot-password.html">Defensie</a>
+                        </li>
+                    </ul>*@
             </li>
-        </ul>*@
-    </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
-    <a class="nav-link" href="charts.html">
-    <i class="fa fa-fw fal fa-user"></i>
-    <span class="nav-link-text">Mijn Profiel</span>
-    </a>
-    </li>
-    </ul>
-    <ul class="navbar-nav sidenav-toggler">
-    <li class="nav-item">
-    <a class="nav-link text-center" id="sidenavToggler">
-    <i class="fa fa-fw fa-angle-left"></i>
-    </a>
-    </li>
-    </ul>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
+                <a class="nav-link" href="/Manage/Index">
+                    <i class="fa fa-fw fal fa-user"></i>
+                    <span class="nav-link-text">Mijn Profiel</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav sidenav-toggler">
+            <li class="nav-item">
+                <a class="nav-link text-center" id="sidenavToggler">
+                    <i class="fa fa-fw fa-angle-left"></i>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
-        @Html.Action("_LijnGrafiekPartial")
+        @Html.Action("_LijnGrafiekPartial", new { index = 0 })
         <div class="row">
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div> 
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div>
-            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial")</div> 
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 0 })</div>
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
+            <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
         </div>
-        </div>
-    
+        @Html.Action("_TaartGrafiekPartial", new { index = 0 })
+    </div>
+
     <!-- /.container-fluid-->
     <!--SearchTest-->
     @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))

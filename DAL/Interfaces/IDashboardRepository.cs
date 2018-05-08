@@ -17,10 +17,13 @@ namespace DAL
         IEnumerable<Zone> getZones(int dashboardId);
         Zone getZone(int zoneId);
         Zone addZone(Zone zone);
-        Dashboard getDashboard(int gebruikerId);
+        Dashboard getDashboard(string gebruikersNaam);
         void UpdateZone(Zone zone);
         void deleteZone(int zoneId);
         IEnumerable<Item> getItems(int actieveZone);
         Platform getPlatform();
+        void addGrafiek(Grafiek grafiek);
+        void addMelding(Melding melding);
+        IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
     }
 }

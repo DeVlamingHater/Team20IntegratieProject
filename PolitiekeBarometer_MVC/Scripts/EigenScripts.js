@@ -3,8 +3,8 @@
     {
         if(window.event.keyCode==13)
         {
-        document.getElementById(objBtnID).focus();
-    document.getElementById(objBtnID).click();
+            document.getElementById(objBtnID).focus();
+            document.getElementById(objBtnID).click();
         }
     }
 </script>
