@@ -351,17 +351,15 @@ namespace PolitiekeBarometer_MVC.Controllers
       {
         elementen = elementen.GetRange(0, 5);
       }
-      List<string> lijst = new List<string>();
+      List<string> lijst =new List<string>();
       foreach (Element element in elementen)
       {
         lijst.Add(element.Naam);
       }
       ViewBag.Lijst = lijst;
-      return Json(new
-      {
-        resut = "OK"
-      });
-      return View();
+      return Json(
+        lijst
+      );
     }
 
     public ActionResult Organisatie(int id)

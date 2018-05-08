@@ -80,7 +80,7 @@ namespace DAL.Repositories_EF
 
         public Element getElementByID(int elementId)
         {
-            Element element = (Element)context.Personen.FirstOrDefault(p => p.Id.Equals(elementId));
+      Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Id.Equals(elementId));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
