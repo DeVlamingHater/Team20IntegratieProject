@@ -48,12 +48,11 @@ namespace DAL.Repositories_EF
                 if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
                 {
                     context.Personen.Add(persoon);
-                    context.SaveChanges();
                 }else{
                     setPersoon(persoon);
-                    context.SaveChanges();
                 }
             }
+            context.SaveChanges();
         }
 
         public IEnumerable<Element> getAllElementen()

@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using Newtonsoft;
+using System.Linq;
 
 namespace PolitiekeBarometer_CA
 {
@@ -39,11 +40,38 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("Personen geupdate");
             updateAPIAsync();
             Console.WriteLine("Posts opgehaald");
-
+            showTrending();
+            addAlerts();
             while (!afsluiten)
             {
                 showMenu();
             }
+        }
+
+        private static void addAlerts()
+        {
+            IElementManager elementManager = new ElementManager();
+            IDashboardManager dashboardManager = new DashboardManager();
+            Dashboard testDashboard = dashboardManager.getDashboard("thomas.somers@student.kdg.be");
+            Element testElement = elementManager.getElementByNaam("Bart De Wever");
+            Alert testAlert = new Alert()
+            {
+                ApplicatieMelding = true,
+                BrowserMelding = true,
+                EmailMelding = true,
+                Dashboard = testDashboard,
+                DataConfig = new DataConfig()
+                {
+                    Element = testElement
+                },
+                DataType = DataType.TOTAAL,
+                Interval = new TimeSpan(10, 0, 0, 0),
+                Status = AlertStatus.ACTIEF,
+                Meldingen = new List<Melding>(),
+                Operator = ">",
+                Waarde = 10.0
+            };
+            dashboardManager.addAlert(testAlert);
         }
 
         private static void showMenu()
@@ -56,6 +84,8 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("4. API Update");
             Console.WriteLine("5. Send Email");
             Console.WriteLine("6. Add politici JSON");
+            Console.WriteLine("7. Show testGrafiekData");
+            Console.WriteLine("8. Add meldingen");
 
             DetectMenuAction();
         }
@@ -93,6 +123,9 @@ namespace PolitiekeBarometer_CA
                         case 7:
                             showGrafiekData();
                             break;
+                        case 8:
+                            addMelding();
+                            break;
                         default:
                             Console.WriteLine("Foute optie");
                             inValidAction = true;
@@ -100,6 +133,17 @@ namespace PolitiekeBarometer_CA
                     }
                 }
             } while (inValidAction);
+        }
+
+        private static void addMelding()
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            Dashboard testDashboard = dashboardManager.getDashboard("thomas.somers@student.kdg.be");
+
+            List<Alert> alerts = dashboardManager.getDashboardAlerts(testDashboard).ToList();
+
+            dashboardManager.createMelding(alerts.First(), 25.0);
+
         }
 
         private static void showGrafiekData()
@@ -121,7 +165,7 @@ namespace PolitiekeBarometer_CA
                 {
                     testDataConfig
                 },
-                GrafiekType=GrafiekType.LINE,
+                GrafiekType = GrafiekType.LINE,
                 AantalDataPoints = 12
             };
             string testData = dashboardManager.getGraphData(testGrafiek);

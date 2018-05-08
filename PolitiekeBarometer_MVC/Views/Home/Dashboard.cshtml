@@ -1,4 +1,5 @@
-﻿<p id="demo">A Paragraph</p>
+﻿@model IEnumerable<Domain.Dashboards.Zone>
+<p id="demo">A Paragraph</p>
 <style>
     .item1 {
         grid-area: header;
@@ -50,7 +51,29 @@
             font-size: 30px;
         }
 </style>
+<div class="container border-danger">
 
+    @foreach (var zone in Model)
+    {
+        <div class="btn-group">
+            <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class=" btn btn-primary">
+                @Html.DisplayFor(modelItem => zone.Naam)
+
+            </button>
+            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
+
+        </div>
+    }
+    @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
+    @foreach (var zone in Model)
+    {
+        <div class="tab-content bg-light">
+            <div id="@zone.Id" class="tab-pane" style="display:none">
+                @*<h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>*@
+            </div>
+        </div>
+    }
+</div>
 ﻿<canvas id="maakGrafiek"></canvas>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
     Maak Grafiek
@@ -163,6 +186,24 @@
 
 
 @section scripts{
+<script>
+    var id = 0;
+    function visible(zone) {
+        var items = document.getElementById(zone);
+        if (items.style.display == 'none') {
+            items.style.display = 'block';
+            if (id != 0 && id != zone) {
+                var item = document.getElementById(id);
+                item.style.display = 'none';
+            }
+            id = zone;
+        } else {
+            items.style.display = 'none';
+        }
+
+    }
+</script>
+
     <script type="text/javascript">
     $(document).ready(function ()
     {
@@ -189,41 +230,19 @@
     </script>
 }
 <script>
-    window.onload = fillFunction;
-    function fillFunction()
-    {
-        $.ajax(
-            {
-                type: "POST",
-                url: '@Url.Action("getElementen", "Home")',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (result)
-                {
-                    alert(result);
-                },
-                done: function (result) {
-                    alert(result);
-                }
-        });
-
-    }
-
     function searchFunction(response) {
                 alert("aangeroepen");
-        var elementen = @ViewBag.Lijst;
-        alert(response);
+                var elementen = @ViewBag.Lijst;
+                alert(response);
                 var ul = document.getElementById("searchlist");
                 for (i = 0; i < elementen.Length; i++) {
                     var li = document.createElement("a");
                     li.innerHTML = elementen[i];
                     li.className = "dropdown-item";
+                    ul.appendChild(li); 
                 }
                 ul.value = "test";
-                ul.appendChild(li);
-                };
-    }
-
+                }
 </script>
 <script>
     function allowDrop(ev) {

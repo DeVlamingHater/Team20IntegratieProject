@@ -44,7 +44,7 @@ namespace BL.Managers
         }
         public IEnumerable<Item> getItems(int actieveZone)
         {
-            return null;
+           return dashboardRepository.getItems(actieveZone);
         }
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
@@ -327,6 +327,16 @@ namespace BL.Managers
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
             return dashboardRepository.getActiveMeldingen(dashboard);
+        }
+
+        public void addAlert(Alert alert)
+        {
+            dashboardRepository.addAlert(alert);
+        }
+
+        public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
+        {
+            return dashboardRepository.getDashboardAlerts(dashboard);
         }
     }
 }

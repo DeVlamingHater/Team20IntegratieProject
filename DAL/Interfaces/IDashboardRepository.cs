@@ -25,5 +25,7 @@ namespace DAL
         void addGrafiek(Grafiek grafiek);
         void addMelding(Melding melding);
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
+        void addAlert(Alert testAlert);
+        IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard);
     }
 }

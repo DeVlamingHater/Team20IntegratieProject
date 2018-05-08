@@ -117,7 +117,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Item> getItems(int actieveZone)
         {
-            return context.Items.Where(r => r.Zone.Id == actieveZone).AsEnumerable();
+            return context.Items.Where(r => r.Zone.Id == actieveZone);
         }
 
         public Platform getPlatform()
@@ -145,6 +145,22 @@ namespace DAL.Repositories_EF
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
             return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
+        }
+
+        public void addAlert(Alert alert)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(alert, new ValidationContext(alert), errors, true);
+            if (valid)
+            {
+                context.Entry(alert).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
+        {
+            return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.DashboardId == dashboard.DashboardId);
         }
     }
 }
