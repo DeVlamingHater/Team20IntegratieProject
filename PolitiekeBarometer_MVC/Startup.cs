@@ -82,6 +82,7 @@ namespace PolitiekeBarometer_MVC
                 user.Name = "Thomas Somers";
                 user.UserName = "thomas.somers@student.kdg.be";
                 user.Email = "thomas.somers@student.kdg.be";
+                user.EmailConfirmed = true;
 
                 user.Gebruiker = new Domain.Platformen.Gebruiker()
                 {
@@ -107,6 +108,7 @@ namespace PolitiekeBarometer_MVC
                 user.Name = "Thomas Admin";
                 user.UserName = "thomas.somers@live.nl";
                 user.Email = "thomas.somers@live.nl";
+                user.EmailConfirmed = true;
                 string pwd = "ThomasAdmin20";
                 user.Gebruiker = new Domain.Platformen.Gebruiker()
                 {
