@@ -7,7 +7,7 @@ namespace DAL
 {
     public interface IPlatformRepository
     {
-    Gebruiker getGebruiker(int gebruikerId);
+        Gebruiker getGebruiker(string email);
         void createGebruiker(string id, string name, string email);
     }
 }
