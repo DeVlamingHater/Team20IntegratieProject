@@ -380,8 +380,28 @@ namespace PolitiekeBarometer_MVC.Controllers
         lijst
        );
         }
+    public ActionResult getElementType(string naam)
+    {
+      Element element = Emgr.getElementByNaam(naam);
+      if (element.GetType().Equals(typeof(Persoon)))
+      {
+        return Json("Persoon");
+      }
+      else if (element.GetType().Equals(typeof(Organisatie)))
+      {
+        return Json("Organisatie");
+      }
+      else if (element.GetType().Equals(typeof(Thema)))
+      {
+        return Json("Thema");
+      }
+      else
+      {
+        return Json("");
+      }
+    }
 
-        [HttpPost]
+    [HttpPost]
         public ActionResult getElementen()
         {
             IElementManager elementManager = new ElementManager();
@@ -390,14 +410,14 @@ namespace PolitiekeBarometer_MVC.Controllers
             return Json(elementen);
         }
 
-        public ActionResult Organisatie(int id)
+        public ActionResult Organisatie(string naam)
         {
-            Element element = Emgr.getElementById(id);
+            Element element = Emgr.getElementByNaam(naam);
             return View(element);
         }
-        public ActionResult Persoon(int id)
+        public ActionResult Persoon(string naam)
         {
-            Element element = Emgr.getElementById(id);
+            Element element = Emgr.getElementByNaam(naam);
             return View(element);
         }
         public ActionResult setImage(string twitter)
@@ -426,9 +446,9 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string url = "https://twitter.com/" + twitter + "/profile_image?size=original";
             //return View(twitter);
         }
-        public ActionResult Thema(int id)
+        public ActionResult Thema(string naam)
         {
-            Element element = Emgr.getElementById(id);
+            Element element = Emgr.getElementByNaam(naam);
             return View(element);
         }
         #endregion
