@@ -55,6 +55,11 @@ namespace BL.Managers
         {
             return dashboardRepository.getZone(zoneId);
         }
+    public Zone getZoneByNaam(string zoneNaam)
+    {
+      return dashboardRepository.getZoneByNaam(zoneNaam);
+    }
+
 
         public void deleteZone(int zoneId)
         {
