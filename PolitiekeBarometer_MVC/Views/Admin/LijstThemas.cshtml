@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Domain.Thema>
+
+@{
+    ViewBag.Title = "LijstThemas";
+}
+
+<h2>LijstThemas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateThema")
+    <br />
+    @Html.ActionLink("Downloaden", "ExportThemasToExcel")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Naam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Trend)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrendingPlaats)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Naam)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Trend)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrendingPlaats)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditThema", new { id=item.Id }) |
+            @Html.ActionLink("Details", "DetailsThema", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "DeleteThema", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
