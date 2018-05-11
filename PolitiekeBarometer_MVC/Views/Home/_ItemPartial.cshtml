@@ -1,0 +1,178 @@
+﻿@model IList<Domain.Element>
+
+@{
+    ViewBag.Title = "_ItemPartial";
+}
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-bar-chart"></i> Grafiek
+    </div>
+    <div class="card-body">
+        <canvas class="Chart"></canvas>
+    </div>
+    <div class="card-footer small text-muted">
+        <div class="float-right" style="display:inline">
+            <div class="float-left menuIcons" style="visibility:hidden">
+                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-edit"></i></button>
+                <button href="@Url.Action("saveGrafiek")" class="btn btn-default"><i class="fa fa-save"></i></button>
+                <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+            </div>
+            <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction(event)"><i id="menu" class="fa fa-bars"></i></button>
+        </div>
+    </div>
+</div>
+<script>
+    var open = false;
+    function menuFunction(ev) {
+        var menu = document.getElementById("menu");
+        if (open == false) {
+            menu.className = "fa fa-close";
+            document.getElementById("menuIcons").style.visibility = 'visible';
+            open = true;
+        } else {
+            menu.className = "fa fa-bars";
+            document.getElementById("menuIcons").style.visibility = "hidden";
+            open = false;
+        }
+    }
+</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var grafiekType = @ViewBag.GrafiekType;
+        var grafiekIndex = @ViewBag.GrafiekIndex;
+        var labels = '@(ViewBag.Labels)';
+        var labelArray = labels.split(".");
+        var data = '@(ViewBag.Data)';
+        var dataArray = data.split("."); 
+        var floatArray = [];
+        for (var i = 0; i < dataArray.length; i++) {
+            floatArray[i] = parseFloat(dataArray[i].replace(",","."));
+        }
+            if (grafiekType == 0) {
+                LijnGrafiek();
+            } else if (grafiekType == 1) {
+                BarChart();
+            } else {
+                PieChart();
+            }
+            function LijnGrafiek() {
+                var ctx = document.getElementsByClassName("Chart")[grafiekIndex];
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labelArray,
+                    datasets: [{
+                        label: "Sessions",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(2,117,216,0.2)",
+                        borderColor: "rgba(2,117,216,1)",
+                        pointRadius: 5,
+                        pointBackgroundColor: "rgba(2,117,216,1)",
+                        pointBorderColor: "rgba(255,255,255,0.8)",
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                        pointHitRadius: 20,
+                        pointBorderWidth: 2,
+                        data: floatArray,
+                    }],
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'date'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 2,
+                                maxTicksLimit: 5
+                            },
+                            gridLines: {
+                                color: "rgba(0, 0, 0, .125)",
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+            }
+
+            function BarChart() {
+                var ctx = document.getElementsByClassName("Chart")[grafiekIndex];
+                var myLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labelArray,
+                        datasets: [{
+                            label: "Trending",
+                            backgroundColor: "rgba(2,117,216,1)",
+                            borderColor: "rgba(2,117,216,1)",
+                            data: floatArray,
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                time: {
+                                    unit: 'month'
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 6
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 1.2,
+                                    maxTicksLimit: 10
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: true
+                        }
+                    }
+                });
+            }
+            function PieChart() {
+                var ctx = document.getElementsByClassName("Chart")[grafiekIndex];
+                var myPieChart = new Chart(ctx, {
+                 type: 'pie',
+                 data: {
+                     labels: labelArray,
+                     datasets: [{
+                         data: floatArray,
+                backgroundColor: ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+                    '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                    '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+                    '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                    '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+                    '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                    '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+                    '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                    '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+                    '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'],
+            }],
+        },
+    });
+            }
+    }, false);
+</script>
+

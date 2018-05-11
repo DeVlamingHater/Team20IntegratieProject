@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using Newtonsoft.Json;
 using BL.Interfaces;
 using Microsoft.AspNet.Identity;
+using System.Text;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -22,6 +23,21 @@ namespace PolitiekeBarometer_MVC.Controllers
             _PersonenDropDown();
             _OrganisatieDropDown();
             _ThemaDropDown();
+            ElementManager elementManager = new ElementManager();
+            List<Element> elementenTrending = elementManager.getTrendingElementen(3);
+            StringBuilder labels = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            int i = 0;
+
+            foreach (Element element in elementenTrending)
+            {
+                labels.Append(element.Naam).Append(".");
+                data.Append(element.Trend).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            data.Remove(data.Length - 1, 1);
+            ViewBag.Labels = labels;
+            ViewBag.Data = data;
             return View();
         }
 
@@ -216,18 +232,20 @@ namespace PolitiekeBarometer_MVC.Controllers
         //  IEnumerable<Item> items = mgr.getItems(actieveZone);
         //  return PartialView(items);
         //}
-        public ActionResult _ItemsPartial(int zoneId)
+        public ActionResult _ItemPartial(int grafiekType,int index,string labels,string data)
 
         {
-            IDashboardManager mgr = new DashboardManager();
-            IEnumerable<Item> items = mgr.getItems(zoneId);
-            return PartialView(items);
+            ViewBag.GrafiekType = grafiekType;
+            ViewBag.GrafiekIndex = index;
+            ViewBag.Labels = labels;
+            ViewBag.Data = data;
+            return PartialView();
         }
         public ActionResult setActiveZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             actieveZone = mgr.getZone(zoneId).Id;
-            _ItemsPartial(actieveZone);
+            //_ItemsPartial(actieveZone);
             return RedirectToAction("Dashboard");
             //return RedirectToAction("_ItemsPartial");
             return View();
