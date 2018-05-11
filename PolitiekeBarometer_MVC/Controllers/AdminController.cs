@@ -37,13 +37,25 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
             {
-                return View(dbContext.Gebruikers.ToList());
+                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
+
+                List<ApplicationUser> users = new List<ApplicationUser>();
+
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                foreach (var gebruiker in gebruikers)
+                {
+                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
+                    users.Add(user);
+                }
+
+                return View(users);
             }
 
         }
 
         // GET: Admin/Details/5
-        public ActionResult DetailsUser(int id)
+        public ActionResult DetailsUser(int id)  
         {
             return View();
         }
@@ -59,7 +71,34 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateUser(FormCollection form)
         {
-            return View();
+            var user = new ApplicationUser();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            string naam = form["txtNaam"];
+            string userName = form["txtEmail"];
+            string email = form["txtEmail"];
+            string password = form["txtPassword"];
+
+            user.Name = naam;
+            user.UserName = userName;
+            user.Email = email;
+            string pwd = password;
+
+
+            Gebruiker gebruiker = new Gebruiker()
+            {
+                Email = user.Email,
+                Naam = user.Name,
+                GebruikerId = user.Id
+            };
+
+            user.Gebruiker = gebruiker;
+            IPlatformManager platformManager = new PlatformManager();
+
+            var newuser = userManager.Create(user, pwd);
+            string id = user.Id;
+
+            platformManager.createGebruiker(gebruiker.GebruikerId, gebruiker.Naam, gebruiker.Email);
+            return View("LijstUsers");
         }
 
 
@@ -533,6 +572,63 @@ namespace PolitiekeBarometer_MVC.Controllers
 
 
         }
+
+        public void ExportUsersToExcel()
+        {
+            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+            {
+                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
+
+                List<ApplicationUser> users = new List<ApplicationUser>();
+
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                foreach (var gebruiker in gebruikers)
+                {
+                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
+                    users.Add(user);
+                }
+
+                var grid = new GridView();
+
+                grid.DataSource = from data in users
+                                  select new
+                                  {
+                                      Id = data.Id,
+                                      Email = data.Email,
+                                      EmailConfirmed = data.EmailConfirmed,
+                                      PasswordHash = data.PasswordHash,
+                                      SecurityStamp = data.SecurityStamp,
+                                      PhoneNumber = data.PhoneNumber,
+                                      PhoneNumberConfirmed = data.PhoneNumberConfirmed,
+                                      TwoFactorEnabled = data.TwoFactorEnabled,
+                                      LockOutEndDateUtc = data.LockoutEndDateUtc,
+                                      LockoutEnabled = data.LockoutEnabled,
+                                      AccessFailedCount = data.AccessFailedCount,
+                                      Username = data.UserName,
+                                      Name = data.Name,
+                                      Gebruiker = data.Gebruiker                                      
+                                  };
+
+                grid.DataBind();
+
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.AddHeader("Content-Disposition", "attachment; filename=Team20Users.xls");
+                Response.AddHeader("Content-Type", "application/Excel");
+                Response.ContentType = "application/vnd.xls";
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter htmlTextWriter = new HtmlTextWriter(sw);
+
+                grid.RenderControl(htmlTextWriter);
+
+                Response.Write(sw.ToString());
+
+                Response.End();
+            }
+        }
+
 
         #endregion
     }

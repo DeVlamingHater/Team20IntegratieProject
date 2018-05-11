@@ -329,8 +329,6 @@
     <Content Include="Views\Alert\AlertDetail.cshtml" />
     <Content Include="Views\Alert\Index.cshtml" />
     <Content Include="Views\Alert\Alerts.cshtml" />
-    <Content Include="Views\Admin\LijstUsers.cshtml" />
-    <Content Include="Views\Admin\CreateUser.cshtml" />
     <Content Include="Views\Admin\LijstPersonen.cshtml" />
     <Content Include="Views\Admin\LijstThemas.cshtml" />
     <Content Include="Views\Admin\LijstOrganisaties.cshtml" />
@@ -346,6 +344,9 @@
     <Content Include="Views\Admin\DeleteThema.cshtml" />
     <Content Include="Views\Admin\DeletePersoon.cshtml" />
     <Content Include="Views\Admin\DeleteOrganisatie.cshtml" />
+    <Content Include="Views\Admin\CreateUser.cshtml" />
+    <Content Include="Views\Admin\LijstUsers.cshtml" />
+    <Content Include="Views\Admin\DetailsUser.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
