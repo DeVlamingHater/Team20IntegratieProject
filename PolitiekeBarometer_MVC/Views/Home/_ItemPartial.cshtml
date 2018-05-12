@@ -11,31 +11,253 @@
         <canvas class="Chart"></canvas>
     </div>
     <div class="card-footer small text-muted">
-        <div class="float-right" style="display:inline">
-            <div class="float-left menuIcons" style="visibility:hidden">
-                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-edit"></i></button>
-                <button href="@Url.Action("saveGrafiek")" class="btn btn-default"><i class="fa fa-save"></i></button>
-                <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+
+        <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#EditModal1"><i class="fa fa-edit"></i></button>
+                <button id="iconDashboard" class="btn btn-default" data-toggle="modal" data-target="#DashboardModal1" onclick="iconDashboardFunction(this)"><i class="fa fa-save"></i></button>
+                <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#AlertModal1"><i class="fa fa-bell"></i></button>
+                <button id="iconVolgen" class="btn btn-default" onclick="volgenFunction(this)"><i class="fa fa-heart"></i></button>
+                <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#VerwijderModal1"><i class="fa fa-close"></i></button>
             </div>
-            <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction(event)"><i id="menu" class="fa fa-bars"></i></button>
+            <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="VerwijderModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bent u zeker dat u de grafiek wil verwijderen?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="align-self:center">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="@*verwijderGrafiek*@">Verwijder</button>
+            </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="AlertModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alert instellen</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="align-self:center">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="@*MaakAlert*@" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DashboardModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Grafiek opslaan op je dashboard</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="align-self:center">
+                <label for="zones">Kies je zone op het dashboard</label>
+                <select id="zones" class="form-control" style="position:static">
+                    <option>Test</option>
+                </select>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button id="saveGrafiek" type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" onclick="saveGrafiek(this)">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Grafiek bewerken</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="align-self:center">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="@*bewerkGrafiek*@">Bewerk</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="@ViewBag.GrafiekIndex" style="display:none"></div>
 <script>
-    var open = false;
-    function menuFunction(ev) {
-        var menu = document.getElementById("menu");
-        if (open == false) {
-            menu.className = "fa fa-close";
-            document.getElementById("menuIcons").style.visibility = 'visible';
-            open = true;
+    function iconDashboardFunction(el) {
+        var btn = el.parentElement.parentElement;
+        alert(btn.getAttribute("id"));
+         var f = {};
+                f.url = '@Url.Action("getZonesJson", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    //alert("succes json");
+                    setZoneLijstFunction(response);
+                };
+                //f.error = function (response) {
+                //    alert("failed");
+                //};
+                $.ajax(f);
+    }
+    function saveGrafiek(el) {
+         var select = document.getElementById("zones");
+             var zone = select.options[select.selectedIndex].value;
+                var f = {};
+                f.url = '@Url.Action("dashboardGrafiek", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ zone: zone });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("grafiek opgeslagen");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+    }
+    var menuOpen = false;
+    function menuFunction(el) {
+        var test = el.parentElement;
+        //var test = document.getElementById('@ViewBag.grafiekButtons');
+        var menuIcons = test.children[0];
+        var btnMenu = test.children[1];
+        var iconMenu = btnMenu.children[0];
+        if (menuOpen == false) {
+            iconMenu.style.transform = "rotate(90deg)";
+            btnMenu.setAttribute("class", "btn btn-secondary");
+            menuIcons.style.visibility = 'visible';
+            menuOpen = true;
         } else {
-            menu.className = "fa fa-bars";
-            document.getElementById("menuIcons").style.visibility = "hidden";
-            open = false;
-        }
+            iconMenu.style.transform = "none";
+            btnMenu.setAttribute("class", "btn btn-default");
+            menuIcons.style.visibility = "hidden";
+            menuOpen = false;
+        };
+    }
+    var volgenDown = false;
+    function volgenFunction(el) {
+        var volgen = el;
+        if (volgenDown == false) {
+            volgen.setAttribute("class", "btn btn-secondary");
+            //toevoegen aan weeklyreview
+            volgenDown = true;
+        } else {
+            volgen.setAttribute("class", "btn btn-default");
+            //verwijderen van weeklyreview
+            volgenDown = false;
+        };
+    }
+
+    function setZoneLijstFunction(response) {
+        alert("setLijst");
+        var select = document.getElementById("zones");
+        select.innerHTML = "";
+        for (i = 0; i < response.length; i++) {
+            alert("setlijst loop " + response);
+            var option = document.createElement("option");
+            var a = document.createElement("a");
+            var link = "filterElement(\"" + response[i] + "\")";
+            option.innerHTML = response[i];
+            option.setAttribute("value", response[i]);
+            select.appendChild(option);
+        };
     }
 </script>
+<script type="text/javascript">
+     @*$(document).ready(function () {
+         $("#saveGrafiek").click(function () {
+             //alert("json");
+             var select = document.getElementById("zones");
+             var zone = select.options[select.selectedIndex].value;
+                var f = {};
+                f.url = '@Url.Action("dashboardGrafiek", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ zone: zone @*grafiek meegeven });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("grafiek opgeslagen");
+                };
+                //f.error = function (response) {
+                //    alert("failed");
+                //};
+                $.ajax(f);
+          });
+       });*@
+</script>
+
+@*<script>
+    var menuOpen = false;
+    function menuFunction(el) {
+        var test = el.parentElement;
+        //var test = document.getElementById('@ViewBag.grafiekButtons');
+        var menuIcons = test.children[0];
+        var btnMenu = test.children[1];
+        var iconMenu = btnMenu.children[0];
+        if (menuOpen == false) {
+            iconMenu.style.transform = "rotate(90deg)";
+            btnMenu.setAttribute("class", "btn btn-secondary");
+            menuIcons.style.visibility = 'visible';
+            menuOpen = true;
+        } else {
+            iconMenu.style.transform = "none";
+            btnMenu.setAttribute("class", "btn btn-default");
+            menuIcons.style.visibility = "hidden";
+            menuOpen = false;
+        };
+    }
+    var volgenDown = false;
+    function volgenFunction(el) {
+        var volgen = el;
+        if (volgenDown == false) {
+            volgen.setAttribute("class", "btn btn-secondary");
+            //toevoegen aan weeklyreview
+            volgenDown = true;
+        } else {
+            volgen.setAttribute("class", "btn btn-default");
+            //verwijderen van weeklyreview
+            volgenDown = false;
+        };
+    }
+
+    function setZoneLijstFunction(response) {
+        alert("setLijst");
+        var select = document.getElementById("zones");
+        select.innerHTML = "";
+        for (i = 0; i < response.length; i++) {
+            alert("setlijst loop " + response);
+            var option = document.createElement("option");
+            var a = document.createElement("a");
+            var link = "filterElement(\"" + response[i] + "\")";
+            option.innerHTML = response[i];
+            option.setAttribute("value", response[i]);
+            select.appendChild(option);
+        };
+    }
+</script>*@
 
 <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -44,7 +266,7 @@
         var labels = '@(ViewBag.Labels)';
         var labelArray = labels.split(".");
         var data = '@(ViewBag.Data)';
-        var dataArray = data.split("."); 
+        var dataArray = data.split(".");
         var floatArray = [];
         for (var i = 0; i < dataArray.length; i++) {
             floatArray[i] = parseFloat(dataArray[i].replace(",","."));

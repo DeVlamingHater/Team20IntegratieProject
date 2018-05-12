@@ -19,28 +19,28 @@ namespace PolitiekeBarometer_MVC.Controllers
   {
 
 
-        public ActionResult Index()
-        {
-            _PersonenDropDown();
-            _OrganisatieDropDown();
-            _ThemaDropDown();
-            ElementManager elementManager = new ElementManager();
-            List<Element> elementenTrending = elementManager.getTrendingElementen(3);
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
-            int i = 0;
+    public ActionResult Index()
+    {
+      _PersonenDropDown();
+      _OrganisatieDropDown();
+      _ThemaDropDown();
+      ElementManager elementManager = new ElementManager();
+      List<Element> elementenTrending = elementManager.getTrendingElementen(3);
+      StringBuilder labels = new StringBuilder();
+      StringBuilder data = new StringBuilder();
+      int i = 0;
 
-            foreach (Element element in elementenTrending)
-            {
-                labels.Append(element.Naam).Append(".");
-                data.Append(element.Trend).Append(".");
-            }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
-            return View();
-        }
+      foreach (Element element in elementenTrending)
+      {
+        labels.Append(element.Naam).Append(".");
+        data.Append(element.Trend).Append(".");
+      }
+      labels.Remove(labels.Length - 1, 1);
+      data.Remove(data.Length - 1, 1);
+      ViewBag.Labels = labels;
+      ViewBag.Data = data;
+      return View();
+    }
 
     public ActionResult Test()
     {
@@ -231,52 +231,53 @@ namespace PolitiekeBarometer_MVC.Controllers
     //{
 
 
-        //  IEnumerable<Item> items = mgr.getItems(actieveZone);
-        //  return PartialView(items);
-        //}
-        public ActionResult _ItemPartial(int grafiekType,int index,string labels,string data)
+    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
+    //  return PartialView(items);
+    //}
+    public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data)
 
-        {
-            ViewBag.GrafiekType = grafiekType;
-            ViewBag.GrafiekIndex = index;
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
-            return PartialView();
-        }
-        public ActionResult setActiveZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            actieveZone = mgr.getZone(zoneId).Id;
-            //_ItemsPartial(actieveZone);
-            return RedirectToAction("Dashboard");
-            //return RedirectToAction("_ItemsPartial");
-            return View();
-        }
-        public ActionResult GetZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            Zone zone = mgr.getZone(zoneId);
-            return View(zone);
-        }
-        public ActionResult AddZone()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
-            Zone zone = mgr.addZone(dashboard);
-            //GEBRUIKER NOG JUISTE MANIER VINDEN
+    {
+      ViewBag.GrafiekType = grafiekType;
+      ViewBag.GrafiekIndex = index;
+      ViewBag.Labels = labels;
+      ViewBag.Data = data;
+      ViewBag.grafiekButtons = "grafiekButtons"+index;
+      return PartialView();
+    }
+    public ActionResult setActiveZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      actieveZone = mgr.getZone(zoneId).Id;
+      //_ItemsPartial(actieveZone);
+      return RedirectToAction("Dashboard");
+      //return RedirectToAction("_ItemsPartial");
+      return View();
+    }
+    public ActionResult GetZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      Zone zone = mgr.getZone(zoneId);
+      return View(zone);
+    }
+    public ActionResult AddZone()
+    {
+      IDashboardManager mgr = new DashboardManager();
+      string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
+      Dashboard dashboard = mgr.getDashboard(email);
+      Zone zone = mgr.addZone(dashboard);
+      //GEBRUIKER NOG JUISTE MANIER VINDEN
 
-            this.Dashboard();
-            return RedirectToAction("Dashboard");
-            return View();
-        }
-        public ActionResult DeleteZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            mgr.deleteZone(zoneId);
-            return RedirectToAction("Dashboard");
-            return View();
-        }
+      this.Dashboard();
+      return RedirectToAction("Dashboard");
+      return View();
+    }
+    public ActionResult DeleteZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      mgr.deleteZone(zoneId);
+      return RedirectToAction("Dashboard");
+      return View();
+    }
 
     public ActionResult getZonesJson()
     {
