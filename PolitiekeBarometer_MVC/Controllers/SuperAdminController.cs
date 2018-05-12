@@ -38,17 +38,17 @@ namespace PolitiekeBarometer_MVC.Controllers
             string userName = form["txtEmail"];
             string email = form["txtEmail"];
             string password = form["txtPassword"];
+
+            user.Name = naam;
+            user.UserName = userName;
+            user.Email = email;
+            string pwd = password;
             Gebruiker gebruiker = new Gebruiker()
             {
                 Email = user.Email,
                 Naam = user.Name,
                 GebruikerId = user.Id
             };
-            user.Name = naam;
-            user.UserName = userName;
-            user.Email = email;
-            string pwd = password;
-
             user.Gebruiker = gebruiker;
             IPlatformManager platformManager = new PlatformManager();
 
