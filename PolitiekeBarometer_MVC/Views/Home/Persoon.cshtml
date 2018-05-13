@@ -26,13 +26,206 @@
 
 
     </div>
+    @if (Request.IsAuthenticated)
+    {
+        <div class="card-footer small text-muted elementMenu">
+            <div id="@Model.Id" class="float-right" style="display:inline">
+                <div id="menuIcons" class="float-left" style="visibility:hidden">
+                    <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#AlertModal1"><i class="fa fa-bell"></i></button>
+                    <button id="iconVolgen" class="btn btn-default" onclick="volgenFunction(this)"><i class="fa fa-heart"></i></button>
+                </div>
+                <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
+            </div>
+        </div>
+    }
+    
+</div>
+<div class="modal fade" id="AlertModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alert instellen</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ik wil een alert ontvangen als:</p>
+                <select id="alertSelect" class="form-control" onchange="alertSelect(this)">
+                    <option value="aantal">het aantal berichten over en/of van @Model.Naam </option>
+                    <option value="trend">de trend van @Model.Naam </option>
+                </select>
+                <br />
+                <form>
+                    <div id="stijgt" class="radio">
+                        <label><input type="radio" id="stijgtRadio" name="optradio"> Stijgt met <input id="stijgtPercentage" type="number" class="small" name="quantity" >%</label>
+                    </div>
+                    <div id="daalt" class="radio">
+                        <label><input type="radio" id="daaltRadio" name="optradio"> Daalt met <input id="daaltPercentage" type="number" class="small" name="quantity" >%</label>
+                    </div>
+                    <div id="pos" class="radio">
+                        <label><input type="radio" id="posRadio" name="optradio"> positiever wordt met <input id="posPercentage" type="number" class="small" name="quantity">%</label>
+                    </div>
+                    <div id="neg" class="radio">
+                        <label><input type="radio" id="negRadio" name="optradio"> negatiever wordt met <input id="negPercentage" type="number" class="small" name="quantity" >%</label>
+                    </div>
+                </form>
+                <br />
+                <p>Ik wil een melding ontvangen via: </p>
+                <form>
+                    <div class="checkbox">
+                        <label><input id="browsermelding" type="checkbox" name="optradio"> de website</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input id="mailmelding" type="checkbox" name="optradio"> mail</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input id="appmelding" type="checkbox" name="optradio"> de app</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" onclick="saveAlert()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div style="margin:20px">
     @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
 </div>
+<script>
+    var menuOpen = false;
+    function menuFunction(el) {
+        var test = el.parentElement;
+        //var test = document.getElementById('@ViewBag.grafiekButtons');
+        var menuIcons = test.children[0];
+        var btnMenu = test.children[1];
+        var iconMenu = btnMenu.children[0];
+        if (menuOpen == false) {
+            iconMenu.style.transform = "rotate(90deg)";
+            btnMenu.setAttribute("class", "btn btn-secondary");
+            menuIcons.style.visibility = 'visible';
+            menuOpen = true;
+        } else {
+            iconMenu.style.transform = "none";
+            btnMenu.setAttribute("class", "btn btn-default");
+            menuIcons.style.visibility = "hidden";
+            menuOpen = false;
+        };
+    }
+    var volgenDown = false;
+    function volgenFunction(el) {
+        var volgen = el;
+        var element = '@Model.Id';
+        if (volgenDown == false) {
+            //toevoegen aan weeklyreview
+            volgen.setAttribute("class", "btn btn-secondary");
+            volgenDown = true;
+            var f = {};
+                f.url = '@Url.Action("addWeeklyReview", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ id: element });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("element toegevoegd aan weekly review");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+        } else {
+            //verwijderen van weeklyreview
+            volgen.setAttribute("class", "btn btn-default");
+            volgenDown = false;
+            var f = {};
+                f.url = '@Url.Action("removeWeeklyReview", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ id: element });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("element verwijderd uit weekly review");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+        };
+    }
+    function alertSelect(el) {
 
+        var option = el.options[el.selectedIndex].value;
+
+        if (option == 'trend') {
+           var posRadio = document.getElementById("pos");
+           var negRadio = document.getElementById("neg");
+            posRadio.style.visibility = "hidden";
+            negRadio.style.visibility = "hidden";
+        } else {
+           var posRadio = document.getElementById("pos");
+           var negRadio = document.getElementById("neg");
+            posRadio.style.visibility = "visible";
+            negRadio.style.visibility = "visible";
+        }
+    }
+    function saveAlert() {
+        alert("alert");
+        var element = '@Model.Id';
+        var select = document.getElementById("alertSelect");
+        var option = select.options[select.selectedIndex].value;
+        var browsermelding = document.getElementById("browsermelding").checked;
+        var appmelding = document.getElementById("appmelding").checked;
+        var mailmelding = document.getElementById("mailmelding").checked;
+        var stijgtRadio = document.getElementById("stijgtRadio");
+        var daaltRadio = document.getElementById("daaltRadio");
+        var posRadio = document.getElementById("posRadio");
+        var negRadio = document.getElementById("negRadio");
+        var selectedRadio = "";
+        var percentage = 0;
+        alert("start if");
+        if (stijgtRadio.checked == true) {
+            percentage = document.getElementById("stijgtPercentage").value;
+            selectedRadio = "stijgt";
+        } else if (daaltRadio.checked == true) {
+            percentage = document.getElementById("daaltPercentage").value;
+            selectedRadio = "daalt";
+        } else if (posRadio.checked == true) {
+            percentage = document.getElementById("posPercentage").value;
+            selectedRadio = "pos";
+        } else if (negRadio.checked == true) {
+            percentage = document.getElementById("negPercentage").value;
+            selectedRadio = "neg";
+        } else {
+            alert("foutje");
+        }
+        var f = {};
+                f.url = '@Url.Action("addElementAlert", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ id: element, percentage: percentage, radio: selectedRadio, soort: option, browser: browsermelding, mail: mailmelding, app: appmelding  });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("alert opgeslagen");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+
+    }
+
+</script>
 <style>
     /* https://www.w3schools.com/css/tryit.asp?filename=trycss_grid_layout_named */
+    .elementMenu {
+        background-color: white;
+        border: none;
+        position: absolute;
+        bottom: 0%;
+        right: 0%;
+    }
     .foto {
         grid-column: 1;
         grid-row: 1 / span 3;

@@ -3,7 +3,7 @@
     ViewBag.Title = "Organisatie";
 }
 
-<div class="card mb-3" align="center" style="margin:20px" >
+<div class="card mb-3" align="center" style="margin:20px">
     <div class="card-body grid-container">
         <div class="naam">
             @Html.DisplayFor(model => model.Naam)
@@ -14,9 +14,54 @@
 
         @*<img class="rounded-circle border foto" height="150" src="@Url.Action("setImage", new {twitter = Model.Twitter })" />
 
-        <a class="twitter" href="@Url.Action("setTwitter", new { twitter = Model.Twitter })" target="_blank"> twitter: @Html.DisplayFor(model => model.Twitter)</a>*@
+            <a class="twitter" href="@Url.Action("setTwitter", new { twitter = Model.Twitter })" target="_blank"> twitter: @Html.DisplayFor(model => model.Twitter)</a>*@
 
 
+    </div>
+    @if (Request.IsAuthenticated)
+    {
+        <div class="card-footer small text-muted elementMenu">
+            <div id="@Model.Id" class="float-right" style="display:inline">
+                <div id="menuIcons" class="float-left" style="visibility:hidden">
+                    <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#AlertModal1"><i class="fa fa-bell"></i></button>
+                    <button id="iconVolgen" class="btn btn-default" onclick="volgenFunction(this)"><i class="fa fa-heart"></i></button>
+                </div>
+                <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="AlertModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alert instellen</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ik wil een alert ontvangen als:</p>
+                <select id="dataType" class="form-control" onchange="DataType()">
+                    <option value="aantal"> het aantal berichten over en/of van @Model.Naam </option>
+                    <option value="sentiment">het verhouding positief tegen negatieve berichten over en/of van @Model.Naam </option>
+                    <option value="trend">de trend van @Model.Naam </option>
+                </select>
+                <br />
+                <form style="visibility:hidden">
+                    <div id="stijgtRadio" class="radio">
+                        <label><input type="radio" name="optradio"> stijgt met <input type="number" class="small" name="quantity" min="0" max="100">%</label>
+                    </div>
+                    <div id="daaltRadio" class="radio">
+                        <label><input type="radio" name="optradio"> daalt met <input type="number" class="small" name="quantity" min="0" max="100">%</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="@*MaakAlert*@">Save</button>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row" style="margin:20px">
@@ -45,4 +90,74 @@
         </div>
     </div>
 </div>
+<script>
+    var menuOpen = false;
+    function menuFunction(el) {
+        var test = el.parentElement;
+        //var test = document.getElementById('@ViewBag.grafiekButtons');
+        var menuIcons = test.children[0];
+        var btnMenu = test.children[1];
+        var iconMenu = btnMenu.children[0];
+        if (menuOpen == false) {
+            iconMenu.style.transform = "rotate(90deg)";
+            btnMenu.setAttribute("class", "btn btn-secondary");
+            menuIcons.style.visibility = 'visible';
+            menuOpen = true;
+        } else {
+            iconMenu.style.transform = "none";
+            btnMenu.setAttribute("class", "btn btn-default");
+            menuIcons.style.visibility = "hidden";
+            menuOpen = false;
+        };
+    }
+     var volgenDown = false;
+    function volgenFunction(el) {
+        var volgen = el;
+        var element = '@Model.Id';
+        if (volgenDown == false) {
+            //toevoegen aan weeklyreview
+            volgen.setAttribute("class", "btn btn-secondary");
+            volgenDown = true;
+            var f = {};
+                f.url = '@Url.Action("addWeeklyReview", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ id: element });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("element toegevoegd aan weekly review");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+        } else {
+            //verwijderen van weeklyreview
+            volgen.setAttribute("class", "btn btn-default");
+            volgenDown = false;
+            var f = {};
+                f.url = '@Url.Action("removeWeeklyReview", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ id: element });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("element verwijderd uit weekly review");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+        };
+    }
+</script>
+<style>
+    .elementMenu {
+        background-color: white;
+        border: none;
+        position: absolute;
+        bottom: 0%;
+        right: 0%;
+    }
+</style>
 

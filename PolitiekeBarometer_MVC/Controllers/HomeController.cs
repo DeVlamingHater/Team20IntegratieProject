@@ -242,6 +242,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       ViewBag.Labels = labels;
       ViewBag.Data = data;
       ViewBag.grafiekButtons = "grafiekButtons"+index;
+      ViewBag.alert = "alert" + index;
       return PartialView();
     }
     public ActionResult setActiveZone(int zoneId)
@@ -494,6 +495,33 @@ namespace PolitiekeBarometer_MVC.Controllers
       Element element = Emgr.getElementByNaam(naam);
       return View(element);
     }
+    public ActionResult addWeeklyReview(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      //weeklyReview.add(element);
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult removeWeeklyReview(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      //weeklyReview.remove(element);
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult addElementAlert(int id, int percentage, string soort, string radio, Boolean browser, Boolean mail, Boolean app)
+    {
+      // addAlert()
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+
     #endregion
   }
 
