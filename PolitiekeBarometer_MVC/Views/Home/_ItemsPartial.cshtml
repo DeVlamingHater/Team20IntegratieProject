@@ -1,23 +1,14 @@
-﻿@model List<Domain.Dashboards.Item>
+﻿@model IEnumerable<Domain.Dashboards.Item>
 @{
     ViewBag.Title = "_ItemsPartial";
 }
 
-<h2>_ItemsPartial</h2>
-<ul>
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="card mb-3" style="margin:20px">
-                <div class="card-header">
-                    @Html.DisplayFor(modelItem => item.Id)
-                </div>
-                <div class="card-body">
-                    @Html.DisplayFor(modelItem => item.Id)
-                </div>
-            </div>
-        }
+<div class="row">
+    @foreach (var item in Model)
+    {
+        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page = "dashboard" })
+    }
+    <div class="card mb-3"><div class="card-body">test</div></div>
 
-    </div>
-</ul>
+</div>
 

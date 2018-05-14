@@ -92,7 +92,8 @@
     </div>
 </div>
 <div style="margin:20px">
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
+    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page="persoon" })
+    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page="persoon" })
 </div>
 <script>
     var menuOpen = false;
@@ -155,56 +156,68 @@
         };
     }
     function alertSelect(el) {
-
-        var option = el.options[el.selectedIndex].value;
-
+        var option = el.options[el.selectedIndex].value
+        var radioform = el.parentElement.children[3];
+        var posRadio = radioform.children[2].children[0];
+        var negRadio = radioform.children[3].children[0];
         if (option == 'trend') {
-           var posRadio = document.getElementById("pos");
-           var negRadio = document.getElementById("neg");
             posRadio.style.visibility = "hidden";
             negRadio.style.visibility = "hidden";
         } else {
-           var posRadio = document.getElementById("pos");
-           var negRadio = document.getElementById("neg");
+
             posRadio.style.visibility = "visible";
             negRadio.style.visibility = "visible";
         }
     }
-    function saveAlert() {
-        alert("alert");
-        var element = '@Model.Id';
-        var select = document.getElementById("alertSelect");
-        var option = select.options[select.selectedIndex].value;
-        var browsermelding = document.getElementById("browsermelding").checked;
-        var appmelding = document.getElementById("appmelding").checked;
-        var mailmelding = document.getElementById("mailmelding").checked;
-        var stijgtRadio = document.getElementById("stijgtRadio");
-        var daaltRadio = document.getElementById("daaltRadio");
-        var posRadio = document.getElementById("posRadio");
-        var negRadio = document.getElementById("negRadio");
+    function saveAlert(el) {
+        var parent = el.parentElement.parentElement.parentElement.parentElement;
+
+        //var grafiek = parent.id;
+        //var grafiekindex = grafiek[grafiek.length - 1];
+        var elementId = '@Model.Id';
+
+        var modalbody = parent.children[0].children[0].children[1];
+        var alertselect = modalbody.children[1];
+        var radioform = modalbody.children[3];
+        var meldform = modalbody.children[6];
+        var stijgtRadio = radioform.children[0].children[0].children[0];
+        var stijgtPercent = radioform.children[0].children[0].children[1];
+        var daaltRadio = radioform.children[1].children[0].children[0];
+        var daaltPercent = radioform.children[1].children[0].children[1];
+        var posRadio = radioform.children[2].children[0].children[0];
+        var posPercent = radioform.children[2].children[0].children[1];
+        var negRadio = radioform.children[3].children[0].children[0];
+        var negPercent = radioform.children[3].children[0].children[1];
+        var browser = meldform.children[0].children[0].children[0].checked;
+        var mail = meldform.children[1].children[0].children[0].checked;
+        var app = meldform.children[2].children[0].children[0].checked;
+
+
+        var option = alertselect.options[alertselect.selectedIndex].value;
         var selectedRadio = "";
         var percentage = 0;
-        alert("start if");
+
         if (stijgtRadio.checked == true) {
-            percentage = document.getElementById("stijgtPercentage").value;
+            percentage = stijgtPercent.value;
             selectedRadio = "stijgt";
         } else if (daaltRadio.checked == true) {
-            percentage = document.getElementById("daaltPercentage").value;
+            percentage = daaltPercent.value;
             selectedRadio = "daalt";
         } else if (posRadio.checked == true) {
-            percentage = document.getElementById("posPercentage").value;
+            percentage = posPercent.value;
             selectedRadio = "pos";
         } else if (negRadio.checked == true) {
-            percentage = document.getElementById("negPercentage").value;
+            percentage = negPercent.value;
             selectedRadio = "neg";
         } else {
             alert("foutje");
-        }
+        };
+        //tot hier in orde
         var f = {};
-                f.url = '@Url.Action("addElementAlert", "Home")';
+                f.url = '@Url.Action("addAlert", "Home")';
                 f.type = "POST";
                 f.dataType = "json";
-                f.data = JSON.stringify({ id: element, percentage: percentage, radio: selectedRadio, soort: option, browser: browsermelding, mail: mailmelding, app: appmelding  });
+                f.data = JSON.stringify({ id: elementId, percentage: percentage, radio: selectedRadio, soort: option, browser: browser, mail: mail, app: app });
                 f.contentType = "application/json";
                 f.success = function (response) {
                     alert("alert opgeslagen");
@@ -213,8 +226,8 @@
                     alert("failed");
                 };
                 $.ajax(f);
-
     }
+</script>
 
 </script>
 <style>

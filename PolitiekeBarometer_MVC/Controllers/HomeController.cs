@@ -223,18 +223,18 @@ namespace PolitiekeBarometer_MVC.Controllers
       List<Zone> zones = dashboard.Zones;
       //if (actieveZone == 0)
       //{
-      //    actieveZone = zones.First().Id;
-      //}
+      //  actieveZone = zones.First().Id;
+     //}
       return View(zones);
     }
-    //public ActionResult _ItemsPartial()
-    //{
+    public ActionResult _ItemsPartial(int zoneId)
+    {
 
-
-    //  IEnumerable<Item> items = mgr.getItems(actieveZone);
-    //  return PartialView(items);
-    //}
-    public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data)
+      IDashboardManager mgr = new DashboardManager();
+      IEnumerable<Item> items = mgr.getItems(zoneId);
+      return PartialView(items);
+    }
+    public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
 
     {
       ViewBag.GrafiekType = grafiekType;
@@ -243,6 +243,10 @@ namespace PolitiekeBarometer_MVC.Controllers
       ViewBag.Data = data;
       ViewBag.grafiekButtons = "grafiekButtons"+index;
       ViewBag.alert = "alert" + index;
+      ViewBag.dash = "dash" + index;
+      ViewBag.edit = "edit" + index;
+      ViewBag.delete = "delete" + index;
+      ViewBag.page = page;
       return PartialView();
     }
     public ActionResult setActiveZone(int zoneId)
@@ -295,10 +299,10 @@ namespace PolitiekeBarometer_MVC.Controllers
           lijst
          );
     }
-    public ActionResult dashboardGrafiek(string zoneNaam)
+    public ActionResult dashboardGrafiek(string zoneNaam, int grafiekIndex)
     {
-      IDashboardManager mgr = new DashboardManager();
-      Zone zone = mgr.getZoneByNaam(zoneNaam);
+      // IDashboardManager mgr = new DashboardManager();
+      // Zone zone = mgr.getZoneByNaam(zoneNaam);
       return Json("ok");
     }
 
@@ -513,9 +517,27 @@ namespace PolitiekeBarometer_MVC.Controllers
         result = "OK"
       });
     }
-    public ActionResult addElementAlert(int id, int percentage, string soort, string radio, Boolean browser, Boolean mail, Boolean app)
+    public ActionResult addAlert(int id, int percentage, string soort, string radio, Boolean browser, Boolean mail, Boolean app)
     {
+      // bij grafiek is id = grafiekindex
+      // bij element is id = elementid
       // addAlert()
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult editGrafiek(int grafiekIndex)
+    {
+      // edit grafiek
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult deleteGrafiek(int grafiekIndex)
+    {
+      // edit grafiek
       return Json(new
       {
         result = "OK"
