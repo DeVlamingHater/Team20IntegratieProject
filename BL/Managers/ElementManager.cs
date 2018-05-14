@@ -83,7 +83,7 @@ namespace BL.Managers
             return elementenTrending;
         }
 
-        public List<Element> getTrendingElementen(int amount = 3)
+        public List<Element> getTrendingElementen(int amount = 1)
         {
             List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
             List<Element> elementen = new List<Element>();

@@ -79,7 +79,7 @@ namespace DAL.Repositories_EF
 
         public Element getElementByID(int elementId)
         {
-            Element element = (Element)context.Personen.FirstOrDefault(p => p.Id.Equals(elementId));
+      Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Id.Equals(elementId));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
@@ -93,7 +93,7 @@ namespace DAL.Repositories_EF
 
         public Element getElementByName(string naam)
         {
-            Element element = (Element)context.Personen.FirstOrDefault(p => p.Naam.Equals(naam));
+            Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Naam.Equals(naam));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam));

@@ -14,9 +14,10 @@
     <div class="card-footer small text-muted">
         <div class="float-right" style="display:inline">
             <div id="menuIcons" class="float-left" style="visibility:hidden">
-                <button href="@Url.Action("bewerkGrafiek")"class="btn btn-default"><i class="fa fa-edit"></i></button>
-                <button href="@Url.Action("saveGrafiek")"class="btn btn-default"><i class="fa fa-save"></i></button>
+                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-edit"></i></button>
+                <button href="@Url.Action("saveGrafiek")" class="btn btn-default"><i class="fa fa-save"></i></button>
                 <button href="@Url.Action("maakAlert")" class="btn btn-default"><i class="fa fa-bell"></i></button>
+                <button href="@Url.Action("bewerkGrafiek")" class="btn btn-default"><i class="fa fa-close"></i></button>
             </div>
             <button class="btn btn-default" style="margin-left:3px" onclick="menuFunction(event)"><i id="menu" class="fa fa-bars"></i></button>
         </div>
@@ -24,14 +25,14 @@
 </div>
 <script>
     var open = false;
-    function menuFunction(ev) {
-        var menu = document.getElementById("menu");
+    function menuFunction() {
+        var menu = document.getElementById("menu")
         if (open == false) {
-            menu.className = "fa fa-close";
+            menu.style.transform = "rotate(50deg)";
             document.getElementById("menuIcons").style.visibility = 'visible';
             open = true;
         } else {
-            menu.className = "fa fa-bars";
+            menu.style.transform = "none"
             document.getElementById("menuIcons").style.visibility = "hidden";
             open = false;
         }
