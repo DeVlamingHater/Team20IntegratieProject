@@ -28,9 +28,7 @@ namespace DAL.EF
                 Naam = "Politieke Barometer",
                 Historiek = new TimeSpan(7, 0, 0)
             };
-            #endregion
-
-           
+            #endregion         
 
             #region Keywords
             Keyword keyword1 = new Keyword()
