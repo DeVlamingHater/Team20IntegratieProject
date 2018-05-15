@@ -247,6 +247,9 @@ namespace PolitiekeBarometer_MVC.Controllers
       ViewBag.edit = "edit" + index;
       ViewBag.delete = "delete" + index;
       ViewBag.page = page;
+      //ViewBag.startDatum = labels.First();
+      //ViewBag.eindDatum = labels.Last();
+      //filter ook nog
       return PartialView();
     }
     public ActionResult setActiveZone(int zoneId)
@@ -470,19 +473,24 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult setImage(string twitter)
     {
-
-      string twitter1 = twitter.Replace("@", "");
-
-      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
-      return Redirect(url);
-
+      if(twitter != null)
+      {
+          string twitter1 = twitter.Replace("@", "");
+        string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
+        return Redirect(url);
+      }
+      return View();
 
     }
     public ActionResult setTwitter(string twitter)
     {
-      string twitter1 = twitter.Replace("@", "");
-      string url = "https://twitter.com/" + twitter1;
-      return Redirect(url);
+      if (twitter != null)
+      {
+        string twitter1 = twitter.Replace("@", "");
+        string url = "https://twitter.com/" + twitter1;
+        return Redirect(url);
+      }
+      return View();
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {

@@ -15,14 +15,17 @@
         <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
             <div id="menuIcons" class="float-left" style="visibility:hidden">
                 <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.edit"><i class="fa fa-edit"></i></button>
-                @if (ViewBag.page != "dashboard")
+                @if (Request.IsAuthenticated)
                 {
-                    <button id="iconDashboard" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.dash" onclick="iconDashboardFunction(this)"><i class="fa fa-save"></i></button>
-                }
-                <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.alert"><i class="fa fa-bell"></i></button>
-                @if (ViewBag.page == "dashboard")
-                {
-                    <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#@ViewBag.delete"><i class="fa fa-close"></i></button>
+                    if (ViewBag.page != "dashboard")
+                    {
+                        <button id="iconDashboard" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.dash" onclick="iconDashboardFunction(this)"><i class="fa fa-save"></i></button>
+                    }
+                    <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.alert"><i class="fa fa-bell"></i></button>
+                    if (ViewBag.page == "dashboard")
+                    {
+                        <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#@ViewBag.delete"><i class="fa fa-close"></i></button>
+                    }
                 }
             </div>
             <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
@@ -131,7 +134,11 @@
                 </button>
             </div>
             <div class="modal-body" style="align-self:center">
+                <label for="begin">Van:</label><input class="form-control" type="date" id="begin" value="@ViewBag.startDatum">
 
+                <label for="einde">Tot:</label><input class="form-control" type="date" id="einde" value="@ViewBag.eindDatum">
+                <p>start: @ViewBag.starDatum</p>
+                <p>eind: @ViewBag.eindDatum</p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" type="button" data-dismiss="modal">Annuleer</button>
@@ -140,6 +147,31 @@
         </div>
     </div>
 </div>
+*@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $("#searchString").keyup(function () {
+                var searchtekst = document.getElementById("searchString").value;
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    searchFunction(response)
+                };
+                    //f.error = function (response) {
+                    //    alert("failed");
+                //};
+                $.ajax(f).
+            });
+        });
+
+    </script>
+}
+    
 <script>
     //menu openen
     var menuOpen = false;
@@ -184,7 +216,12 @@
     function setZoneLijstFunction(response, modal) {
         //alert("zones " + modal);
         var grafiek = modal.id;
-        var grafiekindex = grafiek[grafiek.length - 1];
+        var grafiekindex = '';
+        for (i = 0; i < grafiek.length; i++){
+            if (isNaN(grafiek[i])==false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
         //alert("grafindex = " + grafiekindex);
         //alert("setLijst");
         var select = document.getElementById("zones");
@@ -202,7 +239,11 @@
     function saveGrafiek(el) {
         var parent = el.parentElement.parentElement.parentElement.parentElement;
         var grafiek = parent.id;
-        var grafiekindex = grafiek[grafiek.length - 1];
+        for (i = 0; i < grafiek.length; i++) {
+            if (isNaN(grafiek[i]) == false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
         var select = parent.children[0].children[0].children[1].children[1];
         alert(select.id);
              var zone = select.options[select.selectedIndex].value;
@@ -242,7 +283,11 @@
         var parent = el.parentElement.parentElement.parentElement.parentElement;
 
         var grafiek = parent.id;
-        var grafiekindex = grafiek[grafiek.length - 1];
+        for (i = 0; i < grafiek.length; i++) {
+            if (isNaN(grafiek[i]) == false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
         var modalbody = parent.children[0].children[0].children[1];
         var alertselect = modalbody.children[1];
         var radioform = modalbody.children[3];
@@ -299,7 +344,11 @@
     function deleteGrafiek(el) {
         var parent = el.parentElement.parentElement.parentElement.parentElement;
         var grafiek = parent.id;
-        var grafiekindex = grafiek[grafiek.length - 1];
+        for (i = 0; i < grafiek.length; i++) {
+            if (isNaN(grafiek[i]) == false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
         var f = {};
                 f.url = '@Url.Action("deleteGrafiek", "Home")';
                 f.type = "POST";
@@ -319,7 +368,11 @@
     function editGrafiek(el) {
         var parent = el.parentElement.parentElement.parentElement.parentElement;
         var grafiek = parent.id;
-        var grafiekindex = grafiek[grafiek.length - 1];
+        for (i = 0; i < grafiek.length; i++) {
+            if (isNaN(grafiek[i]) == false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
         var f={};
         f.url = '@Url.Action("editGrafiek", "Home")';
                 f.type = "POST";
@@ -334,81 +387,8 @@
                 };
                 $.ajax(f);
     }
-</script>
-@*<script type="text/javascript">
-         $(document).ready(function () {
-             $("#saveGrafiek").click(function () {
-                 //alert("json");
-                 var select = document.getElementById("zones");
-                 var zone = select.options[select.selectedIndex].value;
-                    var f = {};
-                    f.url = '@Url.Action("dashboardGrafiek", "Home")';
-                    f.type = "POST";
-                    f.dataType = "json";
-                    f.data = JSON.stringify({ zone: zone @*grafiek meegeven });
-                    f.contentType = "application/json";
-                    f.success = function (response) {
-                        alert("grafiek opgeslagen");
-                    };
-                    //f.error = function (response) {
-                    //    alert("failed");
-                    //};
-                    $.ajax(f);
-              });
-           });
-    </script>*@
-
-@*<script>
-        var menuOpen = false;
-        function menuFunction(el) {
-            var test = el.parentElement;
-            //var test = document.getElementById('@ViewBag.grafiekButtons');
-            var menuIcons = test.children[0];
-            var btnMenu = test.children[1];
-            var iconMenu = btnMenu.children[0];
-            if (menuOpen == false) {
-                iconMenu.style.transform = "rotate(90deg)";
-                btnMenu.setAttribute("class", "btn btn-secondary");
-                menuIcons.style.visibility = 'visible';
-                menuOpen = true;
-            } else {
-                iconMenu.style.transform = "none";
-                btnMenu.setAttribute("class", "btn btn-default");
-                menuIcons.style.visibility = "hidden";
-                menuOpen = false;
-            };
-        }
-        var volgenDown = false;
-        function volgenFunction(el) {
-            var volgen = el;
-            if (volgenDown == false) {
-                volgen.setAttribute("class", "btn btn-secondary");
-                //toevoegen aan weeklyreview
-                volgenDown = true;
-            } else {
-                volgen.setAttribute("class", "btn btn-default");
-                //verwijderen van weeklyreview
-                volgenDown = false;
-            };
-        }
-
-        function setZoneLijstFunction(response) {
-            alert("setLijst");
-            var select = document.getElementById("zones");
-            select.innerHTML = "";
-            for (i = 0; i < response.length; i++) {
-                alert("setlijst loop " + response);
-                var option = document.createElement("option");
-                var a = document.createElement("a");
-                var link = "filterElement(\"" + response[i] + "\")";
-                option.innerHTML = response[i];
-                option.setAttribute("value", response[i]);
-                select.appendChild(option);
-            };
-        }
-    </script>*@
-
-<script>
+            </script>
+            <script>
         document.addEventListener('DOMContentLoaded', function () {
         var grafiekType = @ViewBag.GrafiekType;
         var grafiekIndex = @ViewBag.GrafiekIndex;
@@ -545,5 +525,5 @@
     });
             }
     }, false);
-</script>
+            </script>
 

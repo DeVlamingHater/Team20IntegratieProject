@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>SB Admin - Start Bootstrap Template</title>
+   
     <!-- Bootstrap core CSS-->
 </head>
 <!-- Navigation-->
@@ -104,23 +105,17 @@
     </div>
 </nav>
 <div class="content-wrapper">
+    <div class="rounded text-center" style="height:250px;margin:15px;width:auto;display:flex;align-items:center;justify-content:center;background-color:gold">
+        <h1 style="font:bold;">Politieke Barometer</h1>
+    </div>
 
     <div class="container-fluid">
         <!-- Breadcrumbs-->
-        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page= "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 1 , index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page= "index" })      
-        @Html.Action("_ItemPartial", new { grafiekType = 2 , index = 2 ,labels = ViewBag.Labels, data = ViewBag.Data, page="dashboard"})
+        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page = "index" })
+        @Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page = "index" })
+        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data, page = "dashboard" })
     </div>
 
     <!-- /.container-fluid-->
-    <!--SearchTest-->
-    @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))
-    {
-        <div class="form-group">
-            @Html.Label("searchstring", "searchstring", new { @class = "sr-only" })
-            @Html.TextBox("searchstring", null, new { @class = "form-control" })
-        </div>
-        <input type="submit" value="search" class="btn btn-default" />
-    }
 </div>
 
