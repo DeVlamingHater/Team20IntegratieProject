@@ -31,6 +31,13 @@ namespace DAL.Repositories_EF
             });
         }
 
+        public void deleteGebruiker(string id)
+        {
+            Gebruiker gebruiker = context.Gebruikers.Where(g => g.GebruikerId == id).FirstOrDefault();
+            context.Gebruikers.Remove(gebruiker);
+            context.SaveChanges();
+        }
+
         public Gebruiker getGebruiker(string email)
         {
             return context.Gebruikers.First(g=>g.Email == email);

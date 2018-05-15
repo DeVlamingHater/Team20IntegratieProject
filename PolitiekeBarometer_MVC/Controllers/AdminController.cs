@@ -46,7 +46,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 foreach (var gebruiker in gebruikers)
                 {
                     ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                    users.Add(user);
+                    if (user != null)
+                    {
+                        users.Add(user);
+                    }
                 }
 
                 return View(users);
@@ -55,9 +58,27 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
 
         // GET: Admin/Details/5
-        public ActionResult DetailsUser(int id)  
+        public ActionResult DetailsUser(string id)  
         {
-            return View();
+            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+            {
+                Gebruiker g = dbContext.Gebruikers.Where(p => p.GebruikerId == id).FirstOrDefault();
+                List<ApplicationUser> users = new List<ApplicationUser>();
+                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                foreach (var gebruiker in gebruikers)
+                {
+                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
+                    if (user != null)
+                    {
+                        users.Add(user);
+                    }
+                }
+
+                return View(users.Where(u => u.Email == g.Email).FirstOrDefault());
+
+            }
         }
 
         // GET: Admin/Create
@@ -98,25 +119,46 @@ namespace PolitiekeBarometer_MVC.Controllers
             string id = user.Id;
 
             platformManager.createGebruiker(gebruiker.GebruikerId, gebruiker.Naam, gebruiker.Email);
-            return View("LijstUsers");
+            return RedirectToAction("LijstUsers");
         }
 
 
         // GET: Admin/Edit/5
-        public ActionResult EditUser(int id)
+        public ActionResult EditUser(string id)
         {
-            return View();
+            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+            {
+                Gebruiker g = dbContext.Gebruikers.Where(p => p.GebruikerId == id).FirstOrDefault();
+                List<ApplicationUser> users = new List<ApplicationUser>();
+                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                foreach (var gebruiker in gebruikers)
+                {
+                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
+                    if (user != null)
+                    {
+                        users.Add(user);
+                    }
+                }
+
+                return View(users.Where(u => u.Email == g.Email).FirstOrDefault());
+
+            }
         }
 
         // POST: Admin/Edit/5
         [HttpPost]
-        public ActionResult EditUser(int id, FormCollection collection)
+        public ActionResult EditUser(int id, ApplicationUser user)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+                {
+                    dbContext.Entry(user).State = EntityState.Modified;
+                    dbContext.SaveChanges();
+                }
+                return RedirectToAction("LijstUsers");
             }
             catch
             {
@@ -125,20 +167,45 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
 
         // GET: Admin/Delete/5
-        public ActionResult DeleteUser(int id)
+        public ActionResult DeleteUser(string id)
         {
-            return View();
+            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+            {
+                Gebruiker g = dbContext.Gebruikers.Where(p => p.GebruikerId == id).FirstOrDefault();
+                List<ApplicationUser> users = new List<ApplicationUser>();
+                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                foreach (var gebruiker in gebruikers)
+                {
+                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
+                    if (user != null)
+                    {
+                        users.Add(user);
+                    }
+                }
+
+                return View(users.Where(u => u.Email == g.Email).FirstOrDefault());
+
+            }
         }
 
         // POST: Admin/Delete/5
         [HttpPost]
-        public ActionResult DeleteUser(int id, FormCollection collection)
+        public ActionResult DeleteUser(string id, ApplicationUser user)
         {
             try
             {
-                // TODO: Add delete logic here
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                PlatformManager platformManager = new PlatformManager();
 
-                return RedirectToAction("Index");
+              //  platformManager.deleteGebruiker(id);
+
+                ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
+
+                userManager.Delete(applicationUser);
+
+                return RedirectToAction("LijstUsers");
             }
             catch
             {
@@ -577,6 +644,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
             {
+                IPlatformManager platformManager = new PlatformManager();
+
                 List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
 
                 List<ApplicationUser> users = new List<ApplicationUser>();
@@ -586,7 +655,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 foreach (var gebruiker in gebruikers)
                 {
                     ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                    users.Add(user);
+                    if (user != null)
+                    {
+                        users.Add(user);
+                    }
                 }
 
                 var grid = new GridView();
