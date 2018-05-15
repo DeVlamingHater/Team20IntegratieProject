@@ -91,5 +91,14 @@ namespace PolitiekeBarometer_MVC.Controllers
             userManager.AddToRole(user.Id, role);
             return View("Index");
         }
+
+        public ActionResult AssingRefreshRate(FormCollection form)
+        {
+            string refreshRateS = form[""];
+            int refreshRate = Int32.Parse(refreshRateS);
+            Platform.interval = refreshRate;
+            Platform.refreshTimer.Interval = refreshRate;
+            return View("Index");
+        }
     }
 }

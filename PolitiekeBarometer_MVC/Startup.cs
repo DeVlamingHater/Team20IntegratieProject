@@ -11,6 +11,10 @@ using Owin;
 using PolitiekeBarometer_MVC.Models;
 using PolitiekeBarometer_MVC.Providers;
 using DAL.EF;
+using System.Timers;
+using BL.Managers;
+using Domain.Platformen;
+
 [assembly: OwinStartupAttribute(typeof(PolitiekeBarometer_MVC.Startup))]
 namespace PolitiekeBarometer_MVC
 {
@@ -22,7 +26,25 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
             createUserAndRoles();
-            
+            SetTimer();
+        }
+
+        private void SetTimer()
+        {
+            Timer refreshTimer = new Timer();
+
+           Platform.refreshTimer.Elapsed += new ElapsedEventHandler(UpdateAPIAsync);
+            Platform.refreshTimer.Interval = Platform.interval;
+            Platform.refreshTimer.Enabled = true;
+            Platform.refreshTimer.Start();
+        }
+
+        private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
+        {
+            PostManager postManager = new PostManager();
+            string responseString = await postManager.updatePosts(DateTime.Now.AddDays(-7));
+            postManager.addJSONPosts(responseString);
+            postManager.deleteOldPosts();
         }
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
@@ -69,11 +91,11 @@ namespace PolitiekeBarometer_MVC
 
         private void createUserAndRoles()
         {
-             PolitiekeBarometerContext context= new PolitiekeBarometerContext();
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            if (   !roleManager.RoleExists("SuperAdmin"))
+            if (!roleManager.RoleExists("SuperAdmin"))
             {
                 var role = new IdentityRole("SuperAdmin");
                 roleManager.Create(role);

@@ -20,31 +20,53 @@ using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 using Newtonsoft;
 using System.Linq;
+using System.Timers;
 
 namespace PolitiekeBarometer_CA
 {
     class Program
     {
         private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
-
         static void Main(string[] args)
         {
             HttpClient client = new HttpClient();
-
             Console.WriteLine("Politieke Barometer");
-            bool afsluiten = false;
 
-            addPoliticiJSON();
-            Console.WriteLine("Personen geupdate");
-            updateAPIAsync();
-            Console.WriteLine("Posts opgehaald");
-         
-            while (!afsluiten)
-            {
-                showMenu();
-            }
+            //CurrentSecondsTimer
+            Timer tick = new Timer();
+            tick.Interval = 1000;
+            tick.Enabled = true;
+            tick.Elapsed += new ElapsedEventHandler(sec);
+
+            //PlayingWithRefreshRate
+            Platform.refreshTimer.Elapsed += new ElapsedEventHandler(refreshData);
+            SetTimer(10);
+            Console.ReadLine();
+            SetTimer(7);
+            Console.ReadLine();
         }
 
+        private static void sec(Object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine(e.SignalTime);
+        }
+
+        private static void SetTimer(int timeInSeconds)
+        {
+            Platform.refreshTimer.Enabled = true;
+            Platform.refreshTimer.Interval = 0050;
+            Platform.refreshTimer.Interval = timeInSeconds * 1000;
+            Console.WriteLine("TIME SET TO " + timeInSeconds + " SECONDS");
+        }
+        private static void refreshData(Object source, ElapsedEventArgs elapsedEventArgs)
+        {
+            Console.WriteLine("REFRESH DATA");
+        }
+
+        private static void refreshData()
+        {
+            Console.WriteLine("REFRESH DATA");
+        }
         private static void addAlerts()
         {
             IElementManager elementManager = new ElementManager();
