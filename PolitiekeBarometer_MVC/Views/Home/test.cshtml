@@ -229,7 +229,20 @@
     }
 
     function filterElement(elementNaam) {
-        alert(elementNaam);
+        var ul = document.getElementById("searchElementList");
+        ul.innerHTML = "";
+        for (i = 0; i < response.length; i++) {
+
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            var link = "filterElement(\"" + response[i] + "\")";
+            a.innerHTML = response[i];
+            a.setAttribute("id", response[i]);
+            a.setAttribute("onclick", link);
+            a.setAttribute("class", "btn");
+            li.setAttribute("class", "dropdown-item");
+            ul.appendChild(li);
+            li.appendChild(a);
     }
 
     function dropElementList() {

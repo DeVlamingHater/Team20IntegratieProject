@@ -343,5 +343,10 @@ namespace BL.Managers
         {
             return dashboardRepository.getDashboardAlerts(dashboard);
         }
+
+        public Alert getAlert(int id)
+        {
+            return dashboardRepository.getAlert(id);
+        }
     }
 }

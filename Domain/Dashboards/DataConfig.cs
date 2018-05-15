@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Dashboards;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace Domain
 
         public Element Vergelijking { get; set; }
 
+        public List<Filter> Filters { get; set; }
     }
 }

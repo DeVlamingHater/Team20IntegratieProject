@@ -36,7 +36,7 @@ namespace PolitiekeBarometer_CA
 
             addPoliticiJSON();
             Console.WriteLine("Personen geupdate");
-            updateAPIAsync();
+            //updateAPIAsync();
             Console.WriteLine("Posts opgehaald");
          
             while (!afsluiten)

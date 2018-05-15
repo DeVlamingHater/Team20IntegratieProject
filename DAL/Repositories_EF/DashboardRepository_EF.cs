@@ -168,5 +168,10 @@ namespace DAL.Repositories_EF
     {
       return context.Zones.Include(z => z.Dashboard).First(z => z.Naam == zoneNaam);
     }
-  }
+
+        public Alert getAlert(int id)
+        {
+            return (Alert)context.Alerts.Where(a => a.AlertId == id);
+        }
+    }
 }

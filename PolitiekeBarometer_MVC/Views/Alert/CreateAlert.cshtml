@@ -1,0 +1,71 @@
+﻿@model Domain.Alert
+@{
+    ViewBag.Title = "CreateAlert";
+}
+
+<h2>CreateAlert</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Alert</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EmailMelding)
+                    @Html.ValidationMessageFor(model => model.EmailMelding, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.BrowserMelding)
+                    @Html.ValidationMessageFor(model => model.BrowserMelding, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.ApplicatieMelding)
+                    @Html.ValidationMessageFor(model => model.ApplicatieMelding, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Age")
+            <div class="form-group">
+                <input type="radio" name="Age" value="Positief"> geen filter
+                <input type="radio" name="Age" value="Positief"> +25j
+                <input type="radio" name="Age" value="Negatief"> -25j<br>
+            </div>
+            @Html.Label("Sentiment")
+            <div class="form-group">
+                <input type="radio" name="Age" value="Positief"> geen filter
+                <input type="radio" name="Sentiment" value="Positief"> Positief
+                <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+            </div>
+            @Html.Label("Retweet")
+            <div class="form-group">
+                <input type="radio" name="Age" value="Positief"> geen filter
+                <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
+                <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
+            </div>
+        </div>
+    </div>
+}
+
