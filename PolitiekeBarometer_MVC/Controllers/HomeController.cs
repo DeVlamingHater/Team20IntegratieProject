@@ -461,17 +461,52 @@ namespace PolitiekeBarometer_MVC.Controllers
       return Json(elementen);
     }
 
-    public ActionResult Organisatie(string naam)
-    {
-      Element element = Emgr.getElementByNaam(naam);
-      return View(element);
-    }
-    public ActionResult Persoon(string naam)
-    {
-      Element element = Emgr.getElementByNaam(naam);
-      return View(element);
-    }
-    public ActionResult setImage(string twitter)
+
+
+        public ActionResult Organisatie(string naam)
+        {
+            Element element = Emgr.getElementByNaam(naam);
+            ViewBag.Labels = null;
+            ViewBag.Data = null;
+            return View(element);
+        }
+        public ActionResult Persoon(string naam)
+        {
+            ElementManager mgr = new ElementManager();
+            Element testElement = mgr.getElementByNaam(naam);
+            DashboardManager dashboardManager = new DashboardManager();
+
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = DataType.TOTAAL,
+
+
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                },
+                AantalDataPoints = 30
+            };
+
+            string dataString = dashboardManager.getGraphData(testGrafiek);
+
+
+            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+
+
+            List<string> dates = new List<string>();
+            foreach (DateTime item in data.Keys)
+            {
+                dates.Add(item.ToString("d MMM yyyy "));
+            }
+            Element element = Emgr.getElementByNaam(naam);
+            ViewBag.LabelsLijn = dates;
+            ViewBag.DataLijn = data;
+            return View(element);
+        }
+        public ActionResult setImage(string twitter)
     {
       if(twitter != null)
       {
@@ -496,7 +531,6 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       return View(organisatie.Naam);
 
-
       //string twitter = organisatie.Naam; //moet twitter worden;
       ////string twitter1 = twitter.Remove(0, 1);
       //string url = "https://twitter.com/" + twitter + "/profile_image?size=original";
@@ -505,6 +539,8 @@ namespace PolitiekeBarometer_MVC.Controllers
     public ActionResult Thema(string naam)
     {
       Element element = Emgr.getElementByNaam(naam);
+      ViewBag.Labels = null;
+      ViewBag.Data = null;
       return View(element);
     }
     public ActionResult addWeeklyReview(int id)
