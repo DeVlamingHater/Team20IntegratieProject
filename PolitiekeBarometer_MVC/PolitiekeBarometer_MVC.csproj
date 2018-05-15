@@ -419,8 +419,6 @@
     <Content Include="Views\Home\NewTab.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\SuperAdmin\AssignRole.cshtml" />
-    <Content Include="Views\SuperAdmin\CreateRole.cshtml" />
     <Content Include="Views\SuperAdmin\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\.jsbeautifyrc" />
@@ -522,6 +520,10 @@
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\_TaartGrafiekPartial.cshtml" />
     <Content Include="Views\Home\_ItemPartial.cshtml" />
+    <Content Include="Views\SuperAdmin\LijstAdmins.cshtml" />
+    <Content Include="Views\SuperAdmin\DetailsAdmin.cshtml" />
+    <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
+    <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

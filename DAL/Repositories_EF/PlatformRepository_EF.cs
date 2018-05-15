@@ -38,9 +38,14 @@ namespace DAL.Repositories_EF
             context.SaveChanges();
         }
 
-        public Gebruiker getGebruiker(string email)
+        public List<Gebruiker> getAllGebruikers()
         {
-            return context.Gebruikers.First(g=>g.Email == email);
+            return context.Gebruikers.ToList();
+        }
+
+        public Gebruiker getGebruiker(string id)
+        {
+            return context.Gebruikers.First(g=>g.GebruikerId == id);
         }
     }
 }
