@@ -42,9 +42,9 @@ namespace BL.Managers
         {
             dashboardRepository.addGrafiek(grafiek);
         }
-        public IEnumerable<Item> getItems(int actieveZone)
+        public IEnumerable<Item> getItems(int zoneId)
         {
-           return dashboardRepository.getItems(actieveZone);
+           return dashboardRepository.getItems(zoneId);
         }
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
