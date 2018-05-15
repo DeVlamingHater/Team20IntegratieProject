@@ -517,7 +517,7 @@
     <Content Include="Views\Home\_PersonenDropDown.cshtml" />
     <Content Include="Views\Home\_OrganisatieDropDown.cshtml" />
     <Content Include="Views\Home\_ThemaDropDown.cshtml" />
-    <Content Include="Views\Home\_SearchPartial.cshtml" />
+    <Content Include="Views\Home\SearchPage.cshtml" />
     <Content Include="Views\Home\_LijnGrafiekPartial.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\_TaartGrafiekPartial.cshtml" />

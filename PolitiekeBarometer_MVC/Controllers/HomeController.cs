@@ -351,16 +351,27 @@ namespace PolitiekeBarometer_MVC.Controllers
       }
       return PartialView(themas);
     }
-    public ActionResult _SearchPartial(string searchstring = "test")
+    string searchtekst = "";
+    public ActionResult getSearchString(string searchstring)
     {
-      if (searchstring is null)
+      searchtekst = searchstring;
+      return Json(new
+      {
+        result = "OK"
+      });
+      
+      
+    }
+    public ActionResult SearchPage()
+    {
+      if (searchtekst == "")
       {
         List<Element> leeg = new List<Element>();
-        return PartialView(leeg);
+        return View(leeg);
       }
-      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchtekst.ToLower())).ToList();
       elementen = elementen.OrderBy(o => o.Trend).ToList();
-      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+      List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchtekst.ToLower())).ToList();
       personen = personen.OrderBy(o => o.Trend).ToList();
       elementen.AddRange(personen);
       List<Thema> themas = Emgr.getAllThemas();
@@ -377,7 +388,7 @@ namespace PolitiekeBarometer_MVC.Controllers
           for (int j = 0; j <= keywords.Count(); j++)
           {
             Keyword keyword = keywords.ElementAt(j);
-            if (keyword.KeywordNaam.ToLower().Contains(searchstring.ToLower()))
+            if (keyword.KeywordNaam.ToLower().Contains(searchtekst.ToLower()))
             {
               elementen.Add(thema);
               break;
@@ -390,7 +401,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         elementen = elementen.GetRange(0, 5);
       }
 
-      return PartialView(elementen);
+      return View(elementen);
     }
 
 

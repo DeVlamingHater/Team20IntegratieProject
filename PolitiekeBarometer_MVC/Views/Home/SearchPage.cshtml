@@ -1,6 +1,6 @@
 ﻿@model  List<Domain.Element>
 @{
-    ViewBag.Title = "_SearchPartial";
+    ViewBag.Title = "SearchPage";
 }
 
 
@@ -11,7 +11,7 @@
             @if (element.GetType().Equals(typeof(Domain.Organisatie)))
             {
 
-                <a href="@Url.Action("Organisatie", new { id = element.Id })">
+                <a href="@Url.Action("Organisatie", new { naam = element.Naam })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
 
@@ -19,7 +19,7 @@
 
             @if (element.GetType().Equals(typeof(Domain.Persoon)))
             {
-                <a href="@Url.Action("Persoon", new { id = element.Id })">
+                <a href="@Url.Action("Persoon", new { naam = element.Naam })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
 
@@ -28,7 +28,7 @@
             @if (element.GetType().Equals(typeof(Domain.Thema)))
             {
 
-                <a href="@Url.Action("Thema", new { id = element.Id })">
+                <a href="@Url.Action("Thema", new { naam = element.Naam })">
                     @Html.DisplayFor(modelItem => element.Naam)
                 </a>
 
