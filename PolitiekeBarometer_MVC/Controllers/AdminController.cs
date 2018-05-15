@@ -22,7 +22,7 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         PolitiekeBarometerContext context = new PolitiekeBarometerContext();
 
-    
+
         // GET: Admin
         // Index pagina om te navigeren naar verschillende beheerpagina's
         public ActionResult Index()
@@ -35,41 +35,32 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/LijsUsers
         public ActionResult LijstUsers()
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
+            PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbContext));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
+
+            List<ApplicationUser> usersLijst = userManager.Users.ToList();
+            List<ApplicationUser> users = new List<ApplicationUser>();
+
+            var adminRole = roleManager.FindByName("Admin");
+            var superAdminRole = roleManager.FindByName("SuperAdmin");
+
+            foreach (var user in usersLijst)
             {
-                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
-
-                List<ApplicationUser> users = new List<ApplicationUser>();
-
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbContext));
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(dbContext));
-
-
-                var adminRole = roleManager.FindByName("Admin");
-                var superAdminRole = roleManager.FindByName("SuperAdmin");
-
-                foreach (var gebruiker in gebruikers)
+                if (user.Roles.Count() == 0)
                 {
-                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                    if (user != null)
-                    {
-                        foreach (var role in user.Roles)
-                        {
-                            if (role.RoleId != adminRole.Id && role.RoleId != superAdminRole.Id)
-                            {
-                                users.Add(user);
-                            }
-                        }
-                    }
+                    users.Add(user);
                 }
 
-                return View(users);
             }
 
+            return View(users);
         }
 
+
+
         // GET: Admin/Details/5
-        public ActionResult DetailsUser(string id)  
+        public ActionResult DetailsUser(string id)
         {
             PolitiekeBarometerContext context = new PolitiekeBarometerContext();
 
@@ -123,25 +114,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/Edit/5
         public ActionResult EditUser(string id)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                Gebruiker g = dbContext.Gebruikers.Where(p => p.GebruikerId == id).FirstOrDefault();
-                List<ApplicationUser> users = new List<ApplicationUser>();
-                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
 
-                foreach (var gebruiker in gebruikers)
-                {
-                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                    if (user != null)
-                    {
-                        users.Add(user);
-                    }
-                }
-
-                return View(users.Where(u => u.Email == g.Email).FirstOrDefault());
-
-            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var user = userManager.FindById(id);
+            return View(user);
         }
 
         // POST: Admin/Edit/5
@@ -150,11 +127,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             try
             {
-                using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-                {
-                    dbContext.Entry(user).State = EntityState.Modified;
-                    dbContext.SaveChanges();
-                }
+                PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext();
+                IPlatformManager platformManager = new PlatformManager();
+
+                dbContext.Entry(user).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
                 return RedirectToAction("LijstUsers");
             }
             catch
@@ -196,7 +174,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
                 PlatformManager platformManager = new PlatformManager();
 
-              //  platformManager.deleteGebruiker(id);
+                //  platformManager.deleteGebruiker(id);
 
                 ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
@@ -594,7 +572,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
 
 
-            
+
         }
 
         public void ExportOrganisatiesToExcel()
@@ -676,7 +654,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                                       AccessFailedCount = data.AccessFailedCount,
                                       Username = data.UserName,
                                       Name = data.Name,
-                                      Gebruiker = data.Gebruiker                                      
+                                      Gebruiker = data.Gebruiker
                                   };
 
                 grid.DataBind();

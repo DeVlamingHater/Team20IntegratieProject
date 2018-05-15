@@ -30,31 +30,23 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult LijstAdmins()
         {
             PolitiekeBarometerContext context = PolitiekeBarometerContext.Create();
-
-            IPlatformManager platformManager = new PlatformManager();
-            List<Gebruiker> gebruikers = platformManager.getAllGebruikers();
-
-            List<ApplicationUser> users = new List<ApplicationUser>();
-
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
+            List<ApplicationUser> usersLijst = userManager.Users.ToList();
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            
             var adminRole = roleManager.FindByName("Admin");
 
-            foreach (var gebruiker in gebruikers)
-            {
-                ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                if (user != null)
-                {
+            foreach (var user in usersLijst)
+            {                
                     foreach (var role in user.Roles)
                     {
                         if (role.RoleId == adminRole.Id)
                         {
                             users.Add(user);
                         }
-                    }
-
-                }
+                    }               
             }
 
             return View(users);
@@ -69,8 +61,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var user = userManager.FindById(id);
             return View(user);
-
-
         }
 
         // GET: SuperAdmin/Edit/5
@@ -120,9 +110,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 PolitiekeBarometerContext context = new PolitiekeBarometerContext();
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                PlatformManager platformManager = new PlatformManager();
-
-                //  platformManager.deleteGebruiker(id);
 
                 ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
