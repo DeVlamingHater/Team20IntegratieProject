@@ -252,19 +252,7 @@
                 //};
                 $.ajax(f);
 
-             var x = {};
-                x.url = '@Url.Action("getSearchString", "Home")';
-                x.type = "POST";
-                x.dataType = "json";
-                x.data = JSON.stringify({ searchstring: searchtekst });
-                x.contentType = "application/json";
-                x.success = function (response) {
-                    alert("success ");
-                };
-                x.error = function (response) {
-                    alert("failed");
-                };
-                $.ajax(x);
+            
           });
         });
 </script>
