@@ -34,5 +34,10 @@ namespace BL.Managers
         {
             platformRepository.createGebruiker(id, name, email);
         }
+
+        public void deleteGebruiker(string id)
+        {
+            platformRepository.deleteGebruiker(id);
+        }
     }
 }

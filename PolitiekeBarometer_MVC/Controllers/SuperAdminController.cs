@@ -1,7 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
 using DAL.EF;
-using Domain.Platformen;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PolitiekeBarometer_MVC.Models;
@@ -22,42 +21,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-        public ActionResult CreateUser()
-        {
-            return View();
-        }
+        }     
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateUser(FormCollection form)
-        {
-            var user = new ApplicationUser();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            string naam = form["txtNaam"];
-            string userName = form["txtEmail"];
-            string email = form["txtEmail"];
-            string password = form["txtPassword"];
-
-            user.Name = naam;
-            user.UserName = userName;
-            user.Email = email;
-            string pwd = password;
-            Gebruiker gebruiker = new Gebruiker()
-            {
-                Email = user.Email,
-                Naam = user.Name,
-                GebruikerId = user.Id
-            };
-            user.Gebruiker = gebruiker;
-            IPlatformManager platformManager = new PlatformManager();
-
-            var newuser = userManager.Create(user, pwd);
-            string id = user.Id;
-
-            platformManager.createGebruiker(gebruiker.GebruikerId, gebruiker.Naam, gebruiker.Email);
-            return View("Index");
-        }
         public ActionResult CreateRole()
         {
             return View();
