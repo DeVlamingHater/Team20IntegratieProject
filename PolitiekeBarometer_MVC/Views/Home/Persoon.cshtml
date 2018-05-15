@@ -27,32 +27,12 @@
         
     </div>
 </div>
-<div class="row" style="margin:20px">
-    <div class="card mb-3">
-        <div class="card-header" style="margin:20px">
-            Item1
-        </div>
-        <div class="card-body">
             @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn })
-        </div>
-    </div>
-    <div class="card mb-3 col-sm-4 ">
-        <div class="card-header">
-            Item2
-        </div>
-        <div class="card-body">
             @Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data })
-        </div>
-    </div>
-    <div class="card mb-3 col-sm-4">
-        <div class="card-header">
             @Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data })
-        </div>
-        <div class="card-body">
-            itembody
-        </div>
-    </div>
-</div>
+@ViewBag.LabelsLijn
+
+@ViewBag.DataLijn
 <style>    /* https://www.w3schools.com/css/tryit.asp?filename=trycss_grid_layout_named */ 
     .foto {
         grid-column:1;

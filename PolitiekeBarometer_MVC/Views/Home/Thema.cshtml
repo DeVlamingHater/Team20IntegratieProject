@@ -19,29 +19,9 @@
 
     </div>
 </div>
-<div class="row" style="margin:20px">
-    <div class="card mb-3">
-        <div class="card-header">
-            Item1
-        </div>
-        <div class="card-body">
-            @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
-        </div>
-    </div>
-    <div class="card mb-3 col-sm-4 ">
-        <div class="card-header">
-            Item2
-        </div>
-        <div class="card-body">
-            @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
-        </div>
-    </div>
-    <div class="card mb-3 col-sm-4">
-        <div class="card-header">
-            Item3
-        </div>
-        <div class="card-body">
-            @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
-        </div>
-    </div>
-</div>
+@Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn })
+@Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data })
+@Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data })
+@ViewBag.LabelsLijn
+
+@ViewBag.DataLijn
