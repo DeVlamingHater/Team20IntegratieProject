@@ -104,12 +104,14 @@
     </div>
 </nav>
 <div class="content-wrapper">
+
     <div class="container-fluid">
         <!-- Breadcrumbs-->
         @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
         @Html.Action("_ItemPartial", new { grafiekType = 1 , index = 1, labels = ViewBag.Labels, data = ViewBag.Data })      
         @Html.Action("_ItemPartial", new { grafiekType = 2 , index = 2 ,labels = ViewBag.Labels, data = ViewBag.Data})
     </div>
+
     <!-- /.container-fluid-->
     <!--SearchTest-->
     @using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))

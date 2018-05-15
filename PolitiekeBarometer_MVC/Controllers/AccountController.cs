@@ -16,6 +16,7 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json.Linq;
 using PolitiekeBarometer_MVC.Models;
 using DAL.EF;
+using Domain.Platformen;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -156,6 +157,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            IPlatformManager platformManager = new PlatformManager();
+
             if (ModelState.IsValid)
             {
                 // Validate google recaptcha
@@ -170,11 +173,18 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                 if (status == true)
                 {
-                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, Name = model.Name};
+                    Gebruiker gebruiker = new Gebruiker()
+                    {
+                        Naam = model.Name,
+                        Email = model.Email
+                    };
+                    gebruiker.GebruikerId = user.Id;
+                    user.Gebruiker = gebruiker;
                     var result = await UserManager.CreateAsync(user, model.Password);
+
                     if (result.Succeeded && status)
                     {
-                        IPlatformManager platformManager = new PlatformManager();
                         platformManager.createGebruiker(user.Id, user.Name, user.Email);
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         

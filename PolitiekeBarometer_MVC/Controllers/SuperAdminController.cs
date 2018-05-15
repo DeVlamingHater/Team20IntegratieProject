@@ -21,36 +21,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-        public ActionResult CreateUser()
-        {
-            return View();
-        }
+        }     
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateUser(FormCollection form)
-        {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            string naam = form["txtNaam"];
-            string userName = form["txtEmail"];
-            string email = form["txtEmail"];
-            string password = form["txtPassword"];
-
-            var user = new ApplicationUser();
-            user.Name = naam;
-            user.UserName = userName;
-            user.Email = email;
-            string pwd = password;
-
-            IPlatformManager platformManager = new PlatformManager();
-            
-            var newuser = userManager.Create(user, pwd);
-           ;
-
-            platformManager.createGebruiker(userManager.Users.First(u => u.Email == user.Email).Id, user.Name, user.Email);
-            return View("Index");
-        }
         public ActionResult CreateRole()
         {
             return View();

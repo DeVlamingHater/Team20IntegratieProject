@@ -25,8 +25,6 @@ namespace PolitiekeBarometer_CA
 {
     class Program
     {
-
-
         private const string Path = "D:\\School\\Academiejaar 2 (2017-2018)\\Integratieproject\\project\\Team20IntegratieProject\\DAL\\politici.json";
 
         static void Main(string[] args)
@@ -40,8 +38,7 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("Personen geupdate");
             updateAPIAsync();
             Console.WriteLine("Posts opgehaald");
-            showTrending();
-            addAlerts();
+         
             while (!afsluiten)
             {
                 showMenu();
