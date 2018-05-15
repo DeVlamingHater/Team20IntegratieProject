@@ -197,7 +197,7 @@
                 f.data = JSON.stringify({ searchstring: searchtekst });
                 f.contentType = "application/json";
                 f.success = function (response) {
-                    //alert("succes json");
+                   // alert("succes json"+response);
                     searchElementFunction(response);
                 };
                 //f.error = function (response) {
@@ -210,7 +210,7 @@
 }
 <script>
     function searchElementFunction(response) {
-        //alert("search");
+        alert("search");
         var ul = document.getElementById("searchElementList");
         ul.innerHTML = "";
         for (i = 0; i < response.length; i++) {

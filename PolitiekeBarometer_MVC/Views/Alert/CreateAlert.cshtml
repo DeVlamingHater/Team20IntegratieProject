@@ -45,7 +45,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             @Html.Label("Age")
             <div class="form-group">
@@ -66,6 +65,112 @@
                 <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
             </div>
         </div>
+
+
+        <div class="form-group dropdown">
+            <div class="form-inline">
+                <input type="text" class="form-control" id="searchBar" onkeyup="dropList()" />
+                <button id="searchbutton" onclick="searchFunction()" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            </div>
+            <ul class="list-group dropdown-menu" id="searchlist" style="margin:auto;width:90%;display:none"></ul>
+
+        </div>
     </div>
 }
+<script>
+    $(document).ready(function () {
+        $("#searchBar").keyup(function () {
+            //alert("json")
+            var searchtekst = document.getElementById("searchBar").value;
+                var f = {};
+                f.url = '@Url.Action("Search", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ searchstring: searchtekst });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    //alert("succes json")
+                    searchFunction(response);
+                };
+                //f.error = function (response) {
+                //    alert("failed");
+                //};
+                $.ajax(f);
+          });
+        });
+</script>
+<script>
+        function searchFunction(namen) {
+            //alert("aangeroepen");
+            var ul = document.getElementById("searchlist");
+            ul.innerHTML = "";
+            for (i = 0; i < namen.length; i++) {
+                var li = document.createElement("li");
+                var a = document.createElement("a");
+                var link = '@Url.Action("Persoon")?naam=' + namen[i];
+                //alert("loop");
+                a.innerHTML = namen[i];
+                a.setAttribute("id", namen[i]);
+                a.setAttribute("href", link)
+                a.setAttribute("class", "btn")
+                li.setAttribute("class", "dropdown-item");
+                ul.appendChild(li);
+                li.appendChild(a);
+                getElement(namen[i]);
+
+            };
+        }
+        function getElement(elementNaam) {
+            //alert("getElement " + elementNaam);
+                var f = {};
+                f.url = '@Url.Action("getElementType", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ naam: elementNaam });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    //alert("success " + response + " " + elementNaam);
+                    setLink(response, elementNaam);
+                };
+                f.error = function (response) {
+                    //alert("failed");
+                };
+                $.ajax(f);
+        }
+        function setLink(response, elementNaam) {
+            var a = document.getElementById(elementNaam);
+            var link = a.getAttribute("href");
+            //alert("setLink " + response);
+            if (response == "Persoon") {
+                    link = '@Url.Action("Persoon")?naam=' + elementNaam;
+                    a.setAttribute("href", link);
+                    //alert("response" + response);
+                    }
+                else if (response == "Organisatie") {
+                    //alert("response" + response);
+                    link = '@Url.Action("Organisatie")?naam=' + elementNaam;
+                    a.setAttribute("href", link);
+                    }
+                else if (response == "Thema") {
+                    //alert("response" + response);
+                    link = '@Url.Action("Thema")?naam=' + elementNaam;
+                    a.setAttribute("href", link);
+                    }
+                    else {
+                        alert("foutje");
+                    };
+        }
+
+    function dropList() {
+        alert("klik")
+            var ul = document.getElementById("searchlist");
+            var search = document.getElementById("searchBar").value;
+            if (search == "" || ul.children.length == 0) {
+                ul.style.display = "none";
+            } else {
+                ul.style.display = "block";
+            };
+        }
+
+</script>
 

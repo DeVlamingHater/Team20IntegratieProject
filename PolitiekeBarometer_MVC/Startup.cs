@@ -29,7 +29,6 @@ namespace PolitiekeBarometer_MVC
         
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
         {
-
             var issuer = "http://localhost:44301";
             string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
             byte[] audienceSecret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);

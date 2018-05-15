@@ -34,7 +34,7 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("Politieke Barometer");
             bool afsluiten = false;
 
-            addPoliticiJSON();
+            //addPoliticiJSON();
             Console.WriteLine("Personen geupdate");
             //updateAPIAsync();
             Console.WriteLine("Posts opgehaald");
