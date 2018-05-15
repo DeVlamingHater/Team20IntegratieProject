@@ -76,10 +76,9 @@ namespace DAL.EF
 
             #region AddThemas
             context.Themas.Add(thema1);
-            #endregion
-            #endregion
-            #endregion
-
+      #endregion
+      #endregion
+      #endregion
 
             context.SaveChanges();
             base.Seed(context);
