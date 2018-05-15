@@ -2,6 +2,7 @@
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,12 @@ namespace DAL.Repositories_EF
         public Gebruiker getGebruiker(string id)
         {
             return context.Gebruikers.First(g=>g.GebruikerId == id);
+        }
+
+        public void saveGebruiker(Gebruiker gebruiker)
+        {
+            context.Entry(gebruiker).State = EntityState.Modified;
+            context.SaveChanges();
         }
     }
 }

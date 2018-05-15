@@ -8,8 +8,9 @@ namespace BL.Interfaces
     public interface IPlatformManager
     {
         void createGebruiker(string id, string name, string email);
-        Gebruiker getGebruiker(string email);
+        Gebruiker getGebruiker(string id);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
+        void saveGebruiker(Gebruiker gebruiker);
     }
 }

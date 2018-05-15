@@ -133,6 +133,11 @@ namespace PolitiekeBarometer_MVC.Controllers
                 dbContext.Entry(user).State = EntityState.Modified;
                 dbContext.SaveChanges();
 
+                var gebruiker = platformManager.getGebruiker(user.Id);
+                gebruiker.Naam = user.Name;
+                gebruiker.Email = user.Email;
+                platformManager.saveGebruiker(gebruiker);
+
                 return RedirectToAction("LijstUsers");
             }
             catch
@@ -144,25 +149,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/Delete/5
         public ActionResult DeleteUser(string id)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                Gebruiker g = dbContext.Gebruikers.Where(p => p.GebruikerId == id).FirstOrDefault();
-                List<ApplicationUser> users = new List<ApplicationUser>();
-                List<Gebruiker> gebruikers = dbContext.Gebruikers.ToList();
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
 
-                foreach (var gebruiker in gebruikers)
-                {
-                    ApplicationUser user = userManager.FindByEmail(gebruiker.Email);
-                    if (user != null)
-                    {
-                        users.Add(user);
-                    }
-                }
-
-                return View(users.Where(u => u.Email == g.Email).FirstOrDefault());
-
-            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var user = userManager.FindById(id);
+            return View(user);
         }
 
         // POST: Admin/Delete/5
@@ -173,8 +164,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
                 PlatformManager platformManager = new PlatformManager();
-
-                //  platformManager.deleteGebruiker(id);
 
                 ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
@@ -194,20 +183,19 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/LijsUsers
         public ActionResult LijstPersonen()
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                return View(dbContext.Personen.ToList());
-            }
+            IElementManager elementManager = new ElementManager();
+            var personen = elementManager.getAllPersonen();
+            return View(personen);
+
 
         }
 
         // GET: Admin/Details/5
         public ActionResult DetailsPersoon(int id)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                return View(dbContext.Personen.Where(p => p.Id == id).FirstOrDefault());
-            }
+            IElementManager elementManager = new ElementManager();
+            var persoon = elementManager.getElementById(id);
+            return View(persoon);
         }
 
         // GET: Admin/Create
@@ -221,11 +209,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePersoon(Persoon persoon)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                dbContext.Personen.Add(persoon);
-                dbContext.SaveChanges();
-            }
+            IElementManager elementManager = new ElementManager();
+
+            elementManager.addPersoon(persoon);
+
             return RedirectToAction("LijstPersonen");
         }
 
@@ -233,10 +220,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/Edit/5
         public ActionResult EditPersoon(int id)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                return View(dbContext.Personen.Where(p => p.Id == id).FirstOrDefault());
-            }
+            IElementManager elementManager = new ElementManager();
+            var persoon = elementManager.getElementById(id);
+            return View(persoon);
+
         }
 
         // POST: Admin/Edit/5
@@ -245,11 +232,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             try
             {
-                using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-                {
-                    dbContext.Entry(persoon).State = EntityState.Modified;
-                    dbContext.SaveChanges();
-                }
+                PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext();
+
+                dbContext.Entry(persoon).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
                 return RedirectToAction("LijstPersonen");
             }
             catch
@@ -261,10 +248,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/Delete/5
         public ActionResult DeletePersoon(int id)
         {
-            using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-            {
-                return View(dbContext.Personen.Where(p => p.Id == id).FirstOrDefault());
-            }
+            IElementManager elementManager = new ElementManager();
+            var persoon = elementManager.getElementById(id);
+            return View(persoon);
         }
 
         // POST: Admin/Delete/5
@@ -273,12 +259,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             try
             {
-                using (PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext())
-                {
-                    Persoon persoon = dbContext.Personen.Where(t => t.Id == id).FirstOrDefault();
-                    dbContext.Personen.Remove(persoon);
-                    dbContext.SaveChanges();
-                }
+                IElementManager elementManager = new ElementManager();
+
+                Persoon persoon = (Persoon)elementManager.getElementById(id);
+                elementManager.deletePersoon(persoon);
+                
 
                 return RedirectToAction("LijstPersonen");
             }

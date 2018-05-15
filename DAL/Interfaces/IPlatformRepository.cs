@@ -11,5 +11,6 @@ namespace DAL
         void createGebruiker(string id, string name, string email);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
+        void saveGebruiker(Gebruiker gebruiker);
     }
 }

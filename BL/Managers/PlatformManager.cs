@@ -45,5 +45,10 @@ namespace BL.Managers
         {
             return platformRepository.getAllGebruikers();
         }
+
+        public void saveGebruiker(Gebruiker gebruiker)
+        {
+            platformRepository.saveGebruiker(gebruiker);
+        }
     }
 }
