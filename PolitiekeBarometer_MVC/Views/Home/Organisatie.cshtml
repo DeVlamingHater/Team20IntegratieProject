@@ -25,7 +25,7 @@
             Item1
         </div>
         <div class="card-body">
-            itembody
+            @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data })
         </div>
     </div>
     <div class="card mb-3 col-sm-4 ">
@@ -33,7 +33,7 @@
             Item2
         </div>
         <div class="card-body">
-            itembody
+            @Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data })
         </div>
     </div>
     <div class="card mb-3 col-sm-4">
@@ -41,7 +41,7 @@
             Item3
         </div>
         <div class="card-body">
-            itembody
+            @Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data })
         </div>
     </div>
 </div>
