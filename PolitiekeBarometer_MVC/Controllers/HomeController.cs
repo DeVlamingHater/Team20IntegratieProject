@@ -19,28 +19,27 @@ namespace PolitiekeBarometer_MVC.Controllers
   {
 
 
-    public ActionResult Index()
-    {
-      _PersonenDropDown();
-      _OrganisatieDropDown();
-      _ThemaDropDown();
-      ElementManager elementManager = new ElementManager();
-      List<Element> elementenTrending = elementManager.getTrendingElementen(3);
-      StringBuilder labels = new StringBuilder();
-      StringBuilder data = new StringBuilder();
-      int i = 0;
 
-      foreach (Element element in elementenTrending)
-      {
-        labels.Append(element.Naam).Append(".");
-        data.Append(element.Trend).Append(".");
-      }
-      labels.Remove(labels.Length - 1, 1);
-      data.Remove(data.Length - 1, 1);
-      ViewBag.Labels = labels;
-      ViewBag.Data = data;
-      return View();
-    }
+        public ActionResult Index()
+        {
+            _PersonenDropDown();
+            _OrganisatieDropDown();
+            _ThemaDropDown();
+            ElementManager elementManager = new ElementManager();
+            List<Element> elementenTrending = elementManager.getTrendingElementen(3);
+            StringBuilder labels = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            foreach (Element element in elementenTrending)
+            {
+                labels.Append(element.Naam).Append(".");
+                data.Append(element.Trend).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            data.Remove(data.Length - 1, 1);
+            ViewBag.Labels = labels;
+            ViewBag.Data = data;
+            return View();
+        }
 
     public ActionResult Test()
     {
@@ -461,21 +460,16 @@ namespace PolitiekeBarometer_MVC.Controllers
       return Json(elementen);
     }
 
-
-
         public ActionResult Organisatie(string naam)
-        {
-            Element element = Emgr.getElementByNaam(naam);
-            ViewBag.Labels = null;
-            ViewBag.Data = null;
-            return View(element);
-        }
-        public ActionResult Persoon(string naam)
         {
             ElementManager mgr = new ElementManager();
             Element testElement = mgr.getElementByNaam(naam);
             DashboardManager dashboardManager = new DashboardManager();
-
+            DataConfig testDataConfig = new DataConfig()
+            {
+                Element =
+             testElement
+            };
             Grafiek testGrafiek = new Grafiek()
             {
                 DataType = DataType.TOTAAL,
@@ -484,6 +478,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Tijdschaal = new TimeSpan(30, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
+                     testDataConfig
                 },
                 AantalDataPoints = 30
             };
@@ -493,16 +488,75 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
 
-            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
 
 
             List<string> dates = new List<string>();
-            foreach (DateTime item in data.Keys)
+            foreach (DateTime item in dataLijn.Keys)
             {
                 dates.Add(item.ToString("d MMM yyyy "));
             }
+            StringBuilder labels = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            for (int i = 0; i < dates.Count(); i++)
+            {
+                labels.Append(dates.ElementAt(i)).Append(".");
+                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            data.Remove(data.Length - 1, 1);
             Element element = Emgr.getElementByNaam(naam);
-            ViewBag.LabelsLijn = dates;
+            ViewBag.LabelsLijn = labels;
+            ViewBag.DataLijn = data;
+            return View(element);
+        }
+        public ActionResult Persoon(string naam)
+        {
+            ElementManager mgr = new ElementManager();
+            Element testElement = mgr.getElementByNaam(naam);
+            DashboardManager dashboardManager = new DashboardManager();
+            DataConfig testDataConfig = new DataConfig()
+            {
+                Element =
+             testElement
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = DataType.TOTAAL,
+
+
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                     testDataConfig
+                },
+                AantalDataPoints = 30
+            };
+
+            string dataString = dashboardManager.getGraphData(testGrafiek);
+
+
+            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+
+
+            List<string> dates = new List<string>();
+            foreach (DateTime item in dataLijn.Keys)
+            {
+                dates.Add(item.ToString("d MMM yyyy "));
+            }
+            StringBuilder labels = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            for (int i = 0;i < dates.Count(); i++)
+            {
+                labels.Append(dates.ElementAt(i)).Append(".");
+                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            data.Remove(data.Length - 1, 1);
+            Element element = Emgr.getElementByNaam(naam);
+            ViewBag.LabelsLijn = labels;
             ViewBag.DataLijn = data;
             return View(element);
         }
@@ -538,10 +592,53 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult Thema(string naam)
     {
-      Element element = Emgr.getElementByNaam(naam);
-      ViewBag.Labels = null;
-      ViewBag.Data = null;
-      return View(element);
+            ElementManager mgr = new ElementManager();
+            Element testElement = mgr.getElementByNaam(naam);
+            DashboardManager dashboardManager = new DashboardManager();
+            DataConfig testDataConfig = new DataConfig()
+            {
+                Element =
+             testElement
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = DataType.TOTAAL,
+
+
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                     testDataConfig
+                },
+                AantalDataPoints = 30
+            };
+
+            string dataString = dashboardManager.getGraphData(testGrafiek);
+
+
+            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+
+
+            List<string> dates = new List<string>();
+            foreach (DateTime item in dataLijn.Keys)
+            {
+                dates.Add(item.ToString("d MMM yyyy "));
+            }
+            StringBuilder labels = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            for (int i = 0; i < dates.Count(); i++)
+            {
+                labels.Append(dates.ElementAt(i)).Append(".");
+                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            data.Remove(data.Length - 1, 1);
+            Element element = Emgr.getElementByNaam(naam);
+            ViewBag.LabelsLijn = labels;
+            ViewBag.DataLijn = data;
+            return View(element);
     }
     public ActionResult addWeeklyReview(int id)
     {

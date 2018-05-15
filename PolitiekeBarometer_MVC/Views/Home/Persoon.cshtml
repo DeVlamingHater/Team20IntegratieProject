@@ -20,7 +20,6 @@
             }
         </div>
 
-
         <img class="rounded-circle border foto" height="150" src="@Url.Action("setImage", new {twitter = Model.Twitter })" />
 
         <a class="twitter" href="@Url.Action("setTwitter", new { twitter = Model.Twitter })" target="_blank"> twitter: @Html.DisplayFor(model => model.Twitter)</a>
@@ -93,8 +92,12 @@
     </div>
 </div>
 <div style="margin:20px">
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page="persoon" })
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page="persoon" })
+@Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn, page = "persoon" })
+@Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page = "persoon" })
+@Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data, page = "persoon" })
+@ViewBag.LabelsLijn
+
+@ViewBag.DataLijn
 </div>
 <script>
     var menuOpen = false;

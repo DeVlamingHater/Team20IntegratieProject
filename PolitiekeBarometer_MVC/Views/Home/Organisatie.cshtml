@@ -18,7 +18,6 @@
 
 
     </div>
-
     @if (Request.IsAuthenticated)
     {
         <div class="card-footer small text-muted elementMenu">
@@ -84,8 +83,12 @@
     </div>
 </div>
 <div style="margin:20px">
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page = "organisatie" })
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page = "organisatie" })
+    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn, page = "organisatie" })
+@Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.Labels, data = ViewBag.Data, page = "organisatie" })
+@Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.Labels, data = ViewBag.Data, page = "organisatie" })
+@ViewBag.LabelsLijn
+
+@ViewBag.DataLijn
 </div>
 <script>
     var menuOpen = false;
