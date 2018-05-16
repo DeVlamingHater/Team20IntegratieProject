@@ -27,20 +27,14 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         }
 
-
-
-
         [HttpGet]
-        public String Get(string id)
+        public String Get(string email)
         {
             IPlatformManager platformManager = new PlatformManager();
-            DashboardManager dashboardManager = new DashboardManager();
 
-            Gebruiker gebruiker = platformManager.getGebruiker(id);
-
-
+            Gebruiker gebruiker = platformManager.getGebruikerMetEmail(email);
+ 
             return gebruiker.Naam;
-
         }
 
 

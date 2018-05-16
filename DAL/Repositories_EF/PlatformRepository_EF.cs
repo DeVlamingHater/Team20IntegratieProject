@@ -49,6 +49,11 @@ namespace DAL.Repositories_EF
             return context.Gebruikers.First(g=>g.GebruikerId == id);
         }
 
+        public Gebruiker getGebruikerMetEmail(string email)
+        {
+            return context.Gebruikers.First(g => g.Email == email);
+        }
+
         public void saveGebruiker(Gebruiker gebruiker)
         {
             context.Entry(gebruiker).State = EntityState.Modified;

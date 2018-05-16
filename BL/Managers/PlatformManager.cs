@@ -50,5 +50,10 @@ namespace BL.Managers
         {
             platformRepository.saveGebruiker(gebruiker);
         }
+
+        public Gebruiker getGebruikerMetEmail(string email)
+        {
+            return platformRepository.getGebruikerMetEmail(email);
+        }
     }
 }

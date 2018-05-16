@@ -9,6 +9,7 @@ namespace BL.Interfaces
     {
         void createGebruiker(string id, string name, string email);
         Gebruiker getGebruiker(string id);
+        Gebruiker getGebruikerMetEmail(string email);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
         void saveGebruiker(Gebruiker gebruiker);
