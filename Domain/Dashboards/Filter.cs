@@ -10,22 +10,10 @@ namespace Domain.Dashboards
     public class Filter
     {
         [Key]
-        public int FilterID{ get; set; }
+        public int FilterID { get; set; }
 
-        public double Waarde { get; set; }
+        public bool IsPositive { get; set; }
 
         public FilterType Type { get; set; }
-
-        [RegularExpression("[<,>][=]?")]
-        public string Operator { get; set; }
-
-        public Grafiek Grafiek { get; set; }
-    }
-
-    public enum FilterType
-    {
-        SENTIMENT,
-        AGE,
-        RETWEET
     }
 }

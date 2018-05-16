@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Domain.Dashboards;
+using System.Net;
 
 namespace BL.Managers
 {
@@ -29,23 +30,34 @@ namespace BL.Managers
                 switch (filter.Type)
                 {
                     case FilterType.SENTIMENT:
-                        switch (filter.Operator)
+                        if (filter.IsPositive)
                         {
-                            case "<":
-                                posts = posts.Where(p => p.Sentiment[0] < filter.Waarde).ToList();
-                                break;
-                            case ">":
-                                posts = posts.Where(p => p.Sentiment[0] > filter.Waarde).ToList();
-                                break;
-                            default:
-                                break;
+                            posts = posts.Where(p => p.Sentiment[0] > 0.0).ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Sentiment[0] < 0.0).ToList();
                         }
                         break;
                     case FilterType.AGE:
-                        posts = posts.Where(p => p.Age.Equals(filter.Waarde)).ToList();
+                        if (filter.IsPositive)
+                        {
+                            posts = posts.Where(p => p.Age.Equals("-25")).ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Age.Equals("+25")).ToList();
+                        }
                         break;
                     case FilterType.RETWEET:
-                        posts = posts.Where(p => p.Retweet == true).ToList();
+                        if (filter.IsPositive)
+                        {
+                            posts = posts.Where(p => p.Retweet == true).ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Retweet == false).ToList();
+                        }
                         break;
                     default:
                         break;
@@ -121,7 +133,8 @@ namespace BL.Managers
         public async Task<string> updatePosts()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://kdg.textgain.com/query");
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            client.BaseAddress = new Uri("https://kdg.textgain.com/query");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
@@ -132,7 +145,7 @@ namespace BL.Managers
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("http://kdg.textgain.com/query", jsonContent);
+            HttpResponseMessage response = await client.PostAsync("https://kdg.textgain.com/query", jsonContent);
             string responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
@@ -148,7 +161,7 @@ namespace BL.Managers
 
         class TextGainQueryDTO
         {
-            public string since { get; set; }
+            //public string since { get; set; }
             //public string Until { get; set; }
         }
     }

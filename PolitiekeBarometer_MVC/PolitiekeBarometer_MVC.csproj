@@ -328,7 +328,7 @@
     <Content Include="Views\Home\_BarGrafiekPartial.cshtml" />
     <Content Include="Views\Alert\AlertDetail.cshtml" />
     <Content Include="Views\Alert\Index.cshtml" />
-    <Content Include="Views\Alert\Alerts.cshtml" />
+    <Content Include="Views\Alert\LijstAlerts.cshtml" />
     <Content Include="Views\Admin\LijstPersonen.cshtml" />
     <Content Include="Views\Admin\LijstThemas.cshtml" />
     <Content Include="Views\Admin\LijstOrganisaties.cshtml" />
@@ -349,6 +349,8 @@
     <Content Include="Views\Admin\DetailsUser.cshtml" />
     <Content Include="Views\Admin\EditUser.cshtml" />
     <Content Include="Views\Admin\DeleteUser.cshtml" />
+    <Content Include="Views\Alert\EditAlert.cshtml" />
+    <Content Include="Views\Alert\CreateAlert.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />

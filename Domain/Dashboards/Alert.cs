@@ -19,13 +19,15 @@ namespace Domain
         public AlertStatus Status { get; set; }
 
         [Required]
-        public DataConfig DataConfig { get; set; }
-
-        [Required]
-        public double Waarde { get; set; }
+        public DataConfig DataConfig { get; set; } 
 
         public TimeSpan Interval { get; set; }
 
+        //Het aantal posts dat moet overschreden worden
+        [Required]
+        public double Waarde { get; set; }
+
+        //Bepaal welke operator moet gebruikt worden bij het bepalen van een overschrijding
         [Required]
         [RegularExpression("[<,>][=]?")]
         public String Operator { get; set; }

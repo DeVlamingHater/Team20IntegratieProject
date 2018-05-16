@@ -50,12 +50,12 @@
             font-size: 30px;
         }
 </style>
-<div class="container border-danger">
+<div class="container" style="margin:20px">
 
     @foreach (var zone in Model)
     {
         <div class="btn-group">
-            <button data-toggle="tab" href="@zone.Id" onclick="visible(@zone.Id)" class=" btn btn-primary">
+            <button data-toggle="tab" href="@zone.Id" onclick="visibleZone(@zone.Id)" class=" btn btn-primary">
                 @Html.DisplayFor(modelItem => zone.Naam)
 
             </button>
@@ -68,7 +68,7 @@
     {
         <div class="tab-content bg-light">
             <div id="@zone.Id" class="tab-pane" style="display:none">
-                @*<h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>*@
+                <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>
             </div>
         </div>
     }
@@ -185,6 +185,15 @@
         <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 1 })</div>
         <div class="col-sm-4">@Html.Action("_BarGrafiekPartial", new { index = 2 })</div>
     </div>*@
+<script>
+    var vorige = document.createElement("div");
+    function visibleZone(zone) {
+        var huidig = document.getElementById(zone);
+        vorige.style.display = "none";
+        huidig.style.display = "block";
+        vorige = huidig;
+    }
+</script>
 
 @*@section scripts{
         <script type="text/javascript">

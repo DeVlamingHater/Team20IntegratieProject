@@ -19,29 +19,116 @@ namespace PolitiekeBarometer_MVC.Controllers
   {
 
 
+
         public ActionResult Index()
         {
             _PersonenDropDown();
             _OrganisatieDropDown();
             _ThemaDropDown();
+            //BarGrafiek
             ElementManager elementManager = new ElementManager();
             List<Element> elementenTrending = elementManager.getTrendingElementen(3);
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
-            int i = 0;
-
+            StringBuilder labelsBar1 = new StringBuilder();
+            StringBuilder dataBar1 = new StringBuilder();
             foreach (Element element in elementenTrending)
             {
-                labels.Append(element.Naam).Append(".");
-                data.Append(element.Trend).Append(".");
+                labelsBar1.Append(element.Naam).Append(".");
+                dataBar1.Append(element.Trend).Append(".");
             }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
+            labelsBar1.Remove(labelsBar1.Length - 1, 1);
+            dataBar1.Remove(dataBar1.Length - 1, 1);
+            ViewBag.LabelsBar1 = labelsBar1;
+            ViewBag.DataBar1 = dataBar1;
+
+            //LijnGrafiek1
+            string naamLijnGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string[] arrayLijnGrafiek1 = getGraphData(naamLijnGrafiek1, "totaal");
+            ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
+            ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
+
+            //LijnGrafiek2
+            string naamLijnGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
+            ViewBag.LabelsLijn2 = arrayLijnGrafiek2[0];
+            ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
+
+            //LijnGrafiek3
+            string naamLijnGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
+            ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
+            ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
+
+            /*TaartGrafiek1
+            string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
+            ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];
+            ViewBag.DataTaart1 = arrayTaartGrafiek1[1];
+
+            //TaartGrafiek2
+            string naamTaartGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string[] arrayTaartGrafiek2 = getGraphData(naamTaartGrafiek2, "sentiment");
+            ViewBag.LabelsTaart2 = arrayTaartGrafiek2[0];
+            ViewBag.DataTaart2 = arrayTaartGrafiek2[1];
+
+            //TaartGrafiek3
+            string naamTaartGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
+            ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
+            ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
+            */
             return View();
         }
+        public string[] getGraphData(string naam, string dataType1)
+        {
+            ElementManager elementManager = new ElementManager();
+            Element persoon = elementManager.getElementByNaam(naam);
+            DashboardManager dashboardManager = new DashboardManager();
+            Enum.TryParse(dataType1.ToUpper(), out DataType mijnDatatype);
+            DataConfig testDataConfig = new DataConfig()
+            {
+                Element =
+             persoon
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = mijnDatatype,
 
+
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                     testDataConfig
+                },
+                AantalDataPoints = 30
+            };
+
+            string dataString = dashboardManager.getGraphData(testGrafiek);
+
+
+            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+
+
+            List<string> dates = new List<string>();
+            foreach (DateTime item in data.Keys)
+            {
+                dates.Add(item.ToString("d MMM yyyy "));
+            }
+            StringBuilder labels = new StringBuilder();
+            StringBuilder dataStringbuilder = new StringBuilder();
+            for (int i = 0; i < dates.Count(); i++)
+            {
+                labels.Append(dates.ElementAt(i)).Append(".");
+                dataStringbuilder.Append(data.Values.ElementAt(i)).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            dataStringbuilder.Remove(dataStringbuilder.Length - 1, 1);
+            string[] gegevens = new string[2];
+            gegevens[0] = labels.ToString();
+            gegevens[1] = dataStringbuilder.ToString();
+            return gegevens;
+        }
     public ActionResult Test()
     {
       ElementManager mgr = new ElementManager();
@@ -223,60 +310,69 @@ namespace PolitiekeBarometer_MVC.Controllers
       List<Zone> zones = dashboard.Zones;
       //if (actieveZone == 0)
       //{
-      //    actieveZone = zones.First().Id;
-      //}
+      //  actieveZone = zones.First().Id;
+     //}
       return View(zones);
     }
-    //public ActionResult _ItemsPartial()
-    //{
+    public ActionResult _ItemsPartial(int zoneId)
+    {
 
+      IDashboardManager mgr = new DashboardManager();
+      IEnumerable<Item> items = mgr.getItems(zoneId);
+      return PartialView(items);
+    }
+    public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
 
-        //  IEnumerable<Item> items = mgr.getItems(actieveZone);
-        //  return PartialView(items);
-        //}
-        public ActionResult _ItemPartial(int grafiekType,int index,string labels,string data)
+    {
+      ViewBag.GrafiekType = grafiekType;
+      ViewBag.GrafiekIndex = index;
+      ViewBag.Labels = labels;
+      ViewBag.Data = data;
+      ViewBag.grafiekButtons = "grafiekButtons"+index;
+      ViewBag.alert = "alert" + index;
+      ViewBag.dash = "dash" + index;
+      ViewBag.edit = "edit" + index;
+      ViewBag.delete = "delete" + index;
+      ViewBag.page = page;
+      //ViewBag.startDatum = labels.First();
+      //ViewBag.eindDatum = labels.Last();
+      //filter ook nog
+      return PartialView();
+    }
+    public ActionResult setActiveZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      actieveZone = mgr.getZone(zoneId).Id;
+      //_ItemsPartial(actieveZone);
+      return RedirectToAction("Dashboard");
+      //return RedirectToAction("_ItemsPartial");
+      return View();
+    }
+    public ActionResult GetZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      Zone zone = mgr.getZone(zoneId);
+      return View(zone);
+    }
+    public ActionResult AddZone()
+    {
+      IDashboardManager mgr = new DashboardManager();
+      string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
+      Dashboard dashboard = mgr.getDashboard(email);
+      Zone zone = mgr.addZone(dashboard);
+      //GEBRUIKER NOG JUISTE MANIER VINDEN
 
-        {
-            ViewBag.GrafiekType = grafiekType;
-            ViewBag.GrafiekIndex = index;
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
-            return PartialView();
-        }
-        public ActionResult setActiveZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            actieveZone = mgr.getZone(zoneId).Id;
-            //_ItemsPartial(actieveZone);
-            return RedirectToAction("Dashboard");
-            //return RedirectToAction("_ItemsPartial");
-            return View();
-        }
-        public ActionResult GetZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            Zone zone = mgr.getZone(zoneId);
-            return View(zone);
-        }
-        public ActionResult AddZone()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
-            Zone zone = mgr.addZone(dashboard);
-            //GEBRUIKER NOG JUISTE MANIER VINDEN
-
-            this.Dashboard();
-            return RedirectToAction("Dashboard");
-            return View();
-        }
-        public ActionResult DeleteZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            mgr.deleteZone(zoneId);
-            return RedirectToAction("Dashboard");
-            return View();
-        }
+      this.Dashboard();
+      return RedirectToAction("Dashboard");
+      return View();
+    }
+    public ActionResult DeleteZone(int zoneId)
+    {
+      IDashboardManager mgr = new DashboardManager();
+      mgr.deleteZone(zoneId);
+      return RedirectToAction("Dashboard");
+      return View();
+    }
 
     public ActionResult getZonesJson()
     {
@@ -293,10 +389,10 @@ namespace PolitiekeBarometer_MVC.Controllers
           lijst
          );
     }
-    public ActionResult dashboardGrafiek(string zoneNaam)
+    public ActionResult dashboardGrafiek(string zoneNaam, int grafiekIndex)
     {
-      IDashboardManager mgr = new DashboardManager();
-      Zone zone = mgr.getZoneByNaam(zoneNaam);
+      // IDashboardManager mgr = new DashboardManager();
+      // Zone zone = mgr.getZoneByNaam(zoneNaam);
       return Json("ok");
     }
 
@@ -452,36 +548,60 @@ namespace PolitiekeBarometer_MVC.Controllers
       return Json(elementen);
     }
 
-    public ActionResult Organisatie(string naam)
+        public ActionResult Organisatie(string naam)
+        {
+            ElementManager elementManager = new ElementManager();
+            Element element = Emgr.getElementByNaam(naam);
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            return View(element);
+        }
+        public ActionResult Persoon(string naam)
+        {
+            ElementManager elementManager = new ElementManager();
+            Element element = Emgr.getElementByNaam(naam);
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            return View(element);
+        }
+        public ActionResult setImage(string twitter)
     {
-      Element element = Emgr.getElementByNaam(naam);
-      return View(element);
-    }
-    public ActionResult Persoon(string naam)
-    {
-      Element element = Emgr.getElementByNaam(naam);
-      return View(element);
-    }
-    public ActionResult setImage(string twitter)
-    {
-
-      string twitter1 = twitter.Replace("@", "");
-
-      string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
-      return Redirect(url);
-
+      if(twitter != null)
+      {
+          string twitter1 = twitter.Replace("@", "");
+        string url = "https://twitter.com/" + twitter1 + "/profile_image?size=original";
+        return Redirect(url);
+      }
+      return View();
 
     }
     public ActionResult setTwitter(string twitter)
     {
-      string twitter1 = twitter.Replace("@", "");
-      string url = "https://twitter.com/" + twitter1;
-      return Redirect(url);
+      if (twitter != null)
+      {
+        string twitter1 = twitter.Replace("@", "");
+        string url = "https://twitter.com/" + twitter1;
+        return Redirect(url);
+      }
+      return View();
     }
     public ActionResult setOrganisatie(Organisatie organisatie)
     {
       return View(organisatie.Naam);
-
 
       //string twitter = organisatie.Naam; //moet twitter worden;
       ////string twitter1 = twitter.Remove(0, 1);
@@ -490,9 +610,64 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult Thema(string naam)
     {
-      Element element = Emgr.getElementByNaam(naam);
-      return View(element);
+            ElementManager elementManager = new ElementManager();
+            Element element = Emgr.getElementByNaam(naam);
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            return View(element);
     }
+    public ActionResult addWeeklyReview(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      //weeklyReview.add(element);
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult removeWeeklyReview(int id)
+    {
+      Element element = Emgr.getElementById(id);
+      //weeklyReview.remove(element);
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult addAlert(int id, int percentage, string soort, string radio, Boolean browser, Boolean mail, Boolean app)
+    {
+      // bij grafiek is id = grafiekindex
+      // bij element is id = elementid
+      // addAlert()
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult editGrafiek(int grafiekIndex)
+    {
+      // edit grafiek
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+    public ActionResult deleteGrafiek(int grafiekIndex)
+    {
+      // edit grafiek
+      return Json(new
+      {
+        result = "OK"
+      });
+    }
+
     #endregion
   }
 

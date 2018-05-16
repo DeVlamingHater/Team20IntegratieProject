@@ -96,13 +96,13 @@
                             </a>
 
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item small">@Html.ActionLink("View all alerts", "Alerts", "Alert")</a>
+                            <a class="dropdown-item small">@Html.ActionLink("View all alerts", "LijstALerts", "Alert")</a>
 
                         </div>
 
                     </li>
                 }
-                <li class="nav-item" >
+                <li class="nav-item">
 
                     @*@using (Html.BeginForm("_SearchPartial", "Home", FormMethod.Get, new { @class = "form-inline" }))
                             {
@@ -115,10 +115,10 @@
                                                 <i class="fa fa-search"></i>
                                             </button>
                         }*@
-                    <div class="form-group dropdown" >
-                        <div class="form-inline" >
+                    <div class="form-group dropdown">
+                        <div class="form-inline">
                             <input type="text" class="form-control" id="searchBar" onkeyup="dropList()" />
-                            <button id="searchbutton" onclick="searchFunction()"  class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            <button id="searchbutton" onclick="searchFunction()" class="btn btn-primary"><i class="fa fa-search"></i></button>
                         </div>
                         <ul class="list-group dropdown-menu" id="searchlist" style="margin:auto;width:90%;display:none"></ul>
 
