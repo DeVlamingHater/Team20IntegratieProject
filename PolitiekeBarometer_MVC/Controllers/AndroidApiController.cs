@@ -26,22 +26,17 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
       String tekst = "hallo";
       return tekst;
-
     }
 
+        [HttpGet]
+        public String Get(string email)
+        {
+            IPlatformManager platformManager = new PlatformManager();
 
-
-
-    [HttpGet]
-    public String Get(string email)
-    {
-      IPlatformManager platformManager = new PlatformManager();
-      DashboardManager dashboardManager = new DashboardManager();
-
-      Gebruiker gebruiker = platformManager.getGebruiker(email);
-
-
-      return gebruiker.Naam;
+            Gebruiker gebruiker = platformManager.getGebruikerMetEmail(email);
+ 
+            return gebruiker.Naam;
+        }
 
     }
     [HttpGet]

@@ -15,12 +15,17 @@ namespace BL.Interfaces
 
         List<Element> getTrendingElementen(int amount);
 
+        List<Persoon> getAllPersonen();
+
         void setTrendingElementen();
         void addElementen(List<Element> elementen);
         void addOrganisatie(Organisatie organisatie);
         void addPersonen(List<Persoon> personen);
+        void addPersoon(Persoon persoon);
 
         List<Persoon> readJSONPersonen();
         void deleteAllPersonen();
+        void deletePersoon(Persoon persoon);
+
     }
 }

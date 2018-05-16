@@ -2,6 +2,7 @@
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,9 +39,25 @@ namespace DAL.Repositories_EF
             context.SaveChanges();
         }
 
-        public Gebruiker getGebruiker(string email)
+        public List<Gebruiker> getAllGebruikers()
         {
-            return context.Gebruikers.First(g=>g.Email == email);
+            return context.Gebruikers.ToList();
+        }
+
+        public Gebruiker getGebruiker(string id)
+        {
+            return context.Gebruikers.First(g=>g.GebruikerId == id);
+        }
+
+        public Gebruiker getGebruikerMetEmail(string email)
+        {
+            return context.Gebruikers.First(g => g.Email == email);
+        }
+
+        public void saveGebruiker(Gebruiker gebruiker)
+        {
+            context.Entry(gebruiker).State = EntityState.Modified;
+            context.SaveChanges();
         }
     }
 }

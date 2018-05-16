@@ -24,11 +24,12 @@ namespace BL.Managers
             this.uowManager = uowManager;
             platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
-        public Gebruiker getGebruiker(string email)
+        public Gebruiker getGebruiker(string id)
         {
-            Gebruiker gebruiker = platformRepository.getGebruiker(email);
+            Gebruiker gebruiker = platformRepository.getGebruiker(id);
             return gebruiker;
         }
+
 
         public void createGebruiker(string id, string name, string email)
         {
@@ -38,6 +39,21 @@ namespace BL.Managers
         public void deleteGebruiker(string id)
         {
             platformRepository.deleteGebruiker(id);
+        }
+
+        public List<Gebruiker> getAllGebruikers()
+        {
+            return platformRepository.getAllGebruikers();
+        }
+
+        public void saveGebruiker(Gebruiker gebruiker)
+        {
+            platformRepository.saveGebruiker(gebruiker);
+        }
+
+        public Gebruiker getGebruikerMetEmail(string email)
+        {
+            return platformRepository.getGebruikerMetEmail(email);
         }
     }
 }
