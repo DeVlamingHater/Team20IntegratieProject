@@ -25,22 +25,110 @@ namespace PolitiekeBarometer_MVC.Controllers
             _PersonenDropDown();
             _OrganisatieDropDown();
             _ThemaDropDown();
+            //BarGrafiek
             ElementManager elementManager = new ElementManager();
             List<Element> elementenTrending = elementManager.getTrendingElementen(3);
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
+            StringBuilder labelsBar1 = new StringBuilder();
+            StringBuilder dataBar1 = new StringBuilder();
             foreach (Element element in elementenTrending)
             {
-                labels.Append(element.Naam).Append(".");
-                data.Append(element.Trend).Append(".");
+                labelsBar1.Append(element.Naam).Append(".");
+                dataBar1.Append(element.Trend).Append(".");
             }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
+            labelsBar1.Remove(labelsBar1.Length - 1, 1);
+            dataBar1.Remove(dataBar1.Length - 1, 1);
+            ViewBag.LabelsBar1 = labelsBar1;
+            ViewBag.DataBar1 = dataBar1;
+
+            //LijnGrafiek1
+            string naamLijnGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string[] arrayLijnGrafiek1 = getGraphData(naamLijnGrafiek1, "totaal");
+            ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
+            ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
+
+            //LijnGrafiek2
+            string naamLijnGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
+            ViewBag.LabelsLijn2 = arrayLijnGrafiek2[0];
+            ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
+
+            //LijnGrafiek3
+            string naamLijnGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
+            ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
+            ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
+
+            /*TaartGrafiek1
+            string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
+            ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];
+            ViewBag.DataTaart1 = arrayTaartGrafiek1[1];
+
+            //TaartGrafiek2
+            string naamTaartGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string[] arrayTaartGrafiek2 = getGraphData(naamTaartGrafiek2, "sentiment");
+            ViewBag.LabelsTaart2 = arrayTaartGrafiek2[0];
+            ViewBag.DataTaart2 = arrayTaartGrafiek2[1];
+
+            //TaartGrafiek3
+            string naamTaartGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
+            ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
+            ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
+            */
             return View();
         }
+        public string[] getGraphData(string naam, string dataType1)
+        {
+            ElementManager elementManager = new ElementManager();
+            Element persoon = elementManager.getElementByNaam(naam);
+            DashboardManager dashboardManager = new DashboardManager();
+            Enum.TryParse(dataType1.ToUpper(), out DataType mijnDatatype);
+            DataConfig testDataConfig = new DataConfig()
+            {
+                Element =
+             persoon
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = mijnDatatype,
 
+
+                Tijdschaal = new TimeSpan(30, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                     testDataConfig
+                },
+                AantalDataPoints = 30
+            };
+
+            string dataString = dashboardManager.getGraphData(testGrafiek);
+
+
+            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
+
+            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
+
+
+            List<string> dates = new List<string>();
+            foreach (DateTime item in data.Keys)
+            {
+                dates.Add(item.ToString("d MMM yyyy "));
+            }
+            StringBuilder labels = new StringBuilder();
+            StringBuilder dataStringbuilder = new StringBuilder();
+            for (int i = 0; i < dates.Count(); i++)
+            {
+                labels.Append(dates.ElementAt(i)).Append(".");
+                dataStringbuilder.Append(data.Values.ElementAt(i)).Append(".");
+            }
+            labels.Remove(labels.Length - 1, 1);
+            dataStringbuilder.Remove(dataStringbuilder.Length - 1, 1);
+            string[] gegevens = new string[2];
+            gegevens[0] = labels.ToString();
+            gegevens[1] = dataStringbuilder.ToString();
+            return gegevens;
+        }
     public ActionResult Test()
     {
       ElementManager mgr = new ElementManager();
@@ -462,102 +550,32 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult Organisatie(string naam)
         {
-            ElementManager mgr = new ElementManager();
-            Element testElement = mgr.getElementByNaam(naam);
-            DashboardManager dashboardManager = new DashboardManager();
-            DataConfig testDataConfig = new DataConfig()
-            {
-                Element =
-             testElement
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = DataType.TOTAAL,
-
-
-                Tijdschaal = new TimeSpan(30, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                     testDataConfig
-                },
-                AantalDataPoints = 30
-            };
-
-            string dataString = dashboardManager.getGraphData(testGrafiek);
-
-
-            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
-
-            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
-
-
-            List<string> dates = new List<string>();
-            foreach (DateTime item in dataLijn.Keys)
-            {
-                dates.Add(item.ToString("d MMM yyyy "));
-            }
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
-            for (int i = 0; i < dates.Count(); i++)
-            {
-                labels.Append(dates.ElementAt(i)).Append(".");
-                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
-            }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
+            ElementManager elementManager = new ElementManager();
             Element element = Emgr.getElementByNaam(naam);
-            ViewBag.LabelsLijn = labels;
-            ViewBag.DataLijn = data;
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
             return View(element);
         }
         public ActionResult Persoon(string naam)
         {
-            ElementManager mgr = new ElementManager();
-            Element testElement = mgr.getElementByNaam(naam);
-            DashboardManager dashboardManager = new DashboardManager();
-            DataConfig testDataConfig = new DataConfig()
-            {
-                Element =
-             testElement
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = DataType.TOTAAL,
-
-
-                Tijdschaal = new TimeSpan(30, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                     testDataConfig
-                },
-                AantalDataPoints = 30
-            };
-
-            string dataString = dashboardManager.getGraphData(testGrafiek);
-
-
-            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
-
-            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
-
-
-            List<string> dates = new List<string>();
-            foreach (DateTime item in dataLijn.Keys)
-            {
-                dates.Add(item.ToString("d MMM yyyy "));
-            }
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
-            for (int i = 0;i < dates.Count(); i++)
-            {
-                labels.Append(dates.ElementAt(i)).Append(".");
-                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
-            }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
+            ElementManager elementManager = new ElementManager();
             Element element = Emgr.getElementByNaam(naam);
-            ViewBag.LabelsLijn = labels;
-            ViewBag.DataLijn = data;
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
             return View(element);
         }
         public ActionResult setImage(string twitter)
@@ -592,52 +610,17 @@ namespace PolitiekeBarometer_MVC.Controllers
     }
     public ActionResult Thema(string naam)
     {
-            ElementManager mgr = new ElementManager();
-            Element testElement = mgr.getElementByNaam(naam);
-            DashboardManager dashboardManager = new DashboardManager();
-            DataConfig testDataConfig = new DataConfig()
-            {
-                Element =
-             testElement
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = DataType.TOTAAL,
-
-
-                Tijdschaal = new TimeSpan(30, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                     testDataConfig
-                },
-                AantalDataPoints = 30
-            };
-
-            string dataString = dashboardManager.getGraphData(testGrafiek);
-
-
-            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
-
-            Dictionary<DateTime, double> dataLijn = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
-
-
-            List<string> dates = new List<string>();
-            foreach (DateTime item in dataLijn.Keys)
-            {
-                dates.Add(item.ToString("d MMM yyyy "));
-            }
-            StringBuilder labels = new StringBuilder();
-            StringBuilder data = new StringBuilder();
-            for (int i = 0; i < dates.Count(); i++)
-            {
-                labels.Append(dates.ElementAt(i)).Append(".");
-                data.Append(dataLijn.Values.ElementAt(i)).Append(".");
-            }
-            labels.Remove(labels.Length - 1, 1);
-            data.Remove(data.Length - 1, 1);
+            ElementManager elementManager = new ElementManager();
             Element element = Emgr.getElementByNaam(naam);
-            ViewBag.LabelsLijn = labels;
-            ViewBag.DataLijn = data;
+            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
+            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
+            ViewBag.DataLijn = arrayLijnGrafiek[1];
+            string[] arrayBarGrafiek = getGraphData(naam, "trend");
+            ViewBag.LabelsBar = arrayBarGrafiek[0];
+            ViewBag.DataBar = arrayBarGrafiek[1];
+            //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
+            //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
+            //ViewBag.DataTaart = arrayTaartGrafiek[1];
             return View(element);
     }
     public ActionResult addWeeklyReview(int id)

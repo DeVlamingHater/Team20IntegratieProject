@@ -54,13 +54,17 @@ namespace DAL.Repositories_EF
 
         private bool checkKeywords(Post post, Element element)
         {
-            foreach (Keyword kw in post.Keywords)
+            if (post.Keywords != null && post.Keywords.Count() != 0)
             {
-                if (kw.Themas.Contains(element))
+                foreach (Keyword kw in post.Keywords)
                 {
-                    return true;
+                    if (kw.Themas.Contains(element))
+                    {
+                        return true;
+                    }
                 }
             }
+
             return false;
 
         }
@@ -123,7 +127,7 @@ namespace DAL.Repositories_EF
                 post.Keywords = new List<Keyword>();
                 foreach (string word in tweet.Words)
                 {
-                    Keyword keyword = context.Keywords.FirstOrDefault(k=>k.KeywordNaam == word);
+                    Keyword keyword = context.Keywords.FirstOrDefault(k => k.KeywordNaam == word);
                     if (keyword == null)
                     {
                         keyword = new Keyword()
