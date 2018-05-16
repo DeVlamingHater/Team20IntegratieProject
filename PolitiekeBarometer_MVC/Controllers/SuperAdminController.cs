@@ -122,6 +122,15 @@ namespace PolitiekeBarometer_MVC.Controllers
                 return View();
             }
         }
-        #endregion
+
+        public ActionResult AssingRefreshRate(FormCollection form)
+        {
+            string refreshRateS = form[""];
+            int refreshRate = Int32.Parse(refreshRateS);
+            Platform.interval = refreshRate;
+            Platform.refreshTimer.Interval = refreshRate;
+            return View("Index");
+        }
+
     }
 }
