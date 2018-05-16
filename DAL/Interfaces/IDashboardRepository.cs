@@ -27,5 +27,7 @@ namespace DAL
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
         void addAlert(Alert testAlert);
         IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard);
+        Zone getZoneByNaam(string zoneNaam);
+        Alert getAlert(int id);
     }
 }

@@ -14,6 +14,7 @@ using DAL.EF;
 using System.Timers;
 using BL.Managers;
 using Domain.Platformen;
+using BL.Interfaces;
 
 [assembly: OwinStartupAttribute(typeof(PolitiekeBarometer_MVC.Startup))]
 namespace PolitiekeBarometer_MVC
@@ -46,10 +47,9 @@ namespace PolitiekeBarometer_MVC
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
         }
-
+        
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
         {
-
             var issuer = "http://localhost:44301";
             string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
             byte[] audienceSecret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);

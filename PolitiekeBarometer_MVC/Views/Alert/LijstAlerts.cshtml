@@ -2,6 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<p>
+    @Html.ActionLink("Create New", "CreateAlert")
+</p>
+
 <table class="table">
     <tr>
         <th>
@@ -34,9 +39,18 @@
             @Html.DisplayFor(modelItem => item.EmailMelding)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.AlertId }) |
-            @Html.ActionLink("Details", "Details", new { id = item.AlertId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.AlertId })
+            @Html.DisplayFor(modelItem => item.Waarde)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Operator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditAlert", new { id = item.AlertId }) |
+            @Html.ActionLink("Details", "DetailsAlert", new { id = item.AlertId }) |
+            @Html.ActionLink("Delete", "DeleteAlert", new { id = item.AlertId })
         </td>
     </tr>
     }

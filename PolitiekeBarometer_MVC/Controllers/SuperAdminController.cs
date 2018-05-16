@@ -7,89 +7,120 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using PolitiekeBarometer_MVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
     public class SuperAdminController : Controller
     {
-        PolitiekeBarometerContext context = new PolitiekeBarometerContext();
-
-        // GET: Admin
+        // GET: SuperAdmin
+        // Index pagina om te navigeren naar verschillende beheerpagina's
         public ActionResult Index()
         {
             return View();
         }
-        public ActionResult CreateUser()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateUser(FormCollection form)
+        #region Admin
+        //GET: SuperAdmin/LijstAdmins
+        public ActionResult LijstAdmins()
         {
-            var user = new ApplicationUser();
+            PolitiekeBarometerContext context = PolitiekeBarometerContext.Create();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            string naam = form["txtNaam"];
-            string userName = form["txtEmail"];
-            string email = form["txtEmail"];
-            string password = form["txtPassword"];
-            Gebruiker gebruiker = new Gebruiker()
-            {
-                Email = user.Email,
-                Naam = user.Name,
-                GebruikerId = user.Id
-            };
-            user.Name = naam;
-            user.UserName = userName;
-            user.Email = email;
-            string pwd = password;
-
-            user.Gebruiker = gebruiker;
-            IPlatformManager platformManager = new PlatformManager();
-
-            var newuser = userManager.Create(user, pwd);
-            string id = user.Id;
-
-            platformManager.createGebruiker(gebruiker.GebruikerId, gebruiker.Naam, gebruiker.Email);
-            return View("Index");
-        }
-        public ActionResult CreateRole()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult NewRole(FormCollection Form)
-        {
-            string rolename = Form["RoleName"];
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            if (!roleManager.RoleExists(rolename))
-            {
-                var role = new IdentityRole(rolename);
-                roleManager.Create(role);
+
+            List<ApplicationUser> usersLijst = userManager.Users.ToList();
+            List<ApplicationUser> users = new List<ApplicationUser>();
+            
+            var adminRole = roleManager.FindByName("Admin");
+
+            foreach (var user in usersLijst)
+            {                
+                    foreach (var role in user.Roles)
+                    {
+                        if (role.RoleId == adminRole.Id)
+                        {
+                            users.Add(user);
+                        }
+                    }               
             }
-            return View("Index");
+
+            return View(users);
+
         }
-        public ActionResult AssignRole()
+
+        // GET: SuperAdmin/Details/5
+        public ActionResult DetailsAdmin(string id)
         {
-            ViewBag.Roles = context.Roles.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AssignRole(FormCollection form)
-        {
-            string username = form["txtUserName"];
-            string role = form["RoleName"];
-            ApplicationUser user = (ApplicationUser)context.Users.Where(u => u.UserName.Equals(username, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
+
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            userManager.AddToRole(user.Id, role);
-            return View("Index");
+            var user = userManager.FindById(id);
+            return View(user);
+        }
+
+        // GET: SuperAdmin/Edit/5
+        public ActionResult EditAdmin(string id)
+        {
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var user = userManager.FindById(id);
+            return View(user);
+        }
+
+        // POST: SuperAdmin/Edit/5
+        [HttpPost]
+        public ActionResult EditAdmin(string id, ApplicationUser user)
+        {
+            try
+            {
+                PolitiekeBarometerContext dbContext = new PolitiekeBarometerContext();
+
+                dbContext.Entry(user).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
+                return RedirectToAction("LijstAdmins");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: SuperAdmin/Delete/5
+        public ActionResult DeleteAdmin(string id)
+        {
+            PolitiekeBarometerContext context = new PolitiekeBarometerContext();
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var user = userManager.FindById(id);
+            return View(user);
+        }
+
+        // POST: SuperAdmin/Delete/5
+        [HttpPost]
+        public ActionResult DeleteAdmin(string id, ApplicationUser user)
+        {
+            try
+            {
+                PolitiekeBarometerContext context = new PolitiekeBarometerContext();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                ApplicationUser applicationUser = userManager.Users.Where(u => u.Id == id).FirstOrDefault();
+
+                userManager.Delete(applicationUser);
+
+                return RedirectToAction("LijstAdmins");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public ActionResult AssingRefreshRate(FormCollection form)
@@ -100,5 +131,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             Platform.refreshTimer.Interval = refreshRate;
             return View("Index");
         }
+
     }
 }

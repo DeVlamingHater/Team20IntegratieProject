@@ -83,7 +83,7 @@ namespace BL.Managers
             return elementenTrending;
         }
 
-        public List<Element> getTrendingElementen(int amount = 3)
+        public List<Element> getTrendingElementen(int amount = 1)
         {
             List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
             List<Element> elementen = new List<Element>();
@@ -104,9 +104,9 @@ namespace BL.Managers
             return elementRepository.getElementByID(id);
         }
 
-        public IEnumerable<Persoon> getAllPersonen()
+        public List<Persoon> getAllPersonen()
         {
-            return elementRepository.getAllPersonen();
+            return elementRepository.getAllPersonen().ToList();
         }
 
         public List<Thema> getAllThemas()
@@ -178,6 +178,16 @@ namespace BL.Managers
         public void deleteAllPersonen()
         {
             elementRepository.deleteAllPersonen();
+        }
+
+        public void addPersoon(Persoon persoon)
+        {
+            elementRepository.AddPersoon(persoon);
+        }
+
+        public void deletePersoon(Persoon persoon)
+        {
+            elementRepository.deletePersoon(persoon);
         }
     }
 

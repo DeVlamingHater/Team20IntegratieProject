@@ -328,7 +328,29 @@
     <Content Include="Views\Home\_BarGrafiekPartial.cshtml" />
     <Content Include="Views\Alert\AlertDetail.cshtml" />
     <Content Include="Views\Alert\Index.cshtml" />
-    <Content Include="Views\Alert\Alerts.cshtml" />
+    <Content Include="Views\Alert\LijstAlerts.cshtml" />
+    <Content Include="Views\Admin\LijstPersonen.cshtml" />
+    <Content Include="Views\Admin\LijstThemas.cshtml" />
+    <Content Include="Views\Admin\LijstOrganisaties.cshtml" />
+    <Content Include="Views\Admin\CreatePersoon.cshtml" />
+    <Content Include="Views\Admin\CreateThema.cshtml" />
+    <Content Include="Views\Admin\CreateOrganisatie.cshtml" />
+    <Content Include="Views\Admin\DetailsPersoon.cshtml" />
+    <Content Include="Views\Admin\DetailsThema.cshtml" />
+    <Content Include="Views\Admin\DetailsOrganisatie.cshtml" />
+    <Content Include="Views\Admin\EditPersoon.cshtml" />
+    <Content Include="Views\Admin\EditThema.cshtml" />
+    <Content Include="Views\Admin\EditOrganisatie.cshtml" />
+    <Content Include="Views\Admin\DeleteThema.cshtml" />
+    <Content Include="Views\Admin\DeletePersoon.cshtml" />
+    <Content Include="Views\Admin\DeleteOrganisatie.cshtml" />
+    <Content Include="Views\Admin\CreateUser.cshtml" />
+    <Content Include="Views\Admin\LijstUsers.cshtml" />
+    <Content Include="Views\Admin\DetailsUser.cshtml" />
+    <Content Include="Views\Admin\EditUser.cshtml" />
+    <Content Include="Views\Admin\DeleteUser.cshtml" />
+    <Content Include="Views\Alert\EditAlert.cshtml" />
+    <Content Include="Views\Alert\CreateAlert.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
@@ -401,9 +423,6 @@
     <Content Include="Views\Home\NewTab.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\SuperAdmin\AssignRole.cshtml" />
-    <Content Include="Views\SuperAdmin\CreateRole.cshtml" />
-    <Content Include="Views\SuperAdmin\CreateUser.cshtml" />
     <Content Include="Views\SuperAdmin\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\.jsbeautifyrc" />
@@ -504,6 +523,11 @@
     <Content Include="Views\Home\_LijnGrafiekPartial.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\_TaartGrafiekPartial.cshtml" />
+    <Content Include="Views\Home\_ItemPartial.cshtml" />
+    <Content Include="Views\SuperAdmin\LijstAdmins.cshtml" />
+    <Content Include="Views\SuperAdmin\DetailsAdmin.cshtml" />
+    <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
+    <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -88,7 +88,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Stap 2: Kies je data</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">H</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -126,6 +126,7 @@
                     </div>
                     <ul class="list-group dropdown-menu" id="searchElementList" style="margin:auto;width:90%;display:none;position:static"></ul>
                 </div>
+                <ul id="searchSelected"></ul>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
@@ -197,7 +198,7 @@
                 f.data = JSON.stringify({ searchstring: searchtekst });
                 f.contentType = "application/json";
                 f.success = function (response) {
-                    //alert("succes json");
+                   // alert("succes json"+response);
                     searchElementFunction(response);
                 };
                 //f.error = function (response) {
@@ -210,7 +211,7 @@
 }
 <script>
     function searchElementFunction(response) {
-        //alert("search");
+        alert("search");
         var ul = document.getElementById("searchElementList");
         ul.innerHTML = "";
         for (i = 0; i < response.length; i++) {
@@ -220,7 +221,7 @@
             var link = "filterElement(\"" + response[i] + "\")";
             a.innerHTML = response[i];
             a.setAttribute("id", response[i]);
-            a.setAttribute("onclick", link);
+            li.setAttribute("onclick", link);
             a.setAttribute("class", "btn");
             li.setAttribute("class", "dropdown-item");
             ul.appendChild(li);
@@ -230,6 +231,11 @@
 
     function filterElement(elementNaam) {
         alert(elementNaam);
+        var ul = document.getElementById("searchSelected");
+        var li = document.createElement("li");
+        li.innerHTML = elementNaam;
+        ul.appendChild(li);
+        
     }
 
     function dropElementList() {

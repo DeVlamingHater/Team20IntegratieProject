@@ -35,7 +35,8 @@ namespace DAL.EF
     }
     //[DbConfigurationType(typeof(PolitiekeBarometerConfiguration))]
     public class PolitiekeBarometerContext : IdentityDbContext
-    {public static PolitiekeBarometerContext Create()
+    {
+        public static PolitiekeBarometerContext Create()
         {
             return new PolitiekeBarometerContext();
         }
@@ -94,8 +95,6 @@ namespace DAL.EF
             modelBuilder.Entity<Dashboard>().HasMany<Zone>(db=>db.Zones);
             
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
-
-            modelBuilder.Entity<Filter>().HasRequired<Grafiek>(f => f.Grafiek);
             
             modelBuilder.Entity<Grafiek>().HasMany<Filter>(g => g.Filters);
 

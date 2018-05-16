@@ -44,6 +44,19 @@ namespace PolitiekeBarometer_CA
             Console.ReadLine();
             SetTimer(7);
             Console.ReadLine();
+
+            bool afsluiten = false;
+
+            //addPoliticiJSON();
+            Console.WriteLine("Personen geupdate");
+            //updateAPIAsync();
+            Console.WriteLine("Posts opgehaald");
+         
+            while (!afsluiten)
+            {
+                showMenu();
+            }
+          
         }
 
         private static void sec(Object source, ElapsedEventArgs e)
@@ -61,6 +74,7 @@ namespace PolitiekeBarometer_CA
         private static void refreshData(Object source, ElapsedEventArgs elapsedEventArgs)
         {
             Console.WriteLine("REFRESH DATA");
+
         }
 
         private static void refreshData()

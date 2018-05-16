@@ -1,0 +1,42 @@
+﻿@model Domain.Organisatie
+
+@{
+    ViewBag.Title = "DetailsOrganisatie";
+}
+
+<h2>DetailsOrganisatie</h2>
+
+<div>
+    <h4>Organisatie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Naam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Naam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Trend)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Trend)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TrendingPlaats)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrendingPlaats)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditOrganisatie", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "LijstOrganisaties")
+</p>

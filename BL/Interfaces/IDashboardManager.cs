@@ -24,8 +24,10 @@ namespace BL.Interfaces
 
         IEnumerable<Zone> getZones(Dashboard dashboard);
         Zone getZone(int zoneId);
+    Zone getZoneByNaam(string zoneNaam);
         void deleteZone(int zoneId);
         Zone addZone(Dashboard dashboard);
+        Alert getAlert(int id);
         void changeZone(Zone zone);
 
         TimeSpan getHistoriek();
