@@ -131,6 +131,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             Platform.refreshTimer.Interval = refreshRate;
             return View("Index");
         }
+        #endregion
 
     }
 }

@@ -39,21 +39,22 @@ namespace PolitiekeBarometer_MVC.Controllers
             dataBar1.Remove(dataBar1.Length - 1, 1);
             ViewBag.LabelsBar1 = labelsBar1;
             ViewBag.DataBar1 = dataBar1;
-
             //LijnGrafiek1
-            string naamLijnGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string naamLijnGrafiek1 = elementenTrending.First().Naam;
             string[] arrayLijnGrafiek1 = getGraphData(naamLijnGrafiek1, "totaal");
             ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
             ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
+            elementenTrending.Remove(elementenTrending.First());
 
             //LijnGrafiek2
-            string naamLijnGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string naamLijnGrafiek2 = elementenTrending.First().Naam;
             string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
             ViewBag.LabelsLijn2 = arrayLijnGrafiek2[0];
             ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
+            elementenTrending.Remove(elementenTrending.First());
 
             //LijnGrafiek3
-            string naamLijnGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string naamLijnGrafiek3 = elementenTrending.First().Naam;
             string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
             ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
             ViewBag.DataLijn3 = arrayLijnGrafiek3[1];

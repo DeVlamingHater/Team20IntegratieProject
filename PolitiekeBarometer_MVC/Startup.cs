@@ -34,7 +34,7 @@ namespace PolitiekeBarometer_MVC
         {
             Timer refreshTimer = new Timer();
 
-           Platform.refreshTimer.Elapsed += new ElapsedEventHandler(UpdateAPIAsync);
+            Platform.refreshTimer.Elapsed += new ElapsedEventHandler(UpdateAPIAsync);
             Platform.refreshTimer.Interval = Platform.interval;
             Platform.refreshTimer.Enabled = true;
             Platform.refreshTimer.Start();
@@ -42,10 +42,16 @@ namespace PolitiekeBarometer_MVC
 
         private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
         {
+            IElementManager elementManager = new ElementManager();
+            elementManager.setTrendingElementen();
+
             PostManager postManager = new PostManager();
             string responseString = await postManager.updatePosts(DateTime.Now.AddDays(-7));
+
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
+
+            Platform.refreshTimer.Interval = Platform.interval;
         }
         
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)

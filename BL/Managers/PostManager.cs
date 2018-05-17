@@ -160,7 +160,7 @@ namespace BL.Managers
 
         class TextGainQueryDTO
         {
-            //public string since { get; set; }
+            public string since { get; set; }
             //public string Until { get; set; }
         }
     }

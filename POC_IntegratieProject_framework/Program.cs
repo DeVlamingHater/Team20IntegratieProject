@@ -268,7 +268,7 @@ namespace PolitiekeBarometer_CA
         private static async void updateAPIAsync()
         {
             PostManager postManager = new PostManager();
-            string responseString = await postManager.updatePosts();
+            string responseString = await postManager.updatePosts(DateTime.Now.AddDays(-7));
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
         }
