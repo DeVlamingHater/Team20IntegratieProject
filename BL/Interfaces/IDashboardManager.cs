@@ -31,7 +31,7 @@ namespace BL.Interfaces
         void deleteZone(int zoneId);
         Zone addZone(Dashboard dashboard);
         Alert getAlert(int id);
-        void changeZone(Zone zone);
+        void updateZone(Zone zone);
 
         TimeSpan getHistoriek();
         string getGraphData(Grafiek grafiek);

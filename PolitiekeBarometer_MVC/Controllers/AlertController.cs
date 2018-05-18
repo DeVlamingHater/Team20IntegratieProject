@@ -1,6 +1,7 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
 using Domain;
+using Domain.Dashboards;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,37 @@ namespace PolitiekeBarometer_MVC.Controllers
             IDashboardManager dashboardManager = new DashboardManager();
             Alert alert = dashboardManager.getAlert(id);
             return View(alert);
+        }
+        public ActionResult MeldingDetail(int id)
+        {
+            return View();
+        }
+        public ActionResult MeldingDropDown()
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
+            Dashboard dashboard = dashboardManager.getDashboard(username);
+            List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
+
+            Melding melding1 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = true,
+                MeldingDateTime = DateTime.Now.AddHours(-1),
+                Message = "Deze Alert is een positieve test alert",
+                Titel = "Postieve Test Melding"
+            };
+            Melding melding2 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = false,
+                MeldingDateTime = DateTime.Now.AddHours(-2),
+                Message = "Deze Alert is een Negatieve test alert",
+                Titel = "Negatieve Test Melding"
+            };
+            meldingen.Add(melding1);
+            meldingen.Add(melding2);
+            return PartialView(meldingen);
         }
     }
 }
