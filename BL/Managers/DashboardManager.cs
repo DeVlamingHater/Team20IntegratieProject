@@ -20,7 +20,9 @@ namespace BL.Managers
         public static int NUMBERDATAPOINTS = 12;
 
         IDashboardRepository dashboardRepository;
+
         public UnitOfWorkManager uowManager;
+
         public DashboardManager()
         {
             dashboardRepository = new DashboardRepository_EF();
@@ -32,34 +34,120 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
+        public void initNonExistingRepo(bool createWithUnitOfWork = false)
+        {
+
+            if (dashboardRepository == null)
+            {
+                if (createWithUnitOfWork)
+                {
+                    if (uowManager == null)
+                    {
+                        uowManager = new UnitOfWorkManager();
+                    }
+                    dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
+                }
+                else
+                {
+                    dashboardRepository = new DashboardRepository_EF();
+                }
+            }
+        }
+     
+        #region Dashboard
         public Dashboard getDashboard(string gebruikersNaam)
         {
             Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
             return dashboard;
         }
 
+        #endregion
+
+        #region Grafiek
         public void addGrafiek(Grafiek grafiek)
         {
             dashboardRepository.addGrafiek(grafiek);
         }
-        public IEnumerable<Item> getItems(int zoneId)
+        public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
         {
-           return dashboardRepository.getItems(zoneId);
+            Grafiek grafiek = new Grafiek()
+            {
+                GrafiekType = grafiekType,
+                DataType = dataType,
+                AantalDataPoints = aantalDataPoints,
+                Tijdschaal = Tijdschaal,
+                Zone = getZone(zoneId),
+                Filters = new List<Filter>(filters),
+                Dataconfigs = new List<DataConfig>(dataConfigs)
+            };
+            dashboardRepository.addGrafiek(grafiek);
+            return grafiek;
         }
+
+        public string getGraphData(Grafiek grafiek)
+        {
+            IPostManager postManager = new PostManager();
+
+            IElementManager elementManager = new ElementManager();
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
+            int index = 0;
+
+            foreach (DataConfig dataConfig in dataConfigs)
+            {
+                //Dictionary van de Data, bevat geformateerde datum en double voor de data
+                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
+
+                DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
+
+                TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
+
+                for (int i = 0; i < grafiek.AantalDataPoints; i++)
+                {
+                    List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+                    int totaal = posts.Count();
+
+                    DateTime eind = start.Add(interval);
+                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
+
+                    posts = postManager.filterPosts(posts, grafiek.Filters);
+                    switch (grafiek.DataType)
+                    {
+                        case Domain.DataType.TOTAAL:
+                            grafiekData.Add(start, (double)posts.Count);
+                            break;
+                        case Domain.DataType.TREND:
+                            double dataPoint = (double)posts.Count / (double)totaal;
+                            grafiekData.Add(start, dataPoint);
+                            break;
+                        case Domain.DataType.SENTIMENT:
+                            double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
+                            grafiekData.Add(start, average);
+                            break;
+                        default:
+                            break;
+                    }
+                    start = start.Add(interval);
+                }
+                string dataString = JsonConvert.SerializeObject(grafiekData);
+                data.Add(index.ToString(), dataString);
+                index++;
+            }
+            return JsonConvert.SerializeObject(data).ToString();
+        }
+        #endregion
+
+        #region Zone
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
             int dashboardId = dashboard.DashboardId;
             return dashboardRepository.getZones(dashboardId);
         }
+
         public Zone getZone(int zoneId)
         {
             return dashboardRepository.getZone(zoneId);
         }
-    public Zone getZoneByNaam(string zoneNaam)
-    {
-      return dashboardRepository.getZoneByNaam(zoneNaam);
-    }
-
 
         public void deleteZone(int zoneId)
         {
@@ -77,11 +165,25 @@ namespace BL.Managers
             return dashboardRepository.addZone(zone);
         }
 
-        public void changeZone(Zone zone)
+        public void updateZone(Zone zone)
         {
             dashboardRepository.UpdateZone(zone);
         }
 
+        public Zone getZoneByNaam(string zoneNaam)
+        {
+            return dashboardRepository.getZoneByNaam(zoneNaam);
+        }
+        #endregion
+
+        #region Item
+        public IEnumerable<Item> getItems(int zoneId)
+        {
+            return dashboardRepository.getItems(zoneId);
+        }
+        #endregion
+
+        #region Alert
         public List<Alert> getActiveAlerts()
         {
             return dashboardRepository.getActiveAlerts().ToList();
@@ -160,6 +262,23 @@ namespace BL.Managers
             }
         }
 
+        public void addAlert(Alert alert)
+        {
+            dashboardRepository.addAlert(alert);
+        }
+
+        public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
+        {
+            return dashboardRepository.getDashboardAlerts(dashboard);
+        }
+
+        public Alert getAlert(int id)
+        {
+            return dashboardRepository.getAlert(id);
+        }
+        #endregion
+
+        #region Melding
         public Melding createMelding(Alert alert, double waarde)
         {
             Melding melding = new Melding()
@@ -197,156 +316,17 @@ namespace BL.Managers
             return melding;
         }
 
-        public void initNonExistingRepo(bool createWithUnitOfWork = false)
-        {
-
-            if (dashboardRepository == null)
-            {
-                if (createWithUnitOfWork)
-                {
-                    if (uowManager == null)
-                    {
-                        uowManager = new UnitOfWorkManager();
-                    }
-                    dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
-                }
-                else
-                {
-                    dashboardRepository = new DashboardRepository_EF();
-                }
-            }
-        }
-
-        public TimeSpan getHistoriek()
-        {
-            return dashboardRepository.getPlatform().Historiek;
-        }
-        public string getGraphData(Grafiek grafiek)
-        {
-            IPostManager postManager = new PostManager();
-
-            IElementManager elementManager = new ElementManager();
-            Dictionary<string, string> data = new Dictionary<string, string>();
-            List<DataConfig> dataConfigs = grafiek.Dataconfigs;
-            int index = 0;
-            if (dataConfigs.Count == 0)
-            {
-                 Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
-
-                DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
-                TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
-                    List<Post> posts = postManager.getAllPosts().ToList();
-                    int totaal = posts.Count();
-
-                for (int i = 0; i < grafiek.AantalDataPoints; i++)
-                {
-                    List<Post> intervalPosts = new List<Post>();
-                    DateTime eind = start.Add(interval);
-                    intervalPosts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
-
-                    switch (grafiek.DataType)
-                    {
-                        case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start, (double)intervalPosts.Count);
-                            break;
-                        case Domain.DataType.TREND:
-                            double dataPoint = (double)intervalPosts.Count / (double)totaal;
-                            grafiekData.Add(start, dataPoint);
-                            break;
-                        case Domain.DataType.SENTIMENT:
-                            double average = intervalPosts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
-                            grafiekData.Add(start, average);
-                            break;
-                        default:
-                            break;
-                    }
-                    start = start.Add(interval);
-                }
-                string dataString = JsonConvert.SerializeObject(grafiekData);
-
-                data.Add(index.ToString(), dataString);
-            }
-            else
-            {
-                foreach (DataConfig dataConfig in dataConfigs)
-                {
-                    //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                    Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
-
-                    DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
-
-                    TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
-
-                    for (int i = 0; i < grafiek.AantalDataPoints; i++)
-                    {
-                        List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
-                        int totaal = posts.Count();
-
-                        DateTime eind = start.Add(interval);
-                        posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
-
-                        posts = postManager.filterPosts(posts, grafiek.Filters);
-                        switch (grafiek.DataType)
-                        {
-                            case Domain.DataType.TOTAAL:
-                                grafiekData.Add(start, (double)posts.Count);
-                                break;
-                            case Domain.DataType.TREND:
-                                double dataPoint = (double)posts.Count / (double)totaal;
-                                grafiekData.Add(start, dataPoint);
-                                break;
-                            case Domain.DataType.SENTIMENT:
-                                double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
-                                grafiekData.Add(start, average);
-                                break;
-                            default:
-                                break;
-                        }
-                        start = start.Add(interval);
-                    }
-                    string dataString = JsonConvert.SerializeObject(grafiekData);
-                    data.Add(index.ToString(), dataString);
-                    index++;
-                }
-            }
-
-            return JsonConvert.SerializeObject(data).ToString();
-        }
-
-        public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
-        {
-            Grafiek grafiek = new Grafiek()
-            {
-                GrafiekType = grafiekType,
-                DataType = dataType,
-                AantalDataPoints = aantalDataPoints,
-                Tijdschaal = Tijdschaal,
-                Zone = getZone(zoneId),
-                Filters = new List<Filter>(filters),
-                Dataconfigs = new List<DataConfig>(dataConfigs)
-            };
-            dashboardRepository.addGrafiek(grafiek);
-            return grafiek;
-        }
-
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
+        #endregion
 
-        public void addAlert(Alert alert)
+        #region Platform
+        public TimeSpan getHistoriek()
         {
-            dashboardRepository.addAlert(alert);
+            return dashboardRepository.getPlatform().Historiek;
         }
-
-        public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
-        {
-            return dashboardRepository.getDashboardAlerts(dashboard);
-        }
-
-        public Alert getAlert(int id)
-        {
-            return dashboardRepository.getAlert(id);
-        }
+        #endregion    
     }
 }

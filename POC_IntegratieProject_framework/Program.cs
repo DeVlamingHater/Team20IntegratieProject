@@ -33,17 +33,17 @@ namespace PolitiekeBarometer_CA
             Console.WriteLine("Politieke Barometer");
 
             //CurrentSecondsTimer
-            Timer tick = new Timer();
-            tick.Interval = 1000;
-            tick.Enabled = true;
-            tick.Elapsed += new ElapsedEventHandler(sec);
+            //Timer tick = new Timer();
+            //tick.Interval = 1000;
+            //tick.Enabled = true;
+            //tick.Elapsed += new ElapsedEventHandler(sec);
 
-            //PlayingWithRefreshRate
-            Platform.refreshTimer.Elapsed += new ElapsedEventHandler(refreshData);
-            SetTimer(10);
-            Console.ReadLine();
-            SetTimer(7);
-            Console.ReadLine();
+            ////PlayingWithRefreshRate
+            //Platform.refreshTimer.Elapsed += new ElapsedEventHandler(refreshData);
+            //SetTimer(10);
+            //Console.ReadLine();
+            //SetTimer(7);
+            //Console.ReadLine();
 
             bool afsluiten = false;
 

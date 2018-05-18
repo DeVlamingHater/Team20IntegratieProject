@@ -136,7 +136,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 var gebruiker = platformManager.getGebruiker(user.Id);
                 gebruiker.Naam = user.Name;
                 gebruiker.Email = user.Email;
-                platformManager.saveGebruiker(gebruiker);
+                platformManager.updateGebruiker(gebruiker);
 
                 return RedirectToAction("LijstUsers");
             }

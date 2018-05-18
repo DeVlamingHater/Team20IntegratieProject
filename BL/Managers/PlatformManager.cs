@@ -24,12 +24,18 @@ namespace BL.Managers
             this.uowManager = uowManager;
             platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
+
+        #region Gebruiker
         public Gebruiker getGebruiker(string id)
         {
             Gebruiker gebruiker = platformRepository.getGebruiker(id);
             return gebruiker;
         }
 
+        public Gebruiker getGebruikerMetEmail(string email)
+        {
+            return platformRepository.getGebruikerMetEmail(email);
+        }
 
         public void createGebruiker(string id, string name, string email)
         {
@@ -46,14 +52,11 @@ namespace BL.Managers
             return platformRepository.getAllGebruikers();
         }
 
-        public void saveGebruiker(Gebruiker gebruiker)
+        public void updateGebruiker(Gebruiker gebruiker)
         {
             platformRepository.saveGebruiker(gebruiker);
         }
+        #endregion
 
-        public Gebruiker getGebruikerMetEmail(string email)
-        {
-            return platformRepository.getGebruikerMetEmail(email);
-        }
     }
 }

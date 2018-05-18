@@ -17,9 +17,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 {
   public class HomeController : Controller
   {
-
-
-
         public ActionResult Index()
         {
             _PersonenDropDown();
