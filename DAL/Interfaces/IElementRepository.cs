@@ -19,8 +19,9 @@ namespace DAL
 
         void addElementen(List<Element> elementen);
         void addOrganisatie(Organisatie organisatie);
-    List<Thema> getAllThemas();
+        List<Thema> getAllThemas();
         void deleteAllPersonen();
+        void deletePersoon(Persoon persoon);
     }
 
 }

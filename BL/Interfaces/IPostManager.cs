@@ -24,7 +24,7 @@ namespace BL.Interfaces
 
         void deleteOldPosts();
 
-        Task<string> updatePosts();
+        Task<string> updatePosts(DateTime since);
 
         IEnumerable<Post> getAllPosts();
       

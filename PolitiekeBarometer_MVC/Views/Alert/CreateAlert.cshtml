@@ -77,11 +77,13 @@
         </div>
     </div>
 }
-<script>
-    $(document).ready(function () {
-        $("#searchBar").keyup(function () {
-            //alert("json")
-            var searchtekst = document.getElementById("searchBar").value;
+
+@section scripts {
+    <script type="text/javascript">
+     $(document).ready(function () {
+         $("#searchElement").keyup(function () {
+             //alert("json");
+            var searchtekst = document.getElementById("searchElement").value;
                 var f = {};
                 f.url = '@Url.Action("Search", "Home")';
                 f.type = "POST";
@@ -89,8 +91,8 @@
                 f.data = JSON.stringify({ searchstring: searchtekst });
                 f.contentType = "application/json";
                 f.success = function (response) {
-                    //alert("succes json")
-                    searchFunction(response);
+                   // alert("succes json"+response);
+                    searchElementFunction(response);
                 };
                 //f.error = function (response) {
                 //    alert("failed");
@@ -98,79 +100,44 @@
                 $.ajax(f);
           });
         });
-</script>
-<script>
-        function searchFunction(namen) {
-            //alert("aangeroepen");
-            var ul = document.getElementById("searchlist");
+
+        function searchElementFunction(response) {
+            alert("search");
+            var ul = document.getElementById("searchElementList");
             ul.innerHTML = "";
-            for (i = 0; i < namen.length; i++) {
+            for (i = 0; i < response.length; i++) {
+
                 var li = document.createElement("li");
                 var a = document.createElement("a");
-                var link = '@Url.Action("Persoon")?naam=' + namen[i];
-                //alert("loop");
-                a.innerHTML = namen[i];
-                a.setAttribute("id", namen[i]);
-                a.setAttribute("href", link)
-                a.setAttribute("class", "btn")
+                var link = "filterElement(\"" + response[i] + "\")";
+                a.innerHTML = response[i];
+                a.setAttribute("id", response[i]);
+                li.setAttribute("onclick", link);
+                a.setAttribute("class", "btn");
                 li.setAttribute("class", "dropdown-item");
                 ul.appendChild(li);
                 li.appendChild(a);
-                getElement(namen[i]);
-
             };
         }
-        function getElement(elementNaam) {
-            //alert("getElement " + elementNaam);
-                var f = {};
-                f.url = '@Url.Action("getElementType", "Home")';
-                f.type = "POST";
-                f.dataType = "json";
-                f.data = JSON.stringify({ naam: elementNaam });
-                f.contentType = "application/json";
-                f.success = function (response) {
-                    //alert("success " + response + " " + elementNaam);
-                    setLink(response, elementNaam);
-                };
-                f.error = function (response) {
-                    //alert("failed");
-                };
-                $.ajax(f);
-        }
-        function setLink(response, elementNaam) {
-            var a = document.getElementById(elementNaam);
-            var link = a.getAttribute("href");
-            //alert("setLink " + response);
-            if (response == "Persoon") {
-                    link = '@Url.Action("Persoon")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    //alert("response" + response);
-                    }
-                else if (response == "Organisatie") {
-                    //alert("response" + response);
-                    link = '@Url.Action("Organisatie")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    }
-                else if (response == "Thema") {
-                    //alert("response" + response);
-                    link = '@Url.Action("Thema")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    }
-                    else {
-                        alert("foutje");
-                    };
+
+        function filterElement(elementNaam) {
+            alert(elementNaam);
+            var ul = document.getElementById("searchSelected");
+            var li = document.createElement("li");
+            li.innerHTML = elementNaam;
+            ul.appendChild(li);
+
         }
 
-    function dropList() {
-        alert("klik")
-            var ul = document.getElementById("searchlist");
-            var search = document.getElementById("searchBar").value;
+        function dropElementList() {
+            //alert("droplist");
+            var ul = document.getElementById("searchElementList");
+            var search = document.getElementById("searchElement").value;
             if (search == "" || ul.children.length == 0) {
                 ul.style.display = "none";
             } else {
                 ul.style.display = "block";
             };
         }
-
-</script>
-
+    </script>
+}

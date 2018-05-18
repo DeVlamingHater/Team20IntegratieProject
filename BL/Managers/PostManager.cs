@@ -130,18 +130,17 @@ namespace BL.Managers
         }
 
 
-        public async Task<string> updatePosts()
+        public async Task<string> updatePosts(DateTime since)
         {
             HttpClient client = new HttpClient();
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
             client.BaseAddress = new Uri("https://kdg.textgain.com/query");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
-            DateTime sinceDT = DateTime.Now.AddDays(-7);
-            string sinceS = sinceDT.ToString("d MMM yyyy HH:mm:ss");
-
-            var q = new TextGainQueryDTO() { };
+            string sinceS = since.ToString("d MMM yyyy HH:mm:ss");
+            
+            var q = new TextGainQueryDTO() {since = sinceS };
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -161,7 +160,7 @@ namespace BL.Managers
 
         class TextGainQueryDTO
         {
-            //public string since { get; set; }
+            public string since { get; set; }
             //public string Until { get; set; }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
 using DAL.EF;
+using Domain;
+using Domain.Dashboards;
 using Domain.Platformen;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -24,26 +26,80 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             String tekst = "hallo";
             return tekst;
-
         }
-
-
-
 
         [HttpGet]
         public String Get(string email)
         {
             IPlatformManager platformManager = new PlatformManager();
-            DashboardManager dashboardManager = new DashboardManager();
 
-            Gebruiker gebruiker = platformManager.getGebruiker(email);
-
+            Gebruiker gebruiker = platformManager.getGebruikerMetEmail(email);
 
             return gebruiker.Naam;
-
         }
 
 
+        [HttpGet]
+        public int getDashboard(string email)
+        {
+            DashboardManager dashboardManager = new DashboardManager();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+
+            return dashboard.DashboardId;
+        }
+        [HttpGet]
+        public List<string> getZones(string email)
+        {
+            DashboardManager dashboardManager = new DashboardManager();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+            IEnumerable<Zone> zones = dashboardManager.getZones(dashboard);
+            List<string> namen = new List<string>();
+            foreach (Zone zone in zones)
+            {
+                namen.Add(zone.Naam);
+            }
+            return namen;
+        }
+        [HttpGet]
+        public List<Item> getItems(string naam)
+        {
+            DashboardManager dashboardManager = new DashboardManager();
+            Zone zone = dashboardManager.getZoneByNaam(naam);
+            IEnumerable<Item> items = dashboardManager.getItems(zone.Id);
+
+            List<string> itemsList = new List<string>();
+            foreach (Item item in items)
+            {
+                string itemString = item.Id + ";" + item.Size + ";" + item.X + ";" + item.Y + ";";
+                itemsList.Add(itemString);
+            }
+
+            return items.ToList();
+        }
+        [HttpGet]
+        public List<Alert> getAlerts(string email)
+        {
+            DashboardManager dashboardManager = new DashboardManager();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+            IEnumerable<Alert> alerts = dashboardManager.getDashboardAlerts(dashboard).Where(a => a.Status == AlertStatus.ACTIEF).Where(a => a.ApplicatieMelding == true);
+
+            List<string> itemsList = new List<string>();
+            foreach (Alert alert in alerts)
+            {
+                string alertString = alert.AlertId + ";" + alert.DataConfig + ";" + alert.DataType + ";" + alert.Interval + ";" + alert.Operator + ";" + alert.Waarde + ";" + alert.Meldingen;
+                itemsList.Add(alertString);
+            }
+
+            return alerts.ToList();
+        }
+        [HttpGet]
+        public List<Melding> getMeldingen(string email)
+        {
+            DashboardManager dashboardManager = new DashboardManager();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+            IEnumerable<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).Where(m => m.Alert.ApplicatieMelding == true);
+            return meldingen.ToList();
+        }
 
 
 
