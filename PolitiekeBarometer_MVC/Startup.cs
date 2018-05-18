@@ -45,7 +45,9 @@ namespace PolitiekeBarometer_MVC
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
             IPostManager postManager = new PostManager();
-            string responseString = await postManager.updatePosts(DateTime.Now.AddDays(-7));
+            DateTime lastUpdate = Platform.lastUpdate;
+           
+            string responseString = await postManager.updatePosts(Platform.lastUpdate);
 
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
@@ -53,6 +55,8 @@ namespace PolitiekeBarometer_MVC
             elementManager.setTrendingElementen();
             dashboardManager.sendAlerts();
             Platform.refreshTimer.Interval = Platform.interval;
+
+            Platform.lastUpdate = DateTime.Now;
         }
         
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
