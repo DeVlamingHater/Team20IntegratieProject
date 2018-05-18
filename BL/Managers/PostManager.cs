@@ -19,6 +19,23 @@ namespace BL.Managers
 {
     public class PostManager : IPostManager
     {
+
+        IPostRepository postRepository;
+
+        UnitOfWorkManager uowManager;
+
+        public PostManager()
+        {
+            this.postRepository = new PostRepository_EF();
+        }
+
+        public PostManager(UnitOfWorkManager uowManager)
+        {
+            this.uowManager = uowManager;
+            postRepository = new PostRepository_EF();
+        }
+
+        #region Post
         public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
         {
             if (filters == null)
@@ -65,20 +82,6 @@ namespace BL.Managers
             }
             return posts;
         }
-        IPostRepository postRepository;
-
-        UnitOfWorkManager uowManager;
-
-        public PostManager()
-        {
-            this.postRepository = new PostRepository_EF();
-        }
-
-        public PostManager(UnitOfWorkManager uowManager)
-        {
-            this.uowManager = uowManager;
-            postRepository = new PostRepository_EF();
-        }
 
         public void addPosts(List<Post> list)
         {
@@ -88,11 +91,6 @@ namespace BL.Managers
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
         {
             return postRepository.getDataConfigPosts(dataConfig);
-        }
-
-        public double getHuidigeWaarde(DataConfig dataConfig)
-        {
-            throw new NotImplementedException();
         }
 
         public double calculateElementTrend(Element element)
@@ -107,13 +105,6 @@ namespace BL.Managers
             List<Post> trendPosts = posts.Where(p => p.Date.Subtract(timeForTrending).Ticks > 0).ToList();
             double trend = (double)trendPosts.Count / posts.Count();
             return trend;
-
-
-        }
-
-        public int getNextPostId()
-        {
-            return postRepository.getPosts().ToList().Count;
         }
 
         public void addJSONPosts(string responseString)
@@ -126,9 +117,8 @@ namespace BL.Managers
             IDashboardManager dashboardManager = new DashboardManager();
             TimeSpan historiek = dashboardManager.getHistoriek();
 
-            // postRepository.deleteOldPosts(historiek);
+            postRepository.deleteOldPosts(historiek);
         }
-
 
         public async Task<string> updatePosts(DateTime since)
         {
@@ -139,8 +129,8 @@ namespace BL.Managers
             client.DefaultRequestHeaders.Add("X-Api-Key", "aEN3K6VJPEoh3sMp9ZVA73kkr");
 
             string sinceS = since.ToString("d MMM yyyy HH:mm:ss");
-            
-            var q = new TextGainQueryDTO() {since = sinceS };
+
+            var q = new TextGainQueryDTO() { since = sinceS };
             //FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(q);
             StringContent jsonContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -155,13 +145,23 @@ namespace BL.Managers
         }
         public double getAlertWaarde(Alert alert)
         {
-            return 0.0;
+            throw new NotImplementedException();
         }
+        #endregion
 
+        #region Dataconfig
+        public double getHuidigeWaarde(DataConfig dataConfig)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region APIHELPER
         class TextGainQueryDTO
         {
             public string since { get; set; }
             //public string Until { get; set; }
         }
+        #endregion
     }
 }

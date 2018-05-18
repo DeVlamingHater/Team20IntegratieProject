@@ -17,9 +17,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 {
   public class HomeController : Controller
   {
-
-
-
         public ActionResult Index()
         {
             _PersonenDropDown();
@@ -46,6 +43,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
             elementenTrending.Remove(elementenTrending.First());
 
+            /*
             //LijnGrafiek2
             string naamLijnGrafiek2 = elementenTrending.First().Naam;
             string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
@@ -59,7 +57,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
             ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
 
-            /*TaartGrafiek1
+            TaartGrafiek1
             string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
             string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
             ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];

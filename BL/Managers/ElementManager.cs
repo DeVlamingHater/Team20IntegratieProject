@@ -30,6 +30,7 @@ namespace BL.Managers
             elementRepository = new ElementRepository_EF();
         }
 
+        #region Element
         public List<Element> getAllElementen()
         {
             return elementRepository.getAllElementen().ToList();
@@ -56,6 +57,7 @@ namespace BL.Managers
             //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
         }
+
         public List<Element> getTopTrending(List<Element> elementen, int amount)
         {
             List<Element> elementenTrending = new List<Element>();
@@ -98,30 +100,21 @@ namespace BL.Managers
             return elementen;
         }
 
-
         public Element getElementById(int id)
         {
             return elementRepository.getElementByID(id);
-        }
-
-        public List<Persoon> getAllPersonen()
-        {
-            return elementRepository.getAllPersonen().ToList();
-        }
-
-        public List<Thema> getAllThemas()
-        {
-            return elementRepository.getAllThemas();
         }
 
         public void addElementen(List<Element> elementen)
         {
             elementRepository.addElementen(elementen);
         }
+        #endregion
 
-        public void addOrganisatie(Organisatie organisatie)
+        #region Persoon
+        public List<Persoon> getAllPersonen()
         {
-            elementRepository.addOrganisatie(organisatie);
+            return elementRepository.getAllPersonen().ToList();
         }
 
         public void addPersonen(List<Persoon> personen)
@@ -172,7 +165,6 @@ namespace BL.Managers
                 personen.Add(politicus);
             }
             return personen;
-
         }
 
         public void deleteAllPersonen()
@@ -189,6 +181,20 @@ namespace BL.Managers
         {
             elementRepository.deletePersoon(persoon);
         }
-    }
+        #endregion
 
+        #region Thema
+        public List<Thema> getAllThemas()
+        {
+            return elementRepository.getAllThemas();
+        }
+        #endregion
+
+        #region Organisatie
+        public void addOrganisatie(Organisatie organisatie)
+        {
+            elementRepository.addOrganisatie(organisatie);
+        }
+        #endregion
+    }
 }

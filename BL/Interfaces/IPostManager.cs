@@ -12,8 +12,6 @@ namespace BL.Interfaces
     {
         Double getHuidigeWaarde(DataConfig dataConfig);
 
-        int getNextPostId();
-
         void addPosts(List<Post> list);
 
         IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig);

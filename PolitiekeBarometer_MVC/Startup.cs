@@ -27,7 +27,7 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
             createUserAndRoles();
-            SetTimer();
+           SetTimer();
         }
 
         private void SetTimer()
@@ -43,15 +43,20 @@ namespace PolitiekeBarometer_MVC
         private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
         {
             IElementManager elementManager = new ElementManager();
-            elementManager.setTrendingElementen();
-
-            PostManager postManager = new PostManager();
-            string responseString = await postManager.updatePosts(DateTime.Now.AddDays(-7));
+            IDashboardManager dashboardManager = new DashboardManager();
+            IPostManager postManager = new PostManager();
+            DateTime lastUpdate = Platform.lastUpdate;
+           
+            string responseString = await postManager.updatePosts(Platform.lastUpdate);
 
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
 
+            elementManager.setTrendingElementen();
+            dashboardManager.sendAlerts();
             Platform.refreshTimer.Interval = Platform.interval;
+
+            Platform.lastUpdate = DateTime.Now;
         }
         
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)

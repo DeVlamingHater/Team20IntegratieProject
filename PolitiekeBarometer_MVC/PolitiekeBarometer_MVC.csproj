@@ -351,6 +351,7 @@
     <Content Include="Views\Admin\DeleteUser.cshtml" />
     <Content Include="Views\Alert\EditAlert.cshtml" />
     <Content Include="Views\Alert\CreateAlert.cshtml" />
+    <Content Include="Views\Alert\MeldingDetail.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
@@ -528,6 +529,7 @@
     <Content Include="Views\SuperAdmin\DetailsAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
+    <Content Include="Views\Shared\MeldingDropDown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

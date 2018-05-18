@@ -12,6 +12,6 @@ namespace BL.Interfaces
         Gebruiker getGebruikerMetEmail(string email);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
-        void saveGebruiker(Gebruiker gebruiker);
+        void updateGebruiker(Gebruiker gebruiker);
     }
 }

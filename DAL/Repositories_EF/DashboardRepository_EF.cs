@@ -41,11 +41,11 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-        public Dashboard getDashboard(string gebruikersNaam)
+        public Dashboard getDashboard(string email)
         {
             Dashboard dashboard = null;
 
-            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == gebruikersNaam);
+            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == email);
             List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
             if (dashboards.Count != 0)
             {
@@ -83,7 +83,7 @@ namespace DAL.Repositories_EF
 
         public Zone getZone(int zoneId)
         {
-            return context.Zones.Include(z=>z.Dashboard).First(z=>z.Id==zoneId);
+            return context.Zones.Include(z => z.Dashboard).First(z => z.Id == zoneId);
         }
 
         public Zone addZone(Zone zone)
@@ -92,6 +92,7 @@ namespace DAL.Repositories_EF
             context.SaveChanges();
             return zone;
         }
+
         public void UpdateZone(Zone zone)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -102,6 +103,7 @@ namespace DAL.Repositories_EF
                 context.SaveChanges();
             }
         }
+
         public void deleteZone(int zoneId)
         {
             Zone zone = getZone(zoneId);
@@ -167,10 +169,10 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.DashboardId == dashboard.DashboardId);
         }
 
-    public Zone getZoneByNaam(string zoneNaam)
-    {
-      return context.Zones.Include(z => z.Dashboard).First(z => z.Naam == zoneNaam);
-    }
+        public Zone getZoneByNaam(string zoneNaam)
+        {
+            return context.Zones.Include(z => z.Dashboard).First(z => z.Naam == zoneNaam);
+        }
 
         public Alert getAlert(int id)
         {
