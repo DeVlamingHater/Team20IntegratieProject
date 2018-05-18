@@ -32,9 +32,9 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
-        public Dashboard getDashboard(string gebruikersNaam)
+        public Dashboard getDashboard(string email)
         {
-            Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
+            Dashboard dashboard = dashboardRepository.getDashboard(email);
             return dashboard;
         }
 

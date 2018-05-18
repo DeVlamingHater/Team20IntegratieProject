@@ -46,6 +46,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
             ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
 
+            /*
             //LijnGrafiek2
             string naamLijnGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
             string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
@@ -58,7 +59,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
             ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
 
-            /*TaartGrafiek1
+            TaartGrafiek1
             string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
             string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
             ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];

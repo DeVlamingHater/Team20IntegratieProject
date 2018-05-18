@@ -41,11 +41,11 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-        public Dashboard getDashboard(string gebruikersNaam)
+        public Dashboard getDashboard(string email)
         {
             Dashboard dashboard = null;
 
-            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == gebruikersNaam);
+            Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == email);
             List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
             if (dashboards.Count != 0)
             {
