@@ -34,6 +34,13 @@ namespace BL.Managers
             dashboardRepository = new DashboardRepository_EF(uowManager.UnitOfWork);
         }
 
+
+        public Dashboard getDashboard(string email)
+         {
+            Dashboard dashboard = dashboardRepository.getDashboard(email);
+            return dashboard;
+        }
+
         public void initNonExistingRepo(bool createWithUnitOfWork = false)
         {
 
@@ -56,10 +63,7 @@ namespace BL.Managers
      
         #region Dashboard
         public Dashboard getDashboard(string gebruikersNaam)
-        {
-            Dashboard dashboard = dashboardRepository.getDashboard(gebruikersNaam);
-            return dashboard;
-        }
+       
 
         #endregion
 
