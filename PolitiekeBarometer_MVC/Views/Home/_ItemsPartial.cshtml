@@ -1,12 +1,12 @@
-﻿@model IEnumerable<Domain.Dashboards.Item>
+﻿@model IEnumerable<Domain.Dashboards.Grafiek>
 @{
     ViewBag.Title = "_ItemsPartial";
 }
 
 <div class="row">
-    @foreach (var item in Model)
+    @foreach (var grafiek in Model)
     {
-        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.Labels, data = ViewBag.Data, page = "dashboard" })
+        @Html.Action("_ItemPartial", new { grafiekType = grafiek.GrafiekType, index = grafiek.Id, page = "dashboard" ,filters = grafiek.Dataconfigs, dataType = grafiek.DataType })
     }
     <div class="card mb-3"><div class="card-body">test</div></div>
 

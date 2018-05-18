@@ -111,13 +111,13 @@
 
     <div class="container-fluid">
         <!-- Breadcrumbs-->
-        @Html.Action("_ItemPartial", new { grafiekType = 1, index = 0, labels = ViewBag.LabelsBar1, data = ViewBag.DataBar1, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, labels = ViewBag.LabelsLijn1, data = ViewBag.DataLijn1, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 2, labels = ViewBag.LabelsLijn2, data = ViewBag.DataLijn2, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 3, labels = ViewBag.LabelsLijn3, data = ViewBag.DataLijn3, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 4, labels = ViewBag.LabelsTaart1, data = ViewBag.DataTaart1, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 5, labels = ViewBag.LabelsTaart2, data = ViewBag.DataTaart2, page = "index" })
-        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 6, labels = ViewBag.LabelsTaart3, data = ViewBag.DataTaart3, page = "index" })    
+        @Html.Action("_ItemPartial", new { grafiekType = 1, index = 0, page = "index", labels = ViewBag.LabelsBar1, data = ViewBag.DataBar1 })
+        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, page = "index", labels = ViewBag.LabelsLijn1, data = ViewBag.DataLijn1 })
+        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 2, page = "index", labels = ViewBag.LabelsLijn2, data = ViewBag.DataLijn2 })
+        @Html.Action("_ItemPartial", new { grafiekType = 0, index = 3, page = "index", labels = ViewBag.LabelsLijn3, data = ViewBag.DataLijn3 })
+        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 4, page = "index", labels = ViewBag.LabelsTaart1, data = ViewBag.DataTaart1})
+        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 5, page = "index", labels = ViewBag.LabelsTaart2, data = ViewBag.DataTaart2 })
+        @Html.Action("_ItemPartial", new { grafiekType = 2, index = 6, page = "index", labels = ViewBag.LabelsTaart3, data = ViewBag.DataTaart3 })    
     </div>
     <!-- /.container-fluid-->
 </div>

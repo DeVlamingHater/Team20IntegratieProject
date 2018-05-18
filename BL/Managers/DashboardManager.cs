@@ -139,9 +139,10 @@ namespace BL.Managers
             }
             return JsonConvert.SerializeObject(data).ToString();
         }
-        #endregion
-
-        #region Zone
+        public IEnumerable<Grafiek> getGrafieken(int zoneId)
+        {
+            return dashboardRepository.getGrafieken(zoneId);
+        }
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
             int dashboardId = dashboard.DashboardId;
