@@ -46,6 +46,10 @@ namespace BL.Managers
         {
            return dashboardRepository.getItems(zoneId);
         }
+        public IEnumerable<Grafiek> getGrafieken(int zoneId)
+        {
+            return dashboardRepository.getGrafieken(zoneId);
+        }
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
             int dashboardId = dashboard.DashboardId;

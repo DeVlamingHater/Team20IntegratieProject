@@ -53,7 +53,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
 
             //LijnGrafiek3
-            string naamLijnGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string naamLijnGrafiek3 = elementManager.getTrendingElementen(1)[1].Naam;
             string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
             ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
             ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
@@ -318,16 +318,26 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
 
       IDashboardManager mgr = new DashboardManager();
-      IEnumerable<Item> items = mgr.getItems(zoneId);
-      return PartialView(items);
+      IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
+            ViewBag.Labels = 0;
+            ViewBag.Data = 0;
+      return PartialView(grafieken);
     }
-    public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
+
+    public ActionResult _ItemPartial(int grafiekType, int index, string page, string labels = "", string data = "", List<string> dataConfig = null,DataType dataType = DataType.SENTIMENT)
 
     {
       ViewBag.GrafiekType = grafiekType;
       ViewBag.GrafiekIndex = index;
-      ViewBag.Labels = labels;
-      ViewBag.Data = data;
+            if(dataConfig != null) {
+                ViewBag.Labels = getGraphData(dataConfig.First().ToString(), dataType.ToString())[0];
+                ViewBag.Data = getGraphData(dataConfig.First().ToString(), dataType.ToString())[1];
+            }
+            else
+            {
+                ViewBag.Labels = labels;
+                ViewBag.Data = data;
+            }
       ViewBag.grafiekButtons = "grafiekButtons"+index;
       ViewBag.alert = "alert" + index;
       ViewBag.dash = "dash" + index;
@@ -339,7 +349,7 @@ namespace PolitiekeBarometer_MVC.Controllers
       //filter ook nog
       return PartialView();
     }
-    public ActionResult setActiveZone(int zoneId)
+        public ActionResult setActiveZone(int zoneId)
     {
       IDashboardManager mgr = new DashboardManager();
       actieveZone = mgr.getZone(zoneId).Id;

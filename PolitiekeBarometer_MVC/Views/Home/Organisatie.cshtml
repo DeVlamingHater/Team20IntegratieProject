@@ -83,9 +83,9 @@
     </div>
 </div>
 <div style="margin:20px">
-    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn, page = "organisatie" })
-@Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, labels = ViewBag.LabelsBar, data = ViewBag.DataBar, page = "organisatie" })
-@Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, labels = ViewBag.LabelsTaart, data = ViewBag.DataTaart, page = "organisatie" })
+    @Html.Action("_ItemPartial", new { grafiekType = 0, index = 0, page = "organisatie", labels = ViewBag.LabelsLijn, data = ViewBag.DataLijn })
+@Html.Action("_ItemPartial", new { grafiekType = 1, index = 1, page = "organisatie", labels = ViewBag.LabelsBar, data = ViewBag.DataBar })
+@Html.Action("_ItemPartial", new { grafiekType = 2, index = 2, page = "organisatie", labels = ViewBag.LabelsTaart, data = ViewBag.DataTaart })
 @ViewBag.LabelsLijn
 
 @ViewBag.DataLijn

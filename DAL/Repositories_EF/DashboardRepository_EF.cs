@@ -119,7 +119,10 @@ namespace DAL.Repositories_EF
         {
             return context.Items.Where(r => r.Zone.Id == actieveZone);
         }
-
+        public IEnumerable<Grafiek> getGrafieken(int actieveZone)
+        {
+            return context.Grafieken.Where(r => r.Zone.Id == actieveZone);
+        }
         public Platform getPlatform()
         {
             return context.Platformen.First();
