@@ -60,12 +60,8 @@ namespace BL.Managers
                 }
             }
         }
-     
-        #region Dashboard
-        public Dashboard getDashboard(string gebruikersNaam)
-       
 
-        #endregion
+        
 
         #region Grafiek
         public void addGrafiek(Grafiek grafiek)
