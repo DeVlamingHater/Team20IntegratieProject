@@ -17,7 +17,7 @@ namespace Domain.Platformen
 
         public static Timer refreshTimer = new Timer();
 
-        public static int interval = 300000;
+        public static TimeSpan interval = new TimeSpan(0,1,0,0,0);
 
         public static DateTime lastUpdate = DateTime.Now.AddDays(-7);
     }

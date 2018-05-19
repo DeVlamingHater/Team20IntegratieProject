@@ -53,7 +53,7 @@ namespace BL.Managers
                 }
             }
         }
-     
+
         #region Dashboard
         public Dashboard getDashboard(string gebruikersNaam)
         {
@@ -121,7 +121,11 @@ namespace BL.Managers
                             grafiekData.Add(start, dataPoint);
                             break;
                         case Domain.DataType.SENTIMENT:
-                            double average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
+                            double average = 0;
+                            if (posts.Count != 0)
+                            {
+                                average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
+                            }
                             grafiekData.Add(start, average);
                             break;
                         default:

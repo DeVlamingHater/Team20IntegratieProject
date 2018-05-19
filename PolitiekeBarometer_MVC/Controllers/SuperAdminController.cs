@@ -35,18 +35,18 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             List<ApplicationUser> usersLijst = userManager.Users.ToList();
             List<ApplicationUser> users = new List<ApplicationUser>();
-            
+
             var adminRole = roleManager.FindByName("Admin");
 
             foreach (var user in usersLijst)
-            {                
-                    foreach (var role in user.Roles)
+            {
+                foreach (var role in user.Roles)
+                {
+                    if (role.RoleId == adminRole.Id)
                     {
-                        if (role.RoleId == adminRole.Id)
-                        {
-                            users.Add(user);
-                        }
-                    }               
+                        users.Add(user);
+                    }
+                }
             }
 
             return View(users);
@@ -127,7 +127,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             string refreshRateS = form[""];
             int refreshRate = Int32.Parse(refreshRateS);
-            Platform.interval = refreshRate;
+            Platform.interval = new TimeSpan(0, 0, 0, 0, refreshRate);
             Platform.refreshTimer.Interval = refreshRate;
             return View("Index");
         }

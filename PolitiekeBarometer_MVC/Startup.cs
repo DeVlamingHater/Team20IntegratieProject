@@ -15,6 +15,7 @@ using System.Timers;
 using BL.Managers;
 using Domain.Platformen;
 using BL.Interfaces;
+using System.Threading.Tasks;
 
 [assembly: OwinStartupAttribute(typeof(PolitiekeBarometer_MVC.Startup))]
 namespace PolitiekeBarometer_MVC
@@ -28,7 +29,10 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenConsumption(app);
             CreateUserAndRoles();
             IElementManager elementManager = new ElementManager();
-            elementManager.readJSONPersonen();
+            elementManager.deleteAllPersonen();
+            elementManager.addPersonen(elementManager.readJSONPersonen());
+            elementManager.setTrendingElementen();
+            UpdateAsync();
             SetTimer();
         }
 
@@ -37,12 +41,11 @@ namespace PolitiekeBarometer_MVC
             Timer refreshTimer = new Timer();
 
             Platform.refreshTimer.Elapsed += new ElapsedEventHandler(UpdateAPIAsync);
-            Platform.refreshTimer.Interval = Platform.interval;
+            Platform.refreshTimer.Interval = Platform.interval.TotalMilliseconds;
             Platform.refreshTimer.Enabled = true;
-            Platform.refreshTimer.Start();
+            //Platform.refreshTimer.Start();
         }
-
-        private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
+        private static async Task UpdateAsync()
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
@@ -56,9 +59,13 @@ namespace PolitiekeBarometer_MVC
 
             elementManager.setTrendingElementen();
             dashboardManager.sendAlerts();
-            Platform.refreshTimer.Interval = Platform.interval;
+            Platform.refreshTimer.Interval = Platform.interval.TotalMilliseconds;
 
             Platform.lastUpdate = DateTime.Now;
+        }
+        private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
+        {
+             await UpdateAsync();
         }
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)

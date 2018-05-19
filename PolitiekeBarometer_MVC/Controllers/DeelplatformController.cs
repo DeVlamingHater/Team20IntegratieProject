@@ -26,60 +26,60 @@ namespace PolitiekeBarometer_MVC.Controllers
             //TODO:verplaats naar DeelplatformController
             //Dashboard van het juiste deelplatform ophalen aan de hand van de string in de url
 
-            //_PersonenDropDown();
-            //_OrganisatieDropDown();
-            //_ThemaDropDown();
-            ////BarGrafiek
-            //ElementManager elementManager = new ElementManager();
-            //List<Element> elementenTrending = elementManager.getTrendingElementen(3);
-            //StringBuilder labelsBar1 = new StringBuilder();
-            //StringBuilder dataBar1 = new StringBuilder();
-            //foreach (Element element in elementenTrending)
-            //{
-            //    labelsBar1.Append(element.Naam).Append(".");
-            //    dataBar1.Append(element.Trend).Append(".");
-            //}
-            //labelsBar1.Remove(labelsBar1.Length - 1, 1);
-            //dataBar1.Remove(dataBar1.Length - 1, 1);
-            //ViewBag.LabelsBar1 = labelsBar1;
-            //ViewBag.DataBar1 = dataBar1;
-            ////LijnGrafiek1
-            //string naamLijnGrafiek1 = elementenTrending.First().Naam;
-            //string[] arrayLijnGrafiek1 = getGraphData(naamLijnGrafiek1, "totaal");
-            //ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
-            //ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
-            //elementenTrending.Remove(elementenTrending.First());
+            _PersonenDropDown();
+            _OrganisatieDropDown();
+            _ThemaDropDown();
+            //BarGrafiek
+            ElementManager elementManager = new ElementManager();
+            List<Element> elementenTrending = elementManager.getTrendingElementen(3);
+            StringBuilder labelsBar1 = new StringBuilder();
+            StringBuilder dataBar1 = new StringBuilder();
+            foreach (Element element in elementenTrending)
+            {
+                labelsBar1.Append(element.Naam).Append(".");
+                dataBar1.Append(element.Trend).Append(".");
+            }
+            labelsBar1.Remove(labelsBar1.Length - 1, 1);
+            dataBar1.Remove(dataBar1.Length - 1, 1);
+            ViewBag.LabelsBar1 = labelsBar1;
+            ViewBag.DataBar1 = dataBar1;
+            //LijnGrafiek1
+            string naamLijnGrafiek1 = elementenTrending.First().Naam;
+            string[] arrayLijnGrafiek1 = getGraphData(naamLijnGrafiek1, "totaal");
+            ViewBag.LabelsLijn1 = arrayLijnGrafiek1[0];
+            ViewBag.DataLijn1 = arrayLijnGrafiek1[1];
+            elementenTrending.Remove(elementenTrending.First());
 
-            ////LijnGrafiek2
-            //string naamLijnGrafiek2 = elementenTrending.First().Naam;
-            //string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
-            //ViewBag.LabelsLijn2 = arrayLijnGrafiek2[0];
-            //ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
-            //elementenTrending.Remove(elementenTrending.First());
+            //LijnGrafiek2
+            string naamLijnGrafiek2 = elementenTrending.First().Naam;
+            string[] arrayLijnGrafiek2 = getGraphData(naamLijnGrafiek2, "totaal");
+            ViewBag.LabelsLijn2 = arrayLijnGrafiek2[0];
+            ViewBag.DataLijn2 = arrayLijnGrafiek2[1];
+            elementenTrending.Remove(elementenTrending.First());
 
-            ////LijnGrafiek3
-            //string naamLijnGrafiek3 = elementenTrending.First().Naam;
-            //string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
-            //ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
-            //ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
+            //LijnGrafiek3
+            string naamLijnGrafiek3 = elementenTrending.First().Naam;
+            string[] arrayLijnGrafiek3 = getGraphData(naamLijnGrafiek3, "totaal");
+            ViewBag.LabelsLijn3 = arrayLijnGrafiek3[0];
+            ViewBag.DataLijn3 = arrayLijnGrafiek3[1];
 
-            ////TaartGrafiek1
-            //string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
-            //string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
-            //ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];
-            //ViewBag.DataTaart1 = arrayTaartGrafiek1[1];
+            //TaartGrafiek1
+            string naamTaartGrafiek1 = elementManager.getTrendingElementen(1)[0].Naam;
+            string[] arrayTaartGrafiek1 = getGraphData(naamTaartGrafiek1, "sentiment");
+            ViewBag.LabelsTaart1 = arrayTaartGrafiek1[0];
+            ViewBag.DataTaart1 = arrayTaartGrafiek1[1];
 
-            ////TaartGrafiek2
-            //string naamTaartGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
-            //string[] arrayTaartGrafiek2 = getGraphData(naamTaartGrafiek2, "sentiment");
-            //ViewBag.LabelsTaart2 = arrayTaartGrafiek2[0];
-            //ViewBag.DataTaart2 = arrayTaartGrafiek2[1];
+            //TaartGrafiek2
+            string naamTaartGrafiek2 = elementManager.getTrendingElementen(1)[1].Naam;
+            string[] arrayTaartGrafiek2 = getGraphData(naamTaartGrafiek2, "sentiment");
+            ViewBag.LabelsTaart2 = arrayTaartGrafiek2[0];
+            ViewBag.DataTaart2 = arrayTaartGrafiek2[1];
 
-            ////TaartGrafiek3
-            //string naamTaartGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
-            //string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
-            //ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
-            //ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
+            //TaartGrafiek3
+            string naamTaartGrafiek3 = elementManager.getTrendingElementen(1)[2].Naam;
+            string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
+            ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
+            ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
 
             return View(deelplatformen);
         }

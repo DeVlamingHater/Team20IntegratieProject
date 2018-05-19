@@ -150,6 +150,7 @@ namespace DAL.Repositories_EF
         public void deleteAllPersonen()
         {
             context.Personen.RemoveRange(context.Personen);
+            context.SaveChanges();
         }
 
         public void deletePersoon(Persoon persoon)
