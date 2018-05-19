@@ -39,6 +39,11 @@ namespace DAL.Repositories_EF
             context.SaveChanges();
         }
 
+        public IEnumerable<Deelplatform> getAllDeelplatformen()
+        {
+            return context.Deelplatformen;
+        }
+
         public List<Gebruiker> getAllGebruikers()
         {
             return context.Gebruikers.ToList();
@@ -46,12 +51,12 @@ namespace DAL.Repositories_EF
 
         public Deelplatform getDeelPlatform(string deelplatform)
         {
-            return context.Deelplatformen.First(dp=>dp.Naam == deelplatform);
+            return context.Deelplatformen.FirstOrDefault(dp => dp.Naam == deelplatform);
         }
 
         public Gebruiker getGebruiker(string id)
         {
-            return context.Gebruikers.First(g=>g.GebruikerId == id);
+            return context.Gebruikers.First(g => g.GebruikerId == id);
         }
 
         public Gebruiker getGebruikerMetEmail(string email)

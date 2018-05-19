@@ -14,5 +14,6 @@ namespace DAL
         void saveGebruiker(Gebruiker gebruiker);
         Gebruiker getGebruikerMetEmail(string email);
         Deelplatform getDeelPlatform(string deelplatform);
+        IEnumerable<Deelplatform> getAllDeelplatformen();
     }
 }

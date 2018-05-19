@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
 {
@@ -22,21 +23,25 @@ namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
             Uri url = HttpContext.Current.Request.Url;
             filterContext.RouteData.Values.Remove("deelplatform");
             string deelplatform = GetDeelPlatform(url);
-            if (platformManager.getDeelPlatform(deelplatform) == null)
+            if (platformManager.getDeelPlatform(deelplatform) == null && deelplatform != "pb")
             {
                 //Redirect naar pagina met overzicht alle deelplatformen
+                filterContext.Result = new RedirectResult("/pb/Home/Index");
+            }else if(deelplatform == "pb" && url.AbsolutePath != "/pb/Home/Index")
+            {
+                filterContext.Result = new RedirectResult("/pb/Home/Index");
             }
             else
             {
                 //Deelplatform bestaat, geef deelplatformnaam mee
                 filterContext.RouteData.Values.Add("deelplatform", deelplatform);
                 base.OnActionExecuting(filterContext);
-            }       
+            }
         }
 
         private static string GetDeelPlatform(Uri url)
         {
-            string[] segments = url.Segments;
+            string[] segments = url.AbsolutePath.Split('/');
             string deelplatform = segments[1];
             return deelplatform;
         }

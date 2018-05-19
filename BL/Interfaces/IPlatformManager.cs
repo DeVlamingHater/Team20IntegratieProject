@@ -14,5 +14,6 @@ namespace BL.Interfaces
         List<Gebruiker> getAllGebruikers();
         void updateGebruiker(Gebruiker gebruiker);
         Deelplatform getDeelPlatform(string deelplatform);
+        List<Deelplatform> getAllDeeplatformen();
     }
 }

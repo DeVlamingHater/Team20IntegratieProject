@@ -4,6 +4,7 @@ using DAL.Repositories_EF;
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BL.Managers
@@ -64,6 +65,11 @@ namespace BL.Managers
         public Deelplatform getDeelPlatform(string deelplatform)
         {
             return platformRepository.getDeelPlatform(deelplatform);
+        }
+
+        public List<Deelplatform> getAllDeeplatformen()
+        {
+            return platformRepository.getAllDeelplatformen().ToList();
         }
         #endregion
     }

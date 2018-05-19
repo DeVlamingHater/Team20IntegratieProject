@@ -1,28 +1,23 @@
-﻿using BL.Managers;
+﻿using BL.Interfaces;
+using BL.Managers;
 using Domain;
 using Domain.Dashboards;
+using Domain.Elementen;
+using Domain.Platformen;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using PolitiekeBarometer_MVC.Controllers.ActionFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Domain.Elementen;
-using System.Data.SqlClient;
-using Newtonsoft.Json;
-using BL.Interfaces;
-using Microsoft.AspNet.Identity;
-using System.Text;
-using PolitiekeBarometer_MVC.Controllers.ActionFilter;
-using System.Web.Http.Filters;
-using Domain.Platformen;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-    [DeelplatformFilter]
-    public class HomeController : Controller
+    public class DeelplatformController : BaseController
     {
-        
-        [DeelplatformFilter]
         public ActionResult Index(string deelplatform)
         {
             IPlatformManager platformManager = new PlatformManager();
@@ -85,7 +80,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
             //ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
             //ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
-            
+
             return View(deelplatformen);
         }
         public string[] getGraphData(string naam, string dataType1)
@@ -680,5 +675,4 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         #endregion
     }
-
 }
