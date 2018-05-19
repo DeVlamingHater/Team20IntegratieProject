@@ -25,7 +25,7 @@ namespace DAL.EF
             #region Deelplatformen
             Deelplatform deelplatform1 = new Deelplatform()
             {
-                Naam = "Politieke Barometer",
+                Naam = "Politiek",
                 Historiek = new TimeSpan(7, 0, 0)
             };
             #endregion         

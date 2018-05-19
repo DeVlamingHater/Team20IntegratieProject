@@ -44,6 +44,11 @@ namespace DAL.Repositories_EF
             return context.Gebruikers.ToList();
         }
 
+        public Deelplatform getDeelPlatform(string deelplatform)
+        {
+            return context.Deelplatformen.First(dp=>dp.Naam == deelplatform);
+        }
+
         public Gebruiker getGebruiker(string id)
         {
             return context.Gebruikers.First(g=>g.GebruikerId == id);

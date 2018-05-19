@@ -13,5 +13,6 @@ namespace DAL
         List<Gebruiker> getAllGebruikers();
         void saveGebruiker(Gebruiker gebruiker);
         Gebruiker getGebruikerMetEmail(string email);
+        Deelplatform getDeelPlatform(string deelplatform);
     }
 }

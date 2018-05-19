@@ -127,7 +127,7 @@ namespace BL.Managers
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
 
-            using (StreamReader r = new StreamReader("politici.json"))
+            using (StreamReader r = new StreamReader(AppContext.BaseDirectory + "bin/politici.json"))
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PersoonParser>>(json);

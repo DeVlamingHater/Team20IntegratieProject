@@ -94,7 +94,7 @@ namespace DAL.Repositories_EF
                     Persoon persoon;
                     try
                     {
-                        persoon = (Persoon)context.Personen.Single(p => p.Naam == naam);
+                        persoon = context.Personen.Single(p => p.Naam == naam);
                     }
                     catch (Exception)
                     {

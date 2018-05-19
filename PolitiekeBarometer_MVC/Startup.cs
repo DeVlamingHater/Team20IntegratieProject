@@ -26,8 +26,10 @@ namespace PolitiekeBarometer_MVC
             ConfigureAuth(app);
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
-            createUserAndRoles();
-           SetTimer();
+            CreateUserAndRoles();
+            IElementManager elementManager = new ElementManager();
+            elementManager.readJSONPersonen();
+            SetTimer();
         }
 
         private void SetTimer()
@@ -46,7 +48,7 @@ namespace PolitiekeBarometer_MVC
             IDashboardManager dashboardManager = new DashboardManager();
             IPostManager postManager = new PostManager();
             DateTime lastUpdate = Platform.lastUpdate;
-           
+
             string responseString = await postManager.updatePosts(Platform.lastUpdate);
 
             postManager.addJSONPosts(responseString);
@@ -58,7 +60,7 @@ namespace PolitiekeBarometer_MVC
 
             Platform.lastUpdate = DateTime.Now;
         }
-        
+
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
         {
             var issuer = "http://localhost:44301";
@@ -100,7 +102,7 @@ namespace PolitiekeBarometer_MVC
 
 
 
-        private void createUserAndRoles()
+        private void CreateUserAndRoles()
         {
             PolitiekeBarometerContext context = new PolitiekeBarometerContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));

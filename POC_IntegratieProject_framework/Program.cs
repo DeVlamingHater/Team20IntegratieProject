@@ -213,7 +213,6 @@ namespace PolitiekeBarometer_CA
                 }
 
             }
-
         }
 
         private static void addPoliticiJSON()

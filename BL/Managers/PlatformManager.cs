@@ -56,7 +56,15 @@ namespace BL.Managers
         {
             platformRepository.saveGebruiker(gebruiker);
         }
+
+
         #endregion
 
+        #region deelplatform
+        public Deelplatform getDeelPlatform(string deelplatform)
+        {
+            return platformRepository.getDeelPlatform(deelplatform);
+        }
+        #endregion
     }
 }
