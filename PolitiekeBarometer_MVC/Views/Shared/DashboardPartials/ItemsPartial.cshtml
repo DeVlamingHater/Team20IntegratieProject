@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Domain.Dashboards.Item>
+@{
+    ViewBag.Title = "_ItemsPartial";
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        @Html.Action("/DashboardPartials/Item_Partial", "Dashboard",item)
+    }
+</div>
+
+
