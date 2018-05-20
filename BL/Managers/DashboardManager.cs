@@ -17,8 +17,7 @@ namespace BL.Managers
 
     public class DashboardManager : IDashboardManager
     {
-        public static int NUMBERDATAPOINTS = 12;
-
+        #region Construcor
         IDashboardRepository dashboardRepository;
 
         public UnitOfWorkManager uowManager;
@@ -53,6 +52,7 @@ namespace BL.Managers
                 }
             }
         }
+        #endregion
 
         #region Dashboard
         public Dashboard getDashboard(string gebruikersNaam)
@@ -61,6 +61,52 @@ namespace BL.Managers
             return dashboard;
         }
 
+        #endregion
+
+        #region Zone
+        public IEnumerable<Zone> getZones(Dashboard dashboard)
+        {
+            int dashboardId = dashboard.DashboardId;
+            return dashboardRepository.getDashboardZones(dashboardId);
+        }
+
+        public Zone getZone(int zoneId)
+        {
+            return dashboardRepository.getZone(zoneId);
+        }
+
+        public void deleteZone(int zoneId)
+        {
+            dashboardRepository.deleteZone(zoneId);
+        }
+
+        public Zone addZone(Dashboard dashboard)
+        {
+            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
+            Zone zone = new Zone()
+            {
+                Naam = "NewZone",
+                Dashboard = dashboard
+            };
+            return dashboardRepository.addZone(zone);
+        }
+
+        public void updateZone(Zone zone)
+        {
+            dashboardRepository.UpdateZone(zone);
+        }
+        #endregion
+
+        #region Item
+        public IEnumerable<Item> getItems(int zoneId)
+        {
+            return dashboardRepository.getItems(zoneId);
+        }
+
+        public Item getItem(int itemId)
+        {
+            return dashboardRepository.getItem(itemId);
+        }
         #endregion
 
         #region Grafiek
@@ -138,52 +184,6 @@ namespace BL.Managers
                 index++;
             }
             return JsonConvert.SerializeObject(data).ToString();
-        }
-        #endregion
-
-        #region Zone
-        public IEnumerable<Zone> getZones(Dashboard dashboard)
-        {
-            int dashboardId = dashboard.DashboardId;
-            return dashboardRepository.getZones(dashboardId);
-        }
-
-        public Zone getZone(int zoneId)
-        {
-            return dashboardRepository.getZone(zoneId);
-        }
-
-        public void deleteZone(int zoneId)
-        {
-            dashboardRepository.deleteZone(zoneId);
-        }
-
-        public Zone addZone(Dashboard dashboard)
-        {
-            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
-            Zone zone = new Zone()
-            {
-                Naam = "NewZone",
-                Dashboard = dashboard
-            };
-            return dashboardRepository.addZone(zone);
-        }
-
-        public void updateZone(Zone zone)
-        {
-            dashboardRepository.UpdateZone(zone);
-        }
-
-        public Zone getZoneByNaam(string zoneNaam)
-        {
-            return dashboardRepository.getZoneByNaam(zoneNaam);
-        }
-        #endregion
-
-        #region Item
-        public IEnumerable<Item> getItems(int zoneId)
-        {
-            return dashboardRepository.getItems(zoneId);
         }
         #endregion
 
@@ -266,7 +266,7 @@ namespace BL.Managers
             }
         }
 
-        public void addAlert(Alert alert)
+        public void createAlert(Alert alert)
         {
             dashboardRepository.addAlert(alert);
         }
@@ -326,11 +326,5 @@ namespace BL.Managers
         }
         #endregion
 
-        #region Platform
-        public TimeSpan getHistoriek()
-        {
-            return dashboardRepository.getPlatform().Historiek;
-        }
-        #endregion    
     }
 }

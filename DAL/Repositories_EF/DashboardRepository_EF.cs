@@ -14,6 +14,7 @@ namespace DAL.Repositories_EF
 {
     public class DashboardRepository_EF : IDashboardRepository
     {
+        #region Constructor
         PolitiekeBarometerContext context;
 
         public DashboardRepository_EF()
@@ -25,22 +26,9 @@ namespace DAL.Repositories_EF
         {
             context = unitOfWork.Context;
         }
+        #endregion
 
-        public IEnumerable<Alert> getAllAlerts()
-        {
-            return context.Alerts.Include(a => a.DataConfig).ToList();
-        }
-
-        public IEnumerable<Alert> getActiveAlerts()
-        {
-            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
-        }
-
-        public DataConfig getAlertDataConfig(Alert alert)
-        {
-            return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
-        }
-
+        #region Dashboard
         public Dashboard getDashboard(string gebruikersNaam)
         {
             Dashboard dashboard = null;
@@ -54,7 +42,7 @@ namespace DAL.Repositories_EF
             }
             if (dashboard == null)
             {
-
+                //Eerste keer dat een gebruiker dat een gebruiker inlogd heeft deze nog geen dashboard
                 dashboard = new Dashboard()
                 {
                     Gebruiker = gebruiker,
@@ -74,9 +62,10 @@ namespace DAL.Repositories_EF
             return dashboard;
 
         }
+        #endregion
 
-
-        public IEnumerable<Zone> getZones(int dashboardId)
+        #region Zone
+        public IEnumerable<Zone> getDashboardZones(int dashboardId)
         {
             return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
         }
@@ -116,17 +105,21 @@ namespace DAL.Repositories_EF
             };
             context.SaveChanges();
         }
+        #endregion
 
+        #region Item
         public IEnumerable<Item> getItems(int actieveZone)
         {
             return context.Items.Where(r => r.Zone.Id == actieveZone);
         }
 
-        public Platform getPlatform()
+        public Item getItem(int itemId)
         {
-            return context.Platformen.First();
+            return context.Items.Find(itemId);
         }
+        #endregion
 
+        #region Grafiek
         public void addGrafiek(Grafiek grafiek)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -139,15 +132,22 @@ namespace DAL.Repositories_EF
             }
 
         }
+        #endregion
 
-        public void addMelding(Melding melding)
+        #region Alert
+        public IEnumerable<Alert> getAllAlerts()
         {
-            throw new NotImplementedException();
+            return context.Alerts.Include(a => a.DataConfig).ToList();
         }
 
-        public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
+        public IEnumerable<Alert> getActiveAlerts()
         {
-            return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
+            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+        }
+
+        public DataConfig getAlertDataConfig(Alert alert)
+        {
+            return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
         public void addAlert(Alert alert)
@@ -166,14 +166,22 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.DashboardId == dashboard.DashboardId);
         }
 
-        public Zone getZoneByNaam(string zoneNaam)
-        {
-            return context.Zones.Include(z => z.Dashboard).First(z => z.Naam == zoneNaam);
-        }
-
         public Alert getAlert(int id)
         {
             return (Alert)context.Alerts.Where(a => a.AlertId == id);
         }
+        #endregion
+
+        #region Melding
+        public void addMelding(Melding melding)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
+        {
+            return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
+        }
+        #endregion
     }
 }

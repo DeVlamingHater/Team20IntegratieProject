@@ -7,13 +7,22 @@ namespace BL.Interfaces
 {
     public interface IPlatformManager
     {
-        void createGebruiker(string id, string name, string email);
+        #region Platform
+        TimeSpan getHistoriek();
+        #endregion
+
+        #region Deelplatform
+        Deelplatform getDeelplatformByNaam(string deelplatformNaam);
+        List<Deelplatform> getAllDeeplatformen();
+        #endregion
+
+        #region Gebruiker
         Gebruiker getGebruiker(string id);
-        Gebruiker getGebruikerMetEmail(string email);
+        Gebruiker getGebruikerByEmail(string email);
+        void createGebruiker(string id, string name, string email);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
         void updateGebruiker(Gebruiker gebruiker);
-        Deelplatform getDeelPlatform(string deelplatform);
-        List<Deelplatform> getAllDeeplatformen();
+        #endregion
     }
 }

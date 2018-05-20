@@ -19,5 +19,7 @@ namespace Domain
         public Element Vergelijking { get; set; }
 
         public List<Filter> Filters { get; set; }
+
+        public string Label { get; set; }
     }
 }

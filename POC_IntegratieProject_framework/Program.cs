@@ -104,7 +104,7 @@ namespace PolitiekeBarometer_CA
                 Operator = ">",
                 Waarde = 10.0
             };
-            dashboardManager.addAlert(testAlert);
+            dashboardManager.createAlert(testAlert);
         }
 
         private static void showMenu()

@@ -9,25 +9,39 @@ namespace DAL
 {
     public interface IDashboardRepository
     {
+        #region Dashboard
+        Dashboard getDashboard(string gebruikersNaam);
+        #endregion
 
-        IEnumerable<Alert> getActiveAlerts();
-
-        DataConfig getAlertDataConfig(Alert alert);
-        IEnumerable<Alert> getAllAlerts();
-        IEnumerable<Zone> getZones(int dashboardId);
+        #region Zone
+        IEnumerable<Zone> getDashboardZones(int dashboardId);
         Zone getZone(int zoneId);
         Zone addZone(Zone zone);
-        Dashboard getDashboard(string gebruikersNaam);
         void UpdateZone(Zone zone);
         void deleteZone(int zoneId);
+        #endregion
+
+        #region Item
         IEnumerable<Item> getItems(int actieveZone);
-        Platform getPlatform();
+        Item getItem(int itemId);
+        #endregion
+
+        #region Grafiek
         void addGrafiek(Grafiek grafiek);
+        #endregion
+
+        #region Alert
+        IEnumerable<Alert> getActiveAlerts();
+        DataConfig getAlertDataConfig(Alert alert);
+        IEnumerable<Alert> getAllAlerts();
+        void addAlert(Alert alert);
+        IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard);
+        Alert getAlert(int id);
+        #endregion
+
+        #region Melding
         void addMelding(Melding melding);
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
-        void addAlert(Alert testAlert);
-        IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard);
-        Zone getZoneByNaam(string zoneNaam);
-        Alert getAlert(int id);
+        #endregion
     }
 }

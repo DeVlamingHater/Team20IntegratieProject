@@ -21,8 +21,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Index(string deelplatform)
         {
             IPlatformManager platformManager = new PlatformManager();
-
-            List<Deelplatform> deelplatformen = platformManager.getAllDeeplatformen();
             //TODO:verplaats naar DeelplatformController
             //Dashboard van het juiste deelplatform ophalen aan de hand van de string in de url
 
@@ -81,7 +79,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
             ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
 
-            return View(deelplatformen);
+            return View();
         }
         public string[] getGraphData(string naam, string dataType1)
         {
@@ -91,14 +89,11 @@ namespace PolitiekeBarometer_MVC.Controllers
             Enum.TryParse(dataType1.ToUpper(), out DataType mijnDatatype);
             DataConfig testDataConfig = new DataConfig()
             {
-                Element =
-             persoon
+                Element = persoon
             };
             Grafiek testGrafiek = new Grafiek()
             {
                 DataType = mijnDatatype,
-
-
                 Tijdschaal = new TimeSpan(30, 0, 0, 0),
                 Dataconfigs = new List<DataConfig>()
                 {
@@ -410,10 +405,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         }*/
 
         #region Element
-        ElementManager Emgr = new ElementManager();
         public ActionResult _PersonenDropDown()
         {
-            List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
+            IElementManager elementManager = new ElementManager();
+            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
             List<Persoon> personen = new List<Domain.Persoon>();
 
             foreach (Element element in elementen)
@@ -424,7 +419,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult _OrganisatieDropDown()
         {
-            List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
+            IElementManager elementManager = new ElementManager();
+            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
             List<Organisatie> organisaties = new List<Domain.Organisatie>();
             foreach (Element element in elementen)
             {
@@ -436,7 +432,8 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult _ThemaDropDown()
         {
-            List<Element> elementen = Emgr.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
+            IElementManager elementManager = new ElementManager();
+            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
             List<Thema> themas = new List<Domain.Thema>();
             foreach (Element element in elementen)
             {
@@ -446,17 +443,18 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult _SearchPartial(string searchstring = "test")
         {
+            IElementManager elementManager = new ElementManager();
             if (searchstring is null)
             {
                 List<Element> leeg = new List<Element>();
                 return PartialView(leeg);
             }
-            List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Element> elementen = elementManager.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             elementen = elementen.OrderBy(o => o.Trend).ToList();
-            List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = elementManager.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             personen = personen.OrderBy(o => o.Trend).ToList();
             elementen.AddRange(personen);
-            List<Thema> themas = Emgr.getAllThemas();
+            List<Thema> themas = elementManager.getAllThemas();
             for (int i = 0; i < themas.Count(); i++)
             {
                 Thema thema = themas.ElementAt(i);
@@ -489,18 +487,19 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult Search(string searchstring = "test")
         {
+            IElementManager elementManager = new ElementManager();
             if (searchstring == "test")
             {
                 List<Element> leeg = new List<Element>();
                 ViewBag.Lijst = leeg;
                 return View();
             }
-            List<Element> elementen = Emgr.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Element> elementen = elementManager.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             elementen = elementen.OrderBy(o => o.Trend).ToList();
-            List<Persoon> personen = Emgr.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = elementManager.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             personen = personen.OrderBy(o => o.Trend).ToList();
             elementen.AddRange(personen);
-            List<Thema> themas = Emgr.getAllThemas();
+            List<Thema> themas = elementManager.getAllThemas();
             for (int i = 0; i < themas.Count(); i++)
             {
                 Thema thema = themas.ElementAt(i);
@@ -525,7 +524,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult getElementType(string naam)
         {
-            Element element = Emgr.getElementByNaam(naam);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementByNaam(naam);
             if (element.GetType().Equals(typeof(Persoon)))
             {
                 return Json("Persoon");
@@ -555,8 +555,8 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult Organisatie(string naam)
         {
-            ElementManager elementManager = new ElementManager();
-            Element element = Emgr.getElementByNaam(naam);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementByNaam(naam);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -570,8 +570,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult Persoon(string naam)
         {
-            ElementManager elementManager = new ElementManager();
-            Element element = Emgr.getElementByNaam(naam);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementByNaam(naam);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -615,8 +615,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult Thema(string naam)
         {
-            ElementManager elementManager = new ElementManager();
-            Element element = Emgr.getElementByNaam(naam);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementByNaam(naam);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -630,7 +630,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult addWeeklyReview(int id)
         {
-            Element element = Emgr.getElementById(id);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementById(id);
             //weeklyReview.add(element);
             return Json(new
             {
@@ -639,7 +640,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult removeWeeklyReview(int id)
         {
-            Element element = Emgr.getElementById(id);
+            IElementManager elementManager = new ElementManager();
+            Element element = elementManager.getElementById(id);
             //weeklyReview.remove(element);
             return Json(new
             {

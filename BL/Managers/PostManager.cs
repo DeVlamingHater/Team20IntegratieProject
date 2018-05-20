@@ -19,7 +19,7 @@ namespace BL.Managers
 {
     public class PostManager : IPostManager
     {
-
+        #region Constructor
         IPostRepository postRepository;
 
         UnitOfWorkManager uowManager;
@@ -34,6 +34,7 @@ namespace BL.Managers
             this.uowManager = uowManager;
             postRepository = new PostRepository_EF();
         }
+        #endregion
 
         #region Post
         public List<Post> filterPosts(List<Post> posts, List<Filter> filters)
@@ -114,9 +115,8 @@ namespace BL.Managers
 
         public void deleteOldPosts()
         {
-            IDashboardManager dashboardManager = new DashboardManager();
-            TimeSpan historiek = dashboardManager.getHistoriek();
-
+            IPlatformManager platformManager = new PlatformManager();
+            TimeSpan historiek = platformManager.getHistoriek();
             postRepository.deleteOldPosts(historiek);
         }
 
@@ -143,14 +143,8 @@ namespace BL.Managers
         {
             return postRepository.getPosts();
         }
-        public double getAlertWaarde(Alert alert)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
 
-        #region Dataconfig
-        public double getHuidigeWaarde(DataConfig dataConfig)
+        public double getAlertWaarde(Alert alert)
         {
             throw new NotImplementedException();
         }

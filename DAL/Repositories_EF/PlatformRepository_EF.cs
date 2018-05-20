@@ -22,14 +22,29 @@ namespace DAL.Repositories_EF
             context = unitOfWork.Context;
         }
 
-        public void createGebruiker(string id, string name, string email)
+        #region Platform
+        public Platform getPlatform()
         {
-            context.Gebruikers.Add(new Gebruiker()
-            {
-                GebruikerId = id,
-                Naam = name,
-                Email = email
-            });
+            return context.Platformen.First();
+        }
+        #endregion
+
+        #region Deelplatform
+        public Deelplatform getDeelPlatform(string deelplatform)
+        {
+            return context.Deelplatformen.FirstOrDefault(dp => dp.Naam == deelplatform);
+        }
+
+        public IEnumerable<Deelplatform> getAllDeelplatformen()
+        {
+            return context.Deelplatformen;
+        }
+        #endregion
+
+        #region Gebruiker
+        public void createGebruiker(Gebruiker gebruiker)
+        {
+            context.Gebruikers.Add(gebruiker);
         }
 
         public void deleteGebruiker(string id)
@@ -39,19 +54,9 @@ namespace DAL.Repositories_EF
             context.SaveChanges();
         }
 
-        public IEnumerable<Deelplatform> getAllDeelplatformen()
-        {
-            return context.Deelplatformen;
-        }
-
         public List<Gebruiker> getAllGebruikers()
         {
             return context.Gebruikers.ToList();
-        }
-
-        public Deelplatform getDeelPlatform(string deelplatform)
-        {
-            return context.Deelplatformen.FirstOrDefault(dp => dp.Naam == deelplatform);
         }
 
         public Gebruiker getGebruiker(string id)
@@ -69,5 +74,6 @@ namespace DAL.Repositories_EF
             context.Entry(gebruiker).State = EntityState.Modified;
             context.SaveChanges();
         }
+        #endregion
     }
 }

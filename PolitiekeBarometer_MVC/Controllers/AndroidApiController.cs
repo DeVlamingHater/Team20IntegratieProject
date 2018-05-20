@@ -33,7 +33,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IPlatformManager platformManager = new PlatformManager();
 
-            Gebruiker gebruiker = platformManager.getGebruikerMetEmail(email);
+            Gebruiker gebruiker = platformManager.getGebruikerByEmail(email);
 
             return gebruiker.Naam;
         }

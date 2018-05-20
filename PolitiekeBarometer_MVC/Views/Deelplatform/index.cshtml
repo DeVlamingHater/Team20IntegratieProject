@@ -20,22 +20,22 @@
 
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                 @if (Request.IsAuthenticated)
-    {
-            <!-- Dashboard-->
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" href="~/Home/Dashboard">
-                    <i class="fa fa-fw fas fa-wrench"></i>
-                    <span class="nav-link-text">Mijn Dashboard</span>
-                </a>
-            </li>
-            <!-- Alert List-->
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
-                <a class="nav-link" onclick="" href="charts.html">
-                    <i class="fa fa-fw fas fa-bell"></i>
-                    <span class="nav-link-text">Mijn Alerts</span>
-                </a>
-            </li>
-}
+                {
+                    <!-- Dashboard-->
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                        <a class="nav-link" href="~/Home/Dashboard">
+                            <i class="fa fa-fw fas fa-wrench"></i>
+                            <span class="nav-link-text">Mijn Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- Alert List-->
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
+                        <a class="nav-link" onclick="" href="charts.html">
+                            <i class="fa fa-fw fas fa-bell"></i>
+                            <span class="nav-link-text">Mijn Alerts</span>
+                        </a>
+                    </li>
+                }
                 <!-- Dropdown trending Personen-->
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Politiekers">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePolitiekers" data-parent="#exampleAccordion">
@@ -61,12 +61,16 @@
                     @Html.Action("_ThemaDropDown")
                 </li>
                 <!-- -->
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
-                    <a class="nav-link" href="/Manage/Index">
-                        <i class="fa fa-fw fal fa-user"></i>
-                        <span class="nav-link-text">Mijn Profiel</span>
-                    </a>
-                </li>
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
+                        <a class="nav-link" href="@Url.Action("Index", "Manage")">
+                            <i class="fa fa-fw fal fa-user"></i>
+                            <span class="nav-link-text">Profiel Instellingen</span>
+                        </a>
+                    </li>
+                }
+
             </ul>
             <ul class="navbar-nav sidenav-toggler">
                 <li class="nav-item">

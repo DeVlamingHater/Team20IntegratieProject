@@ -9,6 +9,7 @@ namespace BL.Managers
 {
     public class UnitOfWorkManager
     {
+        #region Constructor
         private UnitOfWork uof;
 
         internal UnitOfWork UnitOfWork
@@ -25,5 +26,6 @@ namespace BL.Managers
         {
             UnitOfWork.CommitChanges();
         }
+        #endregion
     }
 }

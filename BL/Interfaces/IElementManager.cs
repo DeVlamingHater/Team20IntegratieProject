@@ -8,24 +8,30 @@ namespace BL.Interfaces
 {
     public interface IElementManager
     {
-        Element getElementByNaam(string naam);
-        Element getElementById(int id);
-
+        #region Element        
         List<Element> getAllElementen();
-
-        List<Element> getTrendingElementen(int amount);
-
-        List<Persoon> getAllPersonen();
-
+        Element getElementByNaam(string naam);
         void setTrendingElementen();
+        List<Element> getTrendingElementen(int amount);
+        Element getElementById(int id);
         void addElementen(List<Element> elementen);
-        void addOrganisatie(Organisatie organisatie);
-        void addPersonen(List<Persoon> personen);
-        void addPersoon(Persoon persoon);
+        #endregion
 
+        #region Persoon
+        List<Persoon> getAllPersonen();
+        void addPersonen(List<Persoon> personen);
         List<Persoon> readJSONPersonen();
         void deleteAllPersonen();
+        void addPersoon(Persoon persoon);
         void deletePersoon(Persoon persoon);
+        #endregion
 
+        #region Thema
+        List<Thema> getAllThemas();
+        #endregion
+
+        #region Organisatie
+        void addOrganisatie(Organisatie organisatie);
+        #endregion
     }
 }

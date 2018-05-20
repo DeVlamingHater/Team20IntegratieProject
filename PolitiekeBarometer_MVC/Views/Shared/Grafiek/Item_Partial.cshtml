@@ -1,17 +1,17 @@
-﻿@model IList<Domain.Element>
+﻿
+@model Domain.Dashboards.Item
 
 @{
     ViewBag.Title = "_ItemPartial";
 }
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-bar-chart"></i> Grafiek
+        <i class="fa fa-bar-chart"></i> @Model.Tittel
     </div>
     <div class="card-body">
-        <canvas class="Chart"></canvas>
+        <canvas class="Item"></canvas>
     </div>
     <div class="card-footer small text-muted">
-
         <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
             <div id="menuIcons" class="float-left" style="visibility:hidden">
                 <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.edit"><i class="fa fa-edit"></i></button>
@@ -457,7 +457,7 @@
                     }
                 }
                 });
-                
+
             }
 
             function BarChart() {

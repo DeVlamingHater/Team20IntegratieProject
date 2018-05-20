@@ -6,14 +6,24 @@ using System.Text;
 namespace DAL
 {
     public interface IPlatformRepository
-    {
-        Gebruiker getGebruiker(string id);
-        void createGebruiker(string id, string name, string email);
-        void deleteGebruiker(string id);
-        List<Gebruiker> getAllGebruikers();
-        void saveGebruiker(Gebruiker gebruiker);
-        Gebruiker getGebruikerMetEmail(string email);
+    { 
+        #region Platform
+        Platform getPlatform();
+        #endregion
+
+        #region Deelplatform
         Deelplatform getDeelPlatform(string deelplatform);
         IEnumerable<Deelplatform> getAllDeelplatformen();
+        #endregion
+
+        #region Gebruiker
+        void createGebruiker(Gebruiker gebruiker);
+        void deleteGebruiker(string id);
+        List<Gebruiker> getAllGebruikers();
+        Gebruiker getGebruiker(string id);
+        Gebruiker getGebruikerMetEmail(string email);
+        void saveGebruiker(Gebruiker gebruiker);
+        #endregion
+       
     }
 }

@@ -15,6 +15,7 @@ namespace BL.Managers
 {
     public class ElementManager : IElementManager
     {
+        #region Constructor
         IElementRepository elementRepository = new ElementRepository_EF();
 
         UnitOfWorkManager uowManager;
@@ -29,6 +30,7 @@ namespace BL.Managers
         {
             elementRepository = new ElementRepository_EF();
         }
+        #endregion
 
         #region Element
         public List<Element> getAllElementen()
@@ -56,33 +58,6 @@ namespace BL.Managers
             }
             //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
-        }
-
-        public List<Element> getTopTrending(List<Element> elementen, int amount)
-        {
-            List<Element> elementenTrending = new List<Element>();
-
-            for (int i = 0; i < amount; i++)
-            {
-                if (elementen.Count == 0)
-                {
-                    return elementenTrending;
-                }
-                double maxTrend = 0.0;
-
-                Element maxElement = elementen.First();
-                foreach (Element element in elementen)
-                {
-                    if (element.Trend > maxTrend)
-                    {
-                        maxElement = element;
-                        maxTrend = maxElement.Trend;
-                    }
-                }
-                elementen.Remove(maxElement);
-                elementenTrending.Add(maxElement);
-            }
-            return elementenTrending;
         }
 
         public List<Element> getTrendingElementen(int amount = 1)
@@ -195,6 +170,36 @@ namespace BL.Managers
         {
             elementRepository.addOrganisatie(organisatie);
         }
+        #endregion
+
+        #region Helper
+        private List<Element> getTopTrending(List<Element> elementen, int amount)
+        {
+            List<Element> elementenTrending = new List<Element>();
+
+            for (int i = 0; i < amount; i++)
+            {
+                if (elementen.Count == 0)
+                {
+                    return elementenTrending;
+                }
+                double maxTrend = 0.0;
+
+                Element maxElement = elementen.First();
+                foreach (Element element in elementen)
+                {
+                    if (element.Trend > maxTrend)
+                    {
+                        maxElement = element;
+                        maxTrend = maxElement.Trend;
+                    }
+                }
+                elementen.Remove(maxElement);
+                elementenTrending.Add(maxElement);
+            }
+            return elementenTrending;
+        }
+
         #endregion
     }
 }

@@ -11,6 +11,7 @@ namespace BL.Managers
 {
     public class PlatformManager : IPlatformManager
     {
+        #region Constructor
         IPlatformRepository platformRepository;
 
         UnitOfWorkManager uowManager;
@@ -25,7 +26,27 @@ namespace BL.Managers
             this.uowManager = uowManager;
             platformRepository = new PlatformRepository_EF(uowManager.UnitOfWork);
         }
+        #endregion
 
+        #region Platform
+        public TimeSpan getHistoriek()
+        {
+            return platformRepository.getPlatform().Historiek;
+        }
+        #endregion
+      
+        #region Deelplatform
+        public Deelplatform getDeelplatformByNaam(string deelplatformNaam)
+        {
+            return platformRepository.getDeelPlatform(deelplatformNaam);
+        }
+
+        public List<Deelplatform> getAllDeeplatformen()
+        {
+            return platformRepository.getAllDeelplatformen().ToList();
+        }
+        #endregion
+  
         #region Gebruiker
         public Gebruiker getGebruiker(string id)
         {
@@ -33,14 +54,20 @@ namespace BL.Managers
             return gebruiker;
         }
 
-        public Gebruiker getGebruikerMetEmail(string email)
+        public Gebruiker getGebruikerByEmail(string email)
         {
             return platformRepository.getGebruikerMetEmail(email);
         }
 
         public void createGebruiker(string id, string name, string email)
         {
-            platformRepository.createGebruiker(id, name, email);
+            Gebruiker gebruiker = new Gebruiker()
+            {
+                Naam = name,
+                GebruikerId = id,
+                Email = email
+            };
+            platformRepository.createGebruiker(gebruiker);
         }
 
         public void deleteGebruiker(string id)
@@ -59,18 +86,6 @@ namespace BL.Managers
         }
 
 
-        #endregion
-
-        #region deelplatform
-        public Deelplatform getDeelPlatform(string deelplatform)
-        {
-            return platformRepository.getDeelPlatform(deelplatform);
-        }
-
-        public List<Deelplatform> getAllDeeplatformen()
-        {
-            return platformRepository.getAllDeelplatformen().ToList();
-        }
         #endregion
     }
 }

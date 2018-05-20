@@ -10,32 +10,42 @@ namespace BL.Interfaces
 {
     public interface IDashboardManager
     {
-        Gebruiker getAlertGebruiker(Alert alert);
+        #region Dashboard
+        Dashboard getDashboard(string gebruikersNaam);
+        #endregion
 
+        #region Zone
+        IEnumerable<Zone> getZones(Dashboard dashboard);
+        Zone getZone(int zoneId);
+        void deleteZone(int zoneId);
+        Zone addZone(Dashboard dashboard);
+        void updateZone(Zone zone);
+        #endregion
+
+        #region Item
+        IEnumerable<Item> getItems(int actieveZone);
+        Item getItem(int itemId);
+        #endregion
+
+        #region Grafiek
+        string getGraphData(Grafiek grafiek);
+        Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
+        #endregion
+
+        #region Alert
+        Alert getAlert(int alertId);
+        Gebruiker getAlertGebruiker(Alert alert);
         List<Alert> getActiveAlerts();
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
         void sendAlerts();
-        IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
-
-        Dashboard getDashboard(string gebruikersNaam);
-
-        IEnumerable<Item> getItems(int actieveZone);
-
-        IEnumerable<Zone> getZones(Dashboard dashboard);
-        Zone getZone(int zoneId);
-    Zone getZoneByNaam(string zoneNaam);
-        void deleteZone(int zoneId);
-        Zone addZone(Dashboard dashboard);
-        Alert getAlert(int id);
-        void updateZone(Zone zone);
-
-        TimeSpan getHistoriek();
-        string getGraphData(Grafiek grafiek);
-        Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
-        void addAlert(Alert testAlert);
+        void createAlert(Alert testAlert);
         IEnumerable<Alert> getDashboardAlerts(Dashboard testDashboard);
-        Melding createMelding(Alert alert, double waarde);
+        #endregion
 
+        #region Melding
+        IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
+        Melding createMelding(Alert alert, double waarde);
+        #endregion
     }
 }
