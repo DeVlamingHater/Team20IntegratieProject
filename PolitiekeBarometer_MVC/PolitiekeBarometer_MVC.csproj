@@ -356,6 +356,7 @@
     <Content Include="Views\Alert\CreateAlert.cshtml" />
     <Content Include="Views\Alert\MeldingDetail.cshtml" />
     <Content Include="Views\Deelplatform\Index.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />
@@ -534,13 +535,14 @@
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
     <Content Include="Views\Shared\MeldingDropDown.cshtml" />
-    <Content Include="Views\Shared\Grafiek\Item_Partial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\Item_Partial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\DashboardPartial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Dashboard\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
