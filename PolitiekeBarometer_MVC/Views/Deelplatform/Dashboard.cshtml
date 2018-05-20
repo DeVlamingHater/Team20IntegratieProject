@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Domain.Dashboards.Zone>
+
 <style>
     .item1 {
         grid-area: header;
@@ -66,19 +67,23 @@
     @Html.ActionLink("+", "AddZone", null, new { @class = "btn btn-outline-primary " })
     @foreach (var zone in Model)
     {
-        <div class="tab-content bg-light">
-            <div id="@zone.Id" class="tab-pane" style="display:none">
-                <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>
+        if (zone.Items != null)
+        {
+            <div class="tab-content bg-light">
+                <div id="@zone.Id" class="tab-pane" style="display:none">
+                    <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>
+                </div>
             </div>
-        </div>
+        }
+
     }
 </div>
 ﻿<canvas id="maakGrafiek"></canvas>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal">
     Maak Grafiek
 </button>
 
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
