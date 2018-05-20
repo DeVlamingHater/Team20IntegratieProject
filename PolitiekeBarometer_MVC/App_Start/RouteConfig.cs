@@ -15,9 +15,9 @@ namespace PolitiekeBarometer_MVC
             routes.MapRoute(
                 name: "Default",
                 url: "{deelplatform}/{controller}/{action}/{id}",
-                defaults: new { deelplatform="pb", controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new {deelplatform="pb", controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-            
+
         }
     }
 }

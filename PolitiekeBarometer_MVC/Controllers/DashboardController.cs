@@ -21,14 +21,18 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager dashboardManager = new DashboardManager();
             Item item = dashboardManager.getItem(ItemId);
-            return View();
+            return View("DashboardPartials/ItemPartial", item);
         }
-
+        public ActionResult CreateItem(FormCollection form)
+        {
+            string itemtype = form["ItemType"];
+            return RedirectToAction("Index");
+        }
         public ActionResult Index()
         {
             IDashboardManager dashboardManager = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-           Dashboard dashboard = dashboardManager.getDashboard(email);
+            Dashboard dashboard = dashboardManager.getDashboard(email);
             return View(dashboard);
         }
         public ActionResult CreateZone()
@@ -41,6 +45,13 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             Index();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DeleteZone(int zoneId)
+        {
+            IDashboardManager mgr = new DashboardManager();
+            mgr.deleteZone(zoneId);
+            return RedirectToAction("Dashboard");
         }
     }
 }

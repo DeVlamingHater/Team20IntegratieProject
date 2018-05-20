@@ -57,7 +57,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -68,7 +67,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -98,7 +96,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
-        [RequireHttps]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
@@ -113,7 +110,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
@@ -143,7 +139,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult Register()
         {
             return View();
@@ -153,7 +148,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -208,7 +202,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        [RequireHttps]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -222,7 +215,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult ForgotPassword()
         {
             return View();
@@ -232,7 +224,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -260,7 +251,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -269,7 +259,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
@@ -279,7 +268,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -305,7 +293,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -315,7 +302,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
@@ -326,7 +312,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/SendCode
         [AllowAnonymous]
-        [RequireHttps]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
@@ -343,7 +328,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
@@ -363,7 +347,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
-        [RequireHttps]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -395,7 +378,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        [RequireHttps]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
@@ -443,7 +425,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
-        [RequireHttps]
         public ActionResult ExternalLoginFailure()
         {
             return View();

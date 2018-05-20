@@ -364,14 +364,12 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             this.Dashboard();
             return RedirectToAction("Dashboard");
-            return View();
         }
         public ActionResult DeleteZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
             return RedirectToAction("Dashboard");
-            return View();
         }
 
         public ActionResult getZonesJson()

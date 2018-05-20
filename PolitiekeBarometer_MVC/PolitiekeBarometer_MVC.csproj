@@ -314,6 +314,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Tabs\tabs.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -535,8 +536,7 @@
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
     <Content Include="Views\Shared\MeldingDropDown.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\Item_Partial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\DashboardPartial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
