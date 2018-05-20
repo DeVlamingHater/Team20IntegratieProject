@@ -37,7 +37,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 
 
         [HttpGet]
-
         [Route("api/AndroidApi/Alerts")]
         public List<Alert> GetAlerts(string email)
         {

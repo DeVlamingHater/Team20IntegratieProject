@@ -150,7 +150,7 @@ namespace DAL.Repositories_EF
             return context.Alerts.Include(a => a.DataConfig.Element).Single<Alert>(a => a.AlertId == alert.AlertId).DataConfig;
         }
 
-        public void addAlert(Alert alert)
+        public void createAlert(Alert alert)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             bool valid = Validator.TryValidateObject(alert, new ValidationContext(alert), errors, true);
