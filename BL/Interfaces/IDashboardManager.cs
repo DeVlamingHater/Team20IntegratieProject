@@ -24,7 +24,7 @@ namespace BL.Interfaces
         Dashboard getDashboard(string email);
 
         IEnumerable<Item> getItems(int actieveZone);
-
+        IEnumerable<Grafiek> getGrafieken(int actieveZone);
         IEnumerable<Zone> getZones(Dashboard dashboard);
         Zone getZone(int zoneId);
     Zone getZoneByNaam(string zoneNaam);
