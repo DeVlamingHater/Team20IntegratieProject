@@ -70,7 +70,7 @@ namespace PolitiekeBarometer_MVC
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
         {
-            var issuer = "http://localhost:44301";
+            var issuer = "https://localhost:44301";
             string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
             byte[] audienceSecret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);
 
@@ -100,7 +100,7 @@ namespace PolitiekeBarometer_MVC
                 TokenEndpointPath = new PathString("/oauth/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat("http://localhost:44301")
+                AccessTokenFormat = new CustomJwtFormat("https://localhost:44301")
             };
 
             // OAuth 2.0 Bearer Access Token Generation
