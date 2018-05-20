@@ -61,10 +61,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             return namen;
         }
         [HttpGet]
-        public List<Item> getItems(string naam)
+        public List<Item> getItems(int id)
         {
             DashboardManager dashboardManager = new DashboardManager();
-            Zone zone = dashboardManager.getZoneByNaam(naam);
+            Zone zone = dashboardManager.getZone(id);
             IEnumerable<Item> items = dashboardManager.getItems(zone.Id);
 
             List<string> itemsList = new List<string>();
