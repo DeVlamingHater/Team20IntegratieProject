@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Platformen;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,7 @@ namespace Domain
         public string Naam { get; set; }
         public double Trend { get; set; }
         public int TrendingPlaats { get; set; }
+        public Deelplatform Deelplatform{ get; set; }
 
         public override bool Equals(object obj)
         {

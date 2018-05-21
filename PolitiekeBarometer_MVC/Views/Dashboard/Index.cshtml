@@ -3,9 +3,23 @@
 @{
     ViewBag.Title = "Dashboard";
 }
-<head>
-    <script src="~/Scripts/Tabs/tabs.js"></script>
-</head>
+<style>
+    .chosen-container {
+        width: 100% !important;
+    }
+
+    .tabContainer {
+        position: relative;
+    }
+
+        .tabContainer a {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            height: 10px;
+            width: 10px;
+        }
+</style>
 <div class="tab">
     @foreach (var zone in Model.Zones)
     {
@@ -13,16 +27,17 @@
             <button class="tablinks" onclick="loadZone(event, @zone.Id)">
                 @zone.Naam
             </button>
-            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id }, new { @class = "btn btn-outline-secondary" })
+            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
         </div>
     }
     <div>
         <button onclick="location.href='@Url.Action("CreateZone", "Dashboard")'">
-            +
+            + Nieuwe Zone
         </button>
     </div>
 
 </div>
+
 @foreach (var zone in Model.Zones)
 {
     <div id="@zone.Id" class="tabcontent">
@@ -37,6 +52,8 @@
 
     </div>
 }
+
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal1">
     Maak nieuw Item
 </button>
@@ -96,19 +113,14 @@
                 </div>
                 <div class="modal-body">
                     <label for="dataType">Welk datatype kies je?</label>
-                    <label>
-                        <input type="radio" name="DataType" value="Totaal" />
-                        Totaal
-                    </label>
-                    <label>
-                        <input type="radio" name="Datatype" value="Trend" />
-                        Trend
-                    </label>
-
+                    <select class="chosen-select" id="DataType">
+                        <option value="Totaal">Totaal</option>
+                        <option value="Trend">Trend</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
-                    <button type="button" data-dismiss="modal" data-toggle="modal" data-target="#createItemModal3">Volgende</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#createItemModal3">Volgende</button>
                 </div>
             </div>
         </div>
@@ -123,10 +135,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <label for="searchString">Zoek je personen, organisaties of thema's waarop je wil filteren:</label>
-                    <div id="searchBar" onload="fillFunction()" class="form-group dropdown form-inline">
-                        <input type="text" class="form-control" id="searchString" onkeyup="searchFunction()" />
 
+                    <div>
+                        <label for="dataType">Kies uw parsonen, organisatie of elementen</label>
+                        <select id="test" class="chosen-select" multiple name="faculty" style="width:100%;">
+                            @foreach (var item in ViewBag.Suggestions)
+                            {
+                                <option value="@item.Naam">@item.Naam</option>
+                            }
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -157,44 +174,21 @@
         </div>
     </div>
 }
-<style>
-    .tab {
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-color: #f1f1f1;
-    }
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".multiselect").chosen()
+            {
+                width: "100px";
+            };
+        });
+        $(document).ready(function () {
+            $(".chosen-select").chosen()
+            {
+                width: "100px";
+            };
+        });
 
-        .tab div {
-            padding: 4px 7px 2px 0px
-        }
+    </script>
+}
 
-        /* Style the buttons that are used to open the tab content */
-        .tab * {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-        }
-
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-
-        /* Create an active/current tablink class */
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-    /* Style the tab content */
-    .tabcontent {
-        display: none;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-top: none;
-    }
-</style>

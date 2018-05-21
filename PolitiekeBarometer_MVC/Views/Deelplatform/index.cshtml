@@ -69,7 +69,12 @@
                             <span class="nav-link-text">Profiel Instellingen</span>
                         </a>
                     </li>
+
                 }
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
+                        @Html.ActionLink("deelplatformen", "Index", "Home", null, new { @class = "nav-link", id = "homeLink" })
+
+                    </li>
 
             </ul>
             <ul class="navbar-nav sidenav-toggler">
