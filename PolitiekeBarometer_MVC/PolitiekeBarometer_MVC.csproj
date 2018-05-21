@@ -20,10 +20,13 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>44363</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -549,7 +552,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Deelplatform\Dashboard.cshtml" />
-    <Content Include="Views\Shared\_ItemsPartial.cshtml" />
+    <Content Include="Views\Deelplatform\_ItemsPartial.cshtml" />
     <Content Include="Views\Deelplatform\Persoon.cshtml" />
     <Content Include="Views\Deelplatform\Thema.cshtml" />
     <Content Include="Views\Shared\_PersonenDropDown.cshtml" />
@@ -559,7 +562,7 @@
     <Content Include="Views\Shared\_LijnGrafiekPartial.cshtml" />
     <Content Include="Views\Deelplatform\Test.cshtml" />
     <Content Include="Views\Shared\_TaartGrafiekPartial.cshtml" />
-    <Content Include="Views\Shared\_ItemPartial.cshtml" />
+    <Content Include="Views\Deelplatform\_ItemPartial.cshtml" />
     <Content Include="Views\SuperAdmin\LijstAdmins.cshtml" />
     <Content Include="Views\SuperAdmin\DetailsAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
