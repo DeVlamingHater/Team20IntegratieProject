@@ -29,9 +29,9 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenConsumption(app);
             CreateUserAndRoles();
             IElementManager elementManager = new ElementManager();
-            elementManager.deleteAllPersonen();
-            elementManager.addPersonen(elementManager.readJSONPersonen());
-            elementManager.setTrendingElementen();
+            //elementManager.deleteAllPersonen();
+            //elementManager.addPersonen(elementManager.readJSONPersonen());
+            //elementManager.setTrendingElementen();
             UpdateAsync();
             SetTimer();
         }
