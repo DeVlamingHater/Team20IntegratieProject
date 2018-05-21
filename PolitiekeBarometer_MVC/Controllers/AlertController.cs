@@ -25,7 +25,15 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult CreateAlert()
         {
+            IElementManager elementManager = new ElementManager();
+            ViewBag.Suggestions = elementManager.getAllElementen();
             return View();
+        }
+        public ActionResult CreateAlert(FormCollection form)
+        {
+            var elementen = form["elementen"];
+
+            return RedirectToAction("LijstAlerts");
         }
 
         public ActionResult EditAlert(int id)
