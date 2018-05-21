@@ -276,7 +276,7 @@
         $(document).ready(function () {
             $("#grafiekOpslaan").click(function () {
                 var f = {};
-                f.url = '@Url.Action("getGrafiekData", "Home")';
+                f.url = '@Url.Action("getGrafiekData", "Deelplatform")';
                 f.type = "POST";
                 f.dataType = "json";
                 f.data = JSON.stringify({ grafiekType: grafiekType, zone: zoneID, datum: datum.toString(), dataType: data });
