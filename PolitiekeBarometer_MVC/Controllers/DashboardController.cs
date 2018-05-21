@@ -17,24 +17,38 @@ namespace PolitiekeBarometer_MVC.Controllers
 {
     public class DashboardController : BaseController
     {
+        public ActionResult Index()
+        {
+            IElementManager elementManager = new ElementManager();
+            IDashboardManager dashboardManager = new DashboardManager();
+            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+            ViewBag.Suggestions = elementManager.getAllElementen();
+            return View(dashboard);
+        }
+        public ActionResult Test()
+        {
+           
+            return View();
+        }
         public ActionResult ItemPartial(int ItemId)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             Item item = dashboardManager.getItem(ItemId);
             return View("DashboardPartials/ItemPartial", item);
         }
+        public ActionResult Suggestions()
+        {
+            IElementManager elementManager = new ElementManager();
+            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(), "Id", "Naam");
+            return View("search/Suggestions", elementManager.getAllElementen());
+        }
         public ActionResult CreateItem(FormCollection form)
         {
             string itemtype = form["ItemType"];
             return RedirectToAction("Index");
         }
-        public ActionResult Index()
-        {
-            IDashboardManager dashboardManager = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(email);
-            return View(dashboard);
-        }
+       
         public ActionResult CreateZone()
         {
             IDashboardManager mgr = new DashboardManager();
