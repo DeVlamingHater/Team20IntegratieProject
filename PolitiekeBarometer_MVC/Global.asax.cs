@@ -23,5 +23,6 @@ namespace PolitiekeBarometer_MVC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
          }
         
+        
     }
 }

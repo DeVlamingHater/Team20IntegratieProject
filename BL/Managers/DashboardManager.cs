@@ -108,6 +108,12 @@ namespace BL.Managers
         #endregion
 
         #region Grafiek
+
+        public IEnumerable<Grafiek> getGrafieken(int zoneId)
+        {
+            return dashboardRepository.getGrafieken(zoneId);
+        }
+
         public void addGrafiek(Grafiek grafiek)
         {
             dashboardRepository.addGrafiek(grafiek);

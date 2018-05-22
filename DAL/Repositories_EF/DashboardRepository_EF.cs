@@ -120,6 +120,12 @@ namespace DAL.Repositories_EF
         #endregion
 
         #region Grafiek
+
+        public IEnumerable<Grafiek> getGrafieken(int actieveZone)
+        {
+            return context.Grafieken.Where(r => r.Zone.Id == actieveZone);
+        }
+
         public void addGrafiek(Grafiek grafiek)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

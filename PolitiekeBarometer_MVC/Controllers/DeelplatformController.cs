@@ -318,8 +318,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
 
             IDashboardManager mgr = new DashboardManager();
-            IEnumerable<Item> items = mgr.getItems(zoneId);
-            return PartialView(items);
+            IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
+            return PartialView(grafieken);
         }
         public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
 
@@ -364,14 +364,12 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             this.Dashboard();
             return RedirectToAction("Dashboard");
-            return View();
         }
         public ActionResult DeleteZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
             return RedirectToAction("Dashboard");
-            return View();
         }
 
         public ActionResult getZonesJson()

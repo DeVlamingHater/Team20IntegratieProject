@@ -23,14 +23,15 @@
                 {
                     <!-- Dashboard-->
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="~/Home/Dashboard">
+                        <a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")">
+
                             <i class="fa fa-fw fas fa-wrench"></i>
                             <span class="nav-link-text">Mijn Dashboard</span>
                         </a>
                     </li>
                     <!-- Alert List-->
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
-                        <a class="nav-link" onclick="" href="charts.html">
+                        <a class="nav-link" onclick="" href="@Url.Action("LijstAlerts", "Alert")">
                             <i class="fa fa-fw fas fa-bell"></i>
                             <span class="nav-link-text">Mijn Alerts</span>
                         </a>
@@ -54,7 +55,7 @@
                 </li>
                 <!-- Dropdown trending Thema's-->
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themas">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
+                    <a class="nav-link navbar-light nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
                         <i class="fa fa-fw fal fa-book"></i>
                         <span class="nav-link-text">Thema's</span>
                     </a>
@@ -69,7 +70,12 @@
                             <span class="nav-link-text">Profiel Instellingen</span>
                         </a>
                     </li>
+
                 }
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
+                        @Html.ActionLink("deelplatformen", "Index", "Home", null, new { @class = "nav-link", id = "homeLink" })
+
+                    </li>
 
             </ul>
             <ul class="navbar-nav sidenav-toggler">

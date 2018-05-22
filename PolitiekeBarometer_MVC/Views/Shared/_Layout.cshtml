@@ -14,15 +14,18 @@
     <!-- Page level plugin CSS-->
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
     <!-- Custom styles for this template-->
-
+    <link href="~/Chosen/chosen.css" rel="stylesheet" />
+    <link href="~/Content/Tabs.css" rel="stylesheet" />
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css" rel="stylesheet" />
 </head>
 <body class="fixed-nav sticky-footer" id="page-top">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-        <div class="navbar-brand nav-item">@Html.ActionLink("Home", "Index", "Deelplatform", null ,new { @class = "nav-link", id = "homeLink" })</div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" style="padding:0px; margin:0">
+        <div class="navbar-brand nav-item">
+            @Html.ActionLink("Home", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" })
+        </div>
 
-       <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto" style="align-items:center">
                 @if (User.IsInRole("SuperAdmin"))
                 {
@@ -153,120 +156,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
+    <script src="~/Chosen/chosen.jquery.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
-<script>
-	$(document).ready(function () {
-		$.ajax({
-			type: "POST",
-			url: @Url.Action("Alert", "GetData"),
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			success: successFunc(result),
-			error: errorFunc
-		});
-
-		function successFunc(result) {
-
-		}
-</script>
-<script>
-    $(document).ready(function () {
-        $("#searchBar").keyup(function () {
-            //alert("json")
-            var searchtekst = document.getElementById("searchBar").value;
-                var f = {};
-                f.url = '@Url.Action("Search", "Home")';
-                f.type = "POST";
-                f.dataType = "json";
-                f.data = JSON.stringify({ searchstring: searchtekst });
-                f.contentType = "application/json";
-                f.success = function (response) {
-                    //alert("succes json")
-                    searchFunction(response);
-                };
-                //f.error = function (response) {
-                //    alert("failed");
-                //};
-                $.ajax(f);
-          });
-        });
-</script>
-<script>
-        function searchFunction(namen) {
-            //alert("aangeroepen");
-            var ul = document.getElementById("searchlist");
-            ul.innerHTML = "";
-            for (i = 0; i < namen.length; i++) {
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                var link = '@Url.Action("Persoon")?naam=' + namen[i];
-                //alert("loop");
-                a.innerHTML = namen[i];
-                a.setAttribute("id", namen[i]);
-                a.setAttribute("href", link)
-                a.setAttribute("class", "btn")
-                li.setAttribute("class", "dropdown-item");
-                ul.appendChild(li);
-                li.appendChild(a);
-                getElement(namen[i]);
-
-            };
-        }
-        function getElement(elementNaam) {
-            //alert("getElement " + elementNaam);
-                var f = {};
-                f.url = '@Url.Action("getElementType", "Home")';
-                f.type = "POST";
-                f.dataType = "json";
-                f.data = JSON.stringify({ naam: elementNaam });
-                f.contentType = "application/json";
-                f.success = function (response) {
-                    //alert("success " + response + " " + elementNaam);
-                    setLink(response, elementNaam);
-                };
-                f.error = function (response) {
-                    //alert("failed");
-                };
-                $.ajax(f);
-        }
-        function setLink(response, elementNaam) {
-            var a = document.getElementById(elementNaam);
-            var link = a.getAttribute("href");
-            //alert("setLink " + response);
-            if (response == "Persoon") {
-                    link = '@Url.Action("Persoon")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    //alert("response" + response);
-                    }
-                else if (response == "Organisatie") {
-                    //alert("response" + response);
-                    link = '@Url.Action("Organisatie")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    }
-                else if (response == "Thema") {
-                    //alert("response" + response);
-                    link = '@Url.Action("Thema")?naam=' + elementNaam;
-                    a.setAttribute("href", link);
-                    }
-                    else {
-                        alert("foutje");
-                    };
-        }
-
-        function dropList() {
-            var ul = document.getElementById("searchlist");
-            var search = document.getElementById("searchBar").value;
-            if (search == "" || ul.children.length == 0) {
-                ul.style.display = "none";
-            } else {
-                ul.style.display = "block";
-            };
-        }
-
-</script>
-
-
 

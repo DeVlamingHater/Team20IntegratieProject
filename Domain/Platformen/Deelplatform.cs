@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Domain.Dashboards;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Platformen
 {
@@ -19,5 +17,20 @@ namespace Domain.Platformen
         public List<Gebruiker> Gebruikers { get; set; }
 
         public List<Gebruiker> Admins { get; set; }
+
+        public Dashboard Dashboard { get; set; }
+
+        public string PersoonString { get; set; }
+
+        public string OrganisatieString { get; set; }
+
+        public string ThemaString { get; set; }
+
+        public string PersonenString { get; set; }
+
+        public string OrganisatiesString { get; set; }
+
+        public string ThemasString { get; set; }
+
     }
 }
