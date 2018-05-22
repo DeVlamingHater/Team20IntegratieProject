@@ -24,7 +24,7 @@
     @foreach (var zone in Model.Zones)
     {
         <div class="border">
-            <button class="tablinks" onclick="loadZone(event, @zone.Id)">
+            <button class="tablinks" onclick="loadZone(event, @zone.Id)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(this)">
                 @zone.Naam
             </button>
             @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
@@ -187,7 +187,25 @@
                 width: "100px";
             };
         });
-
+        function veranderTabNaam(button) {
+            button.contentEditable = "true";
+        }
+        function saveTabNaam(button) {
+            tekst = button.innerText;
+            var f = {};
+                f.url = '@Url.Action("saveTabNaam", "Dashboard")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({naam: tekst });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("success");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+        }
     </script>
 }
 
