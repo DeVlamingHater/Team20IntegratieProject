@@ -10,13 +10,13 @@
     <meta name="author" content="">
     <title>SB Admin - Start Bootstrap Template</title>
 </head>
-<body>
+<body class="sidenav-toggled">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
 
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse collapsed navbar-collapse" id="navbarResponsive">
 
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                 @if (Request.IsAuthenticated)
@@ -72,8 +72,12 @@
                     </li>
 
                 }
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
-                    @Html.ActionLink("deelplatformen", "Index", "Home", null, new { @class = "nav-link", id = "homeLink" })
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-fw fal fa-home"></i>
+                            <span class="nav-link-text">Deelplatformen</span>
+                        </a>
+
 
                 </li>
 

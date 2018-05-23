@@ -32,5 +32,7 @@ namespace Domain.Platformen
 
         public string ThemasString { get; set; }
 
+        public byte[] BannerImage { get; set; }
+
     }
 }
