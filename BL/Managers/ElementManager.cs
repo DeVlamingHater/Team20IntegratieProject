@@ -3,6 +3,7 @@ using DAL;
 using DAL.Repositories_EF;
 using Domain;
 using Domain.Dashboards;
+using Domain.Platformen;
 using Newtonsoft.Json;
 using POC_IntegratieProject_framework;
 using System;
@@ -33,24 +34,24 @@ namespace BL.Managers
         #endregion
 
         #region Element
-        public List<Element> getAllElementen()
+        public List<Element> getAllElementen(Deelplatform deelplatform)
         {
-            return elementRepository.getAllElementen().ToList();
+            return elementRepository.getAllElementen(deelplatform).ToList();
         }
 
-        public Element getElementByNaam(string naam)
+        public Element getElementByNaam(string naam, Deelplatform deelplatform)
         {
-            Element element = elementRepository.getElementByName(naam);
+            Element element = elementRepository.getElementByName(naam, deelplatform);
             return element;
         }
 
-        public void setTrendingElementen()
+        public void setTrendingElementen(Deelplatform deelplatform)
         {
             UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
             this.uowManager = unitOfWorkManager;
             PostManager postManager = new PostManager(unitOfWorkManager);
 
-            List<Element> elementen = getAllElementen();
+            List<Element> elementen = getAllElementen(deelplatform);
 
             foreach (Element element in elementen)
             {
@@ -60,9 +61,9 @@ namespace BL.Managers
             elementen.ForEach(e => elementRepository.setElement(e));
         }
 
-        public List<Element> getTrendingElementen(int amount = 1)
+        public List<Element> getTrendingElementen(int amount , Deelplatform deelplatform)
         {
-            List<Element> elementenTrending = elementRepository.getAllElementen().ToList();
+            List<Element> elementenTrending = elementRepository.getAllElementen(deelplatform).ToList();
             List<Element> elementen = new List<Element>();
             List<Element> personen = elementenTrending.Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
             List<Element> themas = elementenTrending.Where(e => e.GetType().Equals(typeof(Thema))).ToList();
@@ -87,9 +88,9 @@ namespace BL.Managers
         #endregion
 
         #region Persoon
-        public List<Persoon> getAllPersonen()
+        public List<Persoon> getAllPersonen(Deelplatform deelplatform)
         {
-            return elementRepository.getAllPersonen().ToList();
+            return elementRepository.getAllPersonen(deelplatform).ToList();
         }
 
         public void addPersonen(List<Persoon> personen)
@@ -97,8 +98,11 @@ namespace BL.Managers
             personen.ForEach(p => elementRepository.AddPersoon(p));
         }
 
-        public List<Persoon> readJSONPersonen()
+        public List<Persoon> readJSONPolitici()
         {
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
 
@@ -122,8 +126,9 @@ namespace BL.Managers
                     Site = persoon.site,
                     Town = persoon.town,
                     Twitter = persoon.twitter,
+                    Deelplatform = deelplatform
                 };
-                Organisatie organisatie = (Organisatie)getElementByNaam(persoon.organisation);
+                Organisatie organisatie = (Organisatie)getElementByNaam(persoon.organisation, deelplatform);
                 if (organisatie == null)
                 {
                     organisatie = new Organisatie()
@@ -132,7 +137,8 @@ namespace BL.Managers
                         Personen = new List<Persoon>()
                         {
                             politicus
-                        }
+                        },
+                        Deelplatform = deelplatform
                     };
                     addOrganisatie(organisatie);
                 }
@@ -142,9 +148,9 @@ namespace BL.Managers
             return personen;
         }
 
-        public void deleteAllPersonen()
+        public void deleteAllPersonen(Deelplatform deelplatform)
         {
-            elementRepository.deleteAllPersonen();
+            elementRepository.deleteAllPersonen(deelplatform);
         }
 
         public void addPersoon(Persoon persoon)
@@ -156,12 +162,29 @@ namespace BL.Managers
         {
             elementRepository.deletePersoon(persoon);
         }
+
+        public void updatePersoon(Persoon persoon)
+        {
+            elementRepository.updatePersoon(persoon);
+        }
         #endregion
 
         #region Thema
-        public List<Thema> getAllThemas()
+        public List<Thema> getAllThemas(Deelplatform deelplatform)
         {
-            return elementRepository.getAllThemas();
+            return elementRepository.getAllThemas(deelplatform);
+        }
+        public void addThema(Thema thema)
+        {
+            elementRepository.addThema(thema);
+        }
+        public void updateThema(Thema thema)
+        {
+            elementRepository.updateThema(thema);
+        }
+        public void deleteThema(Thema thema)
+        {
+            elementRepository.deleteThema(thema);
         }
         #endregion
 
@@ -169,6 +192,19 @@ namespace BL.Managers
         public void addOrganisatie(Organisatie organisatie)
         {
             elementRepository.addOrganisatie(organisatie);
+        }
+
+        public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)
+        {
+            return elementRepository.getAllOrganisaties(deelplatform);
+        }
+        public void updateOrganisatie(Organisatie organisatie)
+        {
+            elementRepository.updateOrganisatie(organisatie);
+        }
+        public void deleteOrganisatie(Organisatie organisatie)
+        {
+            elementRepository.deleteOrganisatie(organisatie);
         }
         #endregion
 
@@ -199,7 +235,6 @@ namespace BL.Managers
             }
             return elementenTrending;
         }
-
         #endregion
     }
 }

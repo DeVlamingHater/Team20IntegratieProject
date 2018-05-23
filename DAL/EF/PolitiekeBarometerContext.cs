@@ -92,6 +92,8 @@ namespace DAL.EF
 
             modelBuilder.Entity<Grafiek>().HasMany<DataConfig>(g => g.Dataconfigs);
 
+            modelBuilder.Entity<Gebruiker>().HasMany<Dashboard>(g => g.Dashboards);
+
             modelBuilder.Entity<Dashboard>().HasMany<Zone>(db=>db.Zones);
             
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);

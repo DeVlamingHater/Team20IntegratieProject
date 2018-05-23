@@ -21,9 +21,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
+
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(email);
-            ViewBag.Suggestions = elementManager.getAllElementen();
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             return View(dashboard);
         }
         public ActionResult Test()
@@ -41,15 +44,15 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Suggestions()
         {
             IElementManager elementManager = new ElementManager();
-            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(), "Id", "Naam");
-            return View("search/Suggestions", elementManager.getAllElementen());
+            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(Deelplatform), "Id", "Naam");
+            return View("search/Suggestions", elementManager.getAllElementen(Deelplatform));
         }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
-            Grafiek grafiek = new Grafiek();
+            Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>()};
             var itemtype = form["ItemType"];
             var interval = form["Interval"];
             var dataType = form["DataType"];
@@ -77,7 +80,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     List<DataConfig> allDataConfigs = new List<DataConfig>();
                     DataConfig baseConfig = new DataConfig()
                     {
-                        Element = elementManager.getElementByNaam(elementNaam),
+                        Element = elementManager.getElementByNaam(elementNaam, Deelplatform),
                         Filters = new List<Domain.Dashboards.Filter>(),
                         Vergelijking = null
                     };
@@ -174,7 +177,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 

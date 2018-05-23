@@ -20,7 +20,7 @@ namespace BL.Interfaces
         #region Gebruiker
         Gebruiker getGebruiker(string id);
         Gebruiker getGebruikerByEmail(string email);
-        void createGebruiker(string id, string name, string email);
+        void createGebruiker(Gebruiker gebruiker);
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
         void updateGebruiker(Gebruiker gebruiker);

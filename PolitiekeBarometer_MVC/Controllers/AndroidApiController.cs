@@ -29,7 +29,11 @@ namespace PolitiekeBarometer_MVC.Controllers
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
 
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
             
@@ -40,7 +44,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Items = new List<Item>()
             };
 
-            Element testElement = elementManager.getElementByNaam("Bart De Wever");
+            Element testElement = elementManager.getElementByNaam("Bart De Wever", deelplatform);
 
             DataConfig testDataConfig = new DataConfig()
             {
@@ -81,7 +85,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager dashboardManager = new DashboardManager();
 
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
 
             List<Alert> lijstAlerts = dashboardManager.getDashboardAlerts(dashboard).ToList();
 
@@ -92,7 +100,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         public List<Melding> GetMeldingen(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
 
             Melding melding1 = new Melding()

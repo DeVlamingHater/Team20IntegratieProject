@@ -64,14 +64,8 @@ namespace BL.Managers
             return platformRepository.getGebruikerMetEmail(email);
         }
 
-        public void createGebruiker(string id, string name, string email)
+        public void createGebruiker(Gebruiker gebruiker)
         {
-            Gebruiker gebruiker = new Gebruiker()
-            {
-                Naam = name,
-                GebruikerId = id,
-                Email = email
-            };
             platformRepository.createGebruiker(gebruiker);
         }
 

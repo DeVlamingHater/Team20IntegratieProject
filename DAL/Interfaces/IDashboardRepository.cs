@@ -10,7 +10,7 @@ namespace DAL
     public interface IDashboardRepository
     {
         #region Dashboard
-        Dashboard getDashboard(string gebruikersNaam);
+        Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform);
         #endregion
 
         #region Zone

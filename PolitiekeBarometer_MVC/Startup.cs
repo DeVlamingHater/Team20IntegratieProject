@@ -29,12 +29,14 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenConsumption(app);
             CreateUserAndRoles();
             IElementManager elementManager = new ElementManager();
-            elementManager.deleteAllPersonen();
-            elementManager.addPersonen(elementManager.readJSONPersonen());
-            elementManager.setTrendingElementen();
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+            elementManager.deleteAllPersonen(deelplatform);
+            elementManager.addPersonen(elementManager.readJSONPolitici());
+            elementManager.setTrendingElementen(deelplatform);
             UpdateAsync();
             SetTimer();
-          }
+           }
 
         private void SetTimer()
         {
@@ -49,15 +51,17 @@ namespace PolitiekeBarometer_MVC
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
+            IPlatformManager platformManager = new PlatformManager();
             IPostManager postManager = new PostManager();
             DateTime lastUpdate = Platform.lastUpdate;
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
             string responseString = await postManager.updatePosts(Platform.lastUpdate);
 
             postManager.addJSONPosts(responseString);
             postManager.deleteOldPosts();
 
-            elementManager.setTrendingElementen();
+            elementManager.setTrendingElementen(deelplatform);
             dashboardManager.sendAlerts();
             Platform.refreshTimer.Interval = Platform.interval.TotalMilliseconds;
 

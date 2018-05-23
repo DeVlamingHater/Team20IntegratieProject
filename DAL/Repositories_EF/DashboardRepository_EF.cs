@@ -29,12 +29,12 @@ namespace DAL.Repositories_EF
         #endregion
 
         #region Dashboard
-        public Dashboard getDashboard(string gebruikersNaam)
+        public Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform)
         {
             Dashboard dashboard = null;
 
             Gebruiker gebruiker = context.Gebruikers.First(g => g.Email == gebruikersNaam);
-            List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email).ToList();
+            List<Dashboard> dashboards = context.Dashboards.Include<Dashboard>("Zones").Where(d => d.Gebruiker.Email == gebruiker.Email && d.Deelplatform.Id == deelplatform.Id).ToList();
             if (dashboards.Count != 0)
             {
                 dashboard = dashboards.First();
@@ -45,6 +45,7 @@ namespace DAL.Repositories_EF
                 //Eerste keer dat een gebruiker dat een gebruiker inlogd heeft deze nog geen dashboard
                 dashboard = new Dashboard()
                 {
+                    Deelplatform = deelplatform,
                     Gebruiker = gebruiker,
                     Zones = new List<Zone>()
                     {

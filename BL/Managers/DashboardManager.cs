@@ -54,9 +54,9 @@ namespace BL.Managers
         #endregion
     
         #region Dashboard
-        public Dashboard getDashboard(string email)
+        public Dashboard getDashboard(string email, Deelplatform deelplatform)
         {
-            Dashboard dashboard = dashboardRepository.getDashboard(email);
+            Dashboard dashboard = dashboardRepository.getDashboard(email, deelplatform);
             return dashboard;
         }
         #endregion

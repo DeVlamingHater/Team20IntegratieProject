@@ -133,7 +133,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         #endregion
 
-        #region Deelplatform maken
+        #region Deelplatform 
 
         // GET: Admin/Create
         public ActionResult CreateDeelplatform()
@@ -153,9 +153,6 @@ namespace PolitiekeBarometer_MVC.Controllers
                 OrganisatieString = form["txtOrganisatiestring"],
                 ThemaString = form["txtThemastring"],
             };
-
-
-
 
             IPlatformManager platformManager = new PlatformManager();
 

@@ -223,7 +223,7 @@ namespace PolitiekeBarometer_CA
             IElementManager elementManager = new ElementManager();
 
             elementManager.deleteAllPersonen();
-            elementManager.addPersonen(elementManager.readJSONPersonen());
+            elementManager.addPersonen(elementManager.readJSONPolitici());
         }
 
         private static void sendEmail()

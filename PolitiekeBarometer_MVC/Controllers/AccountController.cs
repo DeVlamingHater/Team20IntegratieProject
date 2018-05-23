@@ -179,7 +179,8 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                     if (result.Succeeded && status)
                     {
-                        platformManager.createGebruiker(user.Id, user.Name, user.Email);
+                        gebruiker.GebruikerId = user.Id;
+                        platformManager.createGebruiker(gebruiker);
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
