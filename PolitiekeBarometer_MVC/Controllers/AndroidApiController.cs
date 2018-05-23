@@ -36,7 +36,8 @@ namespace PolitiekeBarometer_MVC.Controllers
             Zone testZone = new Zone()
             {
                 Dashboard = dashboard,
-                Naam = "TestZone"
+                Naam = "TestZone",
+                Items = new List<Item>()
             };
 
             Element testElement = elementManager.getElementByNaam("Bart De Wever");
