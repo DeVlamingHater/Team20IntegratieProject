@@ -32,11 +32,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dashboard dashboard = dashboardManager.getDashboard(email);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
-
+            
+            #region testData
             Zone testZone = new Zone()
             {
-                Dashboard = dashboard,
-                Naam = "TestZone"
+                Naam = "TestZone",
+                Items = new List<Item>()
             };
 
             Element testElement = elementManager.getElementByNaam("Bart De Wever");
@@ -56,15 +57,24 @@ namespace PolitiekeBarometer_MVC.Controllers
                     testDataConfig
                 },
                 GrafiekType = GrafiekType.LINE,
-                AantalDataPoints = 12
+                AantalDataPoints = 12,
+                Tittel ="testGrafiek"
             };
 
             testZone.Items.Add(testGrafiek);
             lijstZones.Add(testZone);
+            #endregion
             return lijstZones;
         }
 
-
+        [HttpGet]
+        public string getData(Grafiek grafiek)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            dashboardManager.getGraphData(grafiek);
+            return dashboardManager.getGraphData(grafiek);
+            
+        }
         [HttpGet]
         [Route("api/AndroidApi/Alerts")]
         public List<Alert> GetAlerts(string email)
