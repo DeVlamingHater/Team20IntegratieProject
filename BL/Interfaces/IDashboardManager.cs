@@ -19,6 +19,7 @@ namespace BL.Interfaces
         Zone getZone(int zoneId);
         void deleteZone(int zoneId);
         Zone addZone(Dashboard dashboard);
+        void changeZoneName(int zoneId, string zoneNaam);
         void updateZone(Zone zone);
         #endregion
 
