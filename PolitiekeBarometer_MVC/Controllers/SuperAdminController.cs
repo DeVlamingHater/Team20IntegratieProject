@@ -133,5 +133,66 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         #endregion
 
+        #region Deelplatform maken
+
+        // GET: Admin/Create
+        public ActionResult CreateDeelplatform()
+        {
+            return View();
+        }
+
+        // POST: Admin/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateDeelplatform(FormCollection form)
+        {
+            Deelplatform deelplatform = new Deelplatform()
+            {
+                Naam = form["txtNaam"],
+                PersoonString = form["txtPersoonstring"],
+                OrganisatieString = form["txtOrganisatiestring"],
+                ThemaString = form["txtThemastring"],
+            };
+
+
+
+
+            IPlatformManager platformManager = new PlatformManager();
+
+
+
+            platformManager.createDeelplatform(deelplatform);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AssignAdmin()
+        {
+            IPlatformManager platformManager = new PlatformManager();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new PolitiekeBarometerContext()));
+            var admins =  userManager.Users.Where(u => u.Roles.Count > 0).ToList();
+
+            ViewBag.Deelplatformen = platformManager.getAllDeeplatformen();
+            ViewBag.Admins = admins;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AssignAdmin(FormCollection form)
+        {
+            string email = form["txtAdmin"];
+            string deelplatform = form["txtDeelplatform"];
+            IPlatformManager platformManager = new PlatformManager();
+
+            Gebruiker gebruiker = platformManager.getGebruikerByEmail(email);
+            Deelplatform dp = platformManager.getDeelplatformByNaam(deelplatform);
+            dp.Admins.Add(gebruiker);
+            
+            return View("Index");
+        }
+
+        #endregion
+
+
+
     }
 }

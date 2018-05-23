@@ -82,6 +82,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             var user = new ApplicationUser();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            
             string naam = form["txtNaam"];
             string userName = form["txtEmail"];
             string email = form["txtEmail"];

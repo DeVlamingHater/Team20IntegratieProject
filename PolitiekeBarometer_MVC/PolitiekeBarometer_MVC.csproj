@@ -571,6 +571,8 @@
     <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
     <Content Include="Views\Shared\Search\Suggestions.cshtml" />
+    <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
+    <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

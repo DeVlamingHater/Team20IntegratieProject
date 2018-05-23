@@ -45,8 +45,13 @@ namespace BL.Managers
         {
             return platformRepository.getAllDeelplatformen().ToList();
         }
+
+        public void createDeelplatform(Deelplatform deelplatform)
+        {
+            platformRepository.createDeelplatform(deelplatform);
+        }
         #endregion
-  
+
         #region Gebruiker
         public Gebruiker getGebruiker(string id)
         {
@@ -84,6 +89,9 @@ namespace BL.Managers
         {
             platformRepository.saveGebruiker(gebruiker);
         }
+
+        
+        
 
 
         #endregion
