@@ -6,7 +6,7 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        @Html.Action("/DashboardPartials/Item_Partial", "Dashboard",item)
+        @Html.Action("Item_Partial", "Dashboard", item)
     }
 </div>
 

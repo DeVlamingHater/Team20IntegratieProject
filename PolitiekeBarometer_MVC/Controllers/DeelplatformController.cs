@@ -322,7 +322,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             return PartialView(grafieken);
         }
         public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
-
         {
             ViewBag.GrafiekType = grafiekType;
             ViewBag.GrafiekIndex = index;

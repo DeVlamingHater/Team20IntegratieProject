@@ -48,6 +48,34 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             return lijstAlerts;
         }
+        [HttpGet]
+        [Route("api/AndroidApi/Meldingen")]
+        public List<Melding> GetMeldingen(string email)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            Dashboard dashboard = dashboardManager.getDashboard(email);
+            List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
+
+            Melding melding1 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = true,
+                MeldingDateTime = DateTime.Now.AddHours(-1),
+                Message = "Deze Alert is een positieve test alert",
+                Titel = "Postieve Test Melding"
+            };
+            Melding melding2 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = false,
+                MeldingDateTime = DateTime.Now.AddHours(-2),
+                Message = "Deze Alert is een Negatieve test alert",
+                Titel = "Negatieve Test Melding"
+            };
+            meldingen.Add(melding1);
+            meldingen.Add(melding2);
+            return meldingen;
+        }
 
     }
 }

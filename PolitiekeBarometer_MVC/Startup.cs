@@ -34,7 +34,7 @@ namespace PolitiekeBarometer_MVC
             //elementManager.setTrendingElementen();
             //UpdateAsync();
             SetTimer();
-        }
+          }
 
         private void SetTimer()
         {

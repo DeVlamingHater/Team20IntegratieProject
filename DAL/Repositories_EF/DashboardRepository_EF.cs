@@ -131,7 +131,10 @@ namespace DAL.Repositories_EF
         {
             return context.Grafieken.Where(r => r.Zone.Id == actieveZone);
         }
-
+        public Grafiek getGrafiek(int itemId)
+        {
+            return context.Grafieken.FirstOrDefault(g => g.Id == itemId);
+        }
         public void addGrafiek(Grafiek grafiek)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
