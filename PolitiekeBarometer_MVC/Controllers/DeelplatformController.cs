@@ -78,7 +78,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string[] arrayTaartGrafiek3 = getGraphData(naamTaartGrafiek3, "sentiment");
             //ViewBag.LabelsTaart3 = arrayTaartGrafiek3[0];
             //ViewBag.DataTaart3 = arrayTaartGrafiek3[1];
-
+            ViewBag.Naam = deelplatform;
             return View();
         }
         public string[] getGraphData(string naam, string dataType1)
@@ -322,7 +322,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             return PartialView(grafieken);
         }
         public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
-
         {
             ViewBag.GrafiekType = grafiekType;
             ViewBag.GrafiekIndex = index;
@@ -365,28 +364,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             this.Dashboard();
             return RedirectToAction("Dashboard");
         }
-        public ActionResult DeleteZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            mgr.deleteZone(zoneId);
-            return RedirectToAction("Dashboard");
-        }
-
-        public ActionResult getZonesJson()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
-            List<Zone> zones = dashboard.Zones;
-            List<string> lijst = new List<string>();
-            foreach (Zone zone in zones)
-            {
-                lijst.Add(zone.Naam);
-            }
-            return Json(
-                lijst
-               );
-        }
+        
         public ActionResult dashboardGrafiek(string zoneNaam, int grafiekIndex)
         {
             // IDashboardManager mgr = new DashboardManager();

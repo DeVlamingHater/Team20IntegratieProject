@@ -20,7 +20,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44363</IISExpressSSLPort>
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -285,6 +285,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Element.css" />
     <Content Include="Content\Home.css" />
+    <Content Include="Content\Images\Politieke_Barometer_Banner2.jpg" />
+    <Content Include="Content\Images\statistics-3411473_1920.jpg" />
     <Content Include="Content\NewTab.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Tabs.css" />
@@ -323,6 +325,7 @@
     <Content Include="Chosen\package.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
+    <Content Include="Scripts\Grafiek\Grafiek.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
     <Content Include="Scripts\jquery-3.0.0.slim.js" />

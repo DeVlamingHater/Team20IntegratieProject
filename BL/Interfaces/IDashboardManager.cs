@@ -19,6 +19,7 @@ namespace BL.Interfaces
         Zone getZone(int zoneId);
         void deleteZone(int zoneId);
         Zone addZone(Dashboard dashboard);
+        void changeZoneName(int zoneId, string zoneNaam);
         void updateZone(Zone zone);
         #endregion
 
@@ -29,8 +30,10 @@ namespace BL.Interfaces
 
         #region Grafiek
         string getGraphData(Grafiek grafiek);
-        Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
+        Grafiek createGrafiek(Grafiek grafiek);
         IEnumerable<Grafiek> getGrafieken(int actieveZone);
+        Grafiek getGrafiek(int itemId);
+
         #endregion
 
         #region Alert

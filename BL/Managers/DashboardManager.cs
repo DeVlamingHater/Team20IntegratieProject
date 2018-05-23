@@ -89,6 +89,11 @@ namespace BL.Managers
             return dashboardRepository.addZone(zone);
         }
 
+        public void changeZoneName(int zoneId,string naam)
+        {
+            dashboardRepository.changeZoneName(zoneId,naam);
+        }
+
         public void updateZone(Zone zone)
         {
             dashboardRepository.UpdateZone(zone);
@@ -118,19 +123,12 @@ namespace BL.Managers
         {
             dashboardRepository.addGrafiek(grafiek);
         }
-
-        public Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs)
+        public Grafiek getGrafiek(int itemId)
         {
-            Grafiek grafiek = new Grafiek()
-            {
-                GrafiekType = grafiekType,
-                DataType = dataType,
-                AantalDataPoints = aantalDataPoints,
-                Tijdschaal = Tijdschaal,
-                Zone = getZone(zoneId),
-                Filters = new List<Filter>(filters),
-                Dataconfigs = new List<DataConfig>(dataConfigs)
-            };
+            return dashboardRepository.getGrafiek(itemId);
+        }
+        public Grafiek createGrafiek(Grafiek grafiek)
+        {
             dashboardRepository.addGrafiek(grafiek);
             return grafiek;
         }
@@ -140,7 +138,7 @@ namespace BL.Managers
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            Dictionary<string, string> data = new Dictionary<string, string>();
+            List<string> data = new List<string>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
 
@@ -185,7 +183,7 @@ namespace BL.Managers
                     start = start.Add(interval);
                 }
                 string dataString = JsonConvert.SerializeObject(grafiekData);
-                data.Add(index.ToString(), dataString);
+                data.Add(dataString);
                 index++;
             }
             return JsonConvert.SerializeObject(data).ToString();

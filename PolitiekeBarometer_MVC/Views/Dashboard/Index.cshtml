@@ -24,7 +24,7 @@
     @foreach (var zone in Model.Zones)
     {
         <div class="border">
-            <button class="tablinks" onclick="loadZone(event, @zone.Id)">
+            <button class="tablinks" onclick="loadZone(event, @zone.Id)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.Id,this)">
                 @zone.Naam
             </button>
             @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
@@ -82,10 +82,9 @@
                         <i class="fa fa-pie-chart" style="font-size: 80px"></i>
                     </label>
                     <label>
-                        <input type="radio" title="ABC" name="ItemType" value="Pie" />
-                        Text
+                        <input type="radio" title="Number" name="ItemType" value="Number" />
+                        Enkele waarde
                     </label>
-
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
@@ -112,8 +111,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <label for="dataType">Welk datatype kies je?</label>
-                    <select class="chosen-select" id="DataType">
+                    <label>Tijd interval</label>
+                    <select name="Interval" class="chosen-select" id="DataType">
+                        <option value="12u">Laatste 12 uur</option>
+                        <option value="24u">Laatste 24 uur</option>
+                        <option value="7d">Laatste 7 dagen</option>
+                        <option value="30d">Laatste 30 dagen</option>
+                    </select>
+
+                    <label>Welk datatype kies je?</label>
+                    <select name="DataType" class="chosen-select" id="DataType">
                         <option value="Totaal">Totaal</option>
                         <option value="Trend">Trend</option>
                     </select>
@@ -137,12 +144,38 @@
                 <div class="modal-body">
                     <div>
                         <label for="DataType">Kies uw personen, organisatie of elementen</label>
-                        <select id="test" class="chosen-select" multiple name="faculty" style="width:100%;">
+                        <select id="test" class="chosen-select" multiple name="elementen" style="width:100%;">
                             @foreach (var item in ViewBag.Suggestions)
                             {
                                 <option value="@item.Naam">@item.Naam</option>
                             }
                         </select>
+                        <div class="form-group">
+                            <h4>Filters</h4>
+                            @Html.Label("Age")
+                            <div class="form-group">
+                                <input type="radio" name="Age" value="Geen"> Geen filter
+                                <input type="radio" name="Age" value="Splits"> Splits
+                                <input type="radio" name="Age" value="Positief"> +25j
+                                <input type="radio" name="Age" value="Negatief"> -25j<br>
+                            </div>
+                            @Html.Label("Sentiment")
+                            <div class="form-group">
+                                <input type="radio" name="Sentiment" value="Geen"> Geen filter
+                                <input type="radio" name="Sentiment" value="Splits"> Splits
+                                <input type="radio" name="Sentiment" value="Positief"> Positief
+                                <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+                            </div>
+
+                            @Html.Label("Retweet")
+                            <div class="form-group">
+                                <input type="radio" name="Retweet" value="Geen"> Geen filter
+                                <input type="radio" name="Retweet" value="Splits"> Splits
+                                <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
+                                <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -187,7 +220,7 @@
                 width: "100px";
             };
         });
-
+       
     </script>
 }
 

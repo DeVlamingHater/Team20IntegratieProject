@@ -19,18 +19,52 @@
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css" rel="stylesheet" />
     <!-- Bootstrap core CSS-->
 </head>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+    .banner {
+        /* The image used */
+        background-image: url('/Content/Images/Politieke_Barometer_Banner2.jpg');
+        /* Set a specific height */
+        width: 100%;
+        height: 100%;
+        /* Position and center the image to scale nicely on all screens */
+        background-position: center;
+        background-repeat: repeat;
+        background-size: cover;
+    }
+
+    /* Place text in the middle of the image */
+    .banner-text {
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: black;
+    }
+</style>
 <body>
-    <div class="container">
-        <div class="card card-login mx-auto mb-5 mt-5">
-            <div class="card-body">
-            <div>
-            <h3>Kies het deelplatform</h3>
-            </div>
-                @foreach (var item in Model)
-                {
-                    <a class="text-center" href="/@item.Naam/Deelplatform/Index">@item.Naam.ToString()</a>
-                }
+    <div class="banner">
+
+        <div class="banner-text")">
+            <h1>Barometer</h1>
+            <div class="container">
+                <div class="card card-login mx-auto mb-5 mt-5">
+                    <div class="card-body">
+                        <div>
+                            <h3>Kies het deelplatform</h3>
+                        </div>
+                        @foreach (var item in Model)
+                        {
+                            <a class="text-center" href="/@item.Naam/Deelplatform/Index">@item.Naam.ToString()</a>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </body>

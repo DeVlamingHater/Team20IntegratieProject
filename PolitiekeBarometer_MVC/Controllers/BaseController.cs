@@ -12,10 +12,12 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public BaseController()
         {
-            if (this.RouteData!=null)
-            {
-                deelplatformURL = (string)this.RouteData.Values["deelplatform"];
-            }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            deelplatformURL = HttpContext.Request.Url.Segments[1];
+            base.OnActionExecuting(filterContext);
         }
     }
 }

@@ -82,6 +82,12 @@ namespace DAL.Repositories_EF
             return zone;
         }
 
+        public void changeZoneName(int zoneId,string zoneNaam)
+        {
+            getZone(zoneId).Naam = zoneNaam;
+            context.SaveChanges();
+        }
+
         public void UpdateZone(Zone zone)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -125,7 +131,10 @@ namespace DAL.Repositories_EF
         {
             return context.Grafieken.Where(r => r.Zone.Id == actieveZone);
         }
-
+        public Grafiek getGrafiek(int itemId)
+        {
+            return context.Grafieken.FirstOrDefault(g => g.Id == itemId);
+        }
         public void addGrafiek(Grafiek grafiek)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -162,7 +171,7 @@ namespace DAL.Repositories_EF
             bool valid = Validator.TryValidateObject(alert, new ValidationContext(alert), errors, true);
             if (valid)
             {
-                context.Entry(alert).State = EntityState.Modified;
+                context.Alerts.Add(alert);
                 context.SaveChanges();
             }
         }
@@ -174,7 +183,7 @@ namespace DAL.Repositories_EF
 
         public Alert getAlert(int id)
         {
-            return (Alert)context.Alerts.Where(a => a.AlertId == id);
+            return (Alert)context.Alerts.Where(a => a.AlertId == id).FirstOrDefault();
         }
         #endregion
 
