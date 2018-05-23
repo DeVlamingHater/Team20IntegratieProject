@@ -23,7 +23,7 @@
                 {
                     <!-- Dashboard-->
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")">
+                        <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
 
                             <i class="fa fa-fw fas fa-wrench"></i>
                             <span class="nav-link-text">Mijn Dashboard</span>
@@ -73,12 +73,13 @@
 
                 }
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
-                        <a class="nav-link" href="@Url.Action("Index", "H")">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">
                             <i class="fa fa-fw fal fa-home"></i>
                             <span class="nav-link-text">Deelplatformen</span>
                         </a>
 
-                    </li>
+
+                </li>
 
             </ul>
             <ul class="navbar-nav sidenav-toggler">
@@ -92,6 +93,12 @@
     </nav>
     <div class="content-wrapper">
         <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="#">Deelplatform</a>
+                </li>
+                <li class="breadcrumb-item active">@ViewBag.Naam</li>
+            </ol>
             @Html.Action("_ItemPartial", new { grafiekType = 1, index = 0, labels = ViewBag.LabelsBar1, data = ViewBag.DataBar1, page = "index" })
             @Html.Action("_ItemPartial", new { grafiekType = 0, index = 1, labels = ViewBag.LabelsLijn1, data = ViewBag.DataLijn1, page = "index" })
             @Html.Action("_ItemPartial", new { grafiekType = 0, index = 2, labels = ViewBag.LabelsLijn2, data = ViewBag.DataLijn2, page = "index" })
