@@ -32,7 +32,7 @@ namespace PolitiekeBarometer_MVC
             //elementManager.deleteAllPersonen();
             //elementManager.addPersonen(elementManager.readJSONPersonen());
             //elementManager.setTrendingElementen();
-            UpdateAsync();
+            //UpdateAsync();
             SetTimer();
         }
 
