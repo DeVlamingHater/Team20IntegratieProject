@@ -8,6 +8,11 @@
         <i class="fa fa-bar-chart"></i> @Model.Tittel
     </div>
     <div class="card-body">
-        <canvas class="Item"></canvas>
+        <canvas class="Item">
+            @if (Model.GetType().Equals(typeof(Domain.Dashboards.Grafiek)))
+            {
+                @Html.Action("GrafiekPartial", "Dashboard", Model.Id)
+            }
+        </canvas>
     </div>
 </div>

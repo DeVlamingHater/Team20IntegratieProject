@@ -44,6 +44,7 @@ namespace DAL
         #region Melding
         void addMelding(Melding melding);
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
+        Grafiek getGrafiek(int itemId);
         #endregion
     }
 }

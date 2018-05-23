@@ -12,6 +12,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 {
     public class AlertController : BaseController
     {
+        #region Alert
         public ActionResult LijstAlerts()
         {
             IDashboardManager dashboardManager = new DashboardManager();
@@ -146,6 +147,9 @@ namespace PolitiekeBarometer_MVC.Controllers
             Alert alert = dashboardManager.getAlert(id);
             return View(alert);
         }
+        #endregion
+
+        #region Melding
         public ActionResult MeldingDetail(int id)
         {
             return View();
@@ -177,5 +181,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             meldingen.Add(melding2);
             return PartialView(meldingen);
         }
+        #endregion
     }
 }
