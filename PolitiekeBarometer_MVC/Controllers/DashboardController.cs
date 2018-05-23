@@ -67,17 +67,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             mgr.deleteZone(zoneId);
             return RedirectToAction("Index");
         }
-        public ActionResult saveTabNaam(string naam)
+        public ActionResult saveTabNaam(int id,string naam)
         {
             IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
-            Zone zone = new Zone()
-            {
-                Naam = naam,
-                Dashboard = dashboard
-            };
-            mgr.updateZone(zone);
+            mgr.changeZoneName(id,naam);
             return RedirectToAction("Index");
         }
     }

@@ -82,6 +82,12 @@ namespace DAL.Repositories_EF
             return zone;
         }
 
+        public void changeZoneName(int zoneId,string zoneNaam)
+        {
+            getZone(zoneId).Naam = zoneNaam;
+            context.SaveChanges();
+        }
+
         public void UpdateZone(Zone zone)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
