@@ -89,6 +89,11 @@ namespace BL.Managers
             return dashboardRepository.addZone(zone);
         }
 
+        public void changeZoneName(int zoneId,string naam)
+        {
+            dashboardRepository.changeZoneName(zoneId,naam);
+        }
+
         public void updateZone(Zone zone)
         {
             dashboardRepository.UpdateZone(zone);

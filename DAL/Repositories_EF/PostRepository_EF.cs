@@ -107,10 +107,7 @@ namespace DAL.Repositories_EF
                     }
                     else
                     {
-                        post.Personen.Add(new Persoon()
-                        {
-                            Naam = naam
-                        });
+                        
                     }
                 }
                 #endregion

@@ -33,132 +33,141 @@
         <div class="card-body bg-dark">
             @using (Html.BeginForm())
             {
-            <div class="form-horizontal">
-                <div class="form-group createAlert" id="elementen">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <h4 for="DataType">
-                        Kies uw personen, organisatie of thema's
-                        <i class="fa fa-arrow-down tooltipContainer">
-                            <span class="tooltiptext">De waarde van de alert wordt bepaalt door het totaal van de geselecteerde elementen</span>
-                        </i>
-                    </h4>
-                    <select id="test" class="chosen-select" multiple name="elementen" style="width:100%;">
-                        @foreach (var item in ViewBag.Suggestions)
-            {
-                <option value="@item.Naam">@item.Naam</option>
-}
-                    </select>
-
-                    <a class="card-link panel-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
-                        <span class="nav-link-text">Vergelijking toevoegen</span>
-                    </a>
-                    <div class="collapse" id="collapseThemas">
-                        <select id="test" class="chosen-select" multiple name="vergelijking" style="width:100%;">
+                <div class="form-horizontal">
+                    <div class="form-group createAlert" id="elementen">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <h4 for="DataType">
+                            Kies uw persoon, organisatie of thema
+                            <i class="fa fa-arrow-down tooltipContainer">
+                                <span class="tooltiptext">
+                                    De waarde van de alert wordt bepaalt door het geselecteerde element<br /><br />
+                                    Met een vergelijking wordt de waarde als volgt bepaald<br /><br />
+                                    De waarde is &lt; 0 wanneer het vergelijkingselement groter is<br /><br />
+                                    De waarde is &gt; 0 wanneer het geselecteerde element groter is
+                                </span>
+                            </i>
+                        </h4>
+                        <select id="test" class="chosen-select" name="element" style="width:100%;">
                             @foreach (var item in ViewBag.Suggestions)
-                {
-                    <option value="@item.Naam">@item.Naam</option>
-    }
+                            {
+                                <option value="@item.Naam">@item.Naam</option>
+                            }
                         </select>
-                    </div>
-                </div>
-                <div class="form-group createAlert">
-                    <h3>Waarde van de alert</h3>
-                    <div id="waarde">
-                        <label>
-                            Waarde
-                            <i class="fa fa-arrow-down tooltipContainer">
-                                <span class="tooltiptext">
-                                    De waarde van de alert
-                                </span>
-                            </i>:
-                        </label>
-                        <input name="waarde" class="form-control w-25" type="number" />
-                    </div>
-                    <div id="bewerking">
-                        <label>
-                            Bewerking
-                            <i class="fa fa-arrow-down tooltipContainer">
-                                <span class="tooltiptext">
-                                    Bepaalt welk type data gebruikt bij het berekenen:<br />
-                                    Totaal: totaal aantal posts<br />
-                                    Percentage: relatieve stijging/trend
-                                </span>
-                            </i>:
-                        </label>
-                        <div></div>
-                        <select name="bewerking" class="form-control  w-25">
-                            <option value="totaal">Totaal</option>
-                            <option value="Percentage">Percentage</option>
-                        </select>
-                    </div>
-                    <div id="operator">
-                        <label>
-                            Operator
-                            <i class="fa fa-arrow-down tooltipContainer">
-                                <span class="tooltiptext">
-                                    Bepaalt wanneer de alert wordt verzonden:<br />
-                                    Stijging: Wanneer de huidige waarde groter is dan de ingestelde waarde<br />
-                                    Daling: Wanneer de huidige waarde kleiner is dan de ingestelde waarde
-                                </span>
-                            </i>:
-                        </label>
-                        <select name="operator" class="form-control w-25">
-                            <option value="totaal">Stijging</option>
-                            <option value="Percentage">Daling</option>
-                        </select>
-                    </div>
 
-                </div>
-
-                <div class="form-group createAlert">
-                    <h4>Selecteer ontvangstmethode</h4>
-                    <div class="form-group form-inline ">
-                        @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="checkbox" name="emailMelding" />
-
+                        <a class="card-link panel-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
+                            <span class="nav-link-text">Vergelijking toevoegen</span>
+                        </a>
+                        <div class="collapse" id="collapseThemas">
+                            <select id="test" class="chosen-select" name="vergelijking" style="width:100%;">
+                            <option value="geen"></option>
+                            @foreach (var item in ViewBag.Suggestions)
+                                {
+                                    <option value="@item.Naam">@item.Naam</option>
+                                }
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group  form-inline">
-                        @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="checkbox" name="browserMelding" />
+                    <div class="form-group createAlert">
+                        <h3>
+                            Waarde van de alert <br />
+                        </h3>
+                        <div id="waarde">
+                            <label>
+                                Waarde
+                                <i class="fa fa-arrow-down tooltipContainer">
+                                    <span class="tooltiptext">
+                                        De waarde die overschreden moet worden:<br />
+                                        Dit is een stijging/daling per dag
+                                    </span>
+                                </i>:
+                            </label>
+                            <input name="waarde" class="form-control w-25" type="number" />
+                        </div>
+                        <div id="bewerking">
+                            <label>
+                                Bewerking
+                                <i class="fa fa-arrow-down tooltipContainer">
+                                    <span class="tooltiptext">
+                                        Bepaalt welk type data gebruikt bij het berekenen:<br />
+                                        Totaal: totaal aantal posts<br />
+                                        Percentage: relatieve stijging/trend
+                                    </span>
+                                </i>:
+                            </label>
+                            <div></div>
+                            <select name="bewerking" class="form-control  w-25">
+                                <option value="totaal">Totaal</option>
+                                <option value="percentage">Percentage</option>
+                            </select>
+                        </div>
+                        <div id="operator">
+                            <label>
+                                Operator
+                                <i class="fa fa-arrow-down tooltipContainer">
+                                    <span class="tooltiptext">
+                                        Bepaalt wanneer de alert wordt verzonden:<br />
+                                        Stijging: Wanneer de huidige waarde groter is dan de ingestelde waarde<br />
+                                        Daling: Wanneer de huidige waarde kleiner is dan de ingestelde waarde
+                                    </span>
+                                </i>:
+                            </label>
+                            <select name="operator" class="form-control w-25">
+                                <option value="stijging">Stijging</option>
+                                <option value="daling">Daling</option>
+                            </select>
+                        </div>
 
+                    </div>
+
+                    <div class="form-group createAlert">
+                        <h4>Selecteer ontvangstmethode</h4>
+                        <div class="form-group form-inline ">
+                            @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="checkbox" value="true" name="emailMelding" />
+
+                            </div>
+                        </div>
+                        <div class="form-group  form-inline">
+                            @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="checkbox" value="true" name="browserMelding" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group  form-inline">
+                            @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <input type="checkbox" value="true" name="applicatieMelding" />
+
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group  form-inline">
-                        @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <input type="checkbox" name="applicatieMelding" />
-
+                    <div class="form-group createAlert ">
+                        <h4>Filters</h4>
+                        @Html.Label("Age")
+                        <div class="form-group">
+                            <input type="radio" name="Age" value="Geen"> Geen filter
+                            <input type="radio" name="Age" value="Positief"> +25j
+                            <input type="radio" name="Age" value="Negatief"> -25j<br>
+                        </div>
+                        @Html.Label("Sentiment")
+                        <div class="form-group">
+                            <input type="radio" name="Sentiment" value="Geen"> Geen filter
+                            <input type="radio" name="Sentiment" value="Positief"> Positief
+                            <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+                        </div>
+                        @Html.Label("Retweet")
+                        <div class="form-group">
+                            <input type="radio"  name="Retweet" value="Geen"> Geen filter
+                            <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
+                            <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
                         </div>
                     </div>
-                </div>
-                <div class="form-group createAlert ">
-                    <h4>Filters</h4>
-                    @Html.Label("Age")
-                    <div class="form-group">
-                        <input type="radio" name="Age" value="Positief"> Geen filter
-                        <input type="radio" name="Age" value="Positief"> +25j
-                        <input type="radio" name="Age" value="Negatief"> -25j<br>
-                    </div>
-                    @Html.Label("Sentiment")
-                    <div class="form-group">
-                        <input type="radio" name="Sentiment" value="Positief"> Geen filter
-                        <input type="radio" name="Sentiment" value="Positief"> Positief
-                        <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
-                    </div>
-                    @Html.Label("Retweet")
-                    <div class="form-group">
-                        <input type="radio" name="Retweet" value="Positief"> Geen filter
-                        <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
-                        <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
-                    </div>
-                </div>
-                <button type="submit" value="Submit" class="btn btn-primary">Save</button>
+                    <button type="submit" value="Submit" class="btn btn-primary">Save</button>
 
-            </div>
+                </div>
             }
         </div>
     </div>
@@ -166,12 +175,18 @@
 
 @section scripts {
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".chosen-select").chosen()
-            {
-                width: "100px";
-            };
-        });
+        $(document).ready(
+            function () {
+                $(".chosen-select").chosen(
+                    {
+                        width: "100px",
+                        allow_single_deselect: true,
+                        disable_search_treshold: 10,
+                        no_results_text: "Geen elementen met deze naam gevonden"
+                    }
+                );
+            }
+        );
 
     </script>
 }

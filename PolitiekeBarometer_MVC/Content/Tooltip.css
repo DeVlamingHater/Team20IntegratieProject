@@ -15,8 +15,8 @@
         border-radius: 6px;
         position: absolute;
         z-index: 1;
-        bottom: -150%;
-        left: 50%;
+        top:0px;
+        left: 0px;
         margin-left: -60px;
         /* Fade in tooltip */
         opacity: 0;
