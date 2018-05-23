@@ -17,6 +17,7 @@ namespace DAL
         IEnumerable<Zone> getDashboardZones(int dashboardId);
         Zone getZone(int zoneId);
         Zone addZone(Zone zone);
+        void changeZoneName(int zoneId,string zoneNaam);
         void UpdateZone(Zone zone);
         void deleteZone(int zoneId);
         #endregion
