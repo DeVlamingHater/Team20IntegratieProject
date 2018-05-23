@@ -27,6 +27,7 @@ namespace DAL
         #endregion
 
         #region Grafiek
+        IEnumerable<Grafiek> getGrafieken(int actieveZone);
         void addGrafiek(Grafiek grafiek);
         #endregion
 

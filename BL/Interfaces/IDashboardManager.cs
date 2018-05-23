@@ -30,6 +30,7 @@ namespace BL.Interfaces
         #region Grafiek
         string getGraphData(Grafiek grafiek);
         Grafiek createGrafiek(GrafiekType grafiekType, Domain.DataType dataType, int aantalDataPoints, TimeSpan Tijdschaal, int zoneId, List<Filter> filters, List<DataConfig> dataConfigs);
+        IEnumerable<Grafiek> getGrafieken(int actieveZone);
         #endregion
 
         #region Alert
