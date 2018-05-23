@@ -23,16 +23,45 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
 
         [HttpGet]
+        [Route("api/AndroidApi/Zones")]
         public List<Zone> GetZones(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
+            IElementManager elementManager = new ElementManager();
 
             Dashboard dashboard = dashboardManager.getDashboard(email);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
 
-            return lijstZones;
+            Zone testZone = new Zone()
+            {
+                Dashboard = dashboard,
+                Naam = "TestZone"
+            };
 
+            Element testElement = elementManager.getElementByNaam("Bart De Wever");
+
+            DataConfig testDataConfig = new DataConfig()
+            {
+                DataConfiguratieId = 100,
+                Element = testElement
+
+            };
+            Grafiek testGrafiek = new Grafiek()
+            {
+                DataType = DataType.TOTAAL,
+                Tijdschaal = new TimeSpan(7, 0, 0, 0),
+                Dataconfigs = new List<DataConfig>()
+                {
+                    testDataConfig
+                },
+                GrafiekType = GrafiekType.LINE,
+                AantalDataPoints = 12
+            };
+
+            testZone.Items.Add(testGrafiek);
+            lijstZones.Add(testZone);
+            return lijstZones;
         }
 
 
