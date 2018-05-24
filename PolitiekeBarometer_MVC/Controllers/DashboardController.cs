@@ -22,11 +22,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
-            IPlatformManager platformManager = new PlatformManager();
-            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
 
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             return View(dashboard);
         }
@@ -41,17 +39,28 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View("DashboardPartials/ItemPartial", item);
         }
 
-        public ActionResult GrafiekPartial(int ItemId)
+        public ActionResult GrafiekPartial()
         {
-            IDashboardManager dashboardManager = new DashboardManager();
-            Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
-            List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
-            GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
+            //IDashboardManager dashboardManager = new DashboardManager();
+            //Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
+            //List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
+            //GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
 
-            grafiekViewModel.datasets = datasets;
-            grafiekViewModel.tittel = grafiek.Tittel;
-            grafiekViewModel.GrafiekType =grafiek.GrafiekType;
-            return PartialView("DashboardPartials/ItemPartial", grafiekViewModel);
+            List<string> labels = new List<string>()
+            {
+                "1","2","3"
+            };
+            List<double> data = new List<double>()
+            {
+                10.0,50.0,55.0
+            };
+            ViewBag.labels = labels;
+            ViewBag.data = data;
+            GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
+            //grafiekViewModel.datasets = datasets;
+            //grafiekViewModel.tittel = grafiek.Tittel;
+            //grafiekViewModel.GrafiekType =grafiek.GrafiekType;
+            return PartialView("DashboardPartials/GrafiekPartial", grafiekViewModel);
         }
 
         public ActionResult Suggestions()
@@ -190,7 +199,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 

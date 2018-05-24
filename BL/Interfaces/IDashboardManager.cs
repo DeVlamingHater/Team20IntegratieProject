@@ -11,7 +11,7 @@ namespace BL.Interfaces
     public interface IDashboardManager
     {
         #region Dashboard
-        Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform);
+        Dashboard getDashboard(string gebruikersNaam, string deelplatform);
         #endregion
 
         #region Zone

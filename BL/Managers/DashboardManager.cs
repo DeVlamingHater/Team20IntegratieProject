@@ -23,7 +23,6 @@ namespace BL.Managers
 
         public DashboardManager()
         {
-            dashboardRepository = new DashboardRepository_EF();
         }
 
         public DashboardManager(UnitOfWorkManager uowManager)
@@ -54,8 +53,11 @@ namespace BL.Managers
         #endregion
     
         #region Dashboard
-        public Dashboard getDashboard(string email, Deelplatform deelplatform)
+        public Dashboard getDashboard(string email, string deelplatformS)
         {
+            initNonExistingRepo(true);
+            IPlatformManager platformManager = new PlatformManager(uowManager);
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS);
             Dashboard dashboard = dashboardRepository.getDashboard(email, deelplatform);
             return dashboard;
         }
@@ -64,22 +66,30 @@ namespace BL.Managers
         #region Zone
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             int dashboardId = dashboard.Id;
             return dashboardRepository.getDashboardZones(dashboardId);
         }
 
         public Zone getZone(int zoneId)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getZone(zoneId);
         }
 
         public void deleteZone(int zoneId)
         {
+            initNonExistingRepo();
+
             dashboardRepository.deleteZone(zoneId);
         }
 
         public Zone addZone(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
             Zone zone = new Zone()
             {
@@ -91,11 +101,15 @@ namespace BL.Managers
 
         public void changeZoneName(int zoneId,string naam)
         {
+            initNonExistingRepo();
+
             dashboardRepository.changeZoneName(zoneId,naam);
         }
 
         public void updateZone(Zone zone)
         {
+            initNonExistingRepo();
+
             dashboardRepository.UpdateZone(zone);
         }
         #endregion
@@ -103,11 +117,15 @@ namespace BL.Managers
         #region Item
         public IEnumerable<Item> getItems(int zoneId)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getItems(zoneId);
         }
 
         public Item getItem(int itemId)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getItem(itemId);
         }
         #endregion
@@ -116,25 +134,35 @@ namespace BL.Managers
 
         public IEnumerable<Grafiek> getGrafieken(int zoneId)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getGrafieken(zoneId);
         }
 
         public void addGrafiek(Grafiek grafiek)
         {
+            initNonExistingRepo();
+
             dashboardRepository.addGrafiek(grafiek);
         }
         public Grafiek getGrafiek(int itemId)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getGrafiek(itemId);
         }
         public Grafiek createGrafiek(Grafiek grafiek)
         {
+            initNonExistingRepo();
+
             dashboardRepository.addGrafiek(grafiek);
             return grafiek;
         }
 
         public List<Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
+            initNonExistingRepo();
+
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
@@ -192,31 +220,43 @@ namespace BL.Managers
         #region Alert
         public List<Alert> getActiveAlerts(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getActiveAlerts(dashboard).ToList();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
         {
+            initNonExistingRepo();
+
             return alert.DataConfig;
         }
 
         public Gebruiker getAlertGebruiker(Alert alert)
         {
+            initNonExistingRepo();
+
             initNonExistingRepo(false);
             return alert.Dashboard.Gebruiker;
         }
 
         public List<Alert> getAllAlerts()
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getAllAlerts().ToList();
         }
         public List<Alert> getAllDashboardAlerts(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getAllDashboardAlerts(dashboard).ToList();
         }
 
         public void sendAlerts()
         {
+            initNonExistingRepo();
+
             IPostManager postManager = new PostManager(uowManager);
             List<Alert> activeAlerts = getAllAlerts().Where(a => a.Status == AlertStatus.ACTIEF).ToList();
             double waarde = 0.0;
@@ -276,21 +316,29 @@ namespace BL.Managers
 
         public void addAlert(Alert alert)
         {
+            initNonExistingRepo();
+
             dashboardRepository.createAlert(alert);
         }
 
         public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getDashboardAlerts(dashboard);
         }
 
         public Alert getAlert(int id)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getAlert(id);
         }
 
         public void createAlert(Alert alert)
         {
+            initNonExistingRepo();
+
             dashboardRepository.createAlert(alert);
         }
         #endregion
@@ -299,6 +347,8 @@ namespace BL.Managers
 
         public Melding createMelding(Alert alert, double waarde)
         {
+            initNonExistingRepo();
+
             Melding melding = new Melding()
             {
                 Alert = alert,
@@ -336,6 +386,8 @@ namespace BL.Managers
 
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
+            initNonExistingRepo();
+
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
         #endregion      

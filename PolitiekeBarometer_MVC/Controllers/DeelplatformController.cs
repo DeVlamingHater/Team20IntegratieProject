@@ -306,7 +306,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform); //aanpassen naar gebruikerId
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam); //aanpassen naar gebruikerId
             List<Zone> zones = dashboard.Zones;
             //if (actieveZone == 0)
             //{
@@ -357,7 +357,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 

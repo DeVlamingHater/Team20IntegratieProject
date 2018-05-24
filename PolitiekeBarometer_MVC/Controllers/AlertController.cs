@@ -19,7 +19,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen van alle alerts van een gebruiker
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
             return View(dashboardManager.getAllDashboardAlerts(dashboard));
         }
 
@@ -48,7 +48,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
 
             //Element & vergelijkingselement ophalen
             Element element = elementManager.getElementByNaam(form["element"], Deelplatform);
@@ -190,7 +190,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen Dashboard van de User van het huidige Deelplatform
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
 
             //Ophalen Meldingen van het dashboard
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
