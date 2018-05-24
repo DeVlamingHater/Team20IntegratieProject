@@ -12,6 +12,7 @@ using Domain.Platformen;
 using Newtonsoft.Json;
 using PolitiekeBarometer_MVC.Controllers.ActionFilter;
 using System.Text;
+using PolitiekeBarometer_MVC.Models;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -21,14 +22,16 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
+
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(email);
-            ViewBag.Suggestions = elementManager.getAllElementen();
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             return View(dashboard);
         }
         public ActionResult Test()
         {
-
             return View();
         }
         public ActionResult ItemPartial(int ItemId)
@@ -38,18 +41,31 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View("DashboardPartials/ItemPartial", item);
         }
 
+        public ActionResult GrafiekPartial(int ItemId)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
+            List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
+            GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
+
+            grafiekViewModel.datasets = datasets;
+            grafiekViewModel.tittel = grafiek.Tittel;
+            grafiekViewModel.GrafiekType =grafiek.GrafiekType;
+            return PartialView("DashboardPartials/ItemPartial", grafiekViewModel);
+        }
+
         public ActionResult Suggestions()
         {
             IElementManager elementManager = new ElementManager();
-            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(), "Id", "Naam");
-            return View("search/Suggestions", elementManager.getAllElementen());
+            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(Deelplatform), "Id", "Naam");
+            return View("search/Suggestions", elementManager.getAllElementen(Deelplatform));
         }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
-            Grafiek grafiek = new Grafiek();
+            Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>() };
             var itemtype = form["ItemType"];
             var interval = form["Interval"];
             var dataType = form["DataType"];
@@ -77,7 +93,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     List<DataConfig> allDataConfigs = new List<DataConfig>();
                     DataConfig baseConfig = new DataConfig()
                     {
-                        Element = elementManager.getElementByNaam(elementNaam),
+                        Element = elementManager.getElementByNaam(elementNaam, Deelplatform),
                         Filters = new List<Domain.Dashboards.Filter>(),
                         Vergelijking = null
                     };
@@ -174,7 +190,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 

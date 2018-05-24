@@ -6,6 +6,7 @@ using Domain.Dashboards;
 using Domain.Platformen;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PolitiekeBarometer_MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,55 +25,67 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         [HttpGet]
         [Route("api/AndroidApi/Zones")]
-        public List<Zone> GetZones(string email)
+        public List<ZoneViewModel> GetZones(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
 
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
 
-            Zone testZone = new Zone()
+            #region testData
+            ZoneViewModel testZone = new ZoneViewModel()
             {
-                Dashboard = dashboard,
-                Naam = "TestZone",
-                Items = new List<Item>()
+                naam = "testZone",
+                items = new List<ItemViewModel>()
             };
 
-            Element testElement = elementManager.getElementByNaam("Bart De Wever");
+            List<Dictionary<string, double>> datasets = new List<Dictionary<string, double>>();
+            Dictionary<string, double> dataset = new Dictionary<string, double>();
+            dataset.Add("Bart", 20.0);
+            dataset.Add("Imade", 80.0);
+            datasets.Add(dataset);
 
-            DataConfig testDataConfig = new DataConfig()
+            GrafiekViewModel testGrafiek = new GrafiekViewModel()
             {
-                DataConfiguratieId = 100,
-                Element = testElement
-
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = DataType.TOTAAL,
-                Tijdschaal = new TimeSpan(7, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                    testDataConfig
-                },
-                GrafiekType = GrafiekType.LINE,
-                AantalDataPoints = 12
+                tittel = "testGrafiek",
+                datasets = datasets,
+                GrafiekType = GrafiekType.BAR,
+                DataType = 1
             };
 
-            testZone.Items.Add(testGrafiek);
-            lijstZones.Add(testZone);
-            return lijstZones;
+            testZone.items.Add(testGrafiek);
+
+            List<ZoneViewModel> testzones = new List<ZoneViewModel>();
+            testzones.Add(testZone);
+            #endregion
+            return testzones;
         }
 
+        [HttpGet]
+        public List<Dictionary<string, double>> getData(Grafiek grafiek)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            dashboardManager.getGraphData(grafiek);
+            return dashboardManager.getGraphData(grafiek);
 
+        }
         [HttpGet]
         [Route("api/AndroidApi/Alerts")]
         public List<Alert> GetAlerts(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
 
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
 
             List<Alert> lijstAlerts = dashboardManager.getDashboardAlerts(dashboard).ToList();
 
@@ -83,7 +96,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         public List<Melding> GetMeldingen(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
-            Dashboard dashboard = dashboardManager.getDashboard(email);
+
+            //TODO: eventueel meerdere deelplatformen
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
 
             Melding melding1 = new Melding()

@@ -39,6 +39,12 @@ namespace DAL.Repositories_EF
         {
             return context.Deelplatformen;
         }
+
+        public void createDeelplatform(Deelplatform deelplatform)
+        {
+            context.Deelplatformen.Add(deelplatform);
+            context.SaveChanges();
+        }
         #endregion
 
         #region Gebruiker
@@ -74,6 +80,8 @@ namespace DAL.Repositories_EF
             context.Entry(gebruiker).State = EntityState.Modified;
             context.SaveChanges();
         }
+
+        
         #endregion
     }
 }

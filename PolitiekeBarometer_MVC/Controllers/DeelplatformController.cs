@@ -84,7 +84,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public string[] getGraphData(string naam, string dataType1)
         {
             ElementManager elementManager = new ElementManager();
-            Element persoon = elementManager.getElementByNaam(naam);
+            Element persoon = elementManager.getElementByNaam(naam, Deelplatform);
             DashboardManager dashboardManager = new DashboardManager();
             Enum.TryParse(dataType1.ToUpper(), out DataType mijnDatatype);
             DataConfig testDataConfig = new DataConfig()
@@ -102,7 +102,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 AantalDataPoints = 30
             };
 
-            string dataString = dashboardManager.getGraphData(testGrafiek);
+            string dataString = dashboardManager.getGraphData(testGrafiek).ToString();
 
 
             Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
@@ -134,7 +134,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             ElementManager mgr = new ElementManager();
             List<string> namen = new List<string>();
             List<int> ids = new List<int>();
-            foreach (Element element in mgr.getTrendingElementen())
+            foreach (Element element in mgr.getTrendingElementen(1, Deelplatform))
             {
                 namen.Add(element.Naam);
                 ids.Add(element.Id);
@@ -163,7 +163,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 datapoints = 15;
             }
             ElementManager mgr = new ElementManager();
-            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            Element testElement = mgr.getElementByNaam("Bart De Wever", Deelplatform);
             DashboardManager dashboardManager = new DashboardManager();
             GrafiekType grafiektype = (GrafiekType)Enum.Parse(typeof(GrafiekType), grafiekType.ToUpper());
             DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
@@ -201,10 +201,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             ElementManager mgr = new ElementManager();
             List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen();
+            elementen = mgr.getTrendingElementen(1, Deelplatform);
             List<string> namen = new List<string>();
             List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen())
+            foreach (Element element in mgr.getTrendingElementen(1, Deelplatform))
             {
                 namen.Add(element.Naam);
                 trends.Add(element.Trend);
@@ -237,7 +237,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Json(ViewBag.Trending = trends);
 
 
-            Element testElement = mgr.getElementByNaam("Bart De Wever");
+            Element testElement = mgr.getElementByNaam("Bart De Wever", Deelplatform);
             DashboardManager dashboardManager = new DashboardManager();
 
             Grafiek testGrafiek = new Grafiek()
@@ -252,7 +252,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 AantalDataPoints = 30
             };
 
-            string dataString = dashboardManager.getGraphData(testGrafiek);
+            string dataString = dashboardManager.getGraphData(testGrafiek).ToString() ;
 
 
             Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
@@ -276,10 +276,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             ElementManager mgr = new ElementManager();
             List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen();
+            elementen = mgr.getTrendingElementen(1, Deelplatform);
             List<string> namen = new List<string>();
             List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen())
+            foreach (Element element in mgr.getTrendingElementen(1, Deelplatform))
             {
                 namen.Add(element.Naam);
                 trends.Add(element.Trend);
@@ -306,7 +306,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email); //aanpassen naar gebruikerId
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform); //aanpassen naar gebruikerId
             List<Zone> zones = dashboard.Zones;
             //if (actieveZone == 0)
             //{
@@ -357,14 +357,14 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 
             this.Dashboard();
             return RedirectToAction("Dashboard");
         }
-        
+
         public ActionResult dashboardGrafiek(string zoneNaam, int grafiekIndex)
         {
             // IDashboardManager mgr = new DashboardManager();
@@ -384,7 +384,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult _PersonenDropDown()
         {
             IElementManager elementManager = new ElementManager();
-            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
+            List<Element> elementen = elementManager.getTrendingElementen(3, Deelplatform).Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
             List<Persoon> personen = new List<Domain.Persoon>();
 
             foreach (Element element in elementen)
@@ -396,7 +396,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult _OrganisatieDropDown()
         {
             IElementManager elementManager = new ElementManager();
-            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
+            List<Element> elementen = elementManager.getTrendingElementen(3, Deelplatform).Where(e => e.GetType().Equals(typeof(Organisatie))).ToList();
             List<Organisatie> organisaties = new List<Domain.Organisatie>();
             foreach (Element element in elementen)
             {
@@ -409,7 +409,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult _ThemaDropDown()
         {
             IElementManager elementManager = new ElementManager();
-            List<Element> elementen = elementManager.getTrendingElementen(3).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
+            List<Element> elementen = elementManager.getTrendingElementen(3, Deelplatform).Where(e => e.GetType().Equals(typeof(Thema))).ToList();
             List<Thema> themas = new List<Domain.Thema>();
             foreach (Element element in elementen)
             {
@@ -425,12 +425,12 @@ namespace PolitiekeBarometer_MVC.Controllers
                 List<Element> leeg = new List<Element>();
                 return PartialView(leeg);
             }
-            List<Element> elementen = elementManager.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Element> elementen = elementManager.getAllElementen(Deelplatform).Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             elementen = elementen.OrderBy(o => o.Trend).ToList();
-            List<Persoon> personen = elementManager.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = elementManager.getAllPersonen(Deelplatform).Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             personen = personen.OrderBy(o => o.Trend).ToList();
             elementen.AddRange(personen);
-            List<Thema> themas = elementManager.getAllThemas();
+            List<Thema> themas = elementManager.getAllThemas(Deelplatform);
             for (int i = 0; i < themas.Count(); i++)
             {
                 Thema thema = themas.ElementAt(i);
@@ -470,20 +470,13 @@ namespace PolitiekeBarometer_MVC.Controllers
                 ViewBag.Lijst = leeg;
                 return View();
             }
-            List<Element> elementen = elementManager.getAllElementen().Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Element> elementen = elementManager.getAllElementen(Deelplatform).Where(e => e.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             elementen = elementen.OrderBy(o => o.Trend).ToList();
-            List<Persoon> personen = elementManager.getAllPersonen().Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
+            List<Persoon> personen = elementManager.getAllPersonen(Deelplatform).Where(e => e.Organisatie.Naam.ToLower().Contains(searchstring.ToLower())).ToList();
             personen = personen.OrderBy(o => o.Trend).ToList();
             elementen.AddRange(personen);
-            List<Thema> themas = elementManager.getAllThemas();
-            for (int i = 0; i < themas.Count(); i++)
-            {
-                Thema thema = themas.ElementAt(i);
-                List<Keyword> keywords = thema.Keywords;
-                if (keywords is null) { }
+            List<Thema> themas = elementManager.getAllThemas(Deelplatform);
 
-
-            }
             if (elementen.Count() > 5)
             {
                 elementen = elementen.GetRange(0, 5);
@@ -494,14 +487,12 @@ namespace PolitiekeBarometer_MVC.Controllers
                 lijst.Add(element.Naam);
             }
             ViewBag.Lijst = lijst;
-            return Json(
-                 lijst
-                );
+            return Json(lijst);
         }
         public ActionResult getElementType(string naam)
         {
             IElementManager elementManager = new ElementManager();
-            Element element = elementManager.getElementByNaam(naam);
+            Element element = elementManager.getElementByNaam(naam, Deelplatform);
             if (element.GetType().Equals(typeof(Persoon)))
             {
                 return Json("Persoon");
@@ -525,14 +516,14 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
 
-            List<Element> elementen = elementManager.getAllElementen();
+            List<Element> elementen = elementManager.getAllElementen(Deelplatform);
             return Json(elementen);
         }
 
         public ActionResult Organisatie(string naam)
         {
             IElementManager elementManager = new ElementManager();
-            Element element = elementManager.getElementByNaam(naam);
+            Element element = elementManager.getElementByNaam(naam, Deelplatform);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -547,7 +538,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Persoon(string naam)
         {
             IElementManager elementManager = new ElementManager();
-            Element element = elementManager.getElementByNaam(naam);
+            Element element = elementManager.getElementByNaam(naam, Deelplatform);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -592,7 +583,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Thema(string naam)
         {
             IElementManager elementManager = new ElementManager();
-            Element element = elementManager.getElementByNaam(naam);
+            Element element = elementManager.getElementByNaam(naam, Deelplatform);
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];

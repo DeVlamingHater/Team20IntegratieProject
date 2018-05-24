@@ -14,11 +14,7 @@ namespace Domain.Platformen
 
         public TimeSpan Historiek  { get; set; }
 
-        public List<Gebruiker> Gebruikers { get; set; }
-
         public List<Gebruiker> Admins { get; set; }
-
-        public Dashboard Dashboard { get; set; }
 
         public string PersoonString { get; set; }
 

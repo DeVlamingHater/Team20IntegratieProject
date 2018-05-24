@@ -14,6 +14,7 @@ namespace DAL
         #region Deelplatform
         Deelplatform getDeelPlatform(string deelplatform);
         IEnumerable<Deelplatform> getAllDeelplatformen();
+        void createDeelplatform(Deelplatform deelplatform);
         #endregion
 
         #region Gebruiker

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BL.Interfaces;
+using BL.Managers;
+using Domain.Platformen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,13 +13,16 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         public string deelplatformURL { get; set; }
 
+        public Deelplatform Deelplatform{ get; set; }
         public BaseController()
         {
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            deelplatformURL = HttpContext.Request.Url.Segments[1];
+            this.deelplatformURL = HttpContext.Request.Url.Segments[1].Trim('/');
+            IPlatformManager platformManager = new PlatformManager();
+            this.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             base.OnActionExecuting(filterContext);
         }
     }

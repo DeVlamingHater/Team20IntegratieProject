@@ -1,16 +1,12 @@
 ﻿@model Domain.Persoon
-
-@{
+@{ 
     ViewBag.Title = "EditPersoon";
 }
-
 <h2>EditPersoon</h2>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Persoon</h4>
         <hr />

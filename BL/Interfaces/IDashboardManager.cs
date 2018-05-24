@@ -11,7 +11,7 @@ namespace BL.Interfaces
     public interface IDashboardManager
     {
         #region Dashboard
-        Dashboard getDashboard(string gebruikersNaam);
+        Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform);
         #endregion
 
         #region Zone
@@ -29,7 +29,7 @@ namespace BL.Interfaces
         #endregion
 
         #region Grafiek
-        string getGraphData(Grafiek grafiek);
+        List<Dictionary<string, double>> getGraphData(Grafiek grafiek);
         Grafiek createGrafiek(Grafiek grafiek);
         IEnumerable<Grafiek> getGrafieken(int actieveZone);
         Grafiek getGrafiek(int itemId);
@@ -39,7 +39,8 @@ namespace BL.Interfaces
         #region Alert
         Alert getAlert(int alertId);
         Gebruiker getAlertGebruiker(Alert alert);
-        List<Alert> getActiveAlerts();
+        List<Alert> getActiveAlerts(Dashboard dashboard);
+        List<Alert> getAllDashboardAlerts(Dashboard dashboard);
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
         void sendAlerts();

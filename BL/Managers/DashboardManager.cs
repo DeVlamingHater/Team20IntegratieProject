@@ -54,9 +54,9 @@ namespace BL.Managers
         #endregion
     
         #region Dashboard
-        public Dashboard getDashboard(string email)
+        public Dashboard getDashboard(string email, Deelplatform deelplatform)
         {
-            Dashboard dashboard = dashboardRepository.getDashboard(email);
+            Dashboard dashboard = dashboardRepository.getDashboard(email, deelplatform);
             return dashboard;
         }
         #endregion
@@ -64,7 +64,7 @@ namespace BL.Managers
         #region Zone
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
-            int dashboardId = dashboard.DashboardId;
+            int dashboardId = dashboard.Id;
             return dashboardRepository.getDashboardZones(dashboardId);
         }
 
@@ -133,19 +133,19 @@ namespace BL.Managers
             return grafiek;
         }
 
-        public string getGraphData(Grafiek grafiek)
+        public List<Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            List<string> data = new List<string>();
+            List<Dictionary<string, double>> data = new List<Dictionary<string, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
 
             foreach (DataConfig dataConfig in dataConfigs)
             {
                 //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
+                Dictionary<string, double> grafiekData = new Dictionary<string, double>();
 
                 DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
 
@@ -163,11 +163,11 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start, (double)posts.Count);
+                            grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
                             break;
                         case Domain.DataType.TREND:
                             double dataPoint = (double)posts.Count / (double)totaal;
-                            grafiekData.Add(start, dataPoint);
+                            grafiekData.Add(start.ToShortDateString(), dataPoint);
                             break;
                         case Domain.DataType.SENTIMENT:
                             double average = 0.0;
@@ -175,25 +175,24 @@ namespace BL.Managers
                             {
                                  average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
                             }
-                            grafiekData.Add(start, average);
+                            grafiekData.Add(start.ToShortDateString(), average);
                             break;
                         default:
                             break;
                     }
                     start = start.Add(interval);
                 }
-                string dataString = JsonConvert.SerializeObject(grafiekData);
-                data.Add(dataString);
+                data.Add(grafiekData);
                 index++;
             }
-            return JsonConvert.SerializeObject(data).ToString();
+            return data;
         }
         #endregion
 
         #region Alert
-        public List<Alert> getActiveAlerts()
+        public List<Alert> getActiveAlerts(Dashboard dashboard)
         {
-            return dashboardRepository.getActiveAlerts().ToList();
+            return dashboardRepository.getActiveAlerts(dashboard).ToList();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
@@ -211,11 +210,15 @@ namespace BL.Managers
         {
             return dashboardRepository.getAllAlerts().ToList();
         }
+        public List<Alert> getAllDashboardAlerts(Dashboard dashboard)
+        {
+            return dashboardRepository.getAllDashboardAlerts(dashboard).ToList();
+        }
 
         public void sendAlerts()
         {
             IPostManager postManager = new PostManager(uowManager);
-            List<Alert> activeAlerts = getActiveAlerts();
+            List<Alert> activeAlerts = getAllAlerts().Where(a => a.Status == AlertStatus.ACTIEF).ToList();
             double waarde = 0.0;
             foreach (Alert alert in activeAlerts)
             {
@@ -247,8 +250,10 @@ namespace BL.Managers
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                         mail.From = new MailAddress("IntegratieProjectTeam20@gmail.com");
-                        mail.To.Add("IntegratieProjectTeam20@gmail.com");
-                        mail.Subject = "Test Mail";
+                        string email = alert.Dashboard.Gebruiker.Email;
+                        mail.To.Add(email);
+                        mail.Subject = "Barometer " + alert.Dashboard.Deelplatform.Naam;
+                        //TODO
                         mail.Body = "This is for testing SMTP mail from GMAIL";
 
                         SmtpServer.Port = 587;

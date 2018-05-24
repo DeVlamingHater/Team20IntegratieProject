@@ -8,12 +8,13 @@ using DAL.EF;
 using Domain;
 using Domain.Elementen;
 using System.ComponentModel.DataAnnotations;
+using Domain.Platformen;
 
 namespace DAL.Repositories_EF
 {
     public class ElementRepository_EF : IElementRepository
     {
-
+        #region Constructor
         PolitiekeBarometerContext context;
 
         public ElementRepository_EF()
@@ -24,62 +25,41 @@ namespace DAL.Repositories_EF
         {
             context = unitOfWork.Context;
         }
+        #endregion
 
+        #region Elementen
         public void addElementen(List<Element> elementen)
         {
             throw new NotImplementedException();
         }
-
-        public void addOrganisatie(Organisatie organisatie)
-        {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
-            {
-                context.Organisaties.Add(organisatie);
-                context.SaveChanges();
-            }
-        }
-        public void AddPersoon(Persoon persoon)
-        {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam).ToList();
-            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors))
-            {
-                if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
-                {
-                    context.Personen.Add(persoon);
-                }else{
-                    setPersoon(persoon);
-                }
-            }
-            context.SaveChanges();
-        }
-
-        public IEnumerable<Element> getAllElementen()
+        public IEnumerable<Element> getAllElementen(Deelplatform deelplatform)
         {
             List<Element> elementen = new List<Element>();
-            elementen.AddRange(context.Themas);
-            elementen.AddRange(context.Organisaties.Include(o=>o.Personen));
+            List<Thema> themas = context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id).ToList();
+            if (themas.Count() != 0)
+            {
+                elementen.AddRange(themas);
 
-            List<Persoon> personen = context.Personen.Include(p=>p.Organisatie).ToList();
-            personen.Sort(Element.compareByNaam);
-            elementen.AddRange(personen);
+            }
+            IEnumerable<Organisatie> organisaties = context.Organisaties.Include(o => o.Personen).Where(t => t.Deelplatform.Id == deelplatform.Id);
+            if (themas.Count() != 0)
+            {
+                elementen.AddRange(organisaties);
+            }
+
+            List<Persoon> personen = context.Personen.Include(p => p.Organisatie).Where(t => t.Deelplatform.Id == deelplatform.Id).ToList();
+            if (personen.Count() != 0)
+            {
+                personen.Sort(Element.compareByNaam);
+                elementen.AddRange(personen);
+            }
+
             return elementen;
-        }
-
-        public IEnumerable<Persoon> getAllPersonen()
-        {
-            return context.Personen.Include(p=>p.Organisatie).Include("Organisatie");
-        }
-
-        public List<Thema> getAllThemas()
-        {
-            return context.Themas.ToList();
         }
 
         public Element getElementByID(int elementId)
         {
-      Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Id.Equals(elementId));
+            Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Id.Equals(elementId));
             if (element == null)
             {
                 element = (Element)context.Organisaties.FirstOrDefault(p => p.Id.Equals(elementId));
@@ -91,24 +71,24 @@ namespace DAL.Repositories_EF
             return element;
         }
 
-        public Element getElementByName(string naam)
+        public Element getElementByName(string naam, Deelplatform deelplatform)
         {
-            Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Naam.Equals(naam));
+            Element element = (Element)context.Personen.Include(p => p.Organisatie).FirstOrDefault(p => p.Naam.Equals(naam) && p.Deelplatform.Id == deelplatform.Id);
             if (element == null)
             {
-                element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam));
+                element = (Element)context.Organisaties.FirstOrDefault(p => p.Naam.Equals(naam) && p.Deelplatform.Id == deelplatform.Id);
             }
             if (element == null)
             {
-                element = (Element)context.Themas.FirstOrDefault(p => p.Naam.Equals(naam));
+                element = (Element)context.Themas.FirstOrDefault(p => p.Naam.Equals(naam) && p.Deelplatform.Id == deelplatform.Id);
             }
             return element;
         }
 
-        public List<Element> getTrendingElementen(int amount)
+        public List<Element> getTrendingElementen(int amount, Deelplatform deelplatform)
         {
             List<Element> elementenTrending = new List<Element>();
-            List<Element> elementen = getAllElementen().ToList();
+            List<Element> elementen = getAllElementen(deelplatform).ToList();
             for (int i = 0; i < amount; i++)
             {
                 if (elementen.Count == 0)
@@ -131,32 +111,114 @@ namespace DAL.Repositories_EF
             }
             return elementenTrending;
         }
-        public void setPersoon ( Persoon persoon)
-        {
-            Persoon persoonToSet =  context.Personen.First(p=>p.Naam.Equals(persoon.Naam));
-            int id = persoonToSet.Id;
 
-            persoonToSet = persoon;
-            persoonToSet.Id = id;
-            context.SaveChanges();
-
-        }
         public void setElement(Element element)
         {
             context.Entry(element).State = EntityState.Modified;
             context.SaveChanges();
         }
+        #endregion
 
-        public void deleteAllPersonen()
+        #region Organisatie
+        public void addOrganisatie(Organisatie organisatie)
         {
-            context.Personen.RemoveRange(context.Personen);
+            context.Organisaties.Add(organisatie);
             context.SaveChanges();
         }
 
+        public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)
+        {
+            return context.Organisaties.Where(o => o.Deelplatform.Id == deelplatform.Id).ToList();
+        }
+
+        public void updateOrganisatie(Organisatie organisatie)
+        {
+            context.Entry(organisatie).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+        public void deleteOrganisatie(Organisatie organisatie)
+        {
+            context.Organisaties.Remove(organisatie);
+            context.SaveChanges();
+        }
+        #endregion
+
+        #region Persoon
+        public void AddPersoon(Persoon persoon)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam && p.Deelplatform.Id == persoon.Deelplatform.Id).ToList();
+            if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors))
+            {
+                if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
+                {
+                    context.Personen.Add(persoon);
+                }
+                else
+                {
+                    setPersoon(persoon);
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public IEnumerable<Persoon> getAllPersonen(Deelplatform deelplatform)
+        {
+            return context.Personen.Where(p => p.Deelplatform.Id == deelplatform.Id).Include(p => p.Organisatie).Include("Organisatie");
+        }
+
+        public void setPersoon(Persoon persoon)
+        {
+            Persoon persoonToSet = context.Personen.First(p => p.Naam.Equals(persoon.Naam));
+            int id = persoonToSet.Id;
+
+            persoonToSet = persoon;
+            persoonToSet.Id = id;
+            context.Entry(persoonToSet).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
+        public void deleteAllPersonen(Deelplatform deelplatform)
+        {
+            context.Personen.RemoveRange(context.Personen.Where(p => p.Deelplatform.Id == deelplatform.Id));
+            context.SaveChanges();
+        }
         public void deletePersoon(Persoon persoon)
         {
             context.Personen.Remove(persoon);
             context.SaveChanges();
         }
+        public void updatePersoon(Persoon persoon)
+        {
+            context.Entry(persoon).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+        #endregion
+
+        #region Thema
+
+        public List<Thema> getAllThemas(Deelplatform deelplatform)
+        {
+            return context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id).ToList();
+        }
+
+        public void addThema(Thema thema)
+        {
+            context.Themas.Add(thema);
+            context.SaveChanges();
+        }
+
+        public void updateThema(Thema thema)
+        {
+            context.Entry(thema).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+        public void deleteThema(Thema thema)
+        {
+            context.Themas.Remove(thema);
+            context.SaveChanges();
+        }
+
+        #endregion
     }
 }

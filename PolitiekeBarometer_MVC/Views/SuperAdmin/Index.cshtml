@@ -1,12 +1,12 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
 <ul>
-    <li>@Html.ActionLink("Beheer platform", "PlatformManagement", "SuperAdmin")</li>
+    <li>@Html.ActionLink("Maak deelplatform", "CreateDeelplatform", "SuperAdmin")</li>
     <li>@Html.ActionLink("Beheer admins", "LijstAdmins", "SuperAdmin")</li>
+    <li>@Html.ActionLink("Voeg admin aan deelplatform toe","AssignAdmin","SuperAdmin")</li>
 </ul>
 

@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "CreateDeelplatform";
+}
+
+<h2>CreateDeelplatform</h2>
+
+@using (Html.BeginForm("CreateDeelplatform", "SuperAdmin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="col-md-6">
+    <label class="control-label">
+        Naam
+    </label>
+    <input type="text" name="txtNaam" class="form-control" />
+
+    <label class="control-label">
+        Historiek
+    </label>
+    <input type="text" name="txtHistoriek" class="form-control" />
+    <label class="control-label">
+        Persoonstring
+    </label>
+    <input type="text" name="txtPersoonstring" class="form-control" />
+    <label class="control-label">
+        Organisatietring
+    </label>
+    <input type="text" name="txtOrganisatiestring" class="form-control" />
+    <label class="control-label">
+        themastring
+    </label>
+    <input type="text" name="txtThemastring" class="form-control" />
+    <label class="control-label">
+        Dashboardid
+    </label>
+    <input type="text" name="txtDashboardid" class="form-control" />
+
+    <br />
+    <button type="submit" value="Submit" class="btn btn-primary">Save</button>
+</div>
+
+}

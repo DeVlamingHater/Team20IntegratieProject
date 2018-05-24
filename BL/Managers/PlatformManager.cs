@@ -45,8 +45,13 @@ namespace BL.Managers
         {
             return platformRepository.getAllDeelplatformen().ToList();
         }
+
+        public void createDeelplatform(Deelplatform deelplatform)
+        {
+            platformRepository.createDeelplatform(deelplatform);
+        }
         #endregion
-  
+
         #region Gebruiker
         public Gebruiker getGebruiker(string id)
         {
@@ -59,14 +64,8 @@ namespace BL.Managers
             return platformRepository.getGebruikerMetEmail(email);
         }
 
-        public void createGebruiker(string id, string name, string email)
+        public void createGebruiker(Gebruiker gebruiker)
         {
-            Gebruiker gebruiker = new Gebruiker()
-            {
-                Naam = name,
-                GebruikerId = id,
-                Email = email
-            };
             platformRepository.createGebruiker(gebruiker);
         }
 
@@ -84,6 +83,9 @@ namespace BL.Managers
         {
             platformRepository.saveGebruiker(gebruiker);
         }
+
+        
+        
 
 
         #endregion
