@@ -48,7 +48,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
             GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
 
-            grafiekViewModel.datasets = datasets;
+            //grafiekViewModel.datasets = datasets;
             grafiekViewModel.tittel = grafiek.Tittel;
             grafiekViewModel.GrafiekType =grafiek.GrafiekType;
             return PartialView("DashboardPartials/ItemPartial", grafiekViewModel);

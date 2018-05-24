@@ -8,7 +8,7 @@ namespace PolitiekeBarometer_MVC.Models
 {
     public class GrafiekViewModel : ItemViewModel
     {
-        public List<Dictionary<string, double>> datasets { get; set; }
+        public Dictionary<string, Dictionary<string, double>> datasets { get; set; }
 
         public GrafiekType GrafiekType { get; set; }
 
