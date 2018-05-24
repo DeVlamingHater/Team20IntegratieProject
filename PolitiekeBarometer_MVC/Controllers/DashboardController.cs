@@ -31,7 +31,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public ActionResult Test()
         {
-
             return View();
         }
         public ActionResult ItemPartial(int ItemId)

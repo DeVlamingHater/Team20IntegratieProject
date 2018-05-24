@@ -19,8 +19,8 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen van alle alerts van een gebruiker
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            dashboardManager.getDashboard(username,Deelplatform);
-            return View(dashboardManager.getActiveAlerts());
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            return View(dashboardManager.getAllDashboardAlerts(dashboard));
         }
 
         public ActionResult CreateAlert()
@@ -34,11 +34,21 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult CreateAlert(FormCollection form)
         {
             //Form parsen naar een alert
-            IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
 
+            Alert alert = ParseFormToAlert(form);
+            //Alert opslaan
+            dashboardManager.createAlert(alert);
+
+            //Terug naar lijst gaan
+            return RedirectToAction("LijstAlerts");
+        }
+        private Alert ParseFormToAlert(FormCollection form)
+        {
+            IElementManager elementManager = new ElementManager();
+            IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard= dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
 
             //Element & vergelijkingselement ophalen
             Element element = elementManager.getElementByNaam(form["element"], Deelplatform);
@@ -121,11 +131,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Waarde = waarde,
                 Status = AlertStatus.ACTIEF
             };
-            //Alert opslaan
-            dashboardManager.createAlert(alert);
-            
-            //Terug naar lijst gaan
-            return RedirectToAction("LijstAlerts");
+            return alert;
         }
 
         private Domain.Dashboards.Filter parseFilter(string filterS)
@@ -158,11 +164,19 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             return false;
         }
+
         public ActionResult EditAlert(int id)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             Alert alert = dashboardManager.getAlert(id);
             return View(alert);
+        }
+
+        [HttpPost]
+        public ActionResult EditAlert(FormCollection form)
+        {
+           
+           return RedirectToAction("LijstAlerts");
         }
         #endregion
 
@@ -177,7 +191,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
-            
+
             //Ophalen Meldingen van het dashboard
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
 

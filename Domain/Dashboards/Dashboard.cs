@@ -11,7 +11,7 @@ namespace Domain.Dashboards
     public class Dashboard
     {
         [Key]
-        public int DashboardId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public Gebruiker Gebruiker { get; set; }

@@ -64,7 +64,7 @@ namespace BL.Managers
         #region Zone
         public IEnumerable<Zone> getZones(Dashboard dashboard)
         {
-            int dashboardId = dashboard.DashboardId;
+            int dashboardId = dashboard.Id;
             return dashboardRepository.getDashboardZones(dashboardId);
         }
 
@@ -191,9 +191,9 @@ namespace BL.Managers
         #endregion
 
         #region Alert
-        public List<Alert> getActiveAlerts()
+        public List<Alert> getActiveAlerts(Dashboard dashboard)
         {
-            return dashboardRepository.getActiveAlerts().ToList();
+            return dashboardRepository.getActiveAlerts(dashboard).ToList();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
@@ -211,11 +211,15 @@ namespace BL.Managers
         {
             return dashboardRepository.getAllAlerts().ToList();
         }
+        public List<Alert> getAllDashboardAlerts(Dashboard dashboard)
+        {
+            return dashboardRepository.getAllDashboardAlerts(dashboard).ToList();
+        }
 
         public void sendAlerts()
         {
             IPostManager postManager = new PostManager(uowManager);
-            List<Alert> activeAlerts = getActiveAlerts();
+            List<Alert> activeAlerts = getAllAlerts().Where(a => a.Status == AlertStatus.ACTIEF).ToList();
             double waarde = 0.0;
             foreach (Alert alert in activeAlerts)
             {
@@ -247,8 +251,10 @@ namespace BL.Managers
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                         mail.From = new MailAddress("IntegratieProjectTeam20@gmail.com");
-                        mail.To.Add("IntegratieProjectTeam20@gmail.com");
-                        mail.Subject = "Test Mail";
+                        string email = alert.Dashboard.Gebruiker.Email;
+                        mail.To.Add(email);
+                        mail.Subject = "Barometer " + alert.Dashboard.Deelplatform.Naam;
+                        //TODO
                         mail.Body = "This is for testing SMTP mail from GMAIL";
 
                         SmtpServer.Port = 587;

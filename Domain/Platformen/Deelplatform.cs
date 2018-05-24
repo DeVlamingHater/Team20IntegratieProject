@@ -18,8 +18,6 @@ namespace Domain.Platformen
 
         public List<Gebruiker> Admins { get; set; }
 
-        public Dashboard Dashboard { get; set; }
-
         public string PersoonString { get; set; }
 
         public string OrganisatieString { get; set; }

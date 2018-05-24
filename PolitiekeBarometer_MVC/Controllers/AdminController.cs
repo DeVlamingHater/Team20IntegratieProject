@@ -251,7 +251,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IElementManager elementManager = new ElementManager();
             Persoon persoon = (Persoon)elementManager.getElementById(id);
             elementManager.deletePersoon(persoon);
-            return RedirectToAction("LijstPersonen");
+            return RedirectToAction("LijstPersonen"); 
         }
         #endregion
 

@@ -247,8 +247,12 @@
       <DependentUpon>201803301023055_Name.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DatasetViewmodel.cs" />
+    <Compile Include="Models\GrafiekViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ZoneViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CustomJwtFormat.cs" />
     <Compile Include="Providers\CustomOAuthProvider.cs" />
@@ -285,7 +289,6 @@
     <Content Include="Content\Element.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\Images\Politieke_Barometer_Banner2.jpg" />
-    <Content Include="Content\Images\statistics-3411473_1920.jpg" />
     <Content Include="Content\NewTab.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Tabs.css" />

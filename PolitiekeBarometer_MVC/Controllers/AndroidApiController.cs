@@ -6,6 +6,7 @@ using Domain.Dashboards;
 using Domain.Platformen;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PolitiekeBarometer_MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         [HttpGet]
         [Route("api/AndroidApi/Zones")]
-        public List<Zone> GetZones(string email)
+        public List<ZoneViewModel> GetZones(string email)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
@@ -36,39 +37,37 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
-            
+
             #region testData
-            Zone testZone = new Zone()
+            ZoneViewModel testZone = new ZoneViewModel()
             {
-                Naam = "TestZone",
-                Items = new List<Item>()
+                naam = "testZone",
+                items = new List<ItemViewModel>()
             };
 
-            Element testElement = elementManager.getElementByNaam("Bart De Wever", deelplatform);
-
-            DataConfig testDataConfig = new DataConfig()
+            GrafiekViewModel testGrafiek = new GrafiekViewModel()
             {
-                DataConfiguratieId = 100,
-                Element = testElement
-
+                labels = ["Bart de Wever", "Imade Annouri"],
+                tittel = "testGrafiek",
+                datasets = new List<DatasetViewmodel>(),
+                GrafiekType = 2,
+                DataType= 1
             };
-            Grafiek testGrafiek = new Grafiek()
+
+            DatasetViewmodel testDataset = new DatasetViewmodel()
             {
-                DataType = DataType.TOTAAL,
-                Tijdschaal = new TimeSpan(7, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
+                waarden = new double[]
                 {
-                    testDataConfig
-                },
-                GrafiekType = GrafiekType.LINE,
-                AantalDataPoints = 12,
-                Tittel ="testGrafiek"
+                    80.0,20.0
+                }
             };
+            testGrafiek.datasets.Add(testDataset);
+            testZone.items.Add(testGrafiek);
 
-            testZone.Items.Add(testGrafiek);
-            lijstZones.Add(testZone);
+            List<ZoneViewModel> testzones = new List<ZoneViewModel>();
+            testzones.Add(testZone);
             #endregion
-            return lijstZones;
+            return testzones;
         }
 
         [HttpGet]

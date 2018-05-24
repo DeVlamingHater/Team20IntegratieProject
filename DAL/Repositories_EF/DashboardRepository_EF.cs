@@ -68,7 +68,7 @@ namespace DAL.Repositories_EF
         #region Zone
         public IEnumerable<Zone> getDashboardZones(int dashboardId)
         {
-            return context.Zones.Where(r => r.Dashboard.DashboardId == dashboardId).AsEnumerable();
+            return context.Zones.Where(r => r.Dashboard.Id == dashboardId).AsEnumerable();
         }
 
         public Zone getZone(int zoneId)
@@ -155,10 +155,14 @@ namespace DAL.Repositories_EF
         {
             return context.Alerts.Include(a => a.DataConfig).ToList();
         }
-
-        public IEnumerable<Alert> getActiveAlerts()
+        public IEnumerable<Alert> getAllDashboardAlerts(Dashboard dashboard)
         {
-            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+            return context.Alerts.Where(a => a.Dashboard.Id == dashboard.Id).Include(a => a.DataConfig).ToList();
+        }
+
+        public IEnumerable<Alert> getActiveAlerts(Dashboard dashboard)
+        {
+            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Dashboard.Id == dashboard.Id &&a.Status == AlertStatus.ACTIEF).ToList<Alert>();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
@@ -179,7 +183,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard)
         {
-            return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.DashboardId == dashboard.DashboardId);
+            return context.Alerts.Include(a => a.Dashboard).Where(d => d.Dashboard.Id == dashboard.Id);
         }
 
         public Alert getAlert(int id)
@@ -196,7 +200,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
-            return context.Meldingen.Where(m => m.Alert.Dashboard.DashboardId == dashboard.DashboardId);
+            return context.Meldingen.Where(m => m.Alert.Dashboard.Id == dashboard.Id);
         }
         #endregion
     }

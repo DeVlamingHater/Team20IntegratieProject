@@ -39,7 +39,8 @@ namespace BL.Interfaces
         #region Alert
         Alert getAlert(int alertId);
         Gebruiker getAlertGebruiker(Alert alert);
-        List<Alert> getActiveAlerts();
+        List<Alert> getActiveAlerts(Dashboard dashboard);
+        List<Alert> getAllDashboardAlerts(Dashboard dashboard);
         DataConfig getAlertDataConfig(Alert alert);
         List<Alert> getAllAlerts();
         void sendAlerts();

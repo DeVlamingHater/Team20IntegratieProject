@@ -33,9 +33,10 @@ namespace DAL
         #endregion
 
         #region Alert
-        IEnumerable<Alert> getActiveAlerts();
+        IEnumerable<Alert> getActiveAlerts(Dashboard dashboard);
         DataConfig getAlertDataConfig(Alert alert);
         IEnumerable<Alert> getAllAlerts();
+        IEnumerable<Alert> getAllDashboardAlerts(Dashboard dashboard);
         void createAlert(Alert alert);
         IEnumerable<Alert> getDashboardAlerts(Dashboard dashboard);
         Alert getAlert(int id);
