@@ -43,8 +43,15 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         public ActionResult GrafiekPartial(int ItemId)
         {
-            GrafiekViewModel grafiek = new GrafiekViewModel();
-            return PartialView("DashboardPartials/ItemPartial");
+            IDashboardManager dashboardManager = new DashboardManager();
+            Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
+            List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
+            GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
+
+            grafiekViewModel.datasets = datasets;
+            grafiekViewModel.tittel = grafiek.Tittel;
+            grafiekViewModel.GrafiekType =grafiek.GrafiekType;
+            return PartialView("DashboardPartials/ItemPartial", grafiekViewModel);
         }
 
         public ActionResult Suggestions()
@@ -58,7 +65,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
-            Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>()};
+            Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>() };
             var itemtype = form["ItemType"];
             var interval = form["Interval"];
             var dataType = form["DataType"];

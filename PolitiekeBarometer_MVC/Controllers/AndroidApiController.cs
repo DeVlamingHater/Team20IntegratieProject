@@ -45,26 +45,20 @@ namespace PolitiekeBarometer_MVC.Controllers
                 items = new List<ItemViewModel>()
             };
 
+            List<Dictionary<string, double>> datasets = new List<Dictionary<string, double>>();
+            Dictionary<string, double> dataset = new Dictionary<string, double>();
+            dataset.Add("Bart", 20.0);
+            dataset.Add("Imade", 80.0);
+            datasets.Add(dataset);
+
             GrafiekViewModel testGrafiek = new GrafiekViewModel()
             {
                 tittel = "testGrafiek",
-                datasets = new List<DatasetViewmodel>(),
-                GrafiekType = 2,
-                DataType= 1
+                datasets = datasets,
+                GrafiekType = GrafiekType.BAR,
+                DataType = 1
             };
 
-            DatasetViewmodel testDataset = new DatasetViewmodel()
-            {
-                labels = new List<string>()
-                {
-                    "Bart", "Imade"
-                },
-                waarden = new List<double>()
-                {
-                    80.0,20.0
-                }
-            };
-            testGrafiek.datasets.Add(testDataset);
             testZone.items.Add(testGrafiek);
 
             List<ZoneViewModel> testzones = new List<ZoneViewModel>();
@@ -74,12 +68,12 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
 
         [HttpGet]
-        public string getData(Grafiek grafiek)
+        public List<Dictionary<string, double>> getData(Grafiek grafiek)
         {
             IDashboardManager dashboardManager = new DashboardManager();
             dashboardManager.getGraphData(grafiek);
             return dashboardManager.getGraphData(grafiek);
-            
+
         }
         [HttpGet]
         [Route("api/AndroidApi/Alerts")]

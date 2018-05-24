@@ -247,7 +247,6 @@
       <DependentUpon>201803301023055_Name.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\DatasetViewmodel.cs" />
     <Compile Include="Models\GrafiekViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ItemViewModel.cs" />

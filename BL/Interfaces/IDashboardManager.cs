@@ -29,7 +29,7 @@ namespace BL.Interfaces
         #endregion
 
         #region Grafiek
-        string getGraphData(Grafiek grafiek);
+        List<Dictionary<string, double>> getGraphData(Grafiek grafiek);
         Grafiek createGrafiek(Grafiek grafiek);
         IEnumerable<Grafiek> getGrafieken(int actieveZone);
         Grafiek getGrafiek(int itemId);

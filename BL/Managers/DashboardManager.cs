@@ -133,19 +133,19 @@ namespace BL.Managers
             return grafiek;
         }
 
-        public List<Dictionary<DateTime, double>> getGraphData(Grafiek grafiek)
+        public List<Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            List<Dictionary<DateTime, double>> data = new List<Dictionary<DateTime, double>>();
+            List<Dictionary<string, double>> data = new List<Dictionary<string, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
 
             foreach (DataConfig dataConfig in dataConfigs)
             {
                 //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                Dictionary<DateTime, double> grafiekData = new Dictionary<DateTime, double>();
+                Dictionary<string, double> grafiekData = new Dictionary<string, double>();
 
                 DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
 
@@ -163,11 +163,11 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start, (double)posts.Count);
+                            grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
                             break;
                         case Domain.DataType.TREND:
                             double dataPoint = (double)posts.Count / (double)totaal;
-                            grafiekData.Add(start, dataPoint);
+                            grafiekData.Add(start.ToShortDateString(), dataPoint);
                             break;
                         case Domain.DataType.SENTIMENT:
                             double average = 0.0;
@@ -175,7 +175,7 @@ namespace BL.Managers
                             {
                                  average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
                             }
-                            grafiekData.Add(start, average);
+                            grafiekData.Add(start.ToShortDateString(), average);
                             break;
                         default:
                             break;
