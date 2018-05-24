@@ -47,7 +47,6 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             GrafiekViewModel testGrafiek = new GrafiekViewModel()
             {
-                labels = ["Bart de Wever", "Imade Annouri"],
                 tittel = "testGrafiek",
                 datasets = new List<DatasetViewmodel>(),
                 GrafiekType = 2,
@@ -56,7 +55,11 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             DatasetViewmodel testDataset = new DatasetViewmodel()
             {
-                waarden = new double[]
+                labels = new List<string>()
+                {
+                    "Bart", "Imade"
+                },
+                waarden = new List<double>()
                 {
                     80.0,20.0
                 }

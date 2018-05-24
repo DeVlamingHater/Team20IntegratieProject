@@ -133,12 +133,12 @@ namespace BL.Managers
             return grafiek;
         }
 
-        public string getGraphData(Grafiek grafiek)
+        public List<Dictionary<DateTime, double>> getGraphData(Grafiek grafiek)
         {
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            List<string> data = new List<string>();
+            List<Dictionary<DateTime, double>> data = new List<Dictionary<DateTime, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
 
@@ -182,11 +182,10 @@ namespace BL.Managers
                     }
                     start = start.Add(interval);
                 }
-                string dataString = JsonConvert.SerializeObject(grafiekData);
-                data.Add(dataString);
+                data.Add(grafiekData);
                 index++;
             }
-            return JsonConvert.SerializeObject(data).ToString();
+            return data;
         }
         #endregion
 

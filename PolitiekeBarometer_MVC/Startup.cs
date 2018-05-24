@@ -29,14 +29,14 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenConsumption(app);
             CreateUserAndRoles();
             IElementManager elementManager = new ElementManager();
-            IPlatformManager platformManager = new PlatformManager();
+            PlatformManager platformManager = new PlatformManager();
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
             elementManager.deleteAllPersonen(deelplatform);
             elementManager.addPersonen(elementManager.readJSONPolitici());
             elementManager.setTrendingElementen(deelplatform);
             UpdateAsync();
             SetTimer();
-           }
+        }
 
         private void SetTimer()
         {
@@ -69,7 +69,7 @@ namespace PolitiekeBarometer_MVC
         }
         private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
         {
-             await UpdateAsync();
+            await UpdateAsync();
         }
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)

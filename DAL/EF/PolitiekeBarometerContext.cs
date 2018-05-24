@@ -84,6 +84,10 @@ namespace DAL.EF
             modelBuilder.Entity<Persoon>().HasMany<Post>(p => p.Posts);
             modelBuilder.Entity<Keyword>().HasMany<Post>(t => t.Posts);
 
+            modelBuilder.Entity<Organisatie>().HasRequired<Deelplatform>(e => e.Deelplatform);
+            modelBuilder.Entity<Thema>().HasRequired<Deelplatform>(e => e.Deelplatform);
+            modelBuilder.Entity<Persoon>().HasRequired<Deelplatform>(e => e.Deelplatform);
+
             modelBuilder.Entity<Organisatie>().HasMany<Persoon>(p => p.Personen);
 
             modelBuilder.Entity<Alert>().HasRequired<DataConfig>(a => a.DataConfig);

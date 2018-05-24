@@ -289,6 +289,7 @@
     <Content Include="Content\Element.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\Images\Politieke_Barometer_Banner2.jpg" />
+    <Content Include="Content\Images\Politieke_Barometer_Banner.jpg" />
     <Content Include="Content\NewTab.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Tabs.css" />
@@ -575,6 +576,7 @@
     <Content Include="Views\Shared\Search\Suggestions.cshtml" />
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\GrafiekView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,7 +17,7 @@ namespace BL.Managers
     public class ElementManager : IElementManager
     {
         #region Constructor
-        IElementRepository elementRepository = new ElementRepository_EF();
+        IElementRepository elementRepository;
 
         UnitOfWorkManager uowManager;
 
@@ -29,24 +29,40 @@ namespace BL.Managers
 
         public ElementManager()
         {
-            elementRepository = new ElementRepository_EF();
         }
+
+        public void initNonExistingRepo(bool createWithUnitOfWork = false)
+        {
+            if (elementRepository == null)
+            {
+                if (createWithUnitOfWork)
+                {
+                    if (uowManager == null)
+                    {
+                        uowManager = new UnitOfWorkManager();
+                    }
+                    elementRepository = new ElementRepository_EF(uowManager.UnitOfWork);
+                }               
+            }     }
         #endregion
 
         #region Element
         public List<Element> getAllElementen(Deelplatform deelplatform)
         {
+            initNonExistingRepo();
             return elementRepository.getAllElementen(deelplatform).ToList();
         }
 
         public Element getElementByNaam(string naam, Deelplatform deelplatform)
         {
+            initNonExistingRepo();
             Element element = elementRepository.getElementByName(naam, deelplatform);
             return element;
         }
 
         public void setTrendingElementen(Deelplatform deelplatform)
         {
+            initNonExistingRepo();
             UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
             this.uowManager = unitOfWorkManager;
             PostManager postManager = new PostManager(unitOfWorkManager);
@@ -63,6 +79,8 @@ namespace BL.Managers
 
         public List<Element> getTrendingElementen(int amount , Deelplatform deelplatform)
         {
+            initNonExistingRepo();
+
             List<Element> elementenTrending = elementRepository.getAllElementen(deelplatform).ToList();
             List<Element> elementen = new List<Element>();
             List<Element> personen = elementenTrending.Where(e => e.GetType().Equals(typeof(Persoon))).ToList();
@@ -78,11 +96,15 @@ namespace BL.Managers
 
         public Element getElementById(int id)
         {
+            initNonExistingRepo();
+
             return elementRepository.getElementByID(id);
         }
 
         public void addElementen(List<Element> elementen)
         {
+            initNonExistingRepo();
+
             elementRepository.addElementen(elementen);
         }
         #endregion
@@ -90,19 +112,24 @@ namespace BL.Managers
         #region Persoon
         public List<Persoon> getAllPersonen(Deelplatform deelplatform)
         {
+            initNonExistingRepo();
+
             return elementRepository.getAllPersonen(deelplatform).ToList();
         }
 
         public void addPersonen(List<Persoon> personen)
         {
+            initNonExistingRepo();
+
             personen.ForEach(p => elementRepository.AddPersoon(p));
         }
 
         public List<Persoon> readJSONPolitici()
         {
-            IPlatformManager platformManager = new PlatformManager();
-            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
+            initNonExistingRepo(true);
 
+            IPlatformManager platformManager = new PlatformManager(this.uowManager);
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
             List<Persoon> personen = new List<Persoon>();
             List<PersoonParser> items;
 
@@ -125,9 +152,9 @@ namespace BL.Managers
                     Postal_code = persoon.postal_code,
                     Site = persoon.site,
                     Town = persoon.town,
-                    Twitter = persoon.twitter,
-                    Deelplatform = deelplatform
+                    Twitter = persoon.twitter
                 };
+                politicus.Deelplatform = deelplatform;
                 Organisatie organisatie = (Organisatie)getElementByNaam(persoon.organisation, deelplatform);
                 if (organisatie == null)
                 {
@@ -138,8 +165,8 @@ namespace BL.Managers
                         {
                             politicus
                         },
-                        Deelplatform = deelplatform
                     };
+                    organisatie.Deelplatform = deelplatform;
                     addOrganisatie(organisatie);
                 }
                 politicus.Organisatie = organisatie;
@@ -150,21 +177,29 @@ namespace BL.Managers
 
         public void deleteAllPersonen(Deelplatform deelplatform)
         {
+            initNonExistingRepo(true);
+
             elementRepository.deleteAllPersonen(deelplatform);
         }
 
         public void addPersoon(Persoon persoon)
         {
+            initNonExistingRepo();
+
             elementRepository.AddPersoon(persoon);
         }
 
         public void deletePersoon(Persoon persoon)
         {
+            initNonExistingRepo();
+
             elementRepository.deletePersoon(persoon);
         }
 
         public void updatePersoon(Persoon persoon)
         {
+            initNonExistingRepo();
+
             elementRepository.updatePersoon(persoon);
         }
         #endregion
@@ -172,18 +207,26 @@ namespace BL.Managers
         #region Thema
         public List<Thema> getAllThemas(Deelplatform deelplatform)
         {
+            initNonExistingRepo();
+
             return elementRepository.getAllThemas(deelplatform);
         }
         public void addThema(Thema thema)
         {
+            initNonExistingRepo();
+
             elementRepository.addThema(thema);
         }
         public void updateThema(Thema thema)
         {
+            initNonExistingRepo();
+
             elementRepository.updateThema(thema);
         }
         public void deleteThema(Thema thema)
         {
+            initNonExistingRepo();
+
             elementRepository.deleteThema(thema);
         }
         #endregion
@@ -191,19 +234,27 @@ namespace BL.Managers
         #region Organisatie
         public void addOrganisatie(Organisatie organisatie)
         {
+            initNonExistingRepo();
+
             elementRepository.addOrganisatie(organisatie);
         }
 
         public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)
         {
+            initNonExistingRepo();
+
             return elementRepository.getAllOrganisaties(deelplatform);
         }
         public void updateOrganisatie(Organisatie organisatie)
         {
+            initNonExistingRepo();
+
             elementRepository.updateOrganisatie(organisatie);
         }
         public void deleteOrganisatie(Organisatie organisatie)
         {
+            initNonExistingRepo();
+
             elementRepository.deleteOrganisatie(organisatie);
         }
         #endregion

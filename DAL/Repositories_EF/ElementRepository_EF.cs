@@ -35,12 +35,25 @@ namespace DAL.Repositories_EF
         public IEnumerable<Element> getAllElementen(Deelplatform deelplatform)
         {
             List<Element> elementen = new List<Element>();
-            elementen.AddRange(context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id));
-            elementen.AddRange(context.Organisaties.Include(o => o.Personen).Where(t => t.Deelplatform.Id == deelplatform.Id));
+            IEnumerable<Thema> themas = context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id);
+            if (themas.Count() != 0)
+            {
+                elementen.AddRange(themas);
+
+            }
+            IEnumerable<Organisatie> organisaties = context.Organisaties.Include(o => o.Personen).Where(t => t.Deelplatform.Id == deelplatform.Id);
+            if (themas.Count() != 0)
+            {
+                elementen.AddRange(organisaties);
+            }
 
             List<Persoon> personen = context.Personen.Include(p => p.Organisatie).Where(t => t.Deelplatform.Id == deelplatform.Id).ToList();
-            personen.Sort(Element.compareByNaam);
-            elementen.AddRange(personen);
+            if (personen.Count() != 0)
+            {
+                personen.Sort(Element.compareByNaam);
+                elementen.AddRange(personen);
+            }
+
             return elementen;
         }
 
@@ -109,12 +122,8 @@ namespace DAL.Repositories_EF
         #region Organisatie
         public void addOrganisatie(Organisatie organisatie)
         {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            if (Validator.TryValidateObject(organisatie, new ValidationContext(organisatie), errors))
-            {
-                context.Organisaties.Add(organisatie);
-                context.SaveChanges();
-            }
+            context.Organisaties.Add(organisatie);
+            context.SaveChanges();
         }
 
         public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)
@@ -138,7 +147,7 @@ namespace DAL.Repositories_EF
         public void AddPersoon(Persoon persoon)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
-            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam).ToList();
+            List<Persoon> persoons = context.Personen.Where(p => p.Naam == persoon.Naam && p.Deelplatform.Id == persoon.Deelplatform.Id).ToList();
             if (Validator.TryValidateObject(persoon, new ValidationContext(persoon), errors))
             {
                 if (context.Personen.Where(p => p.Naam == persoon.Naam).Count() == 0)
@@ -165,6 +174,7 @@ namespace DAL.Repositories_EF
 
             persoonToSet = persoon;
             persoonToSet.Id = id;
+            context.Entry(persoonToSet).State = EntityState.Modified;
             context.SaveChanges();
         }
 

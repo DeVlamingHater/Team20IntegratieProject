@@ -42,7 +42,8 @@ namespace DAL.EF
             Thema thema1 = new Thema()
             {
                 Naam = "Cultuur",
-                Keywords = new List<Keyword>()
+                Keywords = new List<Keyword>(),
+                Deelplatform = deelplatform1
             };
             thema1.Keywords.Add(keyword1);
             keyword1.Themas.Add(thema1);

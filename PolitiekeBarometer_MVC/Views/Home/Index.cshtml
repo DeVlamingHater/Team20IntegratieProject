@@ -50,17 +50,18 @@
     <div class="banner">
 
         <div class="banner-text")">
-            <h1>Barometer</h1>
+          
             <div class="container">
                 <div class="card card-login mx-auto mb-5 mt-5">
                     <div class="card-body">
+                        <h1>Barometer</h1>
                         <div>
                             <h3>Kies het deelplatform</h3>
                         </div>
                         @foreach (var item in Model)
-                        {
-                            <a class="text-center" href="/@item.Naam/Deelplatform/Index">@item.Naam.ToString()</a><br />
-                        }
+    {
+                    <a class="text-center" href="/@item.Naam/Deelplatform/Index">@item.Naam.ToString()</a><br />
+}
                     </div>
                 </div>
             </div>

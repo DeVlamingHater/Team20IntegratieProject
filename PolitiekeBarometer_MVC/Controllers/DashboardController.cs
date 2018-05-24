@@ -12,6 +12,7 @@ using Domain.Platformen;
 using Newtonsoft.Json;
 using PolitiekeBarometer_MVC.Controllers.ActionFilter;
 using System.Text;
+using PolitiekeBarometer_MVC.Models;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
@@ -38,6 +39,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             IDashboardManager dashboardManager = new DashboardManager();
             Item item = dashboardManager.getItem(ItemId);
             return View("DashboardPartials/ItemPartial", item);
+        }
+
+        public ActionResult GrafiekPartial(int ItemId)
+        {
+            GrafiekViewModel grafiek = new GrafiekViewModel();
+            return PartialView("DashboardPartials/ItemPartial");
         }
 
         public ActionResult Suggestions()

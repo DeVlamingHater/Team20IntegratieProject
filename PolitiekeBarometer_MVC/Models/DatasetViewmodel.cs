@@ -7,6 +7,7 @@ namespace PolitiekeBarometer_MVC.Models
 {
     public class DatasetViewmodel
     {
-        public double[] waarden { get; set; }
+        public List<string> labels { get; set; }
+        public List<double> waarden { get; set; }
     }
 }
