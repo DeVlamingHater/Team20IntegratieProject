@@ -575,7 +575,7 @@
     <Content Include="Views\Shared\Search\Suggestions.cshtml" />
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\GrafiekView.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\GrafiekPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -20,7 +20,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            this.deelplatformURL = HttpContext.Request.Url.Segments[1];
+            this.deelplatformURL = HttpContext.Request.Url.Segments[1].Trim('/');
             IPlatformManager platformManager = new PlatformManager();
             this.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             base.OnActionExecuting(filterContext);

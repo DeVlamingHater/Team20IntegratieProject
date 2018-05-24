@@ -35,7 +35,7 @@ namespace DAL.Repositories_EF
         public IEnumerable<Element> getAllElementen(Deelplatform deelplatform)
         {
             List<Element> elementen = new List<Element>();
-            IEnumerable<Thema> themas = context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id);
+            List<Thema> themas = context.Themas.Where(t => t.Deelplatform.Id == deelplatform.Id).ToList();
             if (themas.Count() != 0)
             {
                 elementen.AddRange(themas);

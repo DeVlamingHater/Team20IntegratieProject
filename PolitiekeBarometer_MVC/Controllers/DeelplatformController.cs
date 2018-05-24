@@ -102,7 +102,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 AantalDataPoints = 30
             };
 
-            string dataString = dashboardManager.getGraphData(testGrafiek);
+            string dataString = dashboardManager.getGraphData(testGrafiek).ToString();
 
 
             Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
@@ -252,7 +252,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 AantalDataPoints = 30
             };
 
-            string dataString = dashboardManager.getGraphData(testGrafiek);
+            string dataString = dashboardManager.getGraphData(testGrafiek).ToString() ;
 
 
             Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);

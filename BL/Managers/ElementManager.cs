@@ -42,14 +42,22 @@ namespace BL.Managers
                         uowManager = new UnitOfWorkManager();
                     }
                     elementRepository = new ElementRepository_EF(uowManager.UnitOfWork);
-                }               
-            }     }
+                }
+                else
+                {
+                    elementRepository = new ElementRepository_EF();
+                }
+            }
+        }
         #endregion
 
         #region Element
-        public List<Element> getAllElementen(Deelplatform deelplatform)
+        public List<Element> getAllElementen(Deelplatform deelplatformS)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
+            IPlatformManager platformManager = new PlatformManager(this.uowManager);
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS.Naam);
+
             return elementRepository.getAllElementen(deelplatform).ToList();
         }
 
@@ -60,12 +68,13 @@ namespace BL.Managers
             return element;
         }
 
-        public void setTrendingElementen(Deelplatform deelplatform)
+        public void setTrendingElementen(Deelplatform deelplatformS)
         {
-            initNonExistingRepo();
-            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
-            this.uowManager = unitOfWorkManager;
-            PostManager postManager = new PostManager(unitOfWorkManager);
+            initNonExistingRepo(true);
+            IPlatformManager platformManager = new PlatformManager(this.uowManager);
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS.Naam);
+
+            PostManager postManager = new PostManager(uowManager);
 
             List<Element> elementen = getAllElementen(deelplatform);
 
@@ -77,9 +86,11 @@ namespace BL.Managers
             elementen.ForEach(e => elementRepository.setElement(e));
         }
 
-        public List<Element> getTrendingElementen(int amount , Deelplatform deelplatform)
+        public List<Element> getTrendingElementen(int amount, Deelplatform deelplatformS)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
+            IPlatformManager platformManager = new PlatformManager(this.uowManager);
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS.Naam);
 
             List<Element> elementenTrending = elementRepository.getAllElementen(deelplatform).ToList();
             List<Element> elementen = new List<Element>();
