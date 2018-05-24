@@ -45,8 +45,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         private Alert ParseFormToAlert(FormCollection form)
         {
-            IElementManager elementManager = new ElementManager();
-            IDashboardManager dashboardManager = new DashboardManager();
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(unitOfWorkManager);
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
 
@@ -175,8 +176,8 @@ namespace PolitiekeBarometer_MVC.Controllers
         [HttpPost]
         public ActionResult EditAlert(FormCollection form)
         {
-           
-           return RedirectToAction("LijstAlerts");
+
+            return RedirectToAction("LijstAlerts");
         }
         #endregion
 
@@ -190,32 +191,35 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen Dashboard van de User van het huidige Deelplatform
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
-
-            //Ophalen Meldingen van het dashboard
-            List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
-
-            //TestMeldingen
-            #region TestMeldingen
-            Melding melding1 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = true,
-                MeldingDateTime = DateTime.Now.AddHours(-1),
-                Message = "Deze Alert is een positieve test alert",
-                Titel = "Postieve Test Melding"
-            };
-            Melding melding2 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = false,
-                MeldingDateTime = DateTime.Now.AddHours(-2),
-                Message = "Deze Alert is een Negatieve test alert",
-                Titel = "Negatieve Test Melding"
-            };
-            meldingen.Add(melding1);
-            meldingen.Add(melding2);
-            #endregion
+            List<Melding> meldingen = new List<Melding>();
+            if (Deelplatform != null)
+            {   
+                //Ophalen Meldingen van het dashboard
+                Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
+                meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
+    
+                //TestMeldingen
+                #region TestMeldingen
+                Melding melding1 = new Melding()
+                {
+                    IsActive = true,
+                    IsPositive = true,
+                    MeldingDateTime = DateTime.Now.AddHours(-1),
+                    Message = "Deze Alert is een positieve test alert",
+                    Titel = "Postieve Test Melding"
+                };
+                Melding melding2 = new Melding()
+                {
+                    IsActive = true,
+                    IsPositive = false,
+                    MeldingDateTime = DateTime.Now.AddHours(-2),
+                    Message = "Deze Alert is een Negatieve test alert",
+                    Titel = "Negatieve Test Melding"
+                };
+                meldingen.Add(melding1);
+                meldingen.Add(melding2);
+                #endregion
+            }
             return PartialView(meldingen);
         }
         #endregion

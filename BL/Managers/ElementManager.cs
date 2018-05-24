@@ -63,7 +63,7 @@ namespace BL.Managers
 
         public Element getElementByNaam(string naam, Deelplatform deelplatform)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
             Element element = elementRepository.getElementByName(naam, deelplatform);
             return element;
         }

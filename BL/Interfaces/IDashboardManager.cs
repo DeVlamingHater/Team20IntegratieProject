@@ -45,6 +45,7 @@ namespace BL.Interfaces
         List<Alert> getAllAlerts();
         void sendAlerts();
         void createAlert(Alert testAlert);
+        void createAlertByForm(System.Web.Mvc.FormCollection form);
         IEnumerable<Alert> getDashboardAlerts(Dashboard testDashboard);
         #endregion
 

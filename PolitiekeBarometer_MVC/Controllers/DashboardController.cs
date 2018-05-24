@@ -63,15 +63,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             return PartialView("DashboardPartials/GrafiekPartial", grafiekViewModel);
         }
 
-        public ActionResult Suggestions()
-        {
-            IElementManager elementManager = new ElementManager();
-            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(Deelplatform), "Id", "Naam");
-            return View("search/Suggestions", elementManager.getAllElementen(Deelplatform));
-        }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
+            //TODO: controleren
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
             Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>() };
@@ -207,14 +202,13 @@ namespace PolitiekeBarometer_MVC.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public ActionResult DeleteZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
             return RedirectToAction("Index");
         }
+
         public ActionResult saveTabNaam(int id, string naam)
         {
             IDashboardManager mgr = new DashboardManager();
