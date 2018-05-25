@@ -63,7 +63,7 @@ namespace BL.Managers
 
         public Element getElementByNaam(string naam, Deelplatform deelplatform)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
             Element element = elementRepository.getElementByName(naam, deelplatform);
             return element;
         }
@@ -84,6 +84,8 @@ namespace BL.Managers
             }
             //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
+
+            this.uowManager.Save();
         }
 
         public List<Element> getTrendingElementen(int amount, Deelplatform deelplatformS)
@@ -114,9 +116,10 @@ namespace BL.Managers
 
         public void addElementen(List<Element> elementen)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
 
             elementRepository.addElementen(elementen);
+            this.uowManager.Save();
         }
         #endregion
 
@@ -191,6 +194,7 @@ namespace BL.Managers
             initNonExistingRepo(true);
 
             elementRepository.deleteAllPersonen(deelplatform);
+            this.uowManager.Save();
         }
 
         public void addPersoon(Persoon persoon)
@@ -248,6 +252,7 @@ namespace BL.Managers
             initNonExistingRepo();
 
             elementRepository.addOrganisatie(organisatie);
+            uowManager.Save();
         }
 
         public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)

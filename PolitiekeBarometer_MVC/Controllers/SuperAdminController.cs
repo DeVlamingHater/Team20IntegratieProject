@@ -16,7 +16,7 @@ using System.Web.Security;
 namespace PolitiekeBarometer_MVC.Controllers
 {
     [Authorize(Roles = "SuperAdmin")]
-    public class SuperAdminController : Controller
+    public class SuperAdminController : BaseController
     {
         // GET: SuperAdmin
         // Index pagina om te navigeren naar verschillende beheerpagina's
@@ -36,18 +36,18 @@ namespace PolitiekeBarometer_MVC.Controllers
             List<ApplicationUser> usersLijst = userManager.Users.ToList();
             List<ApplicationUser> users = new List<ApplicationUser>();
 
-            var adminRole = roleManager.FindByName("Admin");
+            //var adminRole = roleManager.FindByName("Admin");
 
-            foreach (var user in usersLijst)
-            {
-                foreach (var role in user.Roles)
-                {
-                    if (role.RoleId == adminRole.Id)
-                    {
-                        users.Add(user);
-                    }
-                }
-            }
+            //foreach (var user in usersLijst)
+            //{
+            //    foreach (var role in user.Roles)
+            //    {
+            //        if (role.RoleId == adminRole.Id)
+            //        {
+            //            users.Add(user);
+            //        }
+            //    }
+            //}
 
             return View(users);
 
@@ -153,11 +153,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 OrganisatieString = form["txtOrganisatiestring"],
                 ThemaString = form["txtThemastring"],
             };
-
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(PolitiekeBarometerContext.Create()));
+            IdentityRole adminRole = new IdentityRole("Admin"+deelplatformURL);
+            roleManager.Create(adminRole);
             IPlatformManager platformManager = new PlatformManager();
-
-
-
             platformManager.createDeelplatform(deelplatform);
 
             return RedirectToAction("Index");
@@ -166,8 +165,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult AssignAdmin()
         {
             IPlatformManager platformManager = new PlatformManager();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new PolitiekeBarometerContext()));
-            var admins =  userManager.Users.Where(u => u.Roles.Count > 0).ToList();
+            var ctx = PolitiekeBarometerContext.Create();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ctx));
+       
+            var admins = userManager.Users.Where(u => u.Roles.Count > 0).ToList();
 
             ViewBag.Deelplatformen = platformManager.getAllDeeplatformen();
             ViewBag.Admins = admins;
@@ -179,11 +180,17 @@ namespace PolitiekeBarometer_MVC.Controllers
             string email = form["txtAdmin"];
             string deelplatform = form["txtDeelplatform"];
             IPlatformManager platformManager = new PlatformManager();
+            var ctx = PolitiekeBarometerContext.Create();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ctx));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(ctx));
+
+            var user = userManager.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            userManager.AddToRole(user.Id, "Admin" + deelplatform);
 
             Gebruiker gebruiker = platformManager.getGebruikerByEmail(email);
             Deelplatform dp = platformManager.getDeelplatformByNaam(deelplatform);
-            dp.Admins.Add(gebruiker);
-            
+
             return View("Index");
         }
 

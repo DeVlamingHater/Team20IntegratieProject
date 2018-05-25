@@ -11,7 +11,7 @@ namespace BL.Interfaces
     public interface IDashboardManager
     {
         #region Dashboard
-        Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform);
+        Dashboard getDashboard(string gebruikersNaam, string deelplatform);
         #endregion
 
         #region Zone
@@ -51,6 +51,7 @@ namespace BL.Interfaces
         #region Melding
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
         Melding createMelding(Alert alert, double waarde);
+        void updateAlert(Alert alert);
         #endregion
     }
 }

@@ -9,7 +9,6 @@ namespace Domain
     public enum DataType
     {
         TOTAAL,
-        TREND,
-        SENTIMENT
+        PERCENTAGE
     }
 }

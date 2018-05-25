@@ -19,7 +19,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen van alle alerts van een gebruiker
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
             return View(dashboardManager.getAllDashboardAlerts(dashboard));
         }
 
@@ -28,27 +28,29 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Tonen van de UI voor createAlert, en elementen voor de zoekbalken
             IElementManager elementManager = new ElementManager();
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
-            return View();
+            Alert alert = new Alert();
+            return View(alert);
         }
         [HttpPost]
-        public ActionResult CreateAlert(FormCollection form)
+        public ActionResult CreateAlert(FormCollection form,Alert alert)
         {
             //Form parsen naar een alert
-            IDashboardManager dashboardManager = new DashboardManager();
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
 
-            Alert alert = ParseFormToAlert(form);
+            alert = ParseFormToAlert(form, unitOfWorkManager);
             //Alert opslaan
             dashboardManager.createAlert(alert);
 
             //Terug naar lijst gaan
             return RedirectToAction("LijstAlerts");
         }
-        private Alert ParseFormToAlert(FormCollection form)
+        private Alert ParseFormToAlert(FormCollection form, UnitOfWorkManager unitOfWorkManager)
         {
-            IElementManager elementManager = new ElementManager();
-            IDashboardManager dashboardManager = new DashboardManager();
+            IElementManager elementManager = new ElementManager(unitOfWorkManager);
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
 
             //Element & vergelijkingselement ophalen
             Element element = elementManager.getElementByNaam(form["element"], Deelplatform);
@@ -66,7 +68,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     bewerking = DataType.TOTAAL;
                     break;
                 case "percentage":
-                    bewerking = DataType.TREND;
+                    bewerking = DataType.PERCENTAGE;
                     break;
                 default:
                     break;
@@ -144,9 +146,13 @@ namespace PolitiekeBarometer_MVC.Controllers
                 {
                     isPositive = true;
                 }
-                else
+                else if(filterS =="Negatief")
                 {
                     isPositive = false;
+                }
+                else
+                {
+                    return null;
                 }
                 filter = new Domain.Dashboards.Filter()
                 {
@@ -168,15 +174,47 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult EditAlert(int id)
         {
             IDashboardManager dashboardManager = new DashboardManager();
+            IElementManager elementManager = new ElementManager();
+            ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             Alert alert = dashboardManager.getAlert(id);
+            foreach (Domain.Dashboards.Filter filter in alert.DataConfig.Filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.AGE:
+                        ViewBag.Age = filter.IsPositive;
+                        break;
+                    case FilterType.SENTIMENT:
+                        ViewBag.Sentiment = filter.IsPositive;
+                        break;
+                    case FilterType.RETWEET:
+                        ViewBag.Retweet = filter.IsPositive;
+                        break;
+                    case FilterType.PERSONALITEIT:
+                        ViewBag.Personaliteit = filter.IsPositive;
+                        break;
+                    case FilterType.OPLEIDING:
+                        ViewBag.Opleiding = filter.IsPositive;
+                        break;
+                    case FilterType.GESLACHT:
+                        ViewBag.Geslacht= filter.IsPositive;
+                        break;
+                    default:
+                        break;
+                }
+            }
             return View(alert);
         }
 
         [HttpPost]
         public ActionResult EditAlert(FormCollection form)
         {
-           
-           return RedirectToAction("LijstAlerts");
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
+            Alert alert = ParseFormToAlert(form, unitOfWorkManager);
+
+            dashboardManager.updateAlert(alert);
+            return RedirectToAction("LijstAlerts");
         }
         #endregion
 
@@ -190,32 +228,35 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Ophalen Dashboard van de User van het huidige Deelplatform
             IDashboardManager dashboardManager = new DashboardManager();
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform);
-
-            //Ophalen Meldingen van het dashboard
-            List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
-
-            //TestMeldingen
-            #region TestMeldingen
-            Melding melding1 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = true,
-                MeldingDateTime = DateTime.Now.AddHours(-1),
-                Message = "Deze Alert is een positieve test alert",
-                Titel = "Postieve Test Melding"
-            };
-            Melding melding2 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = false,
-                MeldingDateTime = DateTime.Now.AddHours(-2),
-                Message = "Deze Alert is een Negatieve test alert",
-                Titel = "Negatieve Test Melding"
-            };
-            meldingen.Add(melding1);
-            meldingen.Add(melding2);
-            #endregion
+            List<Melding> meldingen = new List<Melding>();
+            if (Deelplatform != null)
+            {   
+                //Ophalen Meldingen van het dashboard
+                Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
+                meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
+    
+                //TestMeldingen
+                #region TestMeldingen
+                Melding melding1 = new Melding()
+                {
+                    IsActive = true,
+                    IsPositive = true,
+                    MeldingDateTime = DateTime.Now.AddHours(-1),
+                    Message = "Deze Alert is een positieve test alert",
+                    Titel = "Postieve Test Melding"
+                };
+                Melding melding2 = new Melding()
+                {
+                    IsActive = true,
+                    IsPositive = false,
+                    MeldingDateTime = DateTime.Now.AddHours(-2),
+                    Message = "Deze Alert is een Negatieve test alert",
+                    Titel = "Negatieve Test Melding"
+                };
+                meldingen.Add(melding1);
+                meldingen.Add(melding2);
+                #endregion
+            }
             return PartialView(meldingen);
         }
         #endregion

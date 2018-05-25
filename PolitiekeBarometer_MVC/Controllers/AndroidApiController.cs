@@ -34,7 +34,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IPlatformManager platformManager = new PlatformManager();
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
-            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform.Naam);
 
             List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
 
@@ -131,7 +131,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IPlatformManager platformManager = new PlatformManager();
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
-            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform.Naam);
 
             List<Alert> lijstAlerts = dashboardManager.getDashboardAlerts(dashboard).ToList();
 
@@ -147,7 +147,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IPlatformManager platformManager = new PlatformManager();
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
-            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform.Naam);
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
 
             Melding melding1 = new Melding()

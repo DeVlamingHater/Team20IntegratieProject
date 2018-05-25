@@ -22,11 +22,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             IDashboardManager dashboardManager = new DashboardManager();
-            IPlatformManager platformManager = new PlatformManager();
-            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
 
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform);
+            Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             return View(dashboard);
         }
@@ -41,28 +39,34 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View("DashboardPartials/ItemPartial", item);
         }
 
-        public ActionResult GrafiekPartial(int ItemId)
+        public ActionResult GrafiekPartial()
         {
-            IDashboardManager dashboardManager = new DashboardManager();
-            Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
-            List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
+            //IDashboardManager dashboardManager = new DashboardManager();
+            //Grafiek grafiek = dashboardManager.getGrafiek(ItemId);
+            //List<Dictionary<string, double>> datasets = dashboardManager.getGraphData(grafiek);
+            //GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
+
+            List<string> labels = new List<string>()
+            {
+                "1","2","3"
+            };
+            List<double> data = new List<double>()
+            {
+                10.0,50.0,55.0
+            };
+            ViewBag.labels = labels;
+            ViewBag.data = data;
             GrafiekViewModel grafiekViewModel = new GrafiekViewModel();
-
             //grafiekViewModel.datasets = datasets;
-            grafiekViewModel.tittel = grafiek.Tittel;
-            grafiekViewModel.GrafiekType =grafiek.GrafiekType;
-            return PartialView("DashboardPartials/ItemPartial", grafiekViewModel);
+            //grafiekViewModel.tittel = grafiek.Tittel;
+            //grafiekViewModel.GrafiekType =grafiek.GrafiekType;
+            return PartialView("DashboardPartials/GrafiekPartial", grafiekViewModel);
         }
 
-        public ActionResult Suggestions()
-        {
-            IElementManager elementManager = new ElementManager();
-            ViewBag.Suggestions = new MultiSelectList(elementManager.getAllElementen(Deelplatform), "Id", "Naam");
-            return View("search/Suggestions", elementManager.getAllElementen(Deelplatform));
-        }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
+            //TODO: controleren
             IDashboardManager dashboardManager = new DashboardManager();
             IElementManager elementManager = new ElementManager();
             Grafiek grafiek = new Grafiek() { Dataconfigs = new List<DataConfig>() };
@@ -111,7 +115,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     grafiek.DataType = DataType.TOTAAL;
                     break;
                 case "Trend":
-                    grafiek.DataType = DataType.TREND;
+                    grafiek.DataType = DataType.PERCENTAGE;
                     break;
                 default:
                     break;
@@ -190,7 +194,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IDashboardManager mgr = new DashboardManager();
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform);
+            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam);
             Zone zone = mgr.addZone(dashboard);
             //GEBRUIKER NOG JUISTE MANIER VINDEN
 
@@ -198,14 +202,13 @@ namespace PolitiekeBarometer_MVC.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public ActionResult DeleteZone(int zoneId)
         {
             IDashboardManager mgr = new DashboardManager();
             mgr.deleteZone(zoneId);
             return RedirectToAction("Index");
         }
+
         public ActionResult saveTabNaam(int id, string naam)
         {
             IDashboardManager mgr = new DashboardManager();

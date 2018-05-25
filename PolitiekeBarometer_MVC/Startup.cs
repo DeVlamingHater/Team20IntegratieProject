@@ -130,7 +130,7 @@ namespace PolitiekeBarometer_MVC
                 user.Email = "thomas.somers@student.kdg.be";
                 user.EmailConfirmed = true;
 
-                user.Gebruiker = new Domain.Platformen.Gebruiker()
+                user.Gebruiker = new Gebruiker()
                 {
                     Email = user.Email,
                     GebruikerId = user.Id,
@@ -145,9 +145,9 @@ namespace PolitiekeBarometer_MVC
                 }
             }
 
-            if (!roleManager.RoleExists("Admin"))
+            if (!roleManager.RoleExists("AdminPolitiek"))
             {
-                var role = new IdentityRole("Admin");
+                var role = new IdentityRole("Admin"+"Politiek");
                 roleManager.Create(role);
 
                 var user = new ApplicationUser();
@@ -156,7 +156,7 @@ namespace PolitiekeBarometer_MVC
                 user.Email = "thomas.somers@live.nl";
                 user.EmailConfirmed = true;
                 string pwd = "ThomasAdmin20";
-                user.Gebruiker = new Domain.Platformen.Gebruiker()
+                user.Gebruiker = new Gebruiker()
                 {
                     Email = user.Email,
                     GebruikerId = user.Id,
@@ -165,8 +165,23 @@ namespace PolitiekeBarometer_MVC
                 var newuser = userManager.Create(user, pwd);
                 if (newuser.Succeeded)
                 {
-                    userManager.AddToRole(user.Id, "Admin");
+                    userManager.AddToRole(user.Id, "AdminPolitiek");
                 }
+
+                var gewoneGebruiker = new ApplicationUser();
+                gewoneGebruiker.Name = "Sam";
+                gewoneGebruiker.UserName = "sam.claessen@student.kdg.be";
+                gewoneGebruiker.Email = "sam.claessen@student.kdg.be";
+                gewoneGebruiker.EmailConfirmed = true;
+                string gebruikerPW = "SamUser";
+                gewoneGebruiker.Gebruiker = new Gebruiker()
+                {
+                    Email = gewoneGebruiker.Email,
+                    GebruikerId = gewoneGebruiker.Id,
+                    Naam = gewoneGebruiker.Name
+                };
+                var User = userManager.Create(gewoneGebruiker, gebruikerPW);
+
             }
         }
     }

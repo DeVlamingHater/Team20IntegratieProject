@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Data.Entity.ModelConfiguration;
 
 namespace DAL.EF
 {
@@ -53,7 +54,7 @@ namespace DAL.EF
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Persoon> Personen { get; set; }
 
-        
+
 
         public DbSet<Thema> Themas { get; set; }
         public DbSet<Organisatie> Organisaties { get; set; }
@@ -64,7 +65,7 @@ namespace DAL.EF
         //Posts
         public DbSet<Post> Posts { get; set; }
 
-    private readonly bool delaySave;
+        private readonly bool delaySave;
 
         public PolitiekeBarometerContext(bool unitOfWorkPresent = false) : base("Politieke_BarometerDB")
         {
@@ -75,12 +76,11 @@ namespace DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Thema>().HasMany<Keyword>(kw => kw.Keywords);
             modelBuilder.Entity<Keyword>().HasMany<Thema>(t => t.Themas);
 
             modelBuilder.Entity<Post>().HasMany<Keyword>(kw => kw.Keywords);
-            modelBuilder.Entity<Post>().HasMany<Persoon>(p =>p.Personen);
+            modelBuilder.Entity<Post>().HasMany<Persoon>(p => p.Personen);
             modelBuilder.Entity<Persoon>().HasMany<Post>(p => p.Posts);
             modelBuilder.Entity<Keyword>().HasMany<Post>(t => t.Posts);
 
@@ -98,17 +98,21 @@ namespace DAL.EF
 
             modelBuilder.Entity<Gebruiker>().HasMany<Dashboard>(g => g.Dashboards);
 
-            modelBuilder.Entity<Dashboard>().HasMany<Zone>(db=>db.Zones);
-            
+            modelBuilder.Entity<Dashboard>().HasMany<Zone>(db => db.Zones);
+
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
-            
+
             modelBuilder.Entity<Grafiek>().HasMany<Filter>(g => g.Filters);
 
             modelBuilder.Entity<Alert>().HasMany<Melding>(a => a.Meldingen);
 
             modelBuilder.Entity<Melding>().HasRequired<Alert>(m => m.Alert);
 
-            modelBuilder.Entity<ApplicationUser>().HasRequired<Gebruiker>(g=>g.Gebruiker);
+            modelBuilder.Entity<ApplicationUser>().HasRequired<Gebruiker>(g => g.Gebruiker);
+
+            modelBuilder.Entity<ApplicationUser>().HasMany<IdentityUserRole>((ApplicationUser u) => u.Roles);
+            base.OnModelCreating(modelBuilder);
+
         }
 
         public override int SaveChanges()

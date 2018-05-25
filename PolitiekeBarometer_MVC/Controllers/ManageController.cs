@@ -11,7 +11,7 @@ using PolitiekeBarometer_MVC.Models;
 namespace PolitiekeBarometer_MVC.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

@@ -19,7 +19,7 @@ using Domain.Platformen;
 namespace PolitiekeBarometer_MVC.Controllers
 {
     [DeelplatformFilter]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         
         [DeelplatformFilter]
