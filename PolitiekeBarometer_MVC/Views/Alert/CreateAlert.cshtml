@@ -59,8 +59,8 @@
                         </a>
                         <div class="collapse" id="collapseThemas">
                             <select id="test" class="chosen-select" name="vergelijking" style="width:100%;">
-                            <option value="geen"></option>
-                            @foreach (var item in ViewBag.Suggestions)
+                                <option value="geen"></option>
+                                @foreach (var item in ViewBag.Suggestions)
                                 {
                                     <option value="@item.Naam">@item.Naam</option>
                                 }
@@ -96,8 +96,13 @@
                             </label>
                             <div></div>
                             <select name="bewerking" class="form-control  w-25">
-                                <option value="totaal">Totaal</option>
-                                <option value="percentage">Percentage</option>
+                                @foreach (Domain.DataType value in Enum.GetValues(typeof(Domain.DataType)))
+                                {
+                                    <option selected value="@value">
+                                        @Enum.GetName(typeof(Domain.DataType), value).ToLower()
+                                    </option>
+
+                                }
                             </select>
                         </div>
                         <div id="operator">
@@ -123,46 +128,60 @@
                         <h4>Selecteer ontvangstmethode</h4>
                         <div class="form-group form-inline ">
                             @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="checkbox" value="true" name="emailMelding" />
-
-                            </div>
+                            @Html.CheckBoxFor(model => model.EmailMelding)
                         </div>
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="checkbox" value="true" name="browserMelding" />
-
-                            </div>
+                            @Html.CheckBoxFor(model => model.BrowserMelding)
                         </div>
 
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <input type="checkbox" value="true" name="applicatieMelding" />
-
-                            </div>
+                            @Html.CheckBoxFor(model => model.ApplicatieMelding)
                         </div>
                     </div>
+
                     <div class="form-group createAlert ">
                         <h4>Filters</h4>
                         @Html.Label("Age")
                         <div class="form-group">
-                            <input type="radio" name="Age" value="Geen"> Geen filter
-                            <input type="radio" name="Age" value="Positief"> +25j
-                            <input type="radio" name="Age" value="Negatief"> -25j<br>
+                            <select name="Age">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> +25j</option>
+                                <option value="Negatief"> -25j</option>
+                            </select>
                         </div>
                         @Html.Label("Sentiment")
                         <div class="form-group">
-                            <input type="radio" name="Sentiment" value="Geen"> Geen filter
-                            <input type="radio" name="Sentiment" value="Positief"> Positief
-                            <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+                            <select name="Sentiment">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> Positief</option>
+                                <option value="Negatief"> Negatief</option>
+                            </select>
                         </div>
                         @Html.Label("Retweet")
                         <div class="form-group">
-                            <input type="radio"  name="Retweet" value="Geen"> Geen filter
-                            <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
-                            <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
+                            <select name="Retweet">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> Enkel Retweets</option>
+                                <option value="Negatief"> Geen Retweets</option>
+                            </select>
+                        </div>
+                        @Html.Label("Geslacht")
+                        <div class="form-group">
+                            <select name="Geslacht">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> Vrouw</option>
+                                <option value="Negatief"> Man</option>
+                            </select>
+                        </div>
+                        @Html.Label("Opleiding")
+                        <div class="form-group">
+                            <select name="Opleiding">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> Hoge opleiding</option>
+                                <option value="Negatief"> Lage opleiding</option>
+                            </select>
                         </div>
                     </div>
                     <button type="submit" value="Submit" class="btn btn-primary">Save</button>

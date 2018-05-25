@@ -34,18 +34,18 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult CreateAlert(FormCollection form)
         {
             //Form parsen naar een alert
-            IDashboardManager dashboardManager = new DashboardManager();
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
 
-            Alert alert = ParseFormToAlert(form);
+            Alert alert = ParseFormToAlert(form, unitOfWorkManager);
             //Alert opslaan
             dashboardManager.createAlert(alert);
 
             //Terug naar lijst gaan
             return RedirectToAction("LijstAlerts");
         }
-        private Alert ParseFormToAlert(FormCollection form)
+        private Alert ParseFormToAlert(FormCollection form, UnitOfWorkManager unitOfWorkManager)
         {
-            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
             IElementManager elementManager = new ElementManager(unitOfWorkManager);
             IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
@@ -67,7 +67,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     bewerking = DataType.TOTAAL;
                     break;
                 case "percentage":
-                    bewerking = DataType.TREND;
+                    bewerking = DataType.PERCENTAGE;
                     break;
                 default:
                     break;
@@ -145,9 +145,13 @@ namespace PolitiekeBarometer_MVC.Controllers
                 {
                     isPositive = true;
                 }
-                else
+                else if(filterS =="Negatief")
                 {
                     isPositive = false;
+                }
+                else
+                {
+                    return null;
                 }
                 filter = new Domain.Dashboards.Filter()
                 {
@@ -169,14 +173,46 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult EditAlert(int id)
         {
             IDashboardManager dashboardManager = new DashboardManager();
+            IElementManager elementManager = new ElementManager();
+            ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             Alert alert = dashboardManager.getAlert(id);
+            foreach (Domain.Dashboards.Filter filter in alert.DataConfig.Filters)
+            {
+                switch (filter.Type)
+                {
+                    case FilterType.AGE:
+                        ViewBag.Age = filter.IsPositive;
+                        break;
+                    case FilterType.SENTIMENT:
+                        ViewBag.Sentiment = filter.IsPositive;
+                        break;
+                    case FilterType.RETWEET:
+                        ViewBag.Retweet = filter.IsPositive;
+                        break;
+                    case FilterType.PERSONALITEIT:
+                        ViewBag.Personaliteit = filter.IsPositive;
+                        break;
+                    case FilterType.OPLEIDING:
+                        ViewBag.Opleiding = filter.IsPositive;
+                        break;
+                    case FilterType.GESLACHT:
+                        ViewBag.Geslacht= filter.IsPositive;
+                        break;
+                    default:
+                        break;
+                }
+            }
             return View(alert);
         }
 
         [HttpPost]
         public ActionResult EditAlert(FormCollection form)
         {
+            UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
+            Alert alert = ParseFormToAlert(form, unitOfWorkManager);
 
+            dashboardManager.updateAlert(alert);
             return RedirectToAction("LijstAlerts");
         }
         #endregion

@@ -45,13 +45,13 @@ namespace BL.Interfaces
         List<Alert> getAllAlerts();
         void sendAlerts();
         void createAlert(Alert testAlert);
-        void createAlertByForm(System.Web.Mvc.FormCollection form);
         IEnumerable<Alert> getDashboardAlerts(Dashboard testDashboard);
         #endregion
 
         #region Melding
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
         Melding createMelding(Alert alert, double waarde);
+        void updateAlert(Alert alert);
         #endregion
     }
 }

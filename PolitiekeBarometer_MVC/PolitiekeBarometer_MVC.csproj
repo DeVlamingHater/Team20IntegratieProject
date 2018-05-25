@@ -225,6 +225,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActionFilters\AdminFilter.cs" />
     <Compile Include="Controllers\ActionFilters\DeelplatformFilter.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlertController.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DeelplatformController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SuperAdminController.cs" />
@@ -392,6 +394,7 @@
     <Content Include="Views\Deelplatform\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Dashboard\Test.cshtml" />
+    <Content Include="Views\Error\AdminError.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />

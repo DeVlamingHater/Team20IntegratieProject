@@ -193,17 +193,9 @@ namespace BL.Managers
                         case Domain.DataType.TOTAAL:
                             grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
                             break;
-                        case Domain.DataType.TREND:
+                        case Domain.DataType.PERCENTAGE:
                             double dataPoint = (double)posts.Count / (double)totaal;
                             grafiekData.Add(start.ToShortDateString(), dataPoint);
-                            break;
-                        case Domain.DataType.SENTIMENT:
-                            double average = 0.0;
-                            if (posts.Count()!=0)
-                            {
-                                 average = posts.Average(p => p.Sentiment[0] * p.Sentiment[1]);
-                            }
-                            grafiekData.Add(start.ToShortDateString(), average);
                             break;
                         default:
                             break;
@@ -251,6 +243,14 @@ namespace BL.Managers
             initNonExistingRepo();
 
             return dashboardRepository.getAllDashboardAlerts(dashboard).ToList();
+        }
+
+        public void updateAlert(Alert alert)
+        {
+            initNonExistingRepo(true);
+
+            dashboardRepository.updateAlert(alert);
+            this.uowManager.Save();
         }
 
         public void sendAlerts()
@@ -340,6 +340,11 @@ namespace BL.Managers
             initNonExistingRepo();
 
             dashboardRepository.createAlert(alert);
+
+            if (uowManager!=null)
+            {
+                uowManager.Save();
+            }
         }
         #endregion
 
@@ -390,6 +395,8 @@ namespace BL.Managers
 
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
-        #endregion      
+
+      
+        #endregion
     }
 }

@@ -21,7 +21,7 @@ using Domain.Platformen;
 namespace PolitiekeBarometer_MVC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -81,7 +81,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Deelplatform");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

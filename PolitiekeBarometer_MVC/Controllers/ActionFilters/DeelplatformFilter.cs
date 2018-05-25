@@ -35,6 +35,7 @@ namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
             {
                 //Deelplatform bestaat, geef deelplatformnaam mee
                 filterContext.RouteData.Values.Add("deelplatform", deelplatform);
+                
                 base.OnActionExecuting(filterContext);
             }
         }

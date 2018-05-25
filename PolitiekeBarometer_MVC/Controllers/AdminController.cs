@@ -5,6 +5,7 @@ using Domain;
 using Domain.Platformen;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PolitiekeBarometer_MVC.Controllers.ActionFilters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ using System.Web.UI.WebControls;
 
 namespace PolitiekeBarometer_MVC.Controllers
 {
-    [Authorize(Roles = "Admin,SuperAdmin")]
+    [AdminFilter()]
     public class AdminController : BaseController
     {
         PolitiekeBarometerContext context = new PolitiekeBarometerContext();
@@ -251,7 +252,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IElementManager elementManager = new ElementManager();
             Persoon persoon = (Persoon)elementManager.getElementById(id);
             elementManager.deletePersoon(persoon);
-            return RedirectToAction("LijstPersonen"); 
+            return RedirectToAction("LijstPersonen");
         }
         #endregion
 

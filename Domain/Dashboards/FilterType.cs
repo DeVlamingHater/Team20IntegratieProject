@@ -9,7 +9,10 @@ namespace Domain.Dashboards
     public enum FilterType
     {
         AGE,
+        GESLACHT,
         SENTIMENT,
-        RETWEET
+        RETWEET,
+        PERSONALITEIT,
+        OPLEIDING
     }
 }

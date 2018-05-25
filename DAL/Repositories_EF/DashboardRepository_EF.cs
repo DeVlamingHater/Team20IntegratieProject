@@ -188,7 +188,13 @@ namespace DAL.Repositories_EF
 
         public Alert getAlert(int id)
         {
-            return (Alert)context.Alerts.Where(a => a.AlertId == id).FirstOrDefault();
+            return (Alert)context.Alerts.Include(a=>a.DataConfig.Element).Include(a=>a.Dashboard).Where(a => a.AlertId == id).FirstOrDefault();
+        }
+
+        public void updateAlert(Alert alert)
+        {
+            context.Entry(alert).State = EntityState.Modified;
+            context.SaveChanges();
         }
         #endregion
 

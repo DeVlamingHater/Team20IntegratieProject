@@ -115,7 +115,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                     grafiek.DataType = DataType.TOTAAL;
                     break;
                 case "Trend":
-                    grafiek.DataType = DataType.TREND;
+                    grafiek.DataType = DataType.PERCENTAGE;
                     break;
                 default:
                     break;
