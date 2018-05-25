@@ -27,93 +27,21 @@ namespace PolitiekeBarometer_MVC.Controllers
         [Route("api/AndroidApi/Zones")]
         public List<ZoneViewModel> GetZones(string email)
         {
-            IDashboardManager dashboardManager = new DashboardManager();
-            IElementManager elementManager = new ElementManager();
+            UnitOfWorkManager uowMgr = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(uowMgr);
+            IElementManager elementManager = new ElementManager(uowMgr);
 
             //TODO: eventueel meerdere deelplatformen
-            IPlatformManager platformManager = new PlatformManager();
+            IPlatformManager platformManager = new PlatformManager(uowMgr);
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform.Naam);
 
-            List<Zone> lijstZones = dashboardManager.getZones(dashboard).ToList();
+            List<Zone> zones = dashboardManager.getZones(dashboard).ToList();
 
-            #region testData
-            ZoneViewModel testZone = new ZoneViewModel()
-            {
-                naam = "testZone",
-                items = new List<ItemViewModel>()
-            };
-            ZoneViewModel legeZone = new ZoneViewModel()
-            {
-                naam = "legeZone",
-                items = new List<ItemViewModel>()
-            };
+            List<ZoneViewModel> zonesViewModel = ZoneParser.ParseZones(zones, uowMgr);
 
-            #region testBar
-            Dictionary<string, Dictionary<string, double>> datasets = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, double> dataset = new Dictionary<string, double>();
-            dataset.Add("Bart", 20.0);
-            dataset.Add("Imade", 80.0);
-            datasets.Add("", dataset);
-
-            GrafiekViewModel testGrafiek = new GrafiekViewModel()
-            {
-                tittel = "testGrafiek",
-                datasets = datasets,
-                GrafiekType = GrafiekType.BAR,
-                DataType = 1
-            };
-
-            testZone.items.Add(testGrafiek);
-            #endregion
-
-            #region testPie
-            Dictionary<string, Dictionary<string, double>> datasetsPie = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, double> datasetPie = new Dictionary<string, double>();
-            datasetPie.Add("Bart", 20.0);
-            datasetPie.Add("Imade", 80.0);
-            datasetsPie.Add("", dataset);
-
-            GrafiekViewModel testGrafiekPie = new GrafiekViewModel()
-            {
-                tittel = "testGrafiek",
-                datasets = datasetsPie,
-                GrafiekType = GrafiekType.PIE,
-                DataType = 1
-            };
-
-            testZone.items.Add(testGrafiekPie);
-            #endregion
-            #region testLine
-
-            Dictionary<string, Dictionary<string, double>> datasetsLine = new Dictionary<string, Dictionary<string, double>>();
-            Dictionary<string, double> datasetLine1 = new Dictionary<string, double>();
-            datasetLine1.Add(DateTime.Now.AddDays(-4).ToShortDateString(), 20.0);
-            datasetLine1.Add(DateTime.Now.AddDays(-3).ToShortDateString(), 30.0);
-
-            Dictionary<string, double> datasetLine2 = new Dictionary<string, double>();
-            datasetLine2.Add(DateTime.Now.AddDays(-4).ToShortDateString(), 50.0);
-            datasetLine2.Add(DateTime.Now.AddDays(-3).ToShortDateString(), 40.0);
-
-            datasetsLine.Add("Lijn 1", datasetLine1);
-            datasetsLine.Add("Lijn 2", datasetLine2);
-
-            GrafiekViewModel testLine = new GrafiekViewModel()
-            {
-                tittel = "testLine",
-                datasets = datasetsLine,
-                GrafiekType = GrafiekType.LINE,
-                DataType = 1
-            };
-
-            testZone.items.Add(testLine);
-            #endregion
-            List<ZoneViewModel> testzones = new List<ZoneViewModel>();
-            testzones.Add(testZone);
-            testzones.Add(legeZone);
-            #endregion
-            return testzones;
+            return zonesViewModel;
         }
 
         [HttpGet]

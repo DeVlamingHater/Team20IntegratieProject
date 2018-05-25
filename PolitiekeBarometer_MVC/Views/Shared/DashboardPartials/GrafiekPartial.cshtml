@@ -1,70 +1,52 @@
 ﻿@model PolitiekeBarometer_MVC.Models.GrafiekViewModel
-<canvas id="Chart"></canvas>
-<button onclick="laadGrafiek()">laadgrafiek</button>
-<p> @Html.Raw(Json.Encode(ViewBag.data))</p>
-<p id="test">not loaded</p>
-<script type="text/javascript">
-    function laadGrafiek() {
-     var data = @Html.Raw(Json.Encode(ViewBag.data));
-    var labels = @Html.Raw(Json.Encode(ViewBag.labels));
-    var chart = document.getElementById("Chart");
-    var test = document.getElementById("test");
-    test.innerHTML = "loaded";
-    test.innerHTML= "nog eens loaded";
-        var graph = new Chart(chart, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Sessions",
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(2,117,216,0.2)",
-                    borderColor: "rgba(2,117,216,1)",
-                    pointRadius: 5,
-                    pointBackgroundColor: "rgba(2,117,216,1)",
-                    pointBorderColor: "rgba(255,255,255,0.8)",
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                    pointHitRadius: 20,
-                    pointBorderWidth: 2,
-                    data: data
-                }]
-            },
-            options:
+
+<script src="~/Scripts/jquery-3.0.0.min.js" defer></script>
+
+@{
+
+    if (Model != null)
+    {
+        List<string> datasetLabels = new List<string>();
+        bool labelsGevuld = false;
+        Dictionary<string, double> dataset = new Dictionary<string, double>();
+        List<double> dataentries = new List<double>();
+        List<string> labelentries = new List<string>();
+        if (Model.datasets != null)
+        {
+            foreach (var item in Model.datasets)
+            {
+                datasetLabels.Add(item.Key);
+                dataset = item.Value;
+                if (!labelsGevuld)
                 {
-                    scales: {
-                        xAxes: [{
-                            time: {
-                                unit: 'date'
-                            },
-                            gridLines: {
-                                display: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 7
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                                max: 120,
-                                maxTicksLimit: 5
-                            },
-                            gridLines: {
-                                color: "rgba(0, 0, 0, .125)",
-                            }
-                        }],
-                    },
-                    legend: {
-                        display: false
+                    foreach (var entry in dataset)
+                    {
+                        dataentries.Add(entry.Value);
+                        labelentries.Add(entry.Key);
                     }
                 }
-        });
-    }
-    window.onload = function () {
-        laadGrafiek();
-            alert("let's go!");
+
+                labelsGevuld = true;
+            }
+            ViewBag.label = @Html.Raw(Json.Encode(labelentries));
+            ViewBag.data = @Html.Raw(Json.Encode(dataentries));
+
+            <p id="@Model.id entry" hidden>@Html.Raw(Json.Encode(dataentries)) </p>
+            <p id="@Model.id label" hidden>@Html.Raw(Json.Encode(labelentries))</p>
         }
-  
+    }
+}
+
+<canvas on id="@Model.id"></canvas>
+
+<button onclick="laadGrafiek(@Model.id)"> laadgrafiek</button>
+
+<p id="test">not loaded</p>
+
+
+<script type="text/javascript">
+    laadGrafiek(@Model.id);
 </script>
+
+
 

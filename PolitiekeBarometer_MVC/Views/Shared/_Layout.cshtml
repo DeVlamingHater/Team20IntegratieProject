@@ -16,9 +16,36 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/Tabs.css" rel="stylesheet" />
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css" rel="stylesheet" />
+    <link href="~/Chosen/chosen.css" rel="stylesheet" />
+    <link href="~/Content/Tooltip.css" rel="stylesheet" />
 </head>
 <body class="fixed-nav sticky-footer" id="page-top">
     <!-- Navigation-->
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/Scripts/Grafiek/sb-admin-charts.js"></script>
+    <script src="~/Scripts/Grafiek/sb-admin-charts.min.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/jquery/jquery.min.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-charts.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-datatables.min.js"></script>
+    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-charts.min.js"></script>
+    <script src="~/Scripts/Grafiek/Grafiek.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/Tabs/tabs.js"></script>
+    <script src="~/Chosen/chosen.jquery.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" style="padding:0px; margin:0">
         <div class="navbar-brand nav-item">
             @{
@@ -106,26 +133,6 @@
             </div>
         </div>
     </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/jquery/jquery.min.js"></script>
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/chart.js/Chart.min.js"></script>
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/datatables/dataTables.bootstrap4.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin.min.js"></script>
-    <!-- Custom scripts for this page-->
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-datatables.min.js"></script>
-    <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-charts.min.js"></script>
-    <script src="~/Scripts/Grafiek/Grafiek.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/Tabs/tabs.js"></script>
-    <script src="~/Chosen/chosen.jquery.min.js"></script>
-    @RenderSection("scripts", required: false)
 </body>
 </html>
 

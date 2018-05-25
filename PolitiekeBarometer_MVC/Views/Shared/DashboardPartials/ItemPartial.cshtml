@@ -1,18 +1,19 @@
-﻿@model Domain.Dashboards.Item
+﻿@model PolitiekeBarometer_MVC.Models.ItemViewModel
 
 @{
     ViewBag.Title = "_ItemPartial";
 }
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-bar-chart"></i> @Model.Tittel
+        <i class="fa fa-bar-chart"></i> @Model.tittel
     </div>
     <div class="card-body">
-        <canvas class="Item">
-            @if (Model.GetType().Equals(typeof(Domain.Dashboards.Grafiek)))
-            {
-                @Html.Action("GrafiekPartial", "Dashboard", Model.Id)
-            }
-        </canvas>
+
+        @if (Model.GetType().Equals(typeof(PolitiekeBarometer_MVC.Models.GrafiekViewModel)))
+        {
+            <p>grafiek</p>
+            Html.RenderPartial("DashboardPartials/GrafiekPartial", Model)
+;
+        }
     </div>
 </div>

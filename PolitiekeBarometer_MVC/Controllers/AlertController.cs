@@ -32,12 +32,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View(alert);
         }
         [HttpPost]
-        public ActionResult CreateAlert(FormCollection form,Alert alert)
+        public ActionResult CreateAlert(FormCollection form, Alert alert)
         {
             //Form parsen naar een alert
             UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
             IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
-
+            unitOfWorkManager.Save();
             alert = ParseFormToAlert(form, unitOfWorkManager);
             //Alert opslaan
             dashboardManager.createAlert(alert);
@@ -58,11 +58,13 @@ namespace PolitiekeBarometer_MVC.Controllers
             Element vergelijkingselement = elementManager.getElementByNaam(form["vergelijking"], Deelplatform);
 
             //OverschrijdingsWaarde Parsen
-            var waarde = int.Parse(form["waarde"]);
+            int waarde = 0;
+            int.TryParse(form["waarde"], out waarde);
 
             //DefaultWaarde voor Datatype en Datatype Parsen
             DataType bewerking = DataType.TOTAAL;
-            switch (form["bewerking"])
+            var formbewerking = form["bewerking"].ToLower();
+            switch (formbewerking)
             {
                 case "totaal":
                     bewerking = DataType.TOTAAL;
@@ -76,7 +78,8 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             //Operator Parsen
             var operatorS = "";
-            switch (form["operator"])
+            var formOperator = form["operator"].ToLower();
+            switch (formOperator)
             {
                 case "stijging":
                     operatorS = ">";
@@ -95,17 +98,32 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             //Filters Parsen
             List<Domain.Dashboards.Filter> filters = new List<Domain.Dashboards.Filter>();
-            Domain.Dashboards.Filter filter = parseFilter(form["Age"]);
+            Domain.Dashboards.Filter filter = parseFilter(form["Age"], FilterType.AGE);
             if (filter != null)
             {
                 filters.Add(filter);
             }
-            filter = parseFilter(form["Sentiment"]);
+            filter = parseFilter(form["Sentiment"], FilterType.SENTIMENT);
             if (filter != null)
             {
                 filters.Add(filter);
             }
-            filter = parseFilter(form["Retweet"]);
+            filter = parseFilter(form["Retweet"], FilterType.RETWEET);
+            if (filter != null)
+            {
+                filters.Add(filter);
+            }
+            filter = parseFilter(form["Geslacht"], FilterType.GESLACHT);
+            if (filter != null)
+            {
+                filters.Add(filter);
+            }
+            filter = parseFilter(form["Opleiding"], FilterType.OPLEIDING);
+            if (filter != null)
+            {
+                filters.Add(filter);
+            }
+            filter = parseFilter(form["Personaliteit"], FilterType.PERSONALITEIT);
             if (filter != null)
             {
                 filters.Add(filter);
@@ -136,7 +154,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             return alert;
         }
 
-        private Domain.Dashboards.Filter parseFilter(string filterS)
+        private Domain.Dashboards.Filter parseFilter(string filterS, FilterType type)
         {
             Domain.Dashboards.Filter filter = null;
             if (filterS != "geen")
@@ -146,7 +164,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 {
                     isPositive = true;
                 }
-                else if(filterS =="Negatief")
+                else if (filterS == "Negatief")
                 {
                     isPositive = false;
                 }
@@ -156,7 +174,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 }
                 filter = new Domain.Dashboards.Filter()
                 {
-                    Type = FilterType.AGE,
+                    Type = type,
                     IsPositive = isPositive
                 };
             }
@@ -177,32 +195,84 @@ namespace PolitiekeBarometer_MVC.Controllers
             IElementManager elementManager = new ElementManager();
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             Alert alert = dashboardManager.getAlert(id);
-            foreach (Domain.Dashboards.Filter filter in alert.DataConfig.Filters)
+            ViewBag.Age = "Geen";
+            ViewBag.Sentiment = "Geen";
+            ViewBag.Retweet = "Geen";
+            ViewBag.Geslacht = "Geen";
+            ViewBag.Opleiding = "Geen";
+            if (alert.DataConfig.Filters != null)
             {
-                switch (filter.Type)
+                foreach (var item in alert.DataConfig.Filters)
                 {
-                    case FilterType.AGE:
-                        ViewBag.Age = filter.IsPositive;
-                        break;
-                    case FilterType.SENTIMENT:
-                        ViewBag.Sentiment = filter.IsPositive;
-                        break;
-                    case FilterType.RETWEET:
-                        ViewBag.Retweet = filter.IsPositive;
-                        break;
-                    case FilterType.PERSONALITEIT:
-                        ViewBag.Personaliteit = filter.IsPositive;
-                        break;
-                    case FilterType.OPLEIDING:
-                        ViewBag.Opleiding = filter.IsPositive;
-                        break;
-                    case FilterType.GESLACHT:
-                        ViewBag.Geslacht= filter.IsPositive;
-                        break;
-                    default:
-                        break;
+                    bool isPositive = item.IsPositive;
+                    switch (item.Type)
+                    {
+                        case FilterType.AGE:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Age = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Age = "Negatief";
+                            }
+                            break;
+                        case FilterType.GESLACHT:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Geslacht = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Geslacht = "Negatief";
+                            }
+                            break;
+                        case FilterType.SENTIMENT:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Sentiment = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Sentiment = "Negatief";
+                            }
+                            break;
+                        case FilterType.RETWEET:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Retweet = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Retweet = "Negatief";
+                            }
+                            break;
+                        case FilterType.PERSONALITEIT:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Personaliteit = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Personaliteit = "Negatief";
+                            }
+                            break;
+                        case FilterType.OPLEIDING:
+                            if (item.IsPositive)
+                            {
+                                ViewBag.Age = "Positief";
+                            }
+                            else
+                            {
+                                ViewBag.Age = "Negatief";
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+
             return View(alert);
         }
 
@@ -213,7 +283,17 @@ namespace PolitiekeBarometer_MVC.Controllers
             IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
             Alert alert = ParseFormToAlert(form, unitOfWorkManager);
 
+            if (parseCheckbox(form["Actief"]))
+            {
+                alert.Status = AlertStatus.ACTIEF;
+            }
+            else
+            {
+                alert.Status = AlertStatus.INACTIEF;
+            }
+
             dashboardManager.updateAlert(alert);
+            unitOfWorkManager.Save();
             return RedirectToAction("LijstAlerts");
         }
         #endregion
@@ -230,11 +310,11 @@ namespace PolitiekeBarometer_MVC.Controllers
             string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
             List<Melding> meldingen = new List<Melding>();
             if (Deelplatform != null)
-            {   
+            {
                 //Ophalen Meldingen van het dashboard
                 Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
                 meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
-    
+
                 //TestMeldingen
                 #region TestMeldingen
                 Melding melding1 = new Melding()

@@ -1,4 +1,4 @@
-﻿@model Domain.Dashboards.Dashboard
+﻿@model List<PolitiekeBarometer_MVC.Models.ZoneViewModel>
 
 @{
     ViewBag.Title = "Dashboard";
@@ -21,13 +21,13 @@
         }
 </style>
 <div class="tab">
-    @foreach (var zone in Model.Zones)
+    @foreach (var zone in Model)
     {
         <div class="border">
-            <button class="tablinks" onclick="loadZone(event, @zone.Id)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.Id,this)">
-                @zone.Naam
+            <button class="tablinks" onclick="loadZone(event, @zone.zoneId)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.zoneId,this)">
+                @zone.naam
             </button>
-            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
+            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.zoneId })
         </div>
     }
     <div>
@@ -38,16 +38,17 @@
 
 </div>
 
-@foreach (var zone in Model.Zones)
+@foreach (var zone in Model)
 {
-    <div id="@zone.Id" class="tabcontent">
-        <h3> @zone.Id</h3>
-        @if (zone.Items != null)
+    foreach (var item in zone.items)
+    {
+        Html.RenderPartial("DashboardPartials/ItemPartial", item);
+    }
+    <div id="@zone.zoneId" class="tabcontent">
+        <h3> @zone.zoneId</h3>
+        @if (zone.items != null)
         {
-            foreach (var item in zone.Items)
-            {
-                @Html.Action("ItemPartial", "Dashboard", item.Id)
-            }
+           
         }
 
     </div>
@@ -112,7 +113,7 @@
                 </div>
                 <div class="modal-body">
                     <label>Tijd interval</label>
-                    <select name="Interval" class="chosen-select" id="DataType">
+                    <select name="Interval" id="DataType">
                         <option value="12u">Laatste 12 uur</option>
                         <option value="24u">Laatste 24 uur</option>
                         <option value="7d">Laatste 7 dagen</option>
@@ -120,7 +121,7 @@
                     </select>
 
                     <label>Welk datatype kies je?</label>
-                    <select name="DataType" class="chosen-select" id="DataType">
+                    <select name="DataType" id="DataType">
                         <option value="Totaal">Totaal</option>
                         <option value="Trend">Trend</option>
                     </select>

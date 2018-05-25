@@ -159,14 +159,14 @@ namespace BL.Managers
             return grafiek;
         }
 
-        public List<Dictionary<string, double>> getGraphData(Grafiek grafiek)
+        public Dictionary<string, Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
             initNonExistingRepo();
 
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            List<Dictionary<string, double>> data = new List<Dictionary<string, double>>();
+            Dictionary<string,Dictionary<string, double>> data = new Dictionary<string, Dictionary<string, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
 
@@ -202,7 +202,7 @@ namespace BL.Managers
                     }
                     start = start.Add(interval);
                 }
-                data.Add(grafiekData);
+                data.Add(dataConfig.Label, grafiekData);
                 index++;
             }
             return data;

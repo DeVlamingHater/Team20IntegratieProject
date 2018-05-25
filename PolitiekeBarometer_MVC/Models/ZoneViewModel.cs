@@ -10,5 +10,7 @@ namespace PolitiekeBarometer_MVC.Models
         public string naam { get; set; }
 
         public List<ItemViewModel> items { get; set; }
+
+        public int zoneId { get; set; }
     }
 }

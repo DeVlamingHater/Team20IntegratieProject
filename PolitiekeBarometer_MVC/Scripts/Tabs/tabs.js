@@ -31,10 +31,8 @@ function saveTabNaam(id, button) {
     f.data = JSON.stringify({ id: zoneId, naam: tekst });
     f.contentType = "application/json";
     f.success = function (response) {
-        alert("success");
     };
     f.error = function (response) {
-        alert("failed");
     };
     $.ajax(f);
 }

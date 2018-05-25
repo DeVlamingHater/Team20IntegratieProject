@@ -20,13 +20,17 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         public ActionResult Index()
         {
-            IElementManager elementManager = new ElementManager();
-            IDashboardManager dashboardManager = new DashboardManager();
+            UnitOfWorkManager uowMgr = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowMgr);
+            IDashboardManager dashboardManager = new DashboardManager(uowMgr);
 
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
-            return View(dashboard);
+
+            List<ZoneViewModel> zones = ZoneParser.ParseZones(dashboardManager.getZones(dashboard).ToList(), uowMgr);
+
+            return View(zones);
         }
         public ActionResult Test()
         {
