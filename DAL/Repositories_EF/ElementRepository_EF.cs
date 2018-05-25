@@ -168,13 +168,8 @@ namespace DAL.Repositories_EF
         }
 
         public void setPersoon(Persoon persoon)
-        {
-            Persoon persoonToSet = context.Personen.First(p => p.Naam.Equals(persoon.Naam));
-            int id = persoonToSet.Id;
-
-            persoonToSet = persoon;
-            persoonToSet.Id = id;
-            context.Entry(persoonToSet).State = EntityState.Modified;
+        { 
+            context.Entry(persoon).State = EntityState.Modified;
             context.SaveChanges();
         }
 

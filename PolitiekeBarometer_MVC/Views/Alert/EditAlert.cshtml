@@ -31,9 +31,9 @@
 
 <div class="container">
     <div class="card ">
-        <div class="card-header">Maak Nieuw Alert</div>
+        <div class="card-header">Edit je alert</div>
         <div class="card-body bg-dark">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("EditAlert", "Alert"))
             {
                 <div class="form-horizontal">
                     <div class="form-group createAlert" id="elementen">
@@ -52,17 +52,7 @@
                         <select id="test" class="chosen-select" name="element" style="width:100%;">
                             @foreach (var item in ViewBag.Suggestions)
                             {
-                                if (@item.Naam == Model.DataConfig.Element.Naam)
-                                {
-                                    <option selected value="@item.Naam">@item.Naam</option>
-
-                                }
-                                else
-                                {
-                                    <option value="@item.Naam">@item.Naam</option>
-
-                                }
-
+                                <option value="@item.Naam">@item.Naam</option>
                             }
                         </select>
 
@@ -74,14 +64,7 @@
                                 <option value="geen"></option>
                                 @foreach (var item in ViewBag.Suggestions)
                                 {
-                                    if (Model.DataConfig.Vergelijking != null && item.Naam == Model.DataConfig.Vergelijking.Naam)
-                                    {
-                                        <option selected value="@item.Naam">@item.Naam</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@item.Naam">@item.Naam</option>
-                                    }
+                                    <option value="@item.Naam">@item.Naam</option>
                                 }
                             </select>
                         </div>
@@ -100,7 +83,7 @@
                                     </span>
                                 </i>:
                             </label>
-                            <input name="waarde" value="@Model.Waarde" class="form-control w-25" type="number" />
+                            <input name="waarde" class="form-control w-25" type="number" />
                         </div>
                         <div id="bewerking">
                             <label>
@@ -117,19 +100,9 @@
                             <select name="bewerking" class="form-control  w-25">
                                 @foreach (Domain.DataType value in Enum.GetValues(typeof(Domain.DataType)))
                                 {
-                                    if (Model.DataType == value)
-                                    {
-                                        <option selected value="@value.ToString().ToLower()">
-                                            @Enum.GetName(typeof(Domain.DataType), value).ToLower()
-                                        </option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@value.ToString().ToLower()">
-                                            @Enum.GetName(typeof(Domain.DataType), value).ToLower()
-                                        </option>
-
-                                    }
+                                    <option selected value="@value">
+                                        @Enum.GetName(typeof(Domain.DataType), value).ToLower()
+                                    </option>
 
                                 }
                             </select>
@@ -146,8 +119,8 @@
                                 </i>:
                             </label>
                             <select name="operator" class="form-control w-25">
-                                <option value="stijging">stijging</option>
-                                <option value="daling">daling</option>
+                                <option value="stijging">Stijging</option>
+                                <option value="daling">Daling</option>
                             </select>
                         </div>
 
@@ -157,41 +130,245 @@
                         <h4>Selecteer ontvangstmethode</h4>
                         <div class="form-group form-inline ">
                             @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.EmailMelding)
+                            @if (Model.EmailMelding)
+                            {
+                                <input type="checkbox" checked value="true" name="emailMelding" />
+                            }
+                            <input type="checkbox" value="true" name="emailMelding" />
                         </div>
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.BrowserMelding)
+
+                            @if (Model.BrowserMelding)
+                            {
+                                <input type="checkbox" checked value="true" name="browserMelding" />
+                            }
+                            <input type="checkbox" value="true" name="browserMelding" />
                         </div>
 
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.ApplicatieMelding)
+                            @if (Model.ApplicatieMelding)
+                            {
+                                <input type="checkbox" checked value="true" name="applicatieMelding" />
+                            }
+                            <input type="checkbox" value="true" name="applicatieMelding" />
+
                         </div>
                     </div>
+
+                    <div class="form-group createAlert">
+                        @Html.LabelFor(model => model.Status)
+                        @{
+                            if (Model.Status == Domain.AlertStatus.ACTIEF)
+                            {
+                                <input type="checkbox" checked value="true" name="Actief">
+                            }
+                            else
+                            {
+                                <input type="checkbox" value="true" name="Actief">
+                            }
+                        }
+                    </div>
+
                     <div class="form-group createAlert ">
                         <h4>Filters</h4>
                         @Html.Label("Age")
                         <div class="form-group">
-                            <input type="radio" name="Age" value="Geen"> Geen filter
-                            <input type="radio" name="Age" value="Positief"> +25j
-                            <input type="radio" name="Age" value="Negatief"> -25j<br>
+                            <select name="Age">
+                                @{
+                                    if (ViewBag.Age == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option selected value="Geen">Geen filter </option>
+                                    }
+                                    if (ViewBag.Age == "Positief")
+                                    {
+                                        <option selected valuez="Positief"> +25j</option>
+
+                                    }
+                                    else
+                                    {
+                                        <option valuez="Positief"> +25j</option>
+
+                                    }
+                                    if (ViewBag.Age == "Negatief")
+                                    {
+                                        <option selected value="Negatief"> -25j</option>
+
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> -25j</option>
+
+                                    }
+                                }
+
+                            </select>
                         </div>
                         @Html.Label("Sentiment")
                         <div class="form-group">
-                            <input type="radio" name="Sentiment" value="Geen"> Geen filter
-                            <input type="radio" name="Sentiment" value="Positief"> Positief
-                            <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+                            <select name="Sentiment">
+                                @{
+                                    if (ViewBag.Sentiment == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Geen"> Geen filter </option>
+                                    }
+                                    if (ViewBag.Sentiment == "Positief")
+                                    {
+                                        <option selected value="Positief"> Positief</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Positief"> Positief</option>
+                                    }
+                                    if (ViewBag.Sentiment == "Negatief")
+                                    {
+                                        <option selected value="Negatief"> Negatief</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> Negatief</option>
+                                    }
+                                }
+                            </select>
                         </div>
                         @Html.Label("Retweet")
                         <div class="form-group">
-                            <input type="radio" name="Retweet" value="Geen"> Geen filter
-                            <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
-                            <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
+                            <select name="Retweet">
+                                @{
+                                    if (ViewBag.Retweets == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Geen"> Geen filter </option>
+                                    }
+                                    if (ViewBag.Retweets == "Positief")
+                                    {
+                                        <option selected value="Positief"> Enkel Retweets</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Positief"> Enkel Retweets</option>
+                                    }
+                                    if (ViewBag.Retweets == "Negatief")
+                                    {
+                                        <option selected value="Negatief"> Geen Retweets</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> Geen Retweets</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        @Html.Label("Geslacht")
+                        <div class="form-group">
+                            <select name="Geslacht">
+                                @{
+                                    if (ViewBag.Geslacht == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Geen"> Geen filter </option>
+                                    }
+                                    if (ViewBag.Geslacht == "Positief")
+                                    {
+                                        <option selected value="Positief"> Vrouw</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Positief"> Vrouw</option>
+                                    }
+                                    if (ViewBag.Geslacht == "Negatief")
+                                    {
+                                        <option selected value="Negatief"> Man</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> Man</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        @Html.Label("Opleiding")
+                        <div class="form-group">
+                            <select name="Opleiding">
+                                @{
+                                    if (ViewBag.Opleiding == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Geen"> Geen filter </option>
+                                    }
+                                    if (ViewBag.Opleiding == "Positief")
+                                    {
+                                        <option selected value="Positief"> Hoge opleiding</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Positief"> Hoge opleiding</option>
+                                    }
+                                    if (ViewBag.Opleiding == "Negatief")
+                                    {
+                                        <option selected value="Negatief"> Lage opleiding</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> Lage opleiding</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                        @Html.Label("Personaliteit")
+                        <div class="form-group">
+                            <select name="Personaliteit">
+                                @{
+                                    if (ViewBag.Personaliteit == "Geen")
+                                    {
+                                        <option selected value="Geen"> Geen filter </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Geen"> Geen filter </option>
+                                    }
+                                    if (ViewBag.Personaliteit == "Positief")
+                                    {
+                                        <option selected value="Positief"> Hoge opleiding</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Positief"> Extravert</option>
+                                    }
+                                    if (ViewBag.Personaliteit == "Negatief")
+                                    {
+                                        <option selected value="Negatief">Introvert</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Negatief"> Lage opleiding</option>
+                                    }
+                                }
+
+                            </select>
                         </div>
                     </div>
                     <button type="submit" value="Submit" class="btn btn-primary">Save</button>
-
+                    <button type="reset" value="Reset" class="btn btn-primary">Cancel</button>
                 </div>
             }
         </div>
@@ -204,18 +381,15 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval");
     <script type="text/javascript">
-        $(document).ready(
-            function () {
-                $(".chosen-select").chosen(
-                    {
-                        width: "100px",
-                        allow_single_deselect: true,
-                        disable_search_treshold: 10,
-                        no_results_text: "Geen elementen met deze naam gevonden"
-                    }
-                );
+        $(".chosen-select").chosen(
+            {
+                width: "100px",
+                allow_single_deselect: true,
+                disable_search_treshold: 10,
+                no_results_text: "Geen elementen met deze naam gevonden"
             }
         );
+
     </script>
 
 }

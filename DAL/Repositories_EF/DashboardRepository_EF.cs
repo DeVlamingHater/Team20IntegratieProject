@@ -68,7 +68,7 @@ namespace DAL.Repositories_EF
         #region Zone
         public IEnumerable<Zone> getDashboardZones(int dashboardId)
         {
-            return context.Zones.Where(r => r.Dashboard.Id == dashboardId).AsEnumerable();
+            return context.Zones.Include(z=>z.Items).Where(r => r.Dashboard.Id == dashboardId).AsEnumerable();
         }
 
         public Zone getZone(int zoneId)

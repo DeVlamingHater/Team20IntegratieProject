@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "CreateAlert";
 }
-<link href="~/Content/Tooltip.css" rel="stylesheet" />
 <style>
     .chosen-container {
         width: 100% !important;
@@ -31,7 +30,7 @@
     <div class="card ">
         <div class="card-header">Maak Nieuw Alert</div>
         <div class="card-body bg-dark">
-            @using (Html.BeginForm("CreateAlert","Alert"))
+            @using (Html.BeginForm("CreateAlert", "Alert"))
             {
                 <div class="form-horizontal">
                     <div class="form-group createAlert" id="elementen">
@@ -128,16 +127,17 @@
                         <h4>Selecteer ontvangstmethode</h4>
                         <div class="form-group form-inline ">
                             @Html.LabelFor(model => model.EmailMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.EmailMelding)
+                          
+                          <input type="checkbox" value="true" name="emailMelding" />
                         </div>
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.BrowserMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.BrowserMelding)
+                            <input type="checkbox" value="true" name="browserMelding" />
                         </div>
 
                         <div class="form-group  form-inline">
                             @Html.LabelFor(model => model.ApplicatieMelding, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.CheckBoxFor(model => model.ApplicatieMelding)
+                            <input type="checkbox" value="true" name="applicatieMelding" />
                         </div>
                     </div>
 
@@ -145,7 +145,7 @@
                         <h4>Filters</h4>
                         @Html.Label("Age")
                         <div class="form-group">
-                            <select name="Age">
+                            <select class="chosen-select w-50" name="Age">
                                 <option selected value="Geen"> Geen filter </option>
                                 <option value="Positief"> +25j</option>
                                 <option value="Negatief"> -25j</option>
@@ -153,7 +153,7 @@
                         </div>
                         @Html.Label("Sentiment")
                         <div class="form-group">
-                            <select name="Sentiment">
+                            <select class="chosen-select w-50" name="Sentiment">
                                 <option selected value="Geen"> Geen filter </option>
                                 <option value="Positief"> Positief</option>
                                 <option value="Negatief"> Negatief</option>
@@ -161,7 +161,7 @@
                         </div>
                         @Html.Label("Retweet")
                         <div class="form-group">
-                            <select name="Retweet">
+                            <select class="chosen-select w-50" name="Retweet">
                                 <option selected value="Geen"> Geen filter </option>
                                 <option value="Positief"> Enkel Retweets</option>
                                 <option value="Negatief"> Geen Retweets</option>
@@ -169,7 +169,7 @@
                         </div>
                         @Html.Label("Geslacht")
                         <div class="form-group">
-                            <select name="Geslacht">
+                            <select class="chosen-select w-50" name="Geslacht">
                                 <option selected value="Geen"> Geen filter </option>
                                 <option value="Positief"> Vrouw</option>
                                 <option value="Negatief"> Man</option>
@@ -177,10 +177,18 @@
                         </div>
                         @Html.Label("Opleiding")
                         <div class="form-group">
-                            <select name="Opleiding">
+                            <select class="chosen-select w-50" name="Opleiding">
                                 <option selected value="Geen"> Geen filter </option>
                                 <option value="Positief"> Hoge opleiding</option>
                                 <option value="Negatief"> Lage opleiding</option>
+                            </select>
+                        </div>
+                        @Html.Label("Personaliteit")
+                        <div class="form-group">
+                            <select class="chosen-select w-50" name="Personaliteit">
+                                <option selected value="Geen"> Geen filter </option>
+                                <option value="Positief"> Introvert</option>
+                                <option value="Negatief"> Extravert</option>
                             </select>
                         </div>
                     </div>
@@ -194,18 +202,15 @@
 
 @section scripts {
     <script type="text/javascript">
-        $(document).ready(
-            function () {
-                $(".chosen-select").chosen(
-                    {
-                        width: "100px",
-                        allow_single_deselect: true,
-                        disable_search_treshold: 10,
-                        no_results_text: "Geen elementen met deze naam gevonden"
-                    }
-                );
+    $(".chosen-select").chosen(
+            {
+                width: "100px",
+                allow_single_deselect: true,
+                disable_search_treshold: 10,
+                no_results_text: "Geen elementen met deze naam gevonden"
             }
         );
+
 
     </script>
 }

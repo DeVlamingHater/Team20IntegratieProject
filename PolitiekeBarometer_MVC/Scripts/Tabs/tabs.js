@@ -5,7 +5,8 @@
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        
+            tabcontent[i].style.display = "none";
     }
 
     // Get all elements with class="tablinks" and remove the class "active"
@@ -31,10 +32,8 @@ function saveTabNaam(id, button) {
     f.data = JSON.stringify({ id: zoneId, naam: tekst });
     f.contentType = "application/json";
     f.success = function (response) {
-        alert("success");
     };
     f.error = function (response) {
-        alert("failed");
     };
     $.ajax(f);
 }

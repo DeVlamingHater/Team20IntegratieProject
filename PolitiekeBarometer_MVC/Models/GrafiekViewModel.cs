@@ -1,4 +1,5 @@
-﻿using Domain.Dashboards;
+﻿using Domain;
+using Domain.Dashboards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace PolitiekeBarometer_MVC.Models
 
         public GrafiekType GrafiekType { get; set; }
 
-        public int DataType { get; set; }
+        public DataType DataType { get; set; }
+
+        public int id { get; set; }
     }
 }

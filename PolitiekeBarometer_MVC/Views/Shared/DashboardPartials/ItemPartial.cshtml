@@ -1,18 +1,38 @@
-﻿@model Domain.Dashboards.Item
+﻿@model PolitiekeBarometer_MVC.Models.ItemViewModel
 
 @{
     ViewBag.Title = "_ItemPartial";
 }
+
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-bar-chart"></i> @Model.Tittel
+        <i class="fa fa-bar-chart"></i> Grafiek
     </div>
     <div class="card-body">
-        <canvas class="Item">
-            @if (Model.GetType().Equals(typeof(Domain.Dashboards.Grafiek)))
-            {
-                @Html.Action("GrafiekPartial", "Dashboard", Model.Id)
-            }
-        </canvas>
+        @if (Model.GetType().Equals(typeof(PolitiekeBarometer_MVC.Models.GrafiekViewModel)))
+        {
+            Html.RenderPartial("DashboardPartials/GrafiekPartial", Model);
+        }
+    </div>
+    <div class="card-footer small text-muted">
+        <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.edit"><i class="fa fa-edit"></i></button>
+                @if (Request.IsAuthenticated)
+                {
+                    if (ViewBag.page != "dashboard")
+                    {
+                        <button id="iconDashboard" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.dash" onclick="iconDashboardFunction(this)"><i class="fa fa-save"></i></button>
+                    }
+                    <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.alert"><i class="fa fa-bell"></i></button>
+                    if (ViewBag.page == "dashboard")
+                    {
+                        <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#@ViewBag.delete"><i class="fa fa-close"></i></button>
+                    }
+                }
+            </div>
+            <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
+        </div>
+
     </div>
 </div>

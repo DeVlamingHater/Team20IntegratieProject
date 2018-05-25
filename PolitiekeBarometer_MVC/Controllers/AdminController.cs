@@ -43,18 +43,13 @@ namespace PolitiekeBarometer_MVC.Controllers
             List<ApplicationUser> usersLijst = userManager.Users.ToList();
             List<ApplicationUser> users = new List<ApplicationUser>();
 
-            var adminRole = roleManager.FindByName("Admin");
-            var superAdminRole = roleManager.FindByName("SuperAdmin");
-
             foreach (var user in usersLijst)
             {
                 if (user.Roles.Count() == 0)
                 {
                     users.Add(user);
                 }
-
             }
-
             return View(users);
         }
 

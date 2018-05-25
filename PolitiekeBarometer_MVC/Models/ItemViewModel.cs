@@ -8,5 +8,7 @@ namespace PolitiekeBarometer_MVC.Models
     public abstract class ItemViewModel
     {
         public string tittel { get; set; }
+
+        public int itemId { get; set; }
     }
 }
