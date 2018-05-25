@@ -200,7 +200,16 @@ namespace BL.Managers
                             grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
                             break;
                         case Domain.DataType.PERCENTAGE:
-                            double dataPoint = (double)posts.Count / (double)totaal;
+                            double dataPoint;
+                            if (totaal == 0)
+                            {
+                                dataPoint = 0;
+                            }
+                            else
+                            {
+                             dataPoint = (double)posts.Count / (double)totaal;
+
+                            }
                             grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
                             break;
                         default:

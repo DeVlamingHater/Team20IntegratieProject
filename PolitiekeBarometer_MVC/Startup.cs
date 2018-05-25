@@ -45,7 +45,7 @@ namespace PolitiekeBarometer_MVC
             Platform.refreshTimer.Elapsed += new ElapsedEventHandler(UpdateAPIAsync);
             Platform.refreshTimer.Interval = Platform.interval.TotalMilliseconds;
             Platform.refreshTimer.Enabled = true;
-            //Platform.refreshTimer.Start();
+            Platform.refreshTimer.Start();
         }
         private static async Task UpdateAsync()
         {

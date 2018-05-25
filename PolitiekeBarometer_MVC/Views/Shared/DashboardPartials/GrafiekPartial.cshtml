@@ -37,8 +37,14 @@
         }
     }
 }
+<style>
+.graph{
+    max-height:500px;
+    width:500px;
+}
+</style>
 
-<canvas on id="@Model.id grafiek"></canvas>
+<canvas class="graph" on id="@Model.id grafiek"></canvas>
 
 <button onclick="laadGrafiek(@Model.id)"> laadgrafiek</button>
 
