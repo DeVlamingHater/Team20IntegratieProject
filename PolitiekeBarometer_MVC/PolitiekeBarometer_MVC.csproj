@@ -287,14 +287,16 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Stylesheets\Element.css" />
-    <Content Include="Content\Stylesheets\Home.css" />
+    <Content Include="Content\Element.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Home.css" />
     <Content Include="Content\Images\Politieke_Barometer_Banner2.jpg" />
     <Content Include="Content\Images\Politieke_Barometer_Banner.jpg" />
-    <Content Include="Content\Stylesheets\NewTab.css" />
-    <Content Include="Content\Stylesheets\Site.css" />
-    <Content Include="Content\Stylesheets\Tabs.css" />
-    <Content Include="Content\Stylesheets\Tooltip.css" />
+    <Content Include="Content\NewTab.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\Tabs.css" />
+    <Content Include="Content\Tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.bundle.js" />
