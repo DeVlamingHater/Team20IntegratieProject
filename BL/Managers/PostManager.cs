@@ -77,6 +77,36 @@ namespace BL.Managers
                             posts = posts.Where(p => p.Retweet == false).ToList();
                         }
                         break;
+                    case FilterType.GESLACHT:
+                        if (filter.IsPositive)
+                        {
+                            posts = posts.Where(p => p.Gender == "f").ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Gender == "m").ToList();
+                        }
+                        break;
+                    case FilterType.PERSONALITEIT:
+                        if (filter.IsPositive)
+                        {
+                            posts = posts.Where(p => p.Personality == "i").ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Personality == "e").ToList();
+                        }
+                        break;
+                    case FilterType.OPLEIDING:
+                        if (filter.IsPositive)
+                        {
+                            posts = posts.Where(p => p.Education == "+").ToList();
+                        }
+                        else
+                        {
+                            posts = posts.Where(p => p.Education == "-").ToList();
+                        }
+                        break;
                     default:
                         break;
                 }

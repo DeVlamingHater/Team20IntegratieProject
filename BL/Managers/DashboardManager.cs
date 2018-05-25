@@ -59,6 +59,7 @@ namespace BL.Managers
             IPlatformManager platformManager = new PlatformManager(uowManager);
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS);
             Dashboard dashboard = dashboardRepository.getDashboard(email, deelplatform);
+            uowManager.Save();
             return dashboard;
         }
         #endregion
@@ -156,6 +157,11 @@ namespace BL.Managers
             initNonExistingRepo();
 
             dashboardRepository.addGrafiek(grafiek);
+
+            if (uowManager!=null)
+            {
+                uowManager.Save();
+            }
             return grafiek;
         }
 
@@ -195,13 +201,14 @@ namespace BL.Managers
                             break;
                         case Domain.DataType.PERCENTAGE:
                             double dataPoint = (double)posts.Count / (double)totaal;
-                            grafiekData.Add(start.ToShortDateString(), dataPoint);
+                            grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
                             break;
                         default:
                             break;
                     }
                     start = start.Add(interval);
                 }
+                dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
                 data.Add(dataConfig.Label, grafiekData);
                 index++;
             }

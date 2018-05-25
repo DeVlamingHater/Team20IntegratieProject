@@ -28,7 +28,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             List<Zone> zones = new List<Zone>();
-            zones = dashboard.Zones;
+            zones  = dashboardManager.getZones(dashboard).ToList();
             List<ZoneViewModel> zonesViewModel = ZoneParser.ParseZones(zones, uowMgr);
 
             return View(zonesViewModel);
@@ -51,8 +51,11 @@ namespace PolitiekeBarometer_MVC.Controllers
             var elementForm = form["elementen"];
             var zoneId = Int32.Parse(form["Zone"]);
             var age = form["Age"];
+            var geslacht = form["Geslacht"];
             var sentiment = form["Sentiment"];
             var retweet = form["Retweet"];
+            var personaliteit = form["Personaliteit"];
+            var opleiding = form["Opleiding"];
 
             Zone zone = dashboardManager.getZone(zoneId);
             string[] elementNamen;
@@ -80,9 +83,19 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                     dataConfigs.Add(baseConfig);
                 }
+                if (dataConfigs.Count == 0)
+                {
+                    dataConfigs.Add(new DataConfig()
+                    {
+                        Label="Totaal"
+                    });
+                }
                 dataConfigs = filterConfigs(dataConfigs, FilterType.AGE, age);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.GESLACHT, geslacht);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.RETWEET, retweet);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.SENTIMENT, sentiment);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.PERSONALITEIT, personaliteit);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.OPLEIDING, opleiding);
                 grafiek.Dataconfigs.AddRange(dataConfigs);
             }
             switch (dataType)
@@ -172,7 +185,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam);
             Zone zone = mgr.addZone(dashboard);
-            //GEBRUIKER NOG JUISTE MANIER VINDEN
 
             return RedirectToAction("Index");
         }

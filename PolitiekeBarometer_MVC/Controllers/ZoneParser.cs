@@ -32,6 +32,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 zoneId++;
                 if (zone.Items != null)
                 {
+                    List<Item> items = new List<Item>();
                     foreach (Item item in zone.Items)
                     {
                         if (item.GetType() == typeof(Grafiek))
@@ -47,8 +48,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                                 itemId = item.Id
                             };
                             itemid++;
-                            dashboardManager.getGraphData(grafiek);
-                            zone.Items.Add(grafiek);
+                            Dictionary<string, Dictionary<string, double>> graphData = dashboardManager.getGraphData(grafiek);
+                            itemViewModel.datasets=(graphData);
+                            zoneViewModel.items.Add(itemViewModel);
                         }
                     }
                 }
