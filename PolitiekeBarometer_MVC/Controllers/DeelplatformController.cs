@@ -27,6 +27,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         }
         public string[] getGraphData(string naam, string dataType1)
         {
+            /*
             ElementManager elementManager = new ElementManager();
             Element persoon = elementManager.getElementByNaam(naam, Deelplatform);
             DashboardManager dashboardManager = new DashboardManager();
@@ -72,6 +73,8 @@ namespace PolitiekeBarometer_MVC.Controllers
             gegevens[0] = labels.ToString();
             gegevens[1] = dataStringbuilder.ToString();
             return gegevens;
+            */
+            return null;
         }
         public ActionResult Test()
         {
@@ -473,6 +476,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
+            /*
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -482,12 +486,15 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            */
             return View(element);
         }
         public ActionResult Persoon(string naam)
         {
+            
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
+            /*
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -497,6 +504,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            */
             return View(element);
         }
         public ActionResult setImage(string twitter)
@@ -533,6 +541,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
+            /*
             string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
             ViewBag.LabelsLijn = arrayLijnGrafiek[0];
             ViewBag.DataLijn = arrayLijnGrafiek[1];
@@ -542,6 +551,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];
+            */
             return View(element);
         }
         public ActionResult addWeeklyReview(int id)

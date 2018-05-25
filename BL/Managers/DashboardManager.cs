@@ -202,6 +202,10 @@ namespace BL.Managers
                     }
                     start = start.Add(interval);
                 }
+                if (dataConfig.Label == null)
+                {
+                    dataConfig.Label = "dataset";
+                }
                 data.Add(dataConfig.Label, grafiekData);
                 index++;
             }

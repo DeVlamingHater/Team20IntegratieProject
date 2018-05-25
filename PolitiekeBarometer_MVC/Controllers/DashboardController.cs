@@ -51,9 +51,12 @@ namespace PolitiekeBarometer_MVC.Controllers
             var elementForm = form["elementen"];
             var zoneId = Int32.Parse(form["Zone"]);
             var age = form["Age"];
+            var geslacht = form["Geslacht"];
             var sentiment = form["Sentiment"];
             var retweet = form["Retweet"];
-
+            var personaliteit = form["Personaliteit"];
+            var opleiding = form["Opleiding"];
+       
             Zone zone = dashboardManager.getZone(zoneId);
             string[] elementNamen;
 
@@ -81,8 +84,12 @@ namespace PolitiekeBarometer_MVC.Controllers
                     dataConfigs.Add(baseConfig);
                 }
                 dataConfigs = filterConfigs(dataConfigs, FilterType.AGE, age);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.GESLACHT, geslacht);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.RETWEET, retweet);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.SENTIMENT, sentiment);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.PERSONALITEIT, personaliteit);
+                dataConfigs = filterConfigs(dataConfigs, FilterType.OPLEIDING, opleiding);
+
                 grafiek.Dataconfigs.AddRange(dataConfigs);
             }
             switch (dataType)
