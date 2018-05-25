@@ -24,7 +24,7 @@
     @foreach (var zone in Model)
     {
         <div class="border">
-            <button class="tablinks" onclick="loadZone(event, @zone.zoneId)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.zoneId,this)">
+            <button class="tablinks" onclick="loadZone(event, @zone.plaatsId)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.zoneId,this)">
                 @zone.naam
             </button>
             @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.zoneId })
@@ -40,9 +40,7 @@
 
 @foreach (var zone in Model)
 {
-   
-    <div id="@zone.zoneId" class="tabcontent">
-        <h3> @zone.zoneId</h3>
+    <div id="@zone.plaatsId" class="tabcontent">
         @if (zone.items != null)
         {
             foreach (var item in zone.items)
@@ -50,7 +48,6 @@
                 Html.RenderPartial("DashboardPartials/ItemPartial", item);
             }
         }
-
     </div>
 }
 
@@ -112,6 +109,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                <label>Zone</label>
+                <select name="Zone" id="Zone">
+                @foreach (var item in Model)
+                {
+                    <option value="@item.zoneId">@item.naam</option>
+                }
+                </select>
                     <label>Tijd interval</label>
                     <select name="Interval" id="DataType">
                         <option value="12u">Laatste 12 uur</option>
@@ -207,21 +211,11 @@
         </div>
     </div>
 }
-@section scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".multiselect").chosen()
-            {
-                width: "100px";
-            };
-        });
-        $(document).ready(function () {
-            $(".chosen-select").chosen()
-            {
-                width: "100px";
-            };
-        });
-       
-    </script>
-}
+<script type="text/javascript">
+    $(".chosen-select").chosen()
+    {
+        width: "100px";
+    };
+</script>
+
 

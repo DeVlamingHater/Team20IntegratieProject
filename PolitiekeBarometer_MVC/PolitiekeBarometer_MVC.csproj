@@ -333,6 +333,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\Grafiek\Grafiek.js" />
+    <Content Include="Scripts\Grafiek\GrafiekFuncties.js" />
     <Content Include="Scripts\Grafiek\sb-admin-charts.js" />
     <Content Include="Scripts\Grafiek\sb-admin-charts.min.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />

@@ -14,7 +14,8 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         public static List<ZoneViewModel> ParseZones(List<Zone> zones, UnitOfWorkManager uowmgr)
         {
-            int id = 0;
+            int itemid = 1;
+            int zoneId = 1;
             List<ZoneViewModel> zonesViewModel = new List<ZoneViewModel>();
 
             IDashboardManager dashboardManager = new DashboardManager(uowmgr);
@@ -25,8 +26,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 {
                     naam = zone.Naam,
                     zoneId = zone.Id,
-                    items = new List<ItemViewModel>()
+                    items = new List<ItemViewModel>(),
+                    plaatsId = zoneId
                 };
+                zoneId++;
                 if (zone.Items != null)
                 {
                     foreach (Item item in zone.Items)
@@ -40,9 +43,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                                 DataType = grafiek.DataType,
                                 GrafiekType = grafiek.GrafiekType,
                                 datasets = new Dictionary<string, Dictionary<string, double>>(),
-                                id = id
+                                id = itemid,
+                                itemId = item.Id
                             };
-                            id++;
+                            itemid++;
                             dashboardManager.getGraphData(grafiek);
                             zone.Items.Add(grafiek);
                         }
@@ -56,14 +60,17 @@ namespace PolitiekeBarometer_MVC.Controllers
             ZoneViewModel testZone = new ZoneViewModel()
             {
                 naam = "testZone",
-                items = new List<ItemViewModel>()
+                items = new List<ItemViewModel>(),
+                plaatsId = zoneId
             };
+            zoneId++;
             ZoneViewModel legeZone = new ZoneViewModel()
             {
                 naam = "legeZone",
-                items = new List<ItemViewModel>()
+                items = new List<ItemViewModel>(),
+                plaatsId = zoneId
             };
-
+            zoneId++;
             #region testBar
             Dictionary<string, Dictionary<string, double>> datasets = new Dictionary<string, Dictionary<string, double>>();
             Dictionary<string, double> dataset = new Dictionary<string, double>();
@@ -77,9 +84,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                 datasets = datasets,
                 GrafiekType = GrafiekType.BAR,
                 DataType = DataType.TOTAAL,
-                id = id
+                id = itemid
             };
-            id++;
+            itemid++;
             testZone.items.Add(testGrafiek);
             #endregion
 
@@ -96,9 +103,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                 datasets = datasetsPie,
                 GrafiekType = GrafiekType.PIE,
                 DataType = DataType.TOTAAL,
-                id=id
+                id = itemid
             };
-            id++;
+            itemid++;
             testZone.items.Add(testGrafiekPie);
             #endregion
             #region testLine
@@ -121,9 +128,9 @@ namespace PolitiekeBarometer_MVC.Controllers
                 datasets = datasetsLine,
                 GrafiekType = GrafiekType.LINE,
                 DataType = DataType.TOTAAL,
-                id=id
+                id = itemid
             };
-            id++;
+            itemid++;
             testZone.items.Add(testLine);
             #endregion
             zonesViewModel.Add(testZone);

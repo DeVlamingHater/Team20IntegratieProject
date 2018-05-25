@@ -8,7 +8,7 @@
     {
         <li>
 
-            <a href="@Url.Action("Organisatie",new { naam = organisatie.Naam })">
+            <a href="@Url.Action("Organisatie","Deelplatform",new { naam = organisatie.Naam })">
                 @Html.DisplayFor(modelItem => organisatie.Naam)
             </a>
         </li>

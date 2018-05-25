@@ -33,16 +33,14 @@
 
             <p id="@Model.id entry" hidden>@Html.Raw(Json.Encode(dataentries)) </p>
             <p id="@Model.id label" hidden>@Html.Raw(Json.Encode(labelentries))</p>
+            <p id="@Model.id type" hidden>@Html.Raw(Model.GrafiekType)</p>
         }
     }
 }
 
-<canvas on id="@Model.id"></canvas>
+<canvas on id="@Model.id grafiek"></canvas>
 
 <button onclick="laadGrafiek(@Model.id)"> laadgrafiek</button>
-
-<p id="test">not loaded</p>
-
 
 <script type="text/javascript">
     laadGrafiek(@Model.id);
