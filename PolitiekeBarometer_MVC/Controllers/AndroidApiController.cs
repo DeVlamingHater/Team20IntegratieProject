@@ -72,8 +72,13 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dictionary<string, Dictionary<string, double>> datasetsPie = new Dictionary<string, Dictionary<string, double>>();
             Dictionary<string, double> datasetPie = new Dictionary<string, double>();
             datasetPie.Add("Bart", 20.0);
-            datasetPie.Add("Imade", 80.0);
-            datasetsPie.Add("", dataset);
+            datasetsPie.Add("Bart", dataset);
+
+            Dictionary<string, double> datasetPie2 = new Dictionary<string, double>();
+
+            datasetPie2.Add("Imade", 80.0);
+            datasetsPie.Add("Imade",datasetPie2);
+
 
             GrafiekViewModel testGrafiekPie = new GrafiekViewModel()
             {
