@@ -23,7 +23,11 @@ namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
             Uri url = HttpContext.Current.Request.Url;
             filterContext.RouteData.Values.Remove("deelplatform");
             string deelplatform = GetDeelPlatform(url);
-            if (platformManager.getDeelplatformByNaam(deelplatform) == null && deelplatform != "pb")
+            if (deelplatform==null)
+            {
+                filterContext.Result = new RedirectResult("/pb/Home/Index");
+            }
+            else if (platformManager.getDeelplatformByNaam(deelplatform) == null && deelplatform != "pb")
             {
                 //Redirect naar pagina met overzicht alle deelplatformen
                 filterContext.Result = new RedirectResult("/pb/Home/Index");

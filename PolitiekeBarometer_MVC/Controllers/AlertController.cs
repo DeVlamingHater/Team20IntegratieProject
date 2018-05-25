@@ -28,16 +28,17 @@ namespace PolitiekeBarometer_MVC.Controllers
             //Tonen van de UI voor createAlert, en elementen voor de zoekbalken
             IElementManager elementManager = new ElementManager();
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
-            return View();
+            Alert alert = new Alert();
+            return View(alert);
         }
         [HttpPost]
-        public ActionResult CreateAlert(FormCollection form)
+        public ActionResult CreateAlert(FormCollection form,Alert alert)
         {
             //Form parsen naar een alert
             UnitOfWorkManager unitOfWorkManager = new UnitOfWorkManager();
             IDashboardManager dashboardManager = new DashboardManager(unitOfWorkManager);
 
-            Alert alert = ParseFormToAlert(form, unitOfWorkManager);
+            alert = ParseFormToAlert(form, unitOfWorkManager);
             //Alert opslaan
             dashboardManager.createAlert(alert);
 

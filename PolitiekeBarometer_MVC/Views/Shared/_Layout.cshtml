@@ -22,25 +22,38 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" style="padding:0px; margin:0">
         <div class="navbar-brand nav-item">
-            @Html.ActionLink("Home", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" })
+            @{
+                if (ViewBag.Deelplatform != "pb")
+                {
+                    @Html.ActionLink("Home", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" });
+
+                }
+                else
+                {
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link", id = "homeLink" });
+                }
+            }
+
+
         </div>
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto" style="align-items:center">
-                @if (User.IsInRole("SuperAdmin"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "SuperAdmin")">SuperAdmin</a>
-                    </li>
-                }
-                @if (User.IsInRole("Admin"+ViewBag.Deelplatform) || User.IsInRole("SuperAdmin"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "Admin")">Admin</a>
-                    </li>
-                }
                 @if (ViewBag.Deelplatform != "pb")
                 {
+                    if (User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "SuperAdmin")">SuperAdmin</a>
+                        </li>
+                    }
+                    if (User.IsInRole("Admin" + ViewBag.Deelplatform) || User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Admin")">Admin</a>
+                        </li>
+                    }
+
                     if (Request.IsAuthenticated)
                     {
                         <li class="nav-item">
