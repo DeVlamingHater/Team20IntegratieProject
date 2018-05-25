@@ -40,15 +40,15 @@
 
 @foreach (var zone in Model)
 {
-    foreach (var item in zone.items)
-    {
-        Html.RenderPartial("DashboardPartials/ItemPartial", item);
-    }
+   
     <div id="@zone.zoneId" class="tabcontent">
         <h3> @zone.zoneId</h3>
         @if (zone.items != null)
         {
-           
+            foreach (var item in zone.items)
+            {
+                Html.RenderPartial("DashboardPartials/ItemPartial", item);
+            }
         }
 
     </div>
