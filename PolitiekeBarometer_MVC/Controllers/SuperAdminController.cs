@@ -110,19 +110,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 return View();
             }
         }
-        public ActionResult Timer()
-    {
-      return View();
-    }
-
-        public ActionResult AssingRefreshRate(FormCollection form)
-        {
-            string refreshRateS = form[""];
-            int refreshRate = Int32.Parse(refreshRateS);
-            Platform.interval = new TimeSpan(0, 0, 0, 0, refreshRate);
-            Platform.refreshTimer.Interval = refreshRate;
-            return View("Index");
-        }
+      
         #endregion
 
         #region Deelplatform 
@@ -185,6 +173,22 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         #endregion
 
+        #region timer
+        public ActionResult Timer()
+        {
+            return View();
+        }
+
+        public ActionResult AssingRefreshRate(FormCollection form)
+        {
+            string refreshRateS = form["txtTimer"];
+            int refreshRate = Int32.Parse(refreshRateS);
+            Platform.interval = new TimeSpan(0, 0, 0, 0, refreshRate);
+            Platform.refreshTimer.Interval = refreshRate;
+            return View("Index");
+        }
+
+        #endregion
 
 
     }
