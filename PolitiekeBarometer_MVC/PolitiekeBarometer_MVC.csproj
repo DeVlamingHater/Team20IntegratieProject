@@ -235,8 +235,10 @@
     <Compile Include="Controllers\DeelplatformController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItemParser.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SuperAdminController.cs" />
+    <Compile Include="Controllers\TestItems.cs" />
     <Compile Include="Controllers\ZoneParser.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -292,8 +294,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Home.css" />
+    <Content Include="Content\Images\politiek-818x435.jpg" />
     <Content Include="Content\Images\Politieke_Barometer_Banner2.jpg" />
     <Content Include="Content\Images\Politieke_Barometer_Banner.jpg" />
+    <Content Include="Content\jquery.gridster.css" />
+    <Content Include="Content\jquery.gridster.min.css" />
+    <Content Include="Scripts\gridsterscripts\gridsterScript.js" />
+    <Content Include="Scripts\Gridster\jquery.gridster.js" />
+    <Content Include="Scripts\Gridster\jquery.gridster.min.js" />
+    <Content Include="Scripts\Gridster\jquery.gridster.with-extras.js" />
+    <Content Include="Scripts\Gridster\jquery.gridster.with-extras.min.js" />
     <Content Include="Content\NewTab.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Tabs.css" />
@@ -583,10 +593,12 @@
     <Content Include="Views\Shared\MeldingDropDown.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
-    <Content Include="Views\Shared\Search\Suggestions.cshtml" />
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\GrafiekPartial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\NewItemPartial.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\NewGrafiekPartial.cshtml" />
+    <Content Include="Views\SuperAdmin\Timer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

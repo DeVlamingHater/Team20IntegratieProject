@@ -35,20 +35,21 @@ namespace DAL.Repositories_EF
         {
             Element element = dataConfig.Element;
             List<Post> posts = context.Posts.Include(p => p.Personen).ToList();
-            if (element.GetType().Equals(typeof(Persoon)))
+            if (element != null)
             {
-                posts = posts.Where(p => p.Personen.Any(pers => pers.Equals(element))).ToList();
+                if (element.GetType().Equals(typeof(Persoon)))
+                {
+                    posts = posts.Where(p => p.Personen.Any(pers => pers.Equals(element))).ToList();
+                }
+                else if (element.GetType().Equals(typeof(Organisatie)))
+                {
+                    posts = posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
+                }
+                else if (element.GetType().Equals(typeof(Thema)))
+                {
+                    posts = posts.Where(p => checkKeywords(p, element)).ToList();
+                }
             }
-            else if (element.GetType().Equals(typeof(Organisatie)))
-            {
-                posts = posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
-            }
-            else if (element.GetType().Equals(typeof(Thema)))
-            {
-                posts = posts.Where(p => checkKeywords(p, element)).ToList();
-            }
-
-            //TODO filteren op filters => parameters en waarden van posts
             return posts;
         }
 
@@ -107,7 +108,7 @@ namespace DAL.Repositories_EF
                     }
                     else
                     {
-                        
+
                     }
                 }
                 #endregion

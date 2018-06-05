@@ -1,0 +1,34 @@
+﻿@model Domain.Dashboards.Item
+
+<div class="card h-100">
+    <div class="card-header">
+        <i class="fa fa-bar-chart"></i> Grafiek
+    </div>
+    <div class="card-body h-75">
+        @if (Model.GetType().Equals(typeof(Domain.Dashboards.Grafiek)))
+    {
+        @Html.Action("Grafiek", "Dashboard", new { Grafiek = Model });
+
+}
+    </div>
+    <div class="bottom-right smaller text-muted">
+        <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
+            <div id="menuIcons" class="float-left" style="visibility:hidden">
+                <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.edit"><i class="fa fa-edit"></i></button>
+                @if (Request.IsAuthenticated)
+                {
+                    if (ViewBag.page != "dashboard")
+                    {
+                        <button id="iconDashboard" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.dash" onclick="iconDashboardFunction(this)"><i class="fa fa-save"></i></button>
+                    }
+                    <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.alert"><i class="fa fa-bell"></i></button>
+                    if (ViewBag.page == "dashboard")
+                    {
+                        <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#@ViewBag.delete"><i class="fa fa-close"></i></button>
+                    }
+                }
+            </div>
+            <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
+        </div>
+    </div>
+</div>

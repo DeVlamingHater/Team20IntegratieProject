@@ -1,0 +1,43 @@
+﻿@model Domain.Dashboards.Grafiek
+@{
+    if (Model != null)
+    {
+        List<string> datasetLabels = new List<string>();
+        bool labelsGevuld = false;
+        Dictionary<string, double> dataset = new Dictionary<string, double>();
+        List<double> dataentries = new List<double>();
+        List<string> labelentries = new List<string>();
+        var datasets = ViewBag.grafiekData;
+        if (datasets != null)
+        {
+            foreach (var item in datasets)
+            {
+                datasetLabels.Add(item.Key);
+                dataset = item.Value;
+                if (!labelsGevuld)
+                {
+                    foreach (var entry in dataset)
+                    {
+                        dataentries.Add(entry.Value);
+                        labelentries.Add(entry.Key);
+                    }
+                }
+
+                labelsGevuld = true;
+            }
+            ViewBag.label = @Html.Raw(Json.Encode(labelentries));
+            ViewBag.data = @Html.Raw(Json.Encode(dataentries));
+
+            <p id="@Model.Id entry" hidden>@Html.Raw(Json.Encode(dataentries)) </p>
+            <p id="@Model.Id label" hidden>@Html.Raw(Json.Encode(labelentries))</p>
+            <p id="@Model.Id type" hidden>@Html.Raw(Model.GrafiekType)</p>
+        }
+    }
+}
+<canvas class="graph" on id="@Model.Id grafiek"></canvas>
+<script type="text/javascript">
+    laadGrafiek(@Model.Id);
+</script>
+
+
+

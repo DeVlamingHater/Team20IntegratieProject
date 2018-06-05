@@ -20,14 +20,15 @@
             width: 10px;
         }
 </style>
+<script src="~/Scripts/Gridster/jquery.gridster.js"></script>
 <div class="tab">
     @foreach (var zone in Model)
     {
         <div class="border">
-            <button class="tablinks" onclick="loadZone(event, @zone.plaatsId)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.zoneId,this)">
-                @zone.naam
+            <button class="tablinks" onclick="loadZone(event, @zone.Id)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.Id,this)">
+                @zone.Naam
             </button>
-            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.zoneId })
+            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
         </div>
     }
     <div>
@@ -37,20 +38,31 @@
     </div>
 
 </div>
+<button onclick="gridster()">gridster</button>
 
-@foreach (var zone in Model)
-{
-    <div id="@zone.plaatsId" class="tabcontent">
-        @if (zone.items != null)
-        {
-            foreach (var item in zone.items)
+<div class="bg-light gridster">
+
+    <ul>
+        @{
+            var yposition = 0;
+            foreach (var zone in Model)
             {
-                Html.RenderPartial("DashboardPartials/ItemPartial", item);
+                if (zone.Items != null)
+                {
+                    foreach (var item in zone.Items)
+                    {
+                        <li data-col="1" data-row="@yposition" data-sizex="2" data-sizey="2" id="@zone.Id" class="gs-w bg-dark tabcontent">
+                            @Html.Partial("DashboardPartials/ItemPartial", item)
+                        </li>
+
+                    }
+                }
+                yposition++;
             }
         }
-    </div>
-}
 
+    </ul>
+</div>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal1">
     Maak nieuw Item
@@ -98,7 +110,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="createItemModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -109,13 +120,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <label>Zone</label>
-                <select name="Zone" id="Zone">
-                @foreach (var item in Model)
-                {
-                    <option value="@item.zoneId">@item.naam</option>
-                }
-                </select>
+                    <label>Zone</label>
+                    <select name="Zone" id="Zone">
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item.Id">@item.Naam</option>
+                        }
+                    </select>
                     <label>Tijd interval</label>
                     <select name="Interval" id="DataType">
                         <option value="12u">Laatste 12 uur</option>
@@ -240,6 +251,8 @@
     {
         width: "100px";
     };
+
+    gridster();
 </script>
 
 

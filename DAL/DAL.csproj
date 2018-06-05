@@ -96,7 +96,11 @@
     <Compile Include="Interfaces\Helper\Tweet.cs" />
     <Compile Include="Interfaces\Helper\TweetDump.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{8fd40279-6c0c-47bf-b57c-248b268faa85}</Project>
@@ -111,6 +115,7 @@
     <None Include="politici.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Scripts\jquery-2.0.3.min.map" />
     <None Include="textgaindump.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

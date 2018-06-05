@@ -30,5 +30,7 @@ namespace Domain.Platformen
 
         public byte[] BannerImage { get; set; }
 
+        public DeelplatformDashboard deelplatformDashboard{ get; set; }
+
     }
 }

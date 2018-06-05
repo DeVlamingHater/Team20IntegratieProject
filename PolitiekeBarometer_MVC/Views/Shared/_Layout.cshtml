@@ -7,7 +7,7 @@
 
 
     @Styles.Render("~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css")
-
+    <script src="~/Scripts/gridsterscripts/gridsterScript.js"></script>
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom fonts for this template-->
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -18,8 +18,14 @@
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css" rel="stylesheet" />
     <link href="~/Chosen/chosen.css" rel="stylesheet" />
     <link href="~/Content/Tooltip.css" rel="stylesheet" />
+    <link href="~/Content/jquery.gridster.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.gridster.css" rel="stylesheet" />
 </head>
 <body class="fixed-nav sticky-footer" id="page-top">
+    <script src="~/Scripts/Gridster/jquery.gridster.min.js"></script>
+    <script src="~/Scripts/Gridster/jquery.gridster.with-extras.min.js"></script>
+    <script src="~/Scripts/Gridster/jquery.gridster.js"></script>
+    <script src="~/Scripts/Gridster/jquery.gridster.with-extras.js"></script>
     <!-- Navigation-->
     <!-- Bootstrap core JavaScript-->
     <script src="~/Scripts/Grafiek/sb-admin-charts.js"></script>
@@ -45,9 +51,87 @@
     <script src="~/Scripts/Tabs/tabs.js"></script>
     <script src="~/Chosen/chosen.jquery.min.js"></script>
     @RenderSection("scripts", required: false)
+    <script src="~/Scripts/Searchbar/searchbar.js"></script>
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <script src="~/Scripts/Grafiek/GrafiekFuncties.js"></script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" style="padding:0px; margin:0">
+        @if (ViewBag.Deelplatform != "pb")
+        {
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse collapsed navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <!-- Dashboard-->
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                                <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
+
+                                    <i class="fa fa-fw fas fa-wrench"></i>
+                                    <span class="nav-link-text">Mijn Dashboard</span>
+                                </a>
+                            </li>
+                            <!-- Alert List-->
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
+                                <a class="nav-link" onclick="" href="@Url.Action("LijstAlerts", "Alert")">
+                                    <i class="fa fa-fw fas fa-bell"></i>
+                                    <span class="nav-link-text">Mijn Alerts</span>
+                                </a>
+                            </li>
+                        }
+                        <!-- Dropdown trending Personen-->
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Politiekers">
+                            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePolitiekers" data-parent="#exampleAccordion">
+                                <i class="fa fa-fw fas fa-users"></i>
+                                <span class="nav-link-text">Personen</span>
+                            </a>
+                            @Html.Action("_PersonenDropDown", "Deelplatform")
+                        </li>
+                        <!-- Dropdown trending Organisaties-->
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Partijen">
+                            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePartijen" data-parent="#exampleAccordion">
+                                <i class="fa fa-fw far fa-circle"></i>
+                                <span class="nav-link-text">Organisaties</span>
+                            </a>
+                            @Html.Action("_OrganisatieDropDown", "Deelplatform")
+                        </li>
+                        <!-- Dropdown trending Thema's-->
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themas">
+                            <a class="nav-link navbar-light nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
+                                <i class="fa fa-fw fal fa-book"></i>
+                                <span class="nav-link-text">Thema's</span>
+                            </a>
+                            @Html.Action("_ThemaDropDown", "Deelplatform")
+                        </li>
+                        <!-- -->
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
+                                <a class="nav-link" href="@Url.Action("Index", "Manage")">
+                                    <i class="fa fa-fw fal fa-user"></i>
+                                    <span class="nav-link-text">Profiel Instellingen</span>
+                                </a>
+                            </li>
+
+                        }
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">
+                                <i class="fa fa-fw fal fa-home"></i>
+                                <span class="nav-link-text">Deelplatformen</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ul class="navbar-nav sidenav-toggler">
+                        <li class="nav-item">
+                            <a class="nav-link text-center" id="sidenavToggler">
+                                <i class="fa fa-fw fa-angle-left"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        }
         <div class="navbar-brand nav-item">
             @{
                 if (ViewBag.Deelplatform != "pb")
@@ -104,7 +188,10 @@
         </div>
     </nav>
     <!-- /.content-wrapper-->
-    @RenderBody()
+    <div class="content-wrapper">
+        @RenderBody()
+
+    </div>
     <footer class="card-footer">
         <div class="container">
             <div class="text-center">
@@ -116,27 +203,11 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fa fa-angle-up"></i>
     </a>
-    <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href='@Url.Action("LogOff", "Account")'>Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
-
+<script>
+    gridster();
+</script>
 <script>
 
 $(document).ready(function () {

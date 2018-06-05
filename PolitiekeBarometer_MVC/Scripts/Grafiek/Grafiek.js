@@ -35,7 +35,7 @@ function barGrafiek(label, entries, id) {
             }],
         },
         options: {
-            maintainAspectRatio: true,
+          
             scales: {
                 xAxes: [{
                     time: {

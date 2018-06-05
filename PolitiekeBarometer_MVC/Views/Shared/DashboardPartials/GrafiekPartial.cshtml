@@ -37,10 +37,7 @@
         }
     }
 }
-
-<canvas on id="@Model.id grafiek" style="max-height=200px"></canvas>
-
-<button onclick="laadGrafiek(@Model.id)"> laadgrafiek</button>
+<canvas class="graph" on id="@Model.id grafiek"></canvas>
 
 <script type="text/javascript">
     laadGrafiek(@Model.id);

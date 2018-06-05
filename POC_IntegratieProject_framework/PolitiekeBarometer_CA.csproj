@@ -88,6 +88,7 @@
     <None Include="politici.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Scripts\jquery-2.0.3.min.map" />
     <None Include="textgaindump.json" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +104,11 @@
       <Project>{8FD40279-6C0C-47BF-B57C-248B268FAA85}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

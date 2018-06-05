@@ -29,6 +29,7 @@ namespace DAL.Repositories_EF
         #endregion
 
         #region Dashboard
+
         public Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform)
         {
             Dashboard dashboard = null;
@@ -134,7 +135,7 @@ namespace DAL.Repositories_EF
         }
         public Grafiek getGrafiek(int itemId)
         {
-            return context.Grafieken.FirstOrDefault(g => g.Id == itemId);
+            return context.Grafieken.Include(g=>g.Dataconfigs).FirstOrDefault(g => g.Id == itemId);
         }
         public void addGrafiek(Grafiek grafiek)
         {

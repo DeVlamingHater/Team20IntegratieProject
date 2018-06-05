@@ -59,8 +59,10 @@ namespace BL.Managers
             IPlatformManager platformManager = new PlatformManager(uowManager);
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformS);
             Dashboard dashboard = dashboardRepository.getDashboard(email, deelplatform);
+            uowManager.Save();
             return dashboard;
         }
+       
         #endregion
 
         #region Zone
@@ -156,6 +158,11 @@ namespace BL.Managers
             initNonExistingRepo();
 
             dashboardRepository.addGrafiek(grafiek);
+
+            if (uowManager!=null)
+            {
+                uowManager.Save();
+            }
             return grafiek;
         }
 
@@ -191,11 +198,20 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
+                            grafiekData.Add(start.ToString("dd/MM/yyyy HH/mm"), (double)posts.Count);
                             break;
                         case Domain.DataType.PERCENTAGE:
-                            double dataPoint = (double)posts.Count / (double)totaal;
-                            grafiekData.Add(start.ToShortDateString(), dataPoint);
+                            double dataPoint;
+                            if (totaal == 0)
+                            {
+                                dataPoint = 0;
+                            }
+                            else
+                            {
+                             dataPoint = (double)posts.Count / (double)totaal;
+
+                            }
+                            grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
                             break;
                         default:
                             break;
@@ -204,7 +220,8 @@ namespace BL.Managers
                 }
                 if (dataConfig.Label == null)
                 {
-                    dataConfig.Label = "dataset";
+                dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
+
                 }
                 data.Add(dataConfig.Label, grafiekData);
                 index++;
@@ -399,8 +416,6 @@ namespace BL.Managers
 
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
-
-      
         #endregion
     }
 }

@@ -4,17 +4,17 @@
     ViewBag.Title = "_ItemPartial";
 }
 
-<div class="card mb-3">
+<div class="card h-100">
     <div class="card-header">
         <i class="fa fa-bar-chart"></i> Grafiek
     </div>
-    <div class="card-body">
+    <div class="card-body h-75">
         @if (Model.GetType().Equals(typeof(PolitiekeBarometer_MVC.Models.GrafiekViewModel)))
         {
             Html.RenderPartial("DashboardPartials/GrafiekPartial", Model);
         }
     </div>
-    <div class="card-footer small text-muted">
+    <div class="bottom-right smaller text-muted">
         <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">
             <div id="menuIcons" class="float-left" style="visibility:hidden">
                 <button id="iconEdit" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.edit"><i class="fa fa-edit"></i></button>
@@ -33,6 +33,5 @@
             </div>
             <button id="btnMenu" class="btn btn-default" style="margin-left:3px" onclick="menuFunction(this)"><i id="iconMenu" class="fa fa-bars"></i></button>
         </div>
-
     </div>
 </div>

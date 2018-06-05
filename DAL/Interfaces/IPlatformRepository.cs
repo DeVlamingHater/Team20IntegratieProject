@@ -9,6 +9,7 @@ namespace DAL
     { 
         #region Platform
         Platform getPlatform();
+        DeelplatformDashboard getDeelplatformDashboard(string deelplatform);
         #endregion
 
         #region Deelplatform
@@ -25,6 +26,6 @@ namespace DAL
         Gebruiker getGebruikerMetEmail(string email);
         void saveGebruiker(Gebruiker gebruiker);
         #endregion
-       
+
     }
 }

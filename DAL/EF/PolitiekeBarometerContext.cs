@@ -53,15 +53,13 @@ namespace DAL.EF
         //Elementen
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Persoon> Personen { get; set; }
-
-
-
         public DbSet<Thema> Themas { get; set; }
         public DbSet<Organisatie> Organisaties { get; set; }
         //Platformen
         public DbSet<Gebruiker> Gebruikers { get; set; }
         public DbSet<Platform> Platformen { get; set; }
         public DbSet<Deelplatform> Deelplatformen { get; set; }
+        public DbSet<DeelplatformDashboard> DeelplatformDashboards { get; set; }
         //Posts
         public DbSet<Post> Posts { get; set; }
 
@@ -99,6 +97,10 @@ namespace DAL.EF
             modelBuilder.Entity<Gebruiker>().HasMany<Dashboard>(g => g.Dashboards);
 
             modelBuilder.Entity<Dashboard>().HasMany<Zone>(db => db.Zones);
+
+            modelBuilder.Entity<DeelplatformDashboard>().HasMany<Item>(dpd => dpd.Items);
+
+            modelBuilder.Entity<DeelplatformDashboard>().HasRequired<Deelplatform>(dpd => dpd.Deelplatform);
 
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
 

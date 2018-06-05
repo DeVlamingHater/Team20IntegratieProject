@@ -1,4 +1,5 @@
 ﻿using DAL.EF;
+using Domain.Dashboards;
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,20 @@ namespace DAL.Repositories_EF
             context.Deelplatformen.Add(deelplatform);
             context.SaveChanges();
         }
+        public DeelplatformDashboard getDeelplatformDashboard(string deelplatform)
+        {
+            DeelplatformDashboard deelplatformDashboard = context.DeelplatformDashboards.Include(dpd => dpd.Items).Where(dpd => dpd.Deelplatform.Naam == deelplatform).FirstOrDefault();
+            if (deelplatformDashboard == null)
+            {
+                deelplatformDashboard = new DeelplatformDashboard()
+                {
+                    Deelplatform = context.Deelplatformen.FirstOrDefault(dp => dp.Naam == deelplatform),
+                    Items = new List<Item>()
+                };
+            }
+            return deelplatformDashboard;
+        }
+
         #endregion
 
         #region Gebruiker
@@ -80,8 +95,6 @@ namespace DAL.Repositories_EF
             context.Entry(gebruiker).State = EntityState.Modified;
             context.SaveChanges();
         }
-
-        
         #endregion
     }
 }
