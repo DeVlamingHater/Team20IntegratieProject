@@ -1,5 +1,6 @@
 ﻿using BL.Interfaces;
 using BL.Managers;
+using Domain;
 using Domain.Platformen;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,20 @@ namespace PolitiekeBarometer_MVC.Controllers
         public static string deelplatformURL { get; set; }
 
         public Deelplatform Deelplatform { get; set; }
+
+        public static List<Element> Elementen { get; set; }
+
         public BaseController()
         {
+
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (Elementen == null)
+            {
+                Elementen = new List<Element>();
+            }
             var segments = HttpContext.Request.Url.Segments;
             if (!(segments.Length <= 1))
             {
@@ -28,9 +37,15 @@ namespace PolitiekeBarometer_MVC.Controllers
                 this.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
                 ViewBag.Deelplatform = deelplatformURL;
                 IElementManager elementManager = new ElementManager();
-                if (Deelplatform != null)
+                Deelplatform elementDeelplatform =null;
+                if (Elementen.FirstOrDefault() != null)
                 {
-                    ViewBag.Elementen = elementManager.getAllElementen(Deelplatform);
+                    elementDeelplatform = Elementen.FirstOrDefault().Deelplatform;
+                }
+
+                if (Deelplatform != null && (elementDeelplatform== null || elementDeelplatform.Naam !=Deelplatform.Naam))
+                {
+                    Elementen = elementManager.getAllElementen(Deelplatform);
                 }
             }
             base.OnActionExecuting(filterContext);

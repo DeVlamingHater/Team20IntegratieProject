@@ -22,30 +22,41 @@ namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
             IPlatformManager platformManager = new PlatformManager();
             Uri url = HttpContext.Current.Request.Url;
             filterContext.RouteData.Values.Remove("deelplatform");
-            string deelplatform = GetDeelPlatform(url);
-         
-            if (platformManager.getDeelplatformByNaam(deelplatform) == null && deelplatform != "pb")
+            string[] segments = url.AbsolutePath.Split('/');
+            string deelplatformURL = segments[1];
+            string action = "";
+            Deelplatform deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
+            if (segments.Length > 2)
             {
-                //Redirect naar pagina met overzicht alle deelplatformen
-                filterContext.Result = new RedirectResult("/pb/Home/Index");
-            }else if(deelplatform == "pb" && url.AbsolutePath != "/pb/Home/Index")
+                action = segments[2];
+            }
+            if (deelplatformURL == "pb")
             {
-                filterContext.Result = new RedirectResult("/pb/Home/Index");
+                if (url.AbsolutePath != "/pb/Home/Index")
+                {
+                    filterContext.Result = new RedirectResult("/pb/Home/Index");
+                }
             }
             else
             {
-                //Deelplatform bestaat, geef deelplatformnaam mee
-                filterContext.RouteData.Values.Add("deelplatform", deelplatform);
-                
-                base.OnActionExecuting(filterContext);
-            }
-        }
+                if (deelplatform == null)
+                {
+                    filterContext.Result = new RedirectResult("/pb/Home/Index");
+                }
+                else
+                {
+                    if (action == "" || action == "Home")
+                    {
+                        filterContext.Result = new RedirectResult("/pb/Home/Index");
+                    }
+                    else
+                    {
+                        filterContext.RouteData.Values.Add("deelplatform", deelplatformURL);
 
-        private static string GetDeelPlatform(Uri url)
-        {
-            string[] segments = url.AbsolutePath.Split('/');
-            string deelplatform = segments[1];
-            return deelplatform;
+                        base.OnActionExecuting(filterContext);
+                    }
+                }
+            }
         }
     }
 }

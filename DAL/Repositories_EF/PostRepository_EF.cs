@@ -156,7 +156,7 @@ namespace DAL.Repositories_EF
 
                 posts.Add(post);
             }
-            return posts;
+             return posts;
         }
 
         public IEnumerable<Post> getElementPosts(Element element)
