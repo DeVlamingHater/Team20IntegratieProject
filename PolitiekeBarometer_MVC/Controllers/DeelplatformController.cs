@@ -20,8 +20,6 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         public ActionResult Index(string deelplatform)
         {
-            //TODO: verplaats naar DeelplatformController
-            //Dashboard van het juiste deelplatform ophalen aan de hand van de string in de url
             IPlatformManager platformManager = new PlatformManager();
             DeelplatformDashboard dpd = platformManager.getDeelplatformDashboard(deelplatformURL);
             List<Item> items = new List<Item>();

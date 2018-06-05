@@ -52,7 +52,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
-            //TODO: controleren
             UnitOfWorkManager uowMgr = new UnitOfWorkManager();
             IDashboardManager dashboardManager = new DashboardManager(uowMgr);
             IElementManager elementManager = new ElementManager(uowMgr);

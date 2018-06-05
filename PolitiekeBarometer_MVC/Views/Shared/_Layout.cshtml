@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css")
-    <script src="~/Scripts/gridsterscripts/gridsterScript.js"></script>
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom fonts for this template-->
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -17,10 +16,19 @@
     <link href="~/Chosen/chosen.css" rel="stylesheet" />
     <link href="~/Content/Tooltip.css" rel="stylesheet" />
     <link href="~/Content/jquery.gridster.min.css" rel="stylesheet" />
+    <link href="~/gridster-responsive/gridster.js-master/dist/jquery.gridster.css" rel="stylesheet" />
 </head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
-    <script src="~/Scripts/Gridster/jquery.gridster.min.js"></script>
-    <script src="~/Scripts/Gridster/jquery.gridster.with-extras.min.js"></script>
+<body class="fixed-nav sticky-footer bg-light" id="page-top">
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/gridster-responsive/gridster.js-master/src/jquery.collision.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/src/jquery.coords.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/src/jquery.draggable.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/src/jquery.gridster.extras.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/src/jquery.gridster.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/src/utils.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/dist/jquery.gridster.js"></script>
+    <script src="~/gridster-responsive/gridster.js-master/dist/jquery.gridster.with-extras.js"></script>
     <!-- Navigation-->
     <!-- Bootstrap core JavaScript-->
     <script src="~/Scripts/Grafiek/sb-admin-charts.min.js"></script>
@@ -388,4 +396,5 @@ ul.style.display = "block";
 </html>
 
 
+@RenderSection("scripts", required: false)
 
