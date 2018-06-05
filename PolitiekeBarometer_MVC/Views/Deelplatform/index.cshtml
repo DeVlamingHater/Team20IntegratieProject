@@ -91,6 +91,12 @@
             </ul>
         </div>
     </nav>*@
+<div class="jumbotron" style="background: no-repeat center center/100%;
+        background-image: url('../../Content/Images/politiek-818x435.jpg');
+        color: white">
+    <h1 class="display" align="center">Politieke Barometer</h1>
+    <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
+</div>
 <div class="gridster">
     <ul>
         @{
@@ -110,8 +116,8 @@
     function gridster() {
         $(".gridster ul").gridster({
             widget_margins: [10, 10],
-            min_cols: 3,
-            max_cols: 3,
+            min_cols: 4,
+            max_cols: 4,
         });
     }
     gridster();
