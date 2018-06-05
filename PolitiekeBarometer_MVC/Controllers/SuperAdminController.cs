@@ -35,9 +35,10 @@ namespace PolitiekeBarometer_MVC.Controllers
             var superAdminrole = roleManager.Roles.Where(r => r.Name == "SuperAdmin").First();
 
             List<ApplicationUser> usersLijst = userManager.Users.ToList();
-          
+            List<ApplicationUser> userLijstSuperAdmins = usersLijst.Where(u => u.Roles.Where(r => r.RoleId != superAdminrole.Id).Count() > 0).ToList();
 
-            return View(usersLijst);
+        
+            return View(userLijstSuperAdmins);
 
         }
 

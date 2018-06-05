@@ -387,7 +387,9 @@ namespace PolitiekeBarometer_MVC.Controllers
         // GET: Admin/Delete/5
         public ActionResult DeleteOrganisatie(int id)
         {
-            return View();
+            IElementManager elementManager = new ElementManager();
+            var organisatie = elementManager.getElementById(id);
+            return View(organisatie);
         }
 
         // POST: Admin/Delete/5

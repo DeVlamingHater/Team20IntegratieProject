@@ -3,40 +3,61 @@
     ViewBag.Title = "CreateDeelplatform";
 }
 
-<h2>CreateDeelplatform</h2>
+<style>
 
-@using (Html.BeginForm("CreateDeelplatform", "SuperAdmin", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-<div class="col-md-6">
-    <label class="control-label">
-        Naam
-    </label>
-    <input type="text" name="txtNaam" class="form-control" />
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
+    }
+</style>
 
-    <label class="control-label">
-        Historiek
-    </label>
-    <input type="text" name="txtHistoriek" class="form-control" />
-    <label class="control-label">
-        Persoonstring
-    </label>
-    <input type="text" name="txtPersoonstring" class="form-control" />
-    <label class="control-label">
-        Organisatietring
-    </label>
-    <input type="text" name="txtOrganisatiestring" class="form-control" />
-    <label class="control-label">
-        themastring
-    </label>
-    <input type="text" name="txtThemastring" class="form-control" />
-    <label class="control-label">
-        Dashboardid
-    </label>
-    <input type="text" name="txtDashboardid" class="form-control" />
+<div class="container">
+    <div class="card">
+        <div class="card-header">Maak een deelplatform aan</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to Index", "Index")
+            </div>
+            <div class="witteRuimte form-group">
+                <h4>Deelplatform</h4>
+                @using (Html.BeginForm("CreateDeelplatform", "SuperAdmin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-6">
+                <label class="control-label">
+                    Naam
+                </label>
+                <input type="text" name="txtNaam" class="form-control" />
 
-    <br />
-    <button type="submit" value="Submit" class="btn btn-primary">Save</button>
-</div>
+                <label class="control-label">
+                    Historiek
+                </label>
+                <input type="text" name="txtHistoriek" class="form-control" />
+                <label class="control-label">
+                    Persoonstring
+                </label>
+                <input type="text" name="txtPersoonstring" class="form-control" />
+                <label class="control-label">
+                    Organisatietring
+                </label>
+                <input type="text" name="txtOrganisatiestring" class="form-control" />
+                <label class="control-label">
+                    themastring
+                </label>
+                <input type="text" name="txtThemastring" class="form-control" />
+                <label class="control-label">
+                    Dashboardid
+                </label>
+                <input type="text" name="txtDashboardid" class="form-control" />
 
+                <br />
+                <button type="submit" value="Submit" class="btn btn-default">Save</button>
+            </div>
 }
+            </div>
+        </div>
+    </div>
+</div>

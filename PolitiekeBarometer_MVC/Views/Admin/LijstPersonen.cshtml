@@ -4,92 +4,73 @@
     ViewBag.Title = "LijstPersonen";
 }
 
-<h2>LijstPersonen</h2>
+<style>
 
-<p>
-    @Html.ActionLink("Create New", "CreatePersoon")
-    <br />
-    @Html.ActionLink("Downloaden", "ExportPersonenToExcel")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Naam)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Trend)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TrendingPlaats)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.District)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Level)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Postal_code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Organisation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Town)
-        </th>
-        <th></th>
-    </tr>
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
+    }
+</style>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Naam)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Trend)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TrendingPlaats)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.District)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Level)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfBirth)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Postal_code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Organisation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Town)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditPersoon", new { id=item.Id }) |
-            @Html.ActionLink("Details", "DetailsPersoon", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "DeletePersoon", new { id=item.Id })
-        </td>
-    </tr>
-}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Lijst van de personen</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                <p>
+                    @Html.ActionLink("Create New", "CreatePersoon")
+                    <br />
+                    @Html.ActionLink("Downloaden", "ExportPersonenToExcel")
+                </p>
+            </div>
+            <div class="witteRuimte form-group">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Naam)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Trend)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Level)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+                        <th></th>
+                    </tr>
 
-</table>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Naam)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Trend)
+                            </td> 
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Level)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Gender)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "EditPersoon", new { id = item.Id }) |
+                                @Html.ActionLink("Details", "DetailsPersoon", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "DeletePersoon", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
