@@ -53,7 +53,7 @@
             @{
                 if (ViewBag.Deelplatform != "pb")
                 {
-                    @Html.ActionLink("Home", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" });
+                    @Html.ActionLink("Politieke Barometer", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" });
 
                 }
                 else
@@ -97,7 +97,6 @@
                             <ul class="list-group dropdown-menu" id="searchlist" style="margin:auto;width:90%;display:none"></ul>
 
                         </div>
-
                     </li>
                     @Html.Partial("_LoginPartial")
                 }
@@ -105,7 +104,9 @@
         </div>
     </nav>
     <!-- /.content-wrapper-->
-    @RenderBody()
+  
+        @RenderBody()
+   
     <footer class="card-footer">
         <div class="container">
             <div class="text-center">

@@ -587,6 +587,7 @@
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\GrafiekPartial.cshtml" />
+    <Content Include="Views\SuperAdmin\Timer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

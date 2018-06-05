@@ -110,6 +110,10 @@ namespace PolitiekeBarometer_MVC.Controllers
                 return View();
             }
         }
+        public ActionResult Timer()
+    {
+      return View();
+    }
 
         public ActionResult AssingRefreshRate(FormCollection form)
         {

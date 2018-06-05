@@ -52,11 +52,10 @@
         }
 </style>
 <div class="container" style="margin:20px">
-
     @foreach (var zone in Model)
     {
         <div class="btn-group">
-            <button data-toggle="tab" href="@zone.Id" onclick="visibleZone(@zone.Id)" class=" btn btn-primary">
+            <button data-toggle="tab" href="@zone.Id" onclick="visibleZone(@zone.Id)" class="btn btn-primary">
                 @Html.DisplayFor(modelItem => zone.Naam)
 
             </button>
@@ -71,7 +70,7 @@
         {
             <div class="tab-content bg-light">
                 <div id="@zone.Id" class="tab-pane" style="display:none">
-                    <h3>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</h3>
+                    <div>@Html.Action("_ItemsPartial", new { zoneId = zone.Id })</div>
                 </div>
             </div>
         }
