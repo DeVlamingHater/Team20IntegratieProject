@@ -24,9 +24,9 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 ZoneViewModel zoneViewModel = new ZoneViewModel()
                 {
-                    naam = zone.Naam,
-                    zoneId = zone.Id,
-                    items = new List<ItemViewModel>(),
+                    Naam = zone.Naam,
+                    Id = zone.Id,
+                    Items = new List<ItemViewModel>(),
                     plaatsId = zoneId
                 };
                 zoneId++;
@@ -40,7 +40,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                             Grafiek grafiek = dashboardManager.getGrafiek(item.Id);
                             GrafiekViewModel itemViewModel = new GrafiekViewModel()
                             {
-                                tittel = item.Tittel,
+                                tittel = item.Titel,
                                 DataType = grafiek.DataType,
                                 GrafiekType = grafiek.GrafiekType,
                                 datasets = new Dictionary<string, Dictionary<string, double>>(),
@@ -50,7 +50,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                             itemid++;
                             Dictionary<string, Dictionary<string, double>> graphData = dashboardManager.getGraphData(grafiek);
                             itemViewModel.datasets=(graphData);
-                            zoneViewModel.items.Add(itemViewModel);
+                            zoneViewModel.Items.Add(itemViewModel);
                         }
                     }
                 }
@@ -61,15 +61,15 @@ namespace PolitiekeBarometer_MVC.Controllers
             #region testData
             ZoneViewModel testZone = new ZoneViewModel()
             {
-                naam = "testZone",
-                items = new List<ItemViewModel>(),
+                Naam = "testZone",
+                Items = new List<ItemViewModel>(),
                 plaatsId = zoneId
             };
             zoneId++;
             ZoneViewModel legeZone = new ZoneViewModel()
             {
-                naam = "legeZone",
-                items = new List<ItemViewModel>(),
+                Naam = "legeZone",
+                Items = new List<ItemViewModel>(),
                 plaatsId = zoneId
             };
             zoneId++;
@@ -89,7 +89,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 id = itemid
             };
             itemid++;
-            testZone.items.Add(testGrafiek);
+            testZone.Items.Add(testGrafiek);
             #endregion
 
             #region testPie
@@ -108,7 +108,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 id = itemid
             };
             itemid++;
-            testZone.items.Add(testGrafiekPie);
+            testZone.Items.Add(testGrafiekPie);
             #endregion
             #region testLine
 
@@ -133,7 +133,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 id = itemid
             };
             itemid++;
-            testZone.items.Add(testLine);
+            testZone.Items.Add(testLine);
             #endregion
             zonesViewModel.Add(testZone);
             zonesViewModel.Add(legeZone);

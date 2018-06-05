@@ -30,12 +30,24 @@ namespace PolitiekeBarometer_MVC.Controllers
             List<Zone> zones = new List<Zone>();
             zones  = dashboardManager.getZones(dashboard).ToList();
             List<ZoneViewModel> zonesViewModel = ZoneParser.ParseZones(zones, uowMgr);
-
+            
             return View(zonesViewModel);
         }
+        public ActionResult Item(Item item)
+        {
+            return PartialView("DashboardPartials/NewItemPartial", item);
+        }
+       
         public ActionResult Test()
         {
             return View();
+        }
+        public ActionResult Grafiek(Grafiek grafiek)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            var grafiekData = dashboardManager.getGraphData(grafiek);
+            ViewBag.grafiekData = grafiekData;
+            return PartialView("DashboardPartials/NewGrafiekPartial", grafiek);
         }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
@@ -135,6 +147,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             return RedirectToAction("Index");
         }
+
         private List<DataConfig> filterConfigs(List<DataConfig> dataConfigs, FilterType type, string waarde)
         {
             if (waarde == "Geen")

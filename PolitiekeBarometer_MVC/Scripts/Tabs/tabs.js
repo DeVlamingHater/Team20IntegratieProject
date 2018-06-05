@@ -5,8 +5,12 @@
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-        
-            tabcontent[i].style.display = "none";
+
+        tabcontent[i].style.display = "none";
+        if (tabcontent[i].id === zoneId) {
+            tabcontent[i].style.display = "block";
+
+        }
     }
 
     // Get all elements with class="tablinks" and remove the class "active"
@@ -15,8 +19,6 @@
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(zoneId).style.display = "block";
     evt.currentTarget.className += " active";
 }
 function veranderTabNaam(button) {

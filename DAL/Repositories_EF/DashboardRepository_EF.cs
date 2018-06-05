@@ -29,6 +29,7 @@ namespace DAL.Repositories_EF
         #endregion
 
         #region Dashboard
+
         public Dashboard getDashboard(string gebruikersNaam, Deelplatform deelplatform)
         {
             Dashboard dashboard = null;

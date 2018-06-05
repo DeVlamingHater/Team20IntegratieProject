@@ -20,58 +20,17 @@ namespace PolitiekeBarometer_MVC.Controllers
     {
         public ActionResult Index(string deelplatform)
         {
-             //TODO: verplaats naar DeelplatformController
-             //Dashboard van het juiste deelplatform ophalen aan de hand van de string in de url
-            
-            return View();
-        }
-        public string[] getGraphData(string naam, string dataType1)
-        {
-            ElementManager elementManager = new ElementManager();
-            Element persoon = elementManager.getElementByNaam(naam, Deelplatform);
-            DashboardManager dashboardManager = new DashboardManager();
-            Enum.TryParse(dataType1.ToUpper(), out DataType mijnDatatype);
-            DataConfig testDataConfig = new DataConfig()
+            //TODO: verplaats naar DeelplatformController
+            //Dashboard van het juiste deelplatform ophalen aan de hand van de string in de url
+            IPlatformManager platformManager = new PlatformManager();
+            DeelplatformDashboard dpd = platformManager.getDeelplatformDashboard(deelplatformURL);
+            List<Item> items = new List<Item>();
+            items.AddRange(dpd.Items);
+            if (items.Count==0)
             {
-                Element = persoon
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = mijnDatatype,
-                Tijdschaal = new TimeSpan(30, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                     testDataConfig
-                },
-                AantalDataPoints = 30
-            };
-
-            string dataString = dashboardManager.getGraphData(testGrafiek).ToString();
-
-
-            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
-
-            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
-
-
-            List<string> dates = new List<string>();
-            foreach (DateTime item in data.Keys)
-            {
-                dates.Add(item.ToString("d MMM yyyy "));
+                items.AddRange(TestItems.GetTestItems(deelplatformURL));
             }
-            StringBuilder labels = new StringBuilder();
-            StringBuilder dataStringbuilder = new StringBuilder();
-            for (int i = 0; i < dates.Count(); i++)
-            {
-                labels.Append(dates.ElementAt(i)).Append(".");
-                dataStringbuilder.Append(data.Values.ElementAt(i)).Append(".");
-            }
-            labels.Remove(labels.Length - 1, 1);
-            dataStringbuilder.Remove(dataStringbuilder.Length - 1, 1);
-            string[] gegevens = new string[2];
-            gegevens[0] = labels.ToString();
-            gegevens[1] = dataStringbuilder.ToString();
-            return gegevens;
+            return View(items);
         }
         public ActionResult Test()
         {
@@ -89,236 +48,14 @@ namespace PolitiekeBarometer_MVC.Controllers
             return View();
         }
 
-        public JsonResult getGrafiekData(string grafiekType, int zone, string datum, string dataType)
-        {
-            saveGrafiek(grafiekType, zone, datum, dataType);
-            return Json(new
-            {
-                result = "OK"
-            });
-        }
-
-        public ActionResult saveGrafiek(string grafiekType, int zone, string datum, string dataType)
-        {
-            //nog implementeren
-            int datapoints = 1;
-            if (grafiekType == "line")
-            {
-                datapoints = 15;
-            }
-            ElementManager mgr = new ElementManager();
-            Element testElement = mgr.getElementByNaam("Bart De Wever", Deelplatform);
-            DashboardManager dashboardManager = new DashboardManager();
-            GrafiekType grafiektype = (GrafiekType)Enum.Parse(typeof(GrafiekType), grafiekType.ToUpper());
-            DataType datatype = (DataType)Enum.Parse(typeof(DataType), dataType.ToUpper());
-            DataConfig testDataConfig = new DataConfig()
-            {
-                Element =
-                   testElement
-            };
-            Grafiek testGrafiek = new Grafiek()
-            {
-                Zone = dashboardManager.getZone(zone),
-                GrafiekType = grafiektype,
-                DataType = datatype,
-                Tijdschaal = new TimeSpan(7, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                    testDataConfig
-                },
-                AantalDataPoints = datapoints
-            };
-            dashboardManager.addGrafiek(testGrafiek);
-            return View();
-        }
-
         public ActionResult Element()
         {
             return View();
         }
 
-        public ActionResult NewTab()
-        {
-            return View();
-        }
-        public ActionResult _BarGrafiekPartial(int index)
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen(1, Deelplatform);
-            List<string> namen = new List<string>();
-            List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen(1, Deelplatform))
-            {
-                namen.Add(element.Naam);
-                trends.Add(element.Trend);
-            }
-            Json(ViewBag.Namen = namen);
-            Json(ViewBag.Trending = trends);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
-        }
-
         public ActionResult Alerts()
         {
             return View();
-        }
-
-
-        public ActionResult _LijnGrafiekPartial(int index)
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            //elementen = mgr.getTrendingElementen();
-            //List<string> namen = new List<string>();
-            //List<double> trends = new List<double>();
-            //foreach (Element element in mgr.getTrendingElementen())
-            //{
-            //    namen.Add(element.Naam);
-            //    trends.Add(element.Trend);
-            //}
-            //Json(ViewBag.Namen = namen);
-            //Json(ViewBag.Trending = trends);
-
-
-            Element testElement = mgr.getElementByNaam("Bart De Wever", Deelplatform);
-            DashboardManager dashboardManager = new DashboardManager();
-
-            Grafiek testGrafiek = new Grafiek()
-            {
-                DataType = DataType.TOTAAL,
-
-
-                Tijdschaal = new TimeSpan(30, 0, 0, 0),
-                Dataconfigs = new List<DataConfig>()
-                {
-                },
-                AantalDataPoints = 30
-            };
-
-            string dataString = dashboardManager.getGraphData(testGrafiek).ToString() ;
-
-
-            Dictionary<string, string> dataconfigs = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataString);
-
-            Dictionary<DateTime, double> data = JsonConvert.DeserializeObject<Dictionary<DateTime, double>>(dataconfigs.First().Value);
-
-
-            List<string> dates = new List<string>();
-            foreach (DateTime item in data.Keys)
-            {
-                dates.Add(item.ToString("d MMM yyyy "));
-            }
-            Json(ViewBag.Namen = dates);
-            Json(ViewBag.Trending = data.Values);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
-
-
-        }
-        public ActionResult _TaartGrafiekPartial(int index)
-        {
-            ElementManager mgr = new ElementManager();
-            List<Element> elementen = new List<Element>();
-            elementen = mgr.getTrendingElementen(1, Deelplatform);
-            List<string> namen = new List<string>();
-            List<double> trends = new List<double>();
-            foreach (Element element in mgr.getTrendingElementen(1, Deelplatform))
-            {
-                namen.Add(element.Naam);
-                trends.Add(element.Trend);
-            }
-            Json(ViewBag.Namen = namen);
-            Json(ViewBag.Trending = trends);
-            ViewBag.Index = index;
-            return PartialView(elementen.ToList());
-        }
-        public ActionResult bewerkGrafiek()
-        {
-            // nog implementeren
-            return View();
-        }
-        public ActionResult maakAllert()
-        {
-            //nog implementeren
-            return View();
-        }
-        public ActionResult Element(int id)
-        {
-            IElementManager elementManager = new ElementManager();
-            var element = elementManager.getElementById(id);
-            return View();
-        }
-
-        static int actieveZone;
-        public ActionResult Dashboard()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam); //aanpassen naar gebruikerId
-            List<Zone> zones = dashboard.Zones;
-            //if (actieveZone == 0)
-            //{
-            //  actieveZone = zones.First().Id;
-            //}
-            return View(zones);
-        }
-        public ActionResult _ItemsPartial(int zoneId)
-        {
-
-            IDashboardManager mgr = new DashboardManager();
-            IEnumerable<Grafiek> grafieken = mgr.getGrafieken(zoneId);
-            return PartialView(grafieken);
-        }
-        public ActionResult _ItemPartial(int grafiekType, int index, string labels, string data, string page)
-        {
-            ViewBag.GrafiekType = grafiekType;
-            ViewBag.GrafiekIndex = index;
-            ViewBag.Labels = labels;
-            ViewBag.Data = data;
-            ViewBag.grafiekButtons = "grafiekButtons" + index;
-            ViewBag.alert = "alert" + index;
-            ViewBag.dash = "dash" + index;
-            ViewBag.edit = "edit" + index;
-            ViewBag.delete = "delete" + index;
-            ViewBag.page = page;
-            //ViewBag.startDatum = labels.First();
-            //ViewBag.eindDatum = labels.Last();
-            //filter ook nog
-            return PartialView();
-        }
-        public ActionResult setActiveZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            actieveZone = mgr.getZone(zoneId).Id;
-            //_ItemsPartial(actieveZone);
-            return RedirectToAction("Dashboard");
-            //return RedirectToAction("_ItemsPartial");
-            return View();
-        }
-        public ActionResult GetZone(int zoneId)
-        {
-            IDashboardManager mgr = new DashboardManager();
-            Zone zone = mgr.getZone(zoneId);
-            return View(zone);
-        }
-        public ActionResult AddZone()
-        {
-            IDashboardManager mgr = new DashboardManager();
-            string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
-            Dashboard dashboard = mgr.getDashboard(email, Deelplatform.Naam);
-            Zone zone = mgr.addZone(dashboard);
-            //GEBRUIKER NOG JUISTE MANIER VINDEN
-
-            this.Dashboard();
-            return RedirectToAction("Dashboard");
-        }
-
-        public ActionResult dashboardGrafiek(string zoneNaam, int grafiekIndex)
-        {
-            // IDashboardManager mgr = new DashboardManager();
-            // Zone zone = mgr.getZoneByNaam(zoneNaam);
-            return Json("ok");
         }
 
         /*public ActionResult changeZone(int zoneid, Zone zone)
@@ -473,12 +210,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
-            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
-            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
-            ViewBag.DataLijn = arrayLijnGrafiek[1];
-            string[] arrayBarGrafiek = getGraphData(naam, "trend");
-            ViewBag.LabelsBar = arrayBarGrafiek[0];
-            ViewBag.DataBar = arrayBarGrafiek[1];
+        
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];
@@ -488,12 +220,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
-            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
-            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
-            ViewBag.DataLijn = arrayLijnGrafiek[1];
-            string[] arrayBarGrafiek = getGraphData(naam, "trend");
-            ViewBag.LabelsBar = arrayBarGrafiek[0];
-            ViewBag.DataBar = arrayBarGrafiek[1];
+          
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];
@@ -533,12 +260,7 @@ namespace PolitiekeBarometer_MVC.Controllers
         {
             IElementManager elementManager = new ElementManager();
             Element element = elementManager.getElementByNaam(naam, Deelplatform);
-            string[] arrayLijnGrafiek = getGraphData(naam, "totaal");
-            ViewBag.LabelsLijn = arrayLijnGrafiek[0];
-            ViewBag.DataLijn = arrayLijnGrafiek[1];
-            string[] arrayBarGrafiek = getGraphData(naam, "trend");
-            ViewBag.LabelsBar = arrayBarGrafiek[0];
-            ViewBag.DataBar = arrayBarGrafiek[1];
+           
             //string[] arrayTaartGrafiek = getGraphData(naam, "sentiment");
             //ViewBag.LabelsTaart = arrayTaartGrafiek[0];
             //ViewBag.DataTaart = arrayTaartGrafiek[1];

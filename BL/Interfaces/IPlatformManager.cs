@@ -15,6 +15,7 @@ namespace BL.Interfaces
         Deelplatform getDeelplatformByNaam(string deelplatformNaam);
         List<Deelplatform> getAllDeeplatformen();
         void createDeelplatform(Deelplatform deelplatform);
+        DeelplatformDashboard getDeelplatformDashboard(string deelplatform);
         #endregion
 
         #region Gebruiker

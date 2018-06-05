@@ -62,6 +62,7 @@ namespace BL.Managers
             uowManager.Save();
             return dashboard;
         }
+       
         #endregion
 
         #region Zone
@@ -197,7 +198,7 @@ namespace BL.Managers
                     switch (grafiek.DataType)
                     {
                         case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start.ToShortDateString(), (double)posts.Count);
+                            grafiekData.Add(start.ToString("dd/MM/yyyy HH/mm"), (double)posts.Count);
                             break;
                         case Domain.DataType.PERCENTAGE:
                             double dataPoint;
@@ -217,7 +218,11 @@ namespace BL.Managers
                     }
                     start = start.Add(interval);
                 }
+                if (dataConfig.Label == null)
+                {
                 dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
+
+                }
                 data.Add(dataConfig.Label, grafiekData);
                 index++;
             }
@@ -411,8 +416,6 @@ namespace BL.Managers
 
             return dashboardRepository.getActiveMeldingen(dashboard);
         }
-
-      
         #endregion
     }
 }
