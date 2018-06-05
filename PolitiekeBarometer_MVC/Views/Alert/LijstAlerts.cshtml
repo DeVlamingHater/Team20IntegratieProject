@@ -2,64 +2,65 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<p>
-    @Html.ActionLink("Create New", "CreateAlert")
-</p>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ApplicatieMelding)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BrowserMelding)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmailMelding)
-        </th>
-        <th>
-            Data instelling
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-    </tr>
-    @foreach (var item in Model)
-    {
+<div style="margin:20px">
+    <h2>Lijst Alerts</h2>
+    <p>
+        @Html.ActionLink("Create New", "CreateAlert")
+    </p>
+</div>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicatieMelding)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BrowserMelding)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailMelding)
-            </td>
-            <td>
-                Wanneer:
-                @if (item.DataType == Domain.DataType.TOTAAL)
-                {
-                    <p>aantal posts</p>
-                }
-                @if (item.DataType == Domain.DataType.PERCENTAGE)
-                {
-                    <span>De trend</span>
-                }
-                @Html.DisplayFor(modelItem => item.Operator)
-
-                @Html.DisplayFor(modelItem => item.Waarde)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditAlert", new { id = item.AlertId }) |
-                @Html.ActionLink("Details", "DetailsAlert", new { id = item.AlertId }) |
-                @Html.ActionLink("Delete", "DeleteAlert", new { id = item.AlertId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicatieMelding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrowserMelding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailMelding)
+            </th>
+            <th>
+                Data instelling
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
         </tr>
-    }
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicatieMelding)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrowserMelding)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailMelding)
+                </td>
+                <td>
+                    Wanneer:
+                    @if (item.DataType == Domain.DataType.TOTAAL)
+                    {
+                        <p>aantal posts</p>
+                    }
+                    @if (item.DataType == Domain.DataType.PERCENTAGE)
+                    {
+                        <span>De trend</span>
+                    }
+                    @Html.DisplayFor(modelItem => item.Operator)
+
+                    @Html.DisplayFor(modelItem => item.Waarde)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditAlert", new { id = item.AlertId }) |
+                    @Html.ActionLink("Details", "DetailsAlert", new { id = item.AlertId }) |
+                    @Html.ActionLink("Delete", "DeleteAlert", new { id = item.AlertId })
+                </td>
+            </tr>
+        }
+    </table>
 

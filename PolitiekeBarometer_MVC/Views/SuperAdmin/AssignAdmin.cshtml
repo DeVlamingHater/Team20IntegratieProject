@@ -2,23 +2,25 @@
 @{
     ViewBag.Title = "AssignAdmin";
 }
+<div style="margin:20px">
+    <h2>AssignAdmin</h2>
 
-<h2>AssignAdmin</h2>
+    @using (Html.BeginForm("AssignAdmin", "SuperAdmin", FormMethod.Post))
+    {
+        <label class="control-label">
+            Admin
+        </label>
+        <input type="text" name="txtAdmin" class="form-control" />
 
-@using (Html.BeginForm("AssignAdmin", "SuperAdmin", FormMethod.Post))
-{
-    <label class="control-label">
-        Admin
-    </label>
-    <input type="text" name="txtAdmin" class="form-control" />
-
-    <label class="control-label">
-        Deelplatform
-    </label>
-    <input type="text" name="txtDeelplatform" class="form-control" />
-    <div class="row">
-        <div class="col-md-12 col-lg-12">
-            <button class="btn btn-primary" type="submit">Save</button>
+        <label class="control-label">
+            Deelplatform
+        </label>
+        <input type="text" name="txtDeelplatform" class="form-control" />
+        <br />
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
