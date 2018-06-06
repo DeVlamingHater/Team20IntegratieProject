@@ -254,7 +254,12 @@ namespace BL.Managers
             initNonExistingRepo();
 
             elementRepository.addOrganisatie(organisatie);
-            uowManager.Save();
+
+            if (uowManager != null)
+            {
+                uowManager.Save();
+            }
+            
         }
 
         public List<Organisatie> getAllOrganisaties(Deelplatform deelplatform)

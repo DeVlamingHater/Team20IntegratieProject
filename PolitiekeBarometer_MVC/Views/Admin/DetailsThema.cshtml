@@ -4,39 +4,59 @@
     ViewBag.Title = "DetailsThema";
 }
 
-<h2>DetailsThema</h2>
+<style>
 
-<div>
-    <h4>Thema</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Naam)
-        </dt>
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
+    }
+</style>
 
-        <dd>
-            @Html.DisplayFor(model => model.Naam)
-        </dd>
+<div class="container">
+    <div class="card">
+        <div class="card-header">Details van een thema</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to List", "LijstThemas")
+            </div>
+            <div class="witteRuimte form-group">
+                <h4>Thema</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Naam)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Trend)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Naam)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Trend)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Trend)
+                    </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TrendingPlaats)
-        </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Trend)
+                    </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.TrendingPlaats)
-        </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TrendingPlaats)
+                    </dt>
 
-    </dl>
+                    <dd>
+                        @Html.DisplayFor(model => model.TrendingPlaats)
+                    </dd>
+
+                </dl>
+
+
+                @Html.ActionLink("Edit", "EditThema", new { id = Model.Id })
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "EditThema", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "LijstThemas")
-</p>
+
+

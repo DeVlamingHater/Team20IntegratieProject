@@ -296,6 +296,19 @@ namespace PolitiekeBarometer_MVC.Controllers
             unitOfWorkManager.Save();
             return RedirectToAction("LijstAlerts");
         }
+
+        [HttpGet]
+        public ActionResult DetailsAlert(int id)
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+
+            Alert alert = dashboardManager.getAlert(id);
+
+            return View(alert);
+
+        }
+
+       
         #endregion
 
         #region Melding

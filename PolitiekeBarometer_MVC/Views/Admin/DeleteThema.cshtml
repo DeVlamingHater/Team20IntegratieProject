@@ -4,45 +4,66 @@
     ViewBag.Title = "DeleteThema";
 }
 
-<h2>DeleteThema</h2>
+<style>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Thema</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Naam)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Naam)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trend)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Trend)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TrendingPlaats)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TrendingPlaats)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "LijstThemas")
-        </div>
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
     }
+</style>
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">Verwijder het thema</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to List", "LijstThemas")
+            </div>
+            <div class="witteRuimte form-group">
+                <h3>Are you sure you want to delete this?</h3>
+                <h4>Thema</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Naam)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Naam)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Trend)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Trend)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TrendingPlaats)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TrendingPlaats)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+

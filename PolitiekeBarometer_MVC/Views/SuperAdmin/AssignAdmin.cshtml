@@ -3,22 +3,45 @@
     ViewBag.Title = "AssignAdmin";
 }
 
-<h2>AssignAdmin</h2>
+<style>
 
-@using (Html.BeginForm("AssignAdmin", "SuperAdmin", FormMethod.Post))
-{
-    <label class="control-label">
-        Admin
-    </label>
-    <input type="text" name="txtAdmin" class="form-control" />
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
+    }
+</style>
 
-    <label class="control-label">
-        Deelplatform
-    </label>
-    <input type="text" name="txtDeelplatform" class="form-control" />
-    <div class="row">
-        <div class="col-md-12 col-lg-12">
-            <button class="btn btn-primary" type="submit">Save</button>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">Wijzig een admin toe aan een deelplatform</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to Index", "Index")
+            </div>
+            <div class="witteRuimte form-group">
+                @using (Html.BeginForm("AssignAdmin", "SuperAdmin", FormMethod.Post))
+                {
+                    <label class="control-label">
+                        Admin
+                    </label>
+                    <input type="text" name="txtAdmin" class="form-control" />
+
+                    <label class="control-label">
+                        Deelplatform
+                    </label>
+                    <input type="text" name="txtDeelplatform" class="form-control" />
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <button class="btn btn-default" type="submit">Save</button>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-}
+</div>
