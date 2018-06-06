@@ -47,7 +47,7 @@ namespace PolitiekeBarometer_MVC.Controllers.ActionFilter
                 {
                     if (action == "" || action == "Home")
                     {
-                        filterContext.Result = new RedirectResult("/pb/Home/Index");
+                       filterContext.Result = new RedirectResult("/pb/Home/Index");
                     }
                     else
                     {

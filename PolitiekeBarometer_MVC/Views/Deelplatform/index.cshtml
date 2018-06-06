@@ -1,6 +1,8 @@
 ﻿@model List<Domain.Dashboards.Item>
-@ViewBag.LabelsLijn1
-@ViewBag.DataLijn1
+@{ 
+    ViewBag.Nav = true;
+}
+
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom fonts for this template-->
 <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -15,110 +17,36 @@
 <script src="~/Scripts/Gridster/jquery.gridster.js"></script>
 <link href="~/Content/jquery.gridster.css" rel="stylesheet" />
 
-@*<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse collapsed navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-                @if (Request.IsAuthenticated)
-                {
-                    <!-- Dashboard-->
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
-
-                            <i class="fa fa-fw fas fa-wrench"></i>
-                            <span class="nav-link-text">Mijn Dashboard</span>
-                        </a>
-                    </li>
-                    <!-- Alert List-->
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Alerts">
-                        <a class="nav-link" onclick="" href="@Url.Action("LijstAlerts", "Alert")">
-                            <i class="fa fa-fw fas fa-bell"></i>
-                            <span class="nav-link-text">Mijn Alerts</span>
-                        </a>
-                    </li>
-                }
-                <!-- Dropdown trending Personen-->
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Politiekers">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePolitiekers" data-parent="#exampleAccordion">
-                        <i class="fa fa-fw fas fa-users"></i>
-                        <span class="nav-link-text">Personen</span>
-                    </a>
-                    @Html.Action("_PersonenDropDown")
-                </li>
-                <!-- Dropdown trending Organisaties-->
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Partijen">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePartijen" data-parent="#exampleAccordion">
-                        <i class="fa fa-fw far fa-circle"></i>
-                        <span class="nav-link-text">Organisaties</span>
-                    </a>
-                    @Html.Action("_OrganisatieDropDown")
-                </li>
-                <!-- Dropdown trending Thema's-->
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themas">
-                    <a class="nav-link navbar-light nav-link-collapse collapsed" data-toggle="collapse" href="#collapseThemas" data-parent="#exampleAccordion">
-                        <i class="fa fa-fw fal fa-book"></i>
-                        <span class="nav-link-text">Thema's</span>
-                    </a>
-                    @Html.Action("_ThemaDropDown")
-                </li>
-                <!-- -->
-                @if (Request.IsAuthenticated)
-                {
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Profiel">
-                        <a class="nav-link" href="@Url.Action("Index", "Manage")">
-                            <i class="fa fa-fw fal fa-user"></i>
-                            <span class="nav-link-text">Profiel Instellingen</span>
-                        </a>
-                    </li>
-
-                }
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
-                    <a class="nav-link" href="@Url.Action("Index", "Home")">
-                        <i class="fa fa-fw fal fa-home"></i>
-                        <span class="nav-link-text">Deelplatformen</span>
-                    </a>
-                </li>
-
-            </ul>
-            <ul class="navbar-nav sidenav-toggler">
-                <li class="nav-item">
-                    <a class="nav-link text-center" id="sidenavToggler">
-                        <i class="fa fa-fw fa-angle-left"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>*@
-    
-<div class="jumbotron" style="background: no-repeat center center/100%;
+<div class="w-100 bg-dark">
+    <div class="jumbotron" style="background: no-repeat center center/100%;
         background-image: url('../../Content/Images/politiek-818x435.jpg');
         color: white">
-    <h1 class="display" align="center">Politieke Barometer</h1>
-    <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
-</div>
-<div class="gridster w-75">
-    <ul>
-        @{
-            if (Model != null)
-            {
-                foreach (var item in Model)
+        <h1 class="display" align="center">Politieke Barometer</h1>
+        <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
+    </div>
+    <div class="gridster w-75 "style="background-color:darkslategray">
+        <ul>
+            @{
+                if (Model != null)
                 {
-                    <li style="background-color:darkslategray" data-col="1" data-row="1" data-sizex="2" data-sizey="2" class="gs-w bg-dark">
-                        @Html.Action("Item", "Dashboard", new { Item = item })
-                    </li>
+                    foreach (var item in Model)
+                    {
+                        <li  data-col="1" data-row="1" data-sizex="1" data-sizey="2" class="gs-w bg-dark">
+                            @Html.Action("Item", "Dashboard", new { Item = item })
+                        </li>
+                    }
                 }
             }
-        }
-    </ul>
+        </ul>
+    </div>
 </div>
+
 <script>
     function gridster() {
         $(".gridster ul").gridster({
             widget_margins: [10, 10],
-            min_cols: 4,
-            max_cols: 4,
+            min_cols: 3,
+            max_cols: 3
         });
     }
     gridster();

@@ -4,11 +4,11 @@
     ViewBag.Title = "_ItemPartial";
 }
 
-<div class="card h-100">
+<div class="card h-100  p-0 m-0">
     <div class="card-header">
         <i class="fa fa-bar-chart"></i> Grafiek
     </div>
-    <div class="card-body h-75">
+    <div class="card-body p-0 m-0 h-75">
         @if (Model.GetType().Equals(typeof(PolitiekeBarometer_MVC.Models.GrafiekViewModel)))
         {
             Html.RenderPartial("DashboardPartials/GrafiekPartial", Model);

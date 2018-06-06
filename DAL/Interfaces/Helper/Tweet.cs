@@ -42,9 +42,6 @@ namespace DAL
 
         [JsonProperty("mentions")]
         public List<string> Mentions { get; set; }
-
-        //TODO
-        //[JsonProperty("geo")]
-        //public string geo { get; set; }
+        
     }
 }

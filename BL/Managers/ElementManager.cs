@@ -82,7 +82,6 @@ namespace BL.Managers
             {
                 element.Trend = postManager.calculateElementTrend(element);
             }
-            //TODO: 3Per Type
             elementen.ForEach(e => elementRepository.setElement(e));
 
             this.uowManager.Save();

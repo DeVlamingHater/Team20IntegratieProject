@@ -52,7 +52,6 @@ namespace PolitiekeBarometer_MVC.Controllers
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
         {
-            //TODO: controleren
             UnitOfWorkManager uowMgr = new UnitOfWorkManager();
             IDashboardManager dashboardManager = new DashboardManager(uowMgr);
             IElementManager elementManager = new ElementManager(uowMgr);
@@ -144,7 +143,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             grafiek.Zone = zone;
             dashboardManager.createGrafiek(grafiek);
-
+            uowMgr.Save();
             return RedirectToAction("Index");
         }
 

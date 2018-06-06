@@ -315,7 +315,6 @@ namespace BL.Managers
                         string email = alert.Dashboard.Gebruiker.Email;
                         mail.To.Add(email);
                         mail.Subject = "Barometer " + alert.Dashboard.Deelplatform.Naam;
-                        //TODO
                         mail.Body = "This is for testing SMTP mail from GMAIL";
 
                         SmtpServer.Port = 587;
