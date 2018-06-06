@@ -16,6 +16,8 @@ namespace BL.Interfaces
         List<Deelplatform> getAllDeeplatformen();
         void createDeelplatform(Deelplatform deelplatform);
         DeelplatformDashboard getDeelplatformDashboard(string deelplatform);
+        void deleteDeelplatform(Deelplatform deelplatform);
+        Deelplatform getDeelplatformById(int id);
         #endregion
 
         #region Gebruiker
@@ -25,6 +27,7 @@ namespace BL.Interfaces
         void deleteGebruiker(string id);
         List<Gebruiker> getAllGebruikers();
         void updateGebruiker(Gebruiker gebruiker);
+        
         #endregion
     }
 }

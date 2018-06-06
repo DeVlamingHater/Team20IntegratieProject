@@ -115,6 +115,13 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         #region Deelplatform 
 
+        public ActionResult LijstDeelplatformen()
+        {
+            IPlatformManager platformManager = new PlatformManager();
+            List<Deelplatform> deelplatformen = platformManager.getAllDeeplatformen();
+            return View(deelplatformen);
+        }
+
         // GET: Admin/Create
         public ActionResult CreateDeelplatform()
         {
@@ -139,6 +146,23 @@ namespace PolitiekeBarometer_MVC.Controllers
             IPlatformManager platformManager = new PlatformManager();
             platformManager.createDeelplatform(deelplatform);
 
+            return RedirectToAction("LijstDeelplatformen");
+        }
+
+        public ActionResult DeleteDeelplatform(int id)
+        {
+            IPlatformManager platformManager = new PlatformManager();
+            var deelplatform = platformManager.getDeelplatformById(id);
+
+            return View(deelplatform);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteDeelplatform(int id, Deelplatform deelplatform)
+        {
+            IPlatformManager platformManager = new PlatformManager();
+            Deelplatform deelPlatform = platformManager.getDeelplatformById(id);
+            platformManager.deleteDeelplatform(deelPlatform);
             return RedirectToAction("Index");
         }
 

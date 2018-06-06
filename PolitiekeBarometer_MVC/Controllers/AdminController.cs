@@ -287,6 +287,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             IPlatformManager platformManager = new PlatformManager(uowmgr);
             thema.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             elementManager.addThema(thema);
+            uowmgr.Save();
 
             return RedirectToAction("LijstThemas");
         }

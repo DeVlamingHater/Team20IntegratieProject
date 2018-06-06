@@ -615,6 +615,8 @@
     <Content Include="Views\Shared\DashboardPartials\NewItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\NewGrafiekPartial.cshtml" />
     <Content Include="Views\SuperAdmin\Timer.cshtml" />
+    <Content Include="Views\SuperAdmin\DeleteDeelplatform.cshtml" />
+    <Content Include="Views\SuperAdmin\LijstDeelplatformen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

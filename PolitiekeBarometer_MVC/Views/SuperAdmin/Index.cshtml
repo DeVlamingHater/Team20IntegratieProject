@@ -2,26 +2,18 @@
     ViewBag.Title = "Index";
 }
 
-<style>
-    .witteKader {
-        border-radius: 5px;
-        padding: 2rem;
-        border: .5rem;
-        border-color: darkgray;
-        background-color: white;
-    }
-</style>
+
 
 
 <div class="container">
     <div class="card ">
         <div class="card-header">Superadmin functies</div>
         <div class="card-body bg-dark">
-            <div class="witteKader">
+            <div class="witteRuimte">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item btn">
                         <i class="fa fa-fw fal fa-home"></i>
-                        @Html.ActionLink("Maak deelplatform", "CreateDeelplatform", "SuperAdmin")
+                        @Html.ActionLink("Beheer deelplatformen", "LijstDeelplatformen", "SuperAdmin")
                     </li>
                     <li class="nav-item btn">
                         <i class="fa fa-fw fal fa-user-md"></i>
