@@ -60,6 +60,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             return lijstAlerts;
         }
+
         [HttpGet]
         [Route("api/AndroidApi/Meldingen")]
         public List<Melding> GetMeldingen(string email)
@@ -89,6 +90,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Message = "Deze Alert is een Negatieve test alert",
                 Titel = "Negatieve Test Melding"
             };
+
             meldingen.Add(melding1);
             meldingen.Add(melding2);
             return meldingen;
