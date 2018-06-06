@@ -2,28 +2,50 @@
     ViewBag.Title = "CreateUser";
 }
 
-<h2>CreateUser</h2>
+<style>
 
-@using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <div class="col-md-6">
-        <label class="control-label">
-            Naam
-        </label>
-        <input type="text" name="txtNaam" class="form-control" />
+    .witteRuimte {
+        border-radius: 5px;
+        padding: 2rem;
+        border: .5rem;
+        border-color: darkgray;
+        background-color: white;
+    }
+</style>
 
-        <label class="control-label">
-            Email
-        </label>
-        <input type="text" name="txtEmail" class="form-control" />
+<div class="container">
+    <div class="card">
+        <div class="card-header">Maak een gebruiker aan</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to list", "LijstUsers")
+            </div>
+            <div class="witteRuimte form-group">
+                @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post))
+    {
+            @Html.AntiForgeryToken()
 
-        <label class="control-label">
-            Password
-        </label>
-        <input type="text" name="txtPassword" class="form-control" />
-        <br />
-        <button type="submit" value="Submit" class="btn btn-primary">Save</button>
-    </div>
+            <label class="control-label">
+                Naam
+            </label>
+            <input type="text" name="txtNaam" class="form-control" />
 
+            <label class="control-label">
+                Email
+            </label>
+            <input type="text" name="txtEmail" class="form-control" />
+
+            <label class="control-label">
+                Password
+            </label>
+            <input type="text" name="txtPassword" class="form-control" />
+            <br/>
+            <button type="submit" value="Submit" class="btn btn-default">Save</button>
 }
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
