@@ -20,8 +20,8 @@
     <link href="~/gridster-responsive/gridster.js-master/dist/jquery.gridster.css" rel="stylesheet" />
 </head>
 <body class="fixed-nav sticky-footer bg-light" id="page-top">
-    @Scripts.Render("~/bundles/jqueryval")
 
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.collision.js"></script>
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.coords.js"></script>
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.draggable.js"></script>
@@ -54,6 +54,8 @@
     <script src="~/Scripts/Searchbar/searchbar.js"></script>
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <script src="~/Scripts/Grafiek/GrafiekFuncties.js"></script>
+
+    @RenderSection("scripts", required: false)
 
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -130,6 +132,12 @@
                     </li>
 
                 </ul>
+                <ul class="navbar-nav sidenav-toggler">
+                    <li class="nav-item">
+                        <a class="nav-link text-center" id="sidenavToggler">
+                        </a>
+                    </li>
+                </ul>
 
             }
 
@@ -201,9 +209,9 @@
     <script>
         gridster();
     </script>
-   
 
-<script>
+
+    <script>
 $(document).ready(function () {
     $("#searchBar").keyup(function () {
         //alert("json")
@@ -374,7 +382,3 @@ ul.style.display = "block";
 </body>
 
 </html>
-
-
-@RenderSection("scripts", required: false)
-

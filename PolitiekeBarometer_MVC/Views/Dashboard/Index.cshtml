@@ -1,4 +1,4 @@
-﻿@model List<PolitiekeBarometer_MVC.Models.ZoneViewModel>
+﻿@model List<Domain.Dashboards.Zone>
 
 @{
     ViewBag.Title = "Dashboard";
@@ -41,29 +41,44 @@
 </div>
 <button onclick="gridster()">gridster</button>
 
-<div class="gridster  bg-dark ">
 
-    <ul>
-        @{
-            var yposition = 0;
-            foreach (var zone in Model)
-            {
-                if (zone.Items != null)
-                {
-                    foreach (var item in zone.Items)
+@{
+    foreach (var zone in Model)
+    {
+        <div class="gridster bg-dark  tabcontent" id="@zone.Id">
+            <ul>
+                @{
+                    if (zone.Items != null)
                     {
-                        <li data-col="1" data-row="@yposition" data-sizex="1" data-sizey="1" id="@zone.Id" class="gs-w bg-light tabcontent">
-                            @Html.Partial("DashboardPartials/ItemPartial", item)
-                        </li>
+                        foreach (var item in zone.Items)
+                        {
+                            var yposition = item.Y;
 
+                            if (yposition == 0)
+                            {
+                                yposition = 1;
+                            }
+                            var xposition = item.X;
+                            if (xposition == 0)
+                            {
+                                xposition = 1;
+                            }
+                            var size = item.Size;
+                            if (size == 0)
+                            {
+                                size = 1;
+                            }
+                            <li data-col="@xposition" data-row="@yposition" data-sizex="@size" data-sizey="@size" class="gs-w bg-dark">
+                                @Html.Action("Item", "Dashboard", new { Item = item })
+                            </li>
+                        }
                     }
                 }
-                yposition++;
-            }
-        }
+            </ul>
+        </div>
+    }
+}
 
-    </ul>
-</div>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal1">
     Maak nieuw Item

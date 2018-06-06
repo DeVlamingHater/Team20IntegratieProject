@@ -104,8 +104,6 @@ namespace DAL.EF
 
             modelBuilder.Entity<Zone>().HasMany<Item>(z => z.Items);
 
-            modelBuilder.Entity<Grafiek>().HasMany<Filter>(g => g.Filters);
-
             modelBuilder.Entity<Alert>().HasMany<Melding>(a => a.Meldingen);
 
             modelBuilder.Entity<Melding>().HasRequired<Alert>(m => m.Alert);

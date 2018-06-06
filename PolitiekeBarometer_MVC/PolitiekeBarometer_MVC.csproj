@@ -20,7 +20,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44363</IISExpressSSLPort>
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -600,20 +600,16 @@
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
     <Content Include="Views\Shared\_LijnGrafiekPartial.cshtml" />
     <Content Include="Views\Deelplatform\Test.cshtml" />
-    <Content Include="Views\Shared\_TaartGrafiekPartial.cshtml" />
     <Content Include="Views\Deelplatform\_ItemPartial.cshtml" />
     <Content Include="Views\SuperAdmin\LijstAdmins.cshtml" />
     <Content Include="Views\SuperAdmin\DetailsAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
     <Content Include="Views\Shared\MeldingDropDown.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\GrafiekPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\NewItemPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\NewGrafiekPartial.cshtml" />
     <Content Include="Views\SuperAdmin\Timer.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\LijstDeelplatformen.cshtml" />

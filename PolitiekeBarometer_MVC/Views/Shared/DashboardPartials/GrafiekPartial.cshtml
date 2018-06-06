@@ -1,9 +1,5 @@
-﻿@model PolitiekeBarometer_MVC.Models.GrafiekViewModel
-
-<script src="~/Scripts/jquery-3.0.0.min.js" defer></script>
-
+﻿@model Domain.Dashboards.Grafiek
 @{
-
     if (Model != null)
     {
         List<string> datasetLabels = new List<string>();
@@ -11,9 +7,10 @@
         Dictionary<string, double> dataset = new Dictionary<string, double>();
         List<double> dataentries = new List<double>();
         List<string> labelentries = new List<string>();
-        if (Model.datasets != null)
+        var datasets = ViewBag.grafiekData;
+        if (datasets != null)
         {
-            foreach (var item in Model.datasets)
+            foreach (var item in datasets)
             {
                 datasetLabels.Add(item.Key);
                 dataset = item.Value;
@@ -31,19 +28,19 @@
             ViewBag.label = @Html.Raw(Json.Encode(labelentries));
             ViewBag.data = @Html.Raw(Json.Encode(dataentries));
 
-            <p id="@Model.id entry" hidden>@Html.Raw(Json.Encode(dataentries)) </p>
-            <p id="@Model.id label" hidden>@Html.Raw(Json.Encode(labelentries))</p>
-            <p id="@Model.id type" hidden>@Html.Raw(Model.GrafiekType)</p>
+            <p id="@Model.Id entry" hidden>@Html.Raw(Json.Encode(dataentries)) </p>
+            <p id="@Model.Id label" hidden>@Html.Raw(Json.Encode(labelentries))</p>
+            <p id="@Model.Id type" hidden>@Html.Raw(Model.GrafiekType)</p>
         }
     }
 }
-<div class="chart-container h-75">
-    <canvas  on id="@Model.id grafiek"></canvas>
+            <script src="~/Scripts/Grafiek/Grafiek.js"></script>
+            <div class="h-100">
+                <canvas  id="@Model.Id grafiek"></canvas>
+            </div>
 
-</div>
-<button onclick="laadGrafiek(@Model.id)"></button>
 <script type="text/javascript">
-    laadGrafiek(@Model.id);
+    laadGrafiek(@Model.Id);
 </script>
 
 

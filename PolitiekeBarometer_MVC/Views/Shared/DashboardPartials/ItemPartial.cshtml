@@ -1,18 +1,15 @@
-﻿@model PolitiekeBarometer_MVC.Models.ItemViewModel
+﻿@model Domain.Dashboards.Item
 
-@{
-    ViewBag.Title = "_ItemPartial";
-}
-
-<div class="card h-100  p-0 m-0">
+<div class="card h-100">
     <div class="card-header">
         <i class="fa fa-bar-chart"></i> Grafiek
     </div>
-    <div class="card-body p-0 m-0 h-75">
-        @if (Model.GetType().Equals(typeof(PolitiekeBarometer_MVC.Models.GrafiekViewModel)))
-        {
-            Html.RenderPartial("DashboardPartials/GrafiekPartial", Model);
-        }
+    <div class="card-body h-75">
+        @if (Model.GetType().Equals(typeof(Domain.Dashboards.Grafiek)))
+    {
+        @Html.Action("Grafiek", "Dashboard", new { Grafiek = Model });
+
+}
     </div>
     <div class="bottom-right smaller text-muted">
         <div id="@ViewBag.grafiekButtons" class="float-right" style="display:inline">

@@ -51,7 +51,7 @@ namespace BL.Managers
             }
         }
         #endregion
-    
+
         #region Dashboard
         public Dashboard getDashboard(string email, string deelplatformS)
         {
@@ -62,7 +62,7 @@ namespace BL.Managers
             uowManager.Save();
             return dashboard;
         }
-       
+
         #endregion
 
         #region Zone
@@ -98,15 +98,16 @@ namespace BL.Managers
                 Dashboard = dashboard,
                 Items = new List<Item>()
             };
+            dashboardRepository.addZone(zone);
             uowManager.Save();
-            return dashboardRepository.addZone(zone);
+            return zone;
         }
 
-        public void changeZoneName(int zoneId,string naam)
+        public void changeZoneName(int zoneId, string naam)
         {
             initNonExistingRepo();
 
-            dashboardRepository.changeZoneName(zoneId,naam);
+            dashboardRepository.changeZoneName(zoneId, naam);
         }
 
         public void updateZone(Zone zone)
@@ -160,7 +161,7 @@ namespace BL.Managers
 
             dashboardRepository.addGrafiek(grafiek);
 
-            if (uowManager!=null)
+            if (uowManager != null)
             {
                 uowManager.Save();
             }
@@ -170,62 +171,100 @@ namespace BL.Managers
         public Dictionary<string, Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
             initNonExistingRepo();
-
+            Random generator= new Random();
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            Dictionary<string,Dictionary<string, double>> data = new Dictionary<string, Dictionary<string, double>>();
+            Dictionary<string, Dictionary<string, double>> data = new Dictionary<string, Dictionary<string, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
+            Dictionary<string, double> allData = new Dictionary<string, double>();
 
-            foreach (DataConfig dataConfig in dataConfigs)
+            if (grafiek.GrafiekType != GrafiekType.LINE)
             {
-                //Dictionary van de Data, bevat geformateerde datum en double voor de data
-                Dictionary<string, double> grafiekData = new Dictionary<string, double>();
+                grafiek.AantalDataPoints = 1;
+            }
 
-                DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
-
-                TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
+            if (dataConfigs == null)
+            {
+                DateTime start = DateTime.Now.AddTicks(-grafiek.TijdschaalTicks);
+                TimeSpan interval = new TimeSpan(grafiek.TijdschaalTicks / grafiek.AantalDataPoints);
 
                 for (int i = 0; i < grafiek.AantalDataPoints; i++)
                 {
-                    List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
-                    int totaal = posts.Count();
-
                     DateTime eind = start.Add(interval);
-                    posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
-                    posts = postManager.filterPosts(posts, grafiek.Filters);
-                    switch (grafiek.DataType)
-                    {
-                        case Domain.DataType.TOTAAL:
-                            grafiekData.Add(start.ToString("dd/MM/yyyy HH/mm"), (double)posts.Count);
-                            break;
-                        case Domain.DataType.PERCENTAGE:
-                            double dataPoint;
-                            if (totaal == 0)
-                            {
-                                dataPoint = 0;
-                            }
-                            else
-                            {
-                             dataPoint = (double)posts.Count / (double)totaal;
-
-                            }
-                            grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
-                            break;
-                        default:
-                            break;
-                    }
-                    start = start.Add(interval);
+                    int datapoint = postManager.getAllPosts().Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).Count();
                 }
-                if (dataConfig.Label == null)
+            }
+            else
+            {
+                foreach (DataConfig dataConfig in dataConfigs)
                 {
-                dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
+                    //Dictionary van de Data, bevat geformateerde datum en double voor de data
+                    Dictionary<string, double> grafiekData = new Dictionary<string, double>();
 
+                    DateTime start = DateTime.Now.AddTicks(-grafiek.TijdschaalTicks);
+
+                    TimeSpan interval = new TimeSpan(grafiek.TijdschaalTicks / grafiek.AantalDataPoints);
+                   
+                    for (int i = 0; i < grafiek.AantalDataPoints; i++)
+                    {
+                        int aantal = 0;
+                        List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
+                        int totaal = posts.Count();
+
+                        DateTime eind = start.Add(interval);
+                        posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
+
+                        posts = postManager.filterPosts(posts,dataConfig.Filters);
+                        switch (grafiek.DataType)
+                        {
+                            case Domain.DataType.TOTAAL:
+                                if (posts.Count==0)
+                                {
+                                    aantal = generator.Next(0, 200);
+                                }
+                                grafiekData.Add(start.ToString("dd/MM/yyyy HH/mm"), aantal);
+                                break;
+                            case Domain.DataType.PERCENTAGE:
+                                double dataPoint;
+                                if (totaal == 0)
+                                {
+                                    dataPoint =0;
+                                }
+                                if (posts.Count==0)
+                                {
+                                    dataPoint = generator.NextDouble();
+                                }
+                                else
+                                {
+                                    dataPoint = (double)posts.Count / (double)totaal;
+
+                                }
+                                grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
+                                break;
+                            default:
+                                break;
+                        }
+                        start = start.Add(interval);
+                    }
+                    if (grafiek.GrafiekType != GrafiekType.LINE )
+                    {
+                        allData.Add(allData.Count.ToString(), grafiekData.Values.FirstOrDefault());
+                    }
+                    else
+                    {
+                        data.Add(data.Count.ToString(), grafiekData);
+
+                    }
+                    index++;
                 }
-                data.Add(dataConfig.Label, grafiekData);
-                index++;
+            }
+
+            if (grafiek.GrafiekType != GrafiekType.LINE)
+            {
+                data.Add(data.Count.ToString(), allData);
             }
             return data;
         }
@@ -362,7 +401,7 @@ namespace BL.Managers
 
             dashboardRepository.createAlert(alert);
 
-            if (uowManager!=null)
+            if (uowManager != null)
             {
                 uowManager.Save();
             }
