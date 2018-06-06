@@ -1,20 +1,28 @@
 ﻿@{
     ViewBag.Title = "Timer";
 }
-<div style="margin:20px">
-    <h2>Timer</h2>
-    @using (Html.BeginForm("AssingRefreshRate", "SuperAdmin", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <div class="col-md-4">
-            <label class="control-label">
-                Stel de timer in (seconden):
-            </label>
-            <input type="number" name="txtTimer" class="form-control" />
-            <br />
-            <button type="submit" value="Submit" class="btn btn-primary">Save</button>
+<div class="container">
+    <div class="card ">
+        <div class="card-header">Een timer instellen</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte">
+                <h4>Timer</h4>
+                <hr />
+                @using (Html.BeginForm("AssingRefreshRate", "SuperAdmin", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-4">
+                        <label class="control-label">
+                            Stel de timer in (seconden):
+                        </label>
+                        <input type="number" name="txtTimer" class="form-control" />
+                        <br />
+                        <button type="submit" value="Submit" class="btn btn-primary">Save</button>
 
+                    </div>
+
+                }
+            </div>
         </div>
-
-    }
+    </div>
 </div>
