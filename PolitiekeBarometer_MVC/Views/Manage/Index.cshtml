@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="card">
-        <div class="card-header">Change you account settings</div>
+        <div class="card-header">Beheer uw account</div>
         <div class="card-body bg-dark">
             <div class="witteRuimte form-group">
                 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -38,7 +38,7 @@
                             {
                                 @Html.ActionLink("Change", "AddPhoneNumber")
                                 @: &nbsp;|&nbsp;
-                                @Html.ActionLink("Remove", "RemovePhoneNumber")
+                                @Html.ActionLink("Remove", "RemovePhoneNumber", "Manage")
                             }
                             else
                             {
