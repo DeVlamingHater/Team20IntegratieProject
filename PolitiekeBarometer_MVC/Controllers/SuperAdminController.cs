@@ -198,11 +198,13 @@ namespace PolitiekeBarometer_MVC.Controllers
         #endregion
 
         #region timer
+        [HttpGet]
         public ActionResult Timer()
         {
             return View();
         }
 
+        [HttpPost]
         public ActionResult AssingRefreshRate(FormCollection form)
         {
             string refreshRateS = form["txtTimer"];
