@@ -299,6 +299,7 @@
     <Content Include="Content\Images\Politieke_Barometer_Banner.jpg" />
     <Content Include="Content\jquery.gridster.css" />
     <Content Include="Content\jquery.gridster.min.css" />
+    <Content Include="Content\witteRuimte.css" />
     <Content Include="Scripts\gridsterscripts\gridsterScript.js" />
     <Content Include="Scripts\Gridster\jquery.gridster.js" />
     <Content Include="Scripts\Gridster\jquery.gridster.min.js" />
