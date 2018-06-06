@@ -143,7 +143,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             }
             grafiek.Zone = zone;
             dashboardManager.createGrafiek(grafiek);
-
+            uowMgr.Save();
             return RedirectToAction("Index");
         }
 

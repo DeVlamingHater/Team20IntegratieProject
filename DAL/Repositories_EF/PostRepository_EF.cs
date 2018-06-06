@@ -34,20 +34,20 @@ namespace DAL.Repositories_EF
         public IEnumerable<Post> getDataConfigPosts(DataConfig dataConfig)
         {
             Element element = dataConfig.Element;
-            List<Post> posts = context.Posts.Include(p => p.Personen).ToList();
+            List<Post> posts = new List<Post>();
             if (element != null)
             {
                 if (element.GetType().Equals(typeof(Persoon)))
                 {
-                    posts = posts.Where(p => p.Personen.Any(pers => pers.Equals(element))).ToList();
+                    posts = context.Posts.Where(p => p.Personen.Any(pers => pers.Naam == element.Naam)).ToList();
                 }
                 else if (element.GetType().Equals(typeof(Organisatie)))
                 {
-                    posts = posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
+                    posts = context.Posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
                 }
                 else if (element.GetType().Equals(typeof(Thema)))
                 {
-                    posts = posts.Where(p => checkKeywords(p, element)).ToList();
+                    posts = context.Posts.Where(p => checkKeywords(p, element)).ToList();
                 }
             }
             return posts;
@@ -154,7 +154,10 @@ namespace DAL.Repositories_EF
 
                 post.Date = tweet.Date;
 
-                posts.Add(post);
+                //posts.Add(post);
+
+                context.Posts.Add(post);
+                context.SaveChanges();
             }
              return posts;
         }

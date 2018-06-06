@@ -41,7 +41,7 @@
 </div>
 <button onclick="gridster()">gridster</button>
 
-<div class="bg-light gridster">
+<div class="gridster  bg-dark ">
 
     <ul>
         @{
@@ -52,7 +52,7 @@
                 {
                     foreach (var item in zone.Items)
                     {
-                        <li data-col="1" data-row="@yposition" data-sizex="1" data-sizey="2" id="@zone.Id" class="gs-w bg-dark tabcontent">
+                        <li data-col="1" data-row="@yposition" data-sizex="1" data-sizey="1" id="@zone.Id" class="gs-w bg-light tabcontent">
                             @Html.Partial("DashboardPartials/ItemPartial", item)
                         </li>
 
@@ -228,7 +228,13 @@
     {
         width: "100px";
     };
-
+    function gridster() {
+        $(".gridster ul").gridster({
+            widget_margins: [10, 10],
+            min_cols: 3,
+            max_cols: 3
+        });
+    }
     gridster();
 </script>
 

@@ -37,8 +37,11 @@
         }
     }
 }
-<canvas class="graph" on id="@Model.id grafiek"></canvas>
+<div class="chart-container h-75">
+    <canvas  on id="@Model.id grafiek"></canvas>
 
+</div>
+<button onclick="laadGrafiek(@Model.id)"></button>
 <script type="text/javascript">
     laadGrafiek(@Model.id);
 </script>

@@ -7,9 +7,8 @@
     for (i = 0; i < tabcontent.length; i++) {
 
         tabcontent[i].style.display = "none";
-        if (tabcontent[i].id === zoneId) {
+        if (parseInt(tabcontent[i].id)=== zoneId) {
             tabcontent[i].style.display = "block";
-
         }
     }
 

@@ -24,14 +24,14 @@
         <h1 class="display" align="center">Politieke Barometer</h1>
         <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
     </div>
-    <div class="gridster w-75">
+    <div class="gridster w-75 "style="background-color:darkslategray">
         <ul>
             @{
                 if (Model != null)
                 {
                     foreach (var item in Model)
                     {
-                        <li style="background-color:darkslategray" data-col="1" data-row="1" data-sizex="1" data-sizey="2" class="gs-w bg-dark">
+                        <li  data-col="1" data-row="1" data-sizex="1" data-sizey="2" class="gs-w bg-dark">
                             @Html.Action("Item", "Dashboard", new { Item = item })
                         </li>
                     }
@@ -45,8 +45,8 @@
     function gridster() {
         $(".gridster ul").gridster({
             widget_margins: [10, 10],
-            min_cols: 4,
-            max_cols: 4
+            min_cols: 3,
+            max_cols: 3
         });
     }
     gridster();
