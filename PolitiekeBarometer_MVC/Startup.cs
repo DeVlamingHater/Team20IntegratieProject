@@ -73,7 +73,7 @@ namespace PolitiekeBarometer_MVC
         }
         private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
         {
-            await UpdateAsync();
+             UpdateAsync();
         }
 
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
