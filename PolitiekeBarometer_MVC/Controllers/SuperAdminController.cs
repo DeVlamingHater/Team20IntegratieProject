@@ -199,9 +199,9 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         #region timer
         [HttpGet]
-        public ActionResult AssingRefreshRate()
+        public ActionResult Timer()
         {
-            return View("Timer");
+            return View();
         }
 
         [HttpPost]
