@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-
-
     @Styles.Render("~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/css/sb-admin.css")
     <script src="~/Scripts/gridsterscripts/gridsterScript.js"></script>
     <link href="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -19,16 +17,12 @@
     <link href="~/Chosen/chosen.css" rel="stylesheet" />
     <link href="~/Content/Tooltip.css" rel="stylesheet" />
     <link href="~/Content/jquery.gridster.min.css" rel="stylesheet" />
-    <link href="~/Content/jquery.gridster.css" rel="stylesheet" />
 </head>
-<body class="fixed-nav sticky-footer" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
     <script src="~/Scripts/Gridster/jquery.gridster.min.js"></script>
     <script src="~/Scripts/Gridster/jquery.gridster.with-extras.min.js"></script>
-    <script src="~/Scripts/Gridster/jquery.gridster.js"></script>
-    <script src="~/Scripts/Gridster/jquery.gridster.with-extras.js"></script>
     <!-- Navigation-->
     <!-- Bootstrap core JavaScript-->
-    <script src="~/Scripts/Grafiek/sb-admin-charts.js"></script>
     <script src="~/Scripts/Grafiek/sb-admin-charts.min.js"></script>
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/jquery/jquery.min.js"></script>
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -45,29 +39,33 @@
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-datatables.min.js"></script>
     <script src="~/startbootstrap-sb-admin-gh-pages/startbootstrap-sb-admin-gh-pages/js/sb-admin-charts.min.js"></script>
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/jquery-3.0.0.min.js"></script>
     <script src="~/Scripts/Tabs/tabs.js"></script>
     <script src="~/Chosen/chosen.jquery.min.js"></script>
-    @RenderSection("scripts", required: false)
     <script src="~/Scripts/Searchbar/searchbar.js"></script>
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <script src="~/Scripts/Grafiek/GrafiekFuncties.js"></script>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" style="padding:0px; margin:0">
-        @if (ViewBag.Deelplatform != "pb")
-        {
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse collapsed navbar-collapse" id="navbarResponsive">
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">Barometer</a>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse " id="navbarResponsive">
+            @if (ViewBag.Nav == null || ViewBag.Nav == true)
+            {<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     @if (Request.IsAuthenticated)
                     {
                         <!-- Dashboard-->
                         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
                             <a class="nav-link" href="@Url.Action("Index", "Dashboard")">
-
                                 <i class="fa fa-fw fas fa-wrench"></i>
                                 <span class="nav-link-text">Mijn Dashboard</span>
                             </a>
@@ -114,6 +112,7 @@
                             </a>
                         </li>
 
+
                     }
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">
@@ -130,26 +129,10 @@
                         </a>
                     </li>
                 </ul>
-            </div>
-        }
-        <div class="navbar-brand nav-item">
-            @{
-                if (ViewBag.Deelplatform != "pb")
-                {
-                    @Html.ActionLink("Home", "Index", "Deelplatform", null, new { @class = "nav-link", id = "homeLink" });
 
-                }
-                else
-                {
-                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link", id = "homeLink" });
-                }
             }
 
-
-        </div>
-
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto" style="align-items:center">
+            <ul class="navbar-nav ml-auto">
                 @if (ViewBag.Deelplatform != "pb")
                 {
                     if (User.IsInRole("SuperAdmin"))
@@ -186,13 +169,23 @@
                 }
             </ul>
         </div>
-    </nav>
-    <!-- /.content-wrapper-->
-    <div class="content-wrapper">
-        @RenderBody()
 
-    </div>
-    <footer class="card-footer">
+    </nav>
+
+    <!-- /.content-wrapper-->
+    @if (ViewBag.Nav == null || ViewBag.Nav == true)
+    {
+        <div class="content-wrapper p-3">
+            @RenderBody()
+
+        </div>
+    }
+    else
+    {
+        @RenderBody();
+    }
+
+    <footer class="bg-light">
         <div class="container">
             <div class="text-center">
                 <small>Copyright © Politieke Barometer</small>
@@ -203,11 +196,11 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fa fa-angle-up"></i>
     </a>
-</body>
-</html>
-<script>
-    gridster();
-</script>
+
+    <script>
+        gridster();
+    </script>
+   
 
 <script>
 $(document).ready(function () {
@@ -233,10 +226,10 @@ $(document).ready(function () {
     });
 });
 
-</script>
+    </script>
 
 
-<script>
+    <script>
 
 function searchFunction(namen) {
 
@@ -376,5 +369,10 @@ ul.style.display = "block";
 
 }
 
-</script>
+    </script>
+</body>
+
+</html>
+
+
 

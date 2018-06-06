@@ -206,8 +206,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePersoon(Persoon persoon)
         {
-            IElementManager elementManager = new ElementManager();
-            persoon.Deelplatform = Deelplatform;
+            UnitOfWorkManager uowmgr = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowmgr);
+            IPlatformManager platformManager = new PlatformManager(uowmgr);
+            persoon.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             elementManager.addPersoon(persoon);
 
             return RedirectToAction("LijstPersonen");
@@ -279,8 +281,11 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateThema(Thema thema)
         {
-            IElementManager elementManager = new ElementManager();
-            thema.Deelplatform = Deelplatform;
+
+            UnitOfWorkManager uowmgr = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowmgr);
+            IPlatformManager platformManager = new PlatformManager(uowmgr);
+            thema.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             elementManager.addThema(thema);
 
             return RedirectToAction("LijstThemas");
@@ -360,7 +365,10 @@ namespace PolitiekeBarometer_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateOrganisatie(Organisatie organisatie)
         {
-            IElementManager elementManager = new ElementManager();
+            UnitOfWorkManager uowmgr = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowmgr);
+            IPlatformManager platformManager = new PlatformManager(uowmgr);
+            organisatie.Deelplatform = platformManager.getDeelplatformByNaam(deelplatformURL);
             elementManager.addOrganisatie(organisatie);
 
             return RedirectToAction("LijstOrganisaties");

@@ -199,9 +199,11 @@ namespace BL.Managers
 
         public void addPersoon(Persoon persoon)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
 
             elementRepository.AddPersoon(persoon);
+
+            uowManager.Save();
         }
 
         public void deletePersoon(Persoon persoon)

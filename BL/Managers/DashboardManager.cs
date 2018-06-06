@@ -90,14 +90,15 @@ namespace BL.Managers
 
         public Zone addZone(Dashboard dashboard)
         {
-            initNonExistingRepo();
+            initNonExistingRepo(true);
 
-            // GEBRUIKER VAN DASHBOARD VINDEN NIET JUIST
             Zone zone = new Zone()
             {
                 Naam = "NewZone",
-                Dashboard = dashboard
+                Dashboard = dashboard,
+                Items = new List<Item>()
             };
+            uowManager.Save();
             return dashboardRepository.addZone(zone);
         }
 
