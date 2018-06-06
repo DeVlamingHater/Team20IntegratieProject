@@ -22,7 +22,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 GrafiekType = GrafiekType.BAR,
                 AantalDataPoints = 12,
-                Id = 1,
+                Id = 200,
                 Dataconfigs = new List<DataConfig>()
             {
                 new DataConfig()
@@ -64,7 +64,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             {
                 GrafiekType = GrafiekType.PIE,
                 AantalDataPoints = 12,
-                Id = 2,
+                Id = 201,
                 Dataconfigs = new List<DataConfig>()
             {
                 new DataConfig()
@@ -104,7 +104,8 @@ namespace PolitiekeBarometer_MVC.Controllers
             Grafiek line = new Grafiek()
             {
                 GrafiekType = GrafiekType.LINE,
-                AantalDataPoints = 12, Id=3,
+                AantalDataPoints = 12,
+                Id =203,
                 Dataconfigs = new List<DataConfig>()
             {
                 new DataConfig()
@@ -141,7 +142,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 TijdschaalTicks = (int)new TimeSpan(0, 12, 0, 0, 0).Ticks,
                 Titel = "testLine"
             };
-            testItems.Add(pie);
+            testItems.Add(line);
 
             return testItems;
         }

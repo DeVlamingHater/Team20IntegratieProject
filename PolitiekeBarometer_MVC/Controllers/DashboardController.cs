@@ -126,19 +126,19 @@ namespace PolitiekeBarometer_MVC.Controllers
             switch (interval)
             {
                 case "12u":
-                    grafiek.TijdschaalTicks = (int)new TimeSpan(12, 0, 0).Ticks;
+                    grafiek.TijdschaalTicks = new TimeSpan(12, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 12;
                     break;
                 case "24u":
-                    grafiek.TijdschaalTicks = (int)new TimeSpan(24, 0, 0).Ticks;
+                    grafiek.TijdschaalTicks = new TimeSpan(24, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 24;
                     break;
                 case "7d":
-                    grafiek.TijdschaalTicks = (int)new TimeSpan(7, 0, 0, 0).Ticks;
+                    grafiek.TijdschaalTicks = new TimeSpan(7, 0, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 7;
                     break;
                 case "30d":
-                    grafiek.TijdschaalTicks = (int)new TimeSpan(30, 0, 0, 0).Ticks;
+                    grafiek.TijdschaalTicks = new TimeSpan(30, 0, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 30;
                     break;
                 default:

@@ -171,7 +171,7 @@ namespace BL.Managers
         public Dictionary<string, Dictionary<string, double>> getGraphData(Grafiek grafiek)
         {
             initNonExistingRepo();
-            Random generator= new Random();
+            Random generator = new Random();
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
@@ -204,12 +204,13 @@ namespace BL.Managers
                     //Dictionary van de Data, bevat geformateerde datum en double voor de data
                     Dictionary<string, double> grafiekData = new Dictionary<string, double>();
 
-                    DateTime start = DateTime.Now.AddTicks(-grafiek.TijdschaalTicks);
+                    DateTime start = DateTime.Now.AddTicks(grafiek.TijdschaalTicks);
 
                     TimeSpan interval = new TimeSpan(grafiek.TijdschaalTicks / grafiek.AantalDataPoints);
-                   
+
                     for (int i = 0; i < grafiek.AantalDataPoints; i++)
                     {
+                        var dataPoint = 0.0;
                         int aantal = 0;
                         List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
                         int totaal = posts.Count();
@@ -217,23 +218,21 @@ namespace BL.Managers
                         DateTime eind = start.Add(interval);
                         posts = posts.Where(p => p.Date.Subtract(start).TotalDays > 0).Where(p => p.Date.Subtract(eind).TotalDays < 0).ToList();
 
-                        posts = postManager.filterPosts(posts,dataConfig.Filters);
+                        posts = postManager.filterPosts(posts, dataConfig.Filters);
                         switch (grafiek.DataType)
                         {
                             case Domain.DataType.TOTAAL:
-                                if (posts.Count==0)
+                                if (posts.Count == 0)
                                 {
-                                    aantal = generator.Next(0, 200);
+                                    dataPoint = generator.Next(0, 200);
                                 }
-                                grafiekData.Add(start.ToString("dd/MM/yyyy HH/mm"), aantal);
                                 break;
                             case Domain.DataType.PERCENTAGE:
-                                double dataPoint;
                                 if (totaal == 0)
                                 {
-                                    dataPoint =0;
+                                    dataPoint = 0;
                                 }
-                                if (posts.Count==0)
+                                if (posts.Count == 0)
                                 {
                                     dataPoint = generator.NextDouble();
                                 }
@@ -242,14 +241,42 @@ namespace BL.Managers
                                     dataPoint = (double)posts.Count / (double)totaal;
 
                                 }
-                                grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
                                 break;
                             default:
                                 break;
                         }
+                        if (grafiek.GrafiekType == GrafiekType.LINE)
+                        {
+                            if (grafiekData.Keys.Contains(start.ToString("dd/MM/yy HH:mm")))
+                            {
+                                start.AddMinutes(1);
+                            }
+                            grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
+                        }
+                        else
+                        {
+                            StringBuilder label = new StringBuilder("");
+                            label.Append(dataConfig.Element.Naam + " ");
+
+                            foreach (Filter filter in dataConfig.Filters)
+                            {
+                                label.Append(filter.Type.ToString() + " ");
+                                if (filter.IsPositive)
+                                {
+                                    label.Append("+");
+                                }
+                                else
+                                {
+                                    label.Append("-");
+                                }
+                            }
+                            grafiekData.Add(label.ToString(), dataPoint);
+
+                        }
+
                         start = start.Add(interval);
                     }
-                    if (grafiek.GrafiekType != GrafiekType.LINE )
+                    if (grafiek.GrafiekType != GrafiekType.LINE)
                     {
                         allData.Add(allData.Count.ToString(), grafiekData.Values.FirstOrDefault());
                     }

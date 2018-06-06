@@ -14,7 +14,7 @@ namespace Domain.Dashboards
         [Required]
         public GrafiekType GrafiekType{ get; set; }
 
-        public int TijdschaalTicks { get; set; }
+        public long TijdschaalTicks { get; set; }
 
         public int AantalDataPoints { get; set; }
 
