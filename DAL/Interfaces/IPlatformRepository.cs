@@ -16,6 +16,9 @@ namespace DAL
         Deelplatform getDeelPlatform(string deelplatform);
         IEnumerable<Deelplatform> getAllDeelplatformen();
         void createDeelplatform(Deelplatform deelplatform);
+        void deleteDeelplatform(Deelplatform deelplatform);
+        Deelplatform getDeelPlatformById(int id);
+
         #endregion
 
         #region Gebruiker
@@ -25,6 +28,7 @@ namespace DAL
         Gebruiker getGebruiker(string id);
         Gebruiker getGebruikerMetEmail(string email);
         void saveGebruiker(Gebruiker gebruiker);
+        
         #endregion
 
     }

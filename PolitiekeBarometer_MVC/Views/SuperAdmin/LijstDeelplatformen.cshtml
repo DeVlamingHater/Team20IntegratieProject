@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Domain.Platformen.Deelplatform>
+
+@{
+    ViewBag.Title = "LijstDeelplatformen";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">Lijst van de personen</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                <p>
+                    @Html.ActionLink("Create New", "CreateDeelplatform")
+                </p>
+            </div>
+            <div class="witteRuimte form-group">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Naam)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Historiek)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Naam)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Historiek)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteDeelplatform", new { id = item.Id })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

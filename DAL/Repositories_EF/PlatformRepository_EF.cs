@@ -60,6 +60,18 @@ namespace DAL.Repositories_EF
             return deelplatformDashboard;
         }
 
+        public void deleteDeelplatform(Deelplatform deelplatform)
+        {
+            context.Deelplatformen.Remove(deelplatform);
+            context.SaveChanges();
+        }
+            
+        public Deelplatform getDeelPlatformById(int id)
+        {
+            return context.Deelplatformen.Where(d => d.Id == id).FirstOrDefault();
+        }
+      
+
         #endregion
 
         #region Gebruiker

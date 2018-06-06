@@ -1,0 +1,98 @@
+﻿@model Domain.Platformen.Deelplatform
+
+@{
+    ViewBag.Title = "DeleteDeelplatform";
+}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">Verwijder een Deelplatform</div>
+        <div class="card-body bg-dark">
+            <div class="witteRuimte form-group">
+                @Html.ActionLink("Back to List", "LijstDeelplatformen")
+            </div>
+            <div class="witteRuimte form-group">
+                <h4>Deelplatform</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Naam)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Naam)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Historiek)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Historiek)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PersoonString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PersoonString)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.OrganisatieString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.OrganisatieString)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ThemaString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ThemaString)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PersonenString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PersonenString)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.OrganisatiesString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.OrganisatiesString)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ThemasString)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ThemasString)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" />
+                        
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

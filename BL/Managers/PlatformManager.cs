@@ -84,6 +84,22 @@ namespace BL.Managers
 
             platformRepository.createDeelplatform(deelplatform);
         }
+
+        public void deleteDeelplatform(Deelplatform deelplatform)
+        {
+            initNonExistingRepo();
+
+            platformRepository.deleteDeelplatform(deelplatform);
+
+        }
+
+        public Deelplatform getDeelplatformById(int id)
+        {
+            initNonExistingRepo();
+
+           return platformRepository.getDeelPlatformById(id);
+        }
+
         #endregion
 
         #region Gebruiker
