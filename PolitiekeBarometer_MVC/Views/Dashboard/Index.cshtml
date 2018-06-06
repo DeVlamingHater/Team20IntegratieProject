@@ -176,6 +176,14 @@
                                 <input type="radio" name="Age" value="Positief"> +25j
                                 <input type="radio" name="Age" value="Negatief"> -25j<br>
                             </div>
+                            @Html.Label("Geslacht")
+                            <div class="form-group">
+                                <input type="radio" name="Geslacht" value="Geen"> Geen filter
+                                <input type="radio" name="Geslacht" value="Splits"> Splits
+                                <input type="radio" name="Geslacht" value="Positief"> Vrouw
+                                <input type="radio" name="Geslacht" value="Negatief"> Man <br>
+                            </div>
+
                             @Html.Label("Sentiment")
                             <div class="form-group">
                                 <input type="radio" name="Sentiment" value="Geen"> Geen filter
@@ -191,6 +199,22 @@
                                 <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
                                 <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
                             </div>
+
+                            @Html.Label("Personaliteit")
+                            <div class="form-group">
+                                <input type="radio" name="Personaliteit" value="Geen"> Geen filter
+                                <input type="radio" name="Personaliteit" value="Splits"> Splits
+                                <input type="radio" name="Personaliteit" value="Positief"> Introvert
+                                <input type="radio" name="Personaliteit" value="Negatief"> Extravert<br>
+                            </div>
+                            @Html.Label("Opleiding")
+                            <div class="form-group">
+                                <input type="radio" name="Opleiding" value="Geen"> Geen filter
+                                <input type="radio" name="Opleiding" value="Splits"> Splits
+                                <input type="radio" name="Opleiding" value="Positief"> Hoge opleiding
+                                <input type="radio" name="Opleiding" value="Negatief"> Lage opleiding<br>
+                            </div>
+
                         </div>
 
                     </div>

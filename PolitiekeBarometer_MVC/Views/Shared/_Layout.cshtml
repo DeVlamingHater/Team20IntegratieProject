@@ -54,9 +54,9 @@
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <script src="~/Scripts/Grafiek/GrafiekFuncties.js"></script>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-        <a class="navbar-brand" href="@Url.Action("Index", "Home")">Barometer</a>
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="@Url.Action("Index", "Deelplatform")">Barometer</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -66,6 +66,7 @@
             {<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     @if (Request.IsAuthenticated)
                     {
@@ -118,6 +119,7 @@
                             </a>
                         </li>
 
+
                     }
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Deelplatformen">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">
@@ -126,13 +128,6 @@
                         </a>
                     </li>
 
-                </ul>
-                <ul class="navbar-nav sidenav-toggler">
-                    <li class="nav-item">
-                        <a class="nav-link text-center" id="sidenavToggler">
-                            <i class="fa fa-fw fa-angle-left"></i>
-                        </a>
-                    </li>
                 </ul>
 
             }
@@ -205,46 +200,30 @@
     <script>
         gridster();
     </script>
-    <script>
+   
 
+<script>
 $(document).ready(function () {
+    $("#searchBar").keyup(function () {
+        //alert("json")
+        var searchtekst = document.getElementById("searchBar").value;
+        var f = {};
+        f.url = '@Url.Action("Search", "Deelplatform")';
+        f.type = "POST";
+        f.dataType = "json";
+        f.data = JSON.stringify({ searchstring: searchtekst });
+        f.contentType = "application/json";
+        f.success = function (response) {
+            //alert("succes json")
+            searchFunction(response);
+        };
 
-	$("#searchBar").keyup(function () {
+        //f.error = function (response) {
 
-		//alert("json")
-
-		var searchtekst = document.getElementById("searchBar").value;
-
-		var f = {};
-
-			f.url = '@Url.Action("Search", "Deelplatform")';
-
-			f.type = "POST";
-
-			f.dataType = "json";
-
-			f.data = JSON.stringify({ searchstring: searchtekst });
-
-			f.contentType = "application/json";
-
-			f.success = function (response) {
-
-				//alert("succes json")
-
-				searchFunction(response);
-
-			};
-
-			//f.error = function (response) {
-
-			//    alert("failed");
-
-			//};
-
-		$.ajax(f);
-
-	});
-
+        //    alert("failed");
+        //};
+        $.ajax(f);
+    });
 });
 
     </script>
@@ -335,7 +314,7 @@ var link = a.getAttribute("href");
 
 if (response == "Persoon") {
 
-link = '@Url.Action("Persoon")?naam=' + elementNaam;
+link = '@Url.Action("Persoon", "Deelplatform")?naam=' + elementNaam;
 
 a.setAttribute("href", link);
 
@@ -347,7 +326,7 @@ else if (response == "Organisatie") {
 
 //alert("response" + response);
 
-link = '@Url.Action("Organisatie")?naam=' + elementNaam;
+link = '@Url.Action("Organisatie", "Deelplatform")?naam=' + elementNaam;
 
 a.setAttribute("href", link);
 
@@ -357,7 +336,7 @@ else if (response == "Thema") {
 
 //alert("response" + response);
 
-link = '@Url.Action("Thema")?naam=' + elementNaam;
+link = '@Url.Action("Thema","Deelplatform")?naam=' + elementNaam;
 
 a.setAttribute("href", link);
 

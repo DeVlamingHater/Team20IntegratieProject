@@ -1,0 +1,66 @@
+﻿@model Domain.Alert
+
+@{
+    ViewBag.Title = "DetailsAlert";
+}
+
+<h2>DetailsAlert</h2>
+
+<div>
+    <h4>Alert</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Interval)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Interval)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Waarde)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Waarde)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Operator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Operator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicatieMelding)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicatieMelding)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BrowserMelding)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BrowserMelding)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailMelding)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailMelding)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditAlert", new { id = Model.AlertId }) |
+    @Html.ActionLink("Back to List", "LijstAlerts")
+</p>
