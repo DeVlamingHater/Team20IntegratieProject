@@ -143,7 +143,6 @@ namespace DAL.Repositories_EF
             bool valid = Validator.TryValidateObject(grafiek, new ValidationContext(grafiek), errors, true);
             if (valid)
             {
-                grafiek.Filters = new List<Filter>();
                 context.Grafieken.Add(grafiek);
                 context.SaveChanges();
             }

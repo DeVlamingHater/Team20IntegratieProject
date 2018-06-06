@@ -24,7 +24,7 @@ function iconDashboardFunction(el) {
     var modal = el.parentElement.parentElement;
     //alert(modal.getAttribute("id"));
     var f = {};
-    f.url = '@Url.Action("getZonesJson", "Home")';
+    f.url = '@Url.Action("getZonesJson", "Dashboard")';
     f.type = "POST";
     f.dataType = "json";
     f.contentType = "application/json";
@@ -72,7 +72,7 @@ function saveGrafiek(el) {
     alert(select.id);
     var zone = select.options[select.selectedIndex].value;
     var f = {};
-    f.url = '@Url.Action("dashboardGrafiek", "Home")';
+    f.url = '@Url.Action("dashboardGrafiek", "Dashboard")';
     f.type = "POST";
     f.dataType = "json";
     f.data = JSON.stringify({ zone: zone, grafiekIndex: grafiekindex });
@@ -149,7 +149,7 @@ function saveAlert(el) {
     };
     //tot hier in orde
     var f = {};
-    f.url = '@Url.Action("addAlert", "Home")';
+    f.url = '@Url.Action("addAlert", "Dashboard")';
     f.type = "POST";
     f.dataType = "json";
     f.data = JSON.stringify({ id: grafiekindex, percentage: percentage, radio: selectedRadio, soort: option, browser: browser, mail: mail, app: app });
@@ -173,7 +173,7 @@ function deleteGrafiek(el) {
         }
     };
     var f = {};
-    f.url = '@Url.Action("deleteGrafiek", "Home")';
+    f.url = '@Url.Action("deleteGrafiek", "Dashboard")';
     f.type = "POST";
     f.dataType = "json";
     f.data = JSON.stringify({ grafiekIndex: grafiekindex });
@@ -197,7 +197,7 @@ function editGrafiek(el) {
         }
     };
     var f = {};
-    f.url = '@Url.Action("editGrafiek", "Home")';
+    f.url = '@Url.Action("editGrafiek", "Dashboard")';
     f.type = "POST";
     f.dataType = "json";
     f.data = JSON.stringify({ grafiekIndex: grafiekindex });

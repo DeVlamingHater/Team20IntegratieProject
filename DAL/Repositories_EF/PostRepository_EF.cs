@@ -43,7 +43,7 @@ namespace DAL.Repositories_EF
                 }
                 else if (element.GetType().Equals(typeof(Organisatie)))
                 {
-                    posts = context.Posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Equals(element)).Count() != 0).ToList();
+                    posts = context.Posts.Where(p => p.Personen.Where(pers => pers.Organisatie.Naam.Equals(element.Naam)).Count() != 0).ToList();
                 }
                 else if (element.GetType().Equals(typeof(Thema)))
                 {

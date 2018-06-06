@@ -28,16 +28,21 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
             ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
             List<Zone> zones = new List<Zone>();
-            zones  = dashboardManager.getZones(dashboard).ToList();
-            List<ZoneViewModel> zonesViewModel = ZoneParser.ParseZones(zones, uowMgr);
-            
-            return View(zonesViewModel);
+            zones = dashboardManager.getZones(dashboard).ToList();
+            Zone zone = new Zone()
+            {
+                Naam = "TestZone",
+                Id = 500,
+                Items = TestItems.GetTestItems(deelplatformURL)
+            };
+            zones.Add(zone);
+            return View(zones);
         }
         public ActionResult Item(Item item)
         {
-            return PartialView("DashboardPartials/NewItemPartial", item);
+            return PartialView("DashboardPartials/ItemPartial", item);
         }
-       
+
         public ActionResult Test()
         {
             return View();
@@ -45,9 +50,13 @@ namespace PolitiekeBarometer_MVC.Controllers
         public ActionResult Grafiek(Grafiek grafiek)
         {
             IDashboardManager dashboardManager = new DashboardManager();
+            if (grafiek.Dataconfigs == null || grafiek.Dataconfigs.Count == 0)
+            {
+                grafiek = dashboardManager.getGrafiek(grafiek.Id);
+            }
             var grafiekData = dashboardManager.getGraphData(grafiek);
             ViewBag.grafiekData = grafiekData;
-            return PartialView("DashboardPartials/NewGrafiekPartial", grafiek);
+            return PartialView("DashboardPartials/GrafiekPartial", grafiek);
         }
         [HttpPost]
         public ActionResult CreateItem(FormCollection form)
@@ -94,13 +103,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
                     dataConfigs.Add(baseConfig);
                 }
-                if (dataConfigs.Count == 0)
-                {
-                    dataConfigs.Add(new DataConfig()
-                    {
-                        Label="Totaal"
-                    });
-                }
+              
                 dataConfigs = filterConfigs(dataConfigs, FilterType.AGE, age);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.GESLACHT, geslacht);
                 dataConfigs = filterConfigs(dataConfigs, FilterType.RETWEET, retweet);
@@ -123,19 +126,19 @@ namespace PolitiekeBarometer_MVC.Controllers
             switch (interval)
             {
                 case "12u":
-                    grafiek.Tijdschaal = new TimeSpan(12, 0, 0);
+                    grafiek.TijdschaalTicks = (int)new TimeSpan(12, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 12;
                     break;
                 case "24u":
-                    grafiek.Tijdschaal = new TimeSpan(24, 0, 0);
+                    grafiek.TijdschaalTicks = (int)new TimeSpan(24, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 24;
                     break;
                 case "7d":
-                    grafiek.Tijdschaal = new TimeSpan(7, 0, 0, 0);
+                    grafiek.TijdschaalTicks = (int)new TimeSpan(7, 0, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 7;
                     break;
                 case "30d":
-                    grafiek.Tijdschaal = new TimeSpan(30, 0, 0, 0);
+                    grafiek.TijdschaalTicks = (int)new TimeSpan(30, 0, 0, 0).Ticks;
                     grafiek.AantalDataPoints = 30;
                     break;
                 default:
@@ -149,7 +152,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         private List<DataConfig> filterConfigs(List<DataConfig> dataConfigs, FilterType type, string waarde)
         {
-            if (waarde == "Geen")
+            if (waarde == "Geen"||waarde=="")
             {
                 return dataConfigs;
             }

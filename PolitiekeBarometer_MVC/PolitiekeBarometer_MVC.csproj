@@ -647,13 +647,10 @@
     <Content Include="Views\SuperAdmin\EditAdmin.cshtml" />
     <Content Include="Views\SuperAdmin\DeleteAdmin.cshtml" />
     <Content Include="Views\Shared\MeldingDropDown.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\ItemsPartial.cshtml" />
     <Content Include="Views\SuperAdmin\CreateDeelplatform.cshtml" />
     <Content Include="Views\SuperAdmin\AssignAdmin.cshtml" />
+    <Content Include="Views\Shared\DashboardPartials\ItemPartial.cshtml" />
     <Content Include="Views\Shared\DashboardPartials\GrafiekPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\NewItemPartial.cshtml" />
-    <Content Include="Views\Shared\DashboardPartials\NewGrafiekPartial.cshtml" />
     <Content Include="Views\SuperAdmin\Timer.cshtml" />
   </ItemGroup>
   <ItemGroup>

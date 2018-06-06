@@ -21,7 +21,7 @@
 </head>
 <body class="fixed-nav sticky-footer bg-light" id="page-top">
 
-  @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.collision.js"></script>
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.coords.js"></script>
     <script src="~/gridster-responsive/gridster.js-master/src/jquery.draggable.js"></script>
@@ -54,7 +54,7 @@
     <script src="~/Scripts/Searchbar/searchbar.js"></script>
     <script src="~/Scripts/Grafiek/Grafiek.js"></script>
     <script src="~/Scripts/Grafiek/GrafiekFuncties.js"></script>
-    
+
     @RenderSection("scripts", required: false)
 
 
@@ -131,6 +131,12 @@
                         </a>
                     </li>
 
+                </ul>
+                <ul class="navbar-nav sidenav-toggler">
+                    <li class="nav-item">
+                        <a class="nav-link text-center" id="sidenavToggler">
+                        </a>
+                    </li>
                 </ul>
 
             }
