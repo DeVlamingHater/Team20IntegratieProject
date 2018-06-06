@@ -52,6 +52,7 @@ namespace BL.Interfaces
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
         Melding createMelding(Alert alert, double waarde);
         void updateAlert(Alert alert);
+        List<DataConfig> GetGrafiekDataconfigs(Grafiek grafiek);
         #endregion
     }
 }

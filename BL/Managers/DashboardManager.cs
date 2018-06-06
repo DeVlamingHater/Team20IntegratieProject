@@ -249,40 +249,58 @@ namespace BL.Managers
                         {
                             if (grafiekData.Keys.Contains(start.ToString("dd/MM/yy HH:mm")))
                             {
-                                start.AddMinutes(1);
+                                grafiekData.Add(start.ToString("dd/MM/yy HH:mm 2"), dataPoint);
                             }
-                            grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
+                            else
+                            {
+                                grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
+                            }
                         }
                         else
                         {
-                            StringBuilder label = new StringBuilder("");
-                            label.Append(dataConfig.Element.Naam + " ");
+                            StringBuilder naam = new StringBuilder("");
+                            naam.Append(dataConfig.Element.Naam + " ");
 
                             foreach (Filter filter in dataConfig.Filters)
                             {
-                                label.Append(filter.Type.ToString() + " ");
+                                naam.Append(filter.Type.ToString() + " ");
                                 if (filter.IsPositive)
                                 {
-                                    label.Append("+");
+                                    naam.Append("+");
                                 }
                                 else
                                 {
-                                    label.Append("-");
+                                    naam.Append("-");
                                 }
                             }
-                            grafiekData.Add(label.ToString(), dataPoint);
+                            grafiekData.Add(naam.ToString(), dataPoint);
 
                         }
 
                         start = start.Add(interval);
                     }
+                    StringBuilder label = new StringBuilder("");
+                    label.Append(dataConfig.Element.Naam + " ");
+
+                    foreach (Filter filter in dataConfig.Filters)
+                    {
+                        label.Append(filter.Type.ToString() + " ");
+                        if (filter.IsPositive)
+                        {
+                            label.Append("+");
+                        }
+                        else
+                        {
+                            label.Append("-");
+                        }
+                    }
                     if (grafiek.GrafiekType != GrafiekType.LINE)
                     {
-                        allData.Add(allData.Count.ToString(), grafiekData.Values.FirstOrDefault());
+                        allData.Add(label.ToString(), grafiekData.Values.FirstOrDefault());
                     }
                     else
                     {
-                        data.Add(data.Count.ToString(), grafiekData);
+                        data.Add(label.ToString(), grafiekData);
 
                     }
                     index++;
@@ -481,6 +499,11 @@ namespace BL.Managers
             initNonExistingRepo();
 
             return dashboardRepository.getActiveMeldingen(dashboard);
+        }
+
+        public List<DataConfig> GetGrafiekDataconfigs(Grafiek grafiek)
+        {
+            return dashboardRepository.getGrafiekDataConfig(grafiek);
         }
         #endregion
     }

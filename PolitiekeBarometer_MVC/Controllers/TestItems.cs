@@ -56,7 +56,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Size = 2,
                 X = 1,
                 Y = 1,
-                TijdschaalTicks = (int)new TimeSpan(0, 12, 0, 0, 0).Ticks,
+                TijdschaalTicks = new TimeSpan(0, 12, 0, 0, 0).Ticks,
                 Titel = "testBar"
             };
             testItems.Add(bar);
@@ -98,9 +98,11 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Size = 2,
                 X = 1,
                 Y = 1,
-                TijdschaalTicks = (int)new TimeSpan(0, 12, 0, 0, 0).Ticks,
+                TijdschaalTicks = new TimeSpan(0, 12, 0, 0, 0).Ticks,
                 Titel = "testPie"
             };
+            testItems.Add(pie);
+
             Grafiek line = new Grafiek()
             {
                 GrafiekType = GrafiekType.LINE,
@@ -139,7 +141,7 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Size = 2,
                 X = 1,
                 Y = 1,
-                TijdschaalTicks = (int)new TimeSpan(0, 12, 0, 0, 0).Ticks,
+                TijdschaalTicks = new TimeSpan(0, 12, 0, 0, 0).Ticks,
                 Titel = "testLine"
             };
             testItems.Add(line);

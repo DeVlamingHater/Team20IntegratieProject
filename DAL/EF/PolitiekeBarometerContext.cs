@@ -92,6 +92,8 @@ namespace DAL.EF
 
             modelBuilder.Entity<DataConfig>().HasRequired<Element>(dc => dc.Element);
 
+            modelBuilder.Entity<DataConfig>().HasMany<Filter>(dc => dc.Filters);
+
             modelBuilder.Entity<Grafiek>().HasMany<DataConfig>(g => g.Dataconfigs);
 
             modelBuilder.Entity<Gebruiker>().HasMany<Dashboard>(g => g.Dashboards);

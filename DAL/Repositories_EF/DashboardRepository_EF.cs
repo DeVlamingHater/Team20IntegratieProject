@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+
 using System.Text;
 using System.Threading.Tasks;
 using DAL.EF;
@@ -135,7 +137,9 @@ namespace DAL.Repositories_EF
         }
         public Grafiek getGrafiek(int itemId)
         {
-            return context.Grafieken.Include(g=>g.Dataconfigs).FirstOrDefault(g => g.Id == itemId);
+            Grafiek grafiek = context.Grafieken.Include(g => g.Dataconfigs).FirstOrDefault(g => g.Id == itemId);
+            grafiek.Dataconfigs = getGrafiekDataConfig(grafiek);
+            return grafiek;
         }
         public void addGrafiek(Grafiek grafiek)
         {
@@ -207,6 +211,18 @@ namespace DAL.Repositories_EF
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
             return context.Meldingen.Where(m => m.Alert.Dashboard.Id == dashboard.Id);
+        }
+
+        public List<DataConfig> getGrafiekDataConfig(Grafiek grafiek)
+        {
+            List<DataConfig> dataConfigs = new List<DataConfig>(); 
+            foreach (DataConfig dataconfig in grafiek.Dataconfigs)
+            {
+                DataConfig grafiekconfig = context.DataConfigs.Include(dc=>dc.Element).Include(dc => dc.Filters).Include(dc => dc.Vergelijking).Where(dc => dc.DataConfiguratieId == dataconfig.DataConfiguratieId).FirstOrDefault();
+                dataConfigs.Add(grafiekconfig);
+            }
+            
+            return dataConfigs;
         }
         #endregion
     }

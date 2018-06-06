@@ -47,6 +47,7 @@ namespace DAL
         IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard);
         Grafiek getGrafiek(int itemId);
         void updateAlert(Alert alert);
+        List<DataConfig> getGrafiekDataConfig(Grafiek grafiek);
         #endregion
     }
 }

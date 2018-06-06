@@ -53,6 +53,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             if (grafiek.Dataconfigs == null || grafiek.Dataconfigs.Count == 0)
             {
                 grafiek = dashboardManager.getGrafiek(grafiek.Id);
+                grafiek.Dataconfigs = dashboardManager.GetGrafiekDataconfigs(grafiek);
             }
             var grafiekData = dashboardManager.getGraphData(grafiek);
             ViewBag.grafiekData = grafiekData;
@@ -91,6 +92,7 @@ namespace PolitiekeBarometer_MVC.Controllers
             List<DataConfig> dataConfigs = new List<DataConfig>();
             if (elementNamen[0] != "")
             {
+                int id = 0;
                 foreach (string elementNaam in elementNamen)
                 {
                     List<DataConfig> allDataConfigs = new List<DataConfig>();
@@ -98,18 +100,19 @@ namespace PolitiekeBarometer_MVC.Controllers
                     {
                         Element = elementManager.getElementByNaam(elementNaam, Deelplatform),
                         Filters = new List<Domain.Dashboards.Filter>(),
-                        Vergelijking = null
+                        Vergelijking = null,
+                        DataConfiguratieId = id
                     };
-
+                id++;
                     dataConfigs.Add(baseConfig);
                 }
               
-                dataConfigs = filterConfigs(dataConfigs, FilterType.AGE, age);
-                dataConfigs = filterConfigs(dataConfigs, FilterType.GESLACHT, geslacht);
-                dataConfigs = filterConfigs(dataConfigs, FilterType.RETWEET, retweet);
-                dataConfigs = filterConfigs(dataConfigs, FilterType.SENTIMENT, sentiment);
-                dataConfigs = filterConfigs(dataConfigs, FilterType.PERSONALITEIT, personaliteit);
-                dataConfigs = filterConfigs(dataConfigs, FilterType.OPLEIDING, opleiding);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.AGE, age);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.GESLACHT, geslacht);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.RETWEET, retweet);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.SENTIMENT, sentiment);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.PERSONALITEIT, personaliteit);
+                //dataConfigs = filterConfigs(dataConfigs, FilterType.OPLEIDING, opleiding);
                 grafiek.Dataconfigs.AddRange(dataConfigs);
             }
             switch (dataType)
@@ -152,7 +155,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
         private List<DataConfig> filterConfigs(List<DataConfig> dataConfigs, FilterType type, string waarde)
         {
-            if (waarde == "Geen"||waarde=="")
+            if (waarde == "Geen"||waarde==""||waarde==null)
             {
                 return dataConfigs;
             }
@@ -167,15 +170,31 @@ namespace PolitiekeBarometer_MVC.Controllers
                 Type = type
             };
             List<DataConfig> allConfigs = new List<DataConfig>();
-
+            int id = 0;
+           
             foreach (DataConfig dataconfig in dataConfigs)
             {
-                DataConfig positivedataConfig = dataconfig;
+                DataConfig positivedataConfig = new DataConfig()
+                {
+                    Element = dataconfig.Element,
+                    Filters = dataconfig.Filters,
+                    Label = dataconfig.Label,
+                    Vergelijking = dataconfig.Vergelijking
+                }; ;
+                DataConfig negativedataConfig = new DataConfig()
+                {
+                    Element = dataconfig.Element,
+                    Filters = dataconfig.Filters,
+                    Label = dataconfig.Label,
+                    Vergelijking = dataconfig.Vergelijking
+                }; ;
+
                 positivedataConfig.Filters.Add(positiveFilter);
-
-                DataConfig negativedataConfig = dataconfig;
-                negativedataConfig.Filters.Add(positiveFilter);
-
+                positivedataConfig.DataConfiguratieId = id;
+                id++;
+                negativedataConfig.Filters.Add(negativeFilter);
+                 negativedataConfig.DataConfiguratieId = id;
+                id++;
                 if (waarde == "Splits")
                 {
                     allConfigs.Add(negativedataConfig);
