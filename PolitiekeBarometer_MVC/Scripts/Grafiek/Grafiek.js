@@ -6,15 +6,6 @@
     label = label.trim('/');
     label = JSON.parse(label);
     var grafiekType = document.getElementById(id + " type").innerHTML;
-    var maxvalue = 0;
-    for (var i = 0; i < entries.length; i++) {
-        var value = entries[i];
-        if (value > maxvalue) {
-            maxvalue = value;
-        }
-    } if (maxvalue === 0) {
-        maxvalue = 20
-    }
 
     switch (grafiekType) {
         case "BAR":
@@ -59,10 +50,7 @@ function barGrafiek(label, entries, id) {
                 }],
                 yAxes: [{
                     ticks: {
-                        beginAtZero:true,
-                        maxTicksLimit: 10,
-                        min: 0,
-                        max: maxvalue
+                        beginAtZero: true,
                     },
                     gridLines: {
                         display: true
@@ -115,8 +103,8 @@ function lineGrafiek(label, entries,id) {
                     }],
                     yAxes: [{
                         ticks: {
-                            min: 0,
-                            max: maxvalue
+                            beginAtZero: true,
+                            min:0
                         },
                         gridLines: {
                             color: "rgba(0, 0, 0, .125)",
@@ -152,7 +140,6 @@ function pieGrafiek(label, entries, id) {
             }],
         },
         options: {
-            maintainAspectRatio: true
         }
     });
 }

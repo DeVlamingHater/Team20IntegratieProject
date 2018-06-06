@@ -1,37 +1,47 @@
 ﻿@model List<Domain.Dashboards.Item>
-@{ 
+@{
     ViewBag.Nav = true;
 }
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js"></script>
+    <script src="~/Scripts/Gridster/jquery.gridster.js"></script>
+    <link href="~/Content/jquery.gridster.css" rel="stylesheet" />
+    <script src="~/Scripts/Grafiek/Grafiek.js"></script>
 
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- Custom fonts for this template-->
-<link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Custom styles for this template-->
-<link href="css/sb-admin.css" rel="stylesheet">
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin.min.js"></script>
-<script src="~/Scripts/Gridster/jquery.gridster.js"></script>
-<link href="~/Content/jquery.gridster.css" rel="stylesheet" />
 
 <div class="w-100 bg-dark">
-    <div class="jumbotron" style="background: no-repeat center center/100%;
+    @if (ViewBag.Deelplatform == "Politiek")
+    {
+        <div class="jumbotron" style="background: no-repeat center center/100%;
         background-image: url('../../Content/Images/politiek-818x435.jpg');
         color: white">
-        <h1 class="display" align="center">Politieke Barometer</h1>
-        <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
-    </div>
-    <div class="gridster w-75 "style="background-color:darkslategray">
+            <h1 class="display" align="center">Politieke Barometer</h1>
+            <p class="col-sm-12" align="center">Ontdek de sociale media cijfers van de Belgische politiek!</p>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron" style="background: no-repeat center center/100%; color: white">
+            <h1 class="display" align="center">@ViewBag.Deelplatform Barometer</h1>
+        </div>
+    }
+    <div class="gridster">
         <ul>
             @{
                 if (Model != null)
                 {
                     foreach (var item in Model)
                     {
-                        <li  data-col="1" data-row="1" data-sizex="1" data-sizey="2" class="gs-w bg-dark">
+                        <li data-col="1" data-row="1" data-sizex="1" data-sizey="1" class="gs-w bg-dark">
                             @Html.Action("Item", "Dashboard", new { Item = item })
                         </li>
                     }

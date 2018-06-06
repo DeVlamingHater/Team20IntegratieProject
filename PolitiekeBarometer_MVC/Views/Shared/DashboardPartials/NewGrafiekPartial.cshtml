@@ -34,7 +34,12 @@
         }
     }
 }
-<canvas class="graph" on id="@Model.Id grafiek"></canvas>
+            <script src="~/Scripts/Grafiek/Grafiek.js"></script>
+            <div>
+                <button onclick="laadGrafiek(@Model.Id" class="btn bottom-left"> Reload</button>
+                <canvas class="graph" on id="@Model.Id grafiek"></canvas>
+            </div>
+
 <script type="text/javascript">
     laadGrafiek(@Model.Id);
 </script>

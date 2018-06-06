@@ -16,7 +16,7 @@ function menuFunction(el) {
         btnMenu.setAttribute("class", "btn btn-default");
         menuIcons.style.visibility = "hidden";
         menuOpen = false;
-    };
+    }
 }
 // Verplaatsen naar dashboard
 function iconDashboardFunction(el) {
@@ -45,7 +45,7 @@ function setZoneLijstFunction(response, modal) {
         if (isNaN(grafiek[i]) === false) {
             grafiekindex = grafiekindex + grafiek[i];
         }
-    };
+    }
     //alert("grafindex = " + grafiekindex);
     //alert("setLijst");
     var select = document.getElementById("zones");
@@ -58,7 +58,7 @@ function setZoneLijstFunction(response, modal) {
         option.innerHTML = response[i];
         option.setAttribute("value", response[i]);
         select.appendChild(option);
-    };
+    }
 }
 function saveGrafiek(el) {
     var parent = el.parentElement.parentElement.parentElement.parentElement;
@@ -67,7 +67,7 @@ function saveGrafiek(el) {
         if (isNaN(grafiek[i]) === false) {
             grafiekindex = grafiekindex + grafiek[i];
         }
-    };
+    }
     var select = parent.children[0].children[0].children[1].children[1];
     alert(select.id);
     var zone = select.options[select.selectedIndex].value;
@@ -88,7 +88,7 @@ function saveGrafiek(el) {
 
 // allert grafiek
 function alertSelect(el) {
-    var option = el.options[el.selectedIndex].value
+    var option = el.options[el.selectedIndex].value;
     var radioform = el.parentElement.children[3];
     var posRadio = radioform.children[2].children[0];
     var negRadio = radioform.children[3].children[0];
@@ -110,7 +110,7 @@ function saveAlert(el) {
         if (isNaN(grafiek[i]) === false) {
             grafiekindex = grafiekindex + grafiek[i];
         }
-    };
+    }
     var modalbody = parent.children[0].children[0].children[1];
     var alertselect = modalbody.children[1];
     var radioform = modalbody.children[3];

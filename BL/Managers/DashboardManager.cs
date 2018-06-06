@@ -51,7 +51,7 @@ namespace BL.Managers
             }
         }
         #endregion
-    
+
         #region Dashboard
         public Dashboard getDashboard(string email, string deelplatformS)
         {
@@ -62,7 +62,7 @@ namespace BL.Managers
             uowManager.Save();
             return dashboard;
         }
-       
+
         #endregion
 
         #region Zone
@@ -102,11 +102,11 @@ namespace BL.Managers
             return dashboardRepository.addZone(zone);
         }
 
-        public void changeZoneName(int zoneId,string naam)
+        public void changeZoneName(int zoneId, string naam)
         {
             initNonExistingRepo();
 
-            dashboardRepository.changeZoneName(zoneId,naam);
+            dashboardRepository.changeZoneName(zoneId, naam);
         }
 
         public void updateZone(Zone zone)
@@ -160,7 +160,7 @@ namespace BL.Managers
 
             dashboardRepository.addGrafiek(grafiek);
 
-            if (uowManager!=null)
+            if (uowManager != null)
             {
                 uowManager.Save();
             }
@@ -174,9 +174,10 @@ namespace BL.Managers
             IPostManager postManager = new PostManager();
 
             IElementManager elementManager = new ElementManager();
-            Dictionary<string,Dictionary<string, double>> data = new Dictionary<string, Dictionary<string, double>>();
+            Dictionary<string, Dictionary<string, double>> data = new Dictionary<string, Dictionary<string, double>>();
             List<DataConfig> dataConfigs = grafiek.Dataconfigs;
             int index = 0;
+            Dictionary<string, double> allData = new Dictionary<string, double>();
 
             foreach (DataConfig dataConfig in dataConfigs)
             {
@@ -186,7 +187,10 @@ namespace BL.Managers
                 DateTime start = DateTime.Now.Subtract(grafiek.Tijdschaal);
 
                 TimeSpan interval = new TimeSpan(grafiek.Tijdschaal.Ticks / grafiek.AantalDataPoints);
-
+                if (grafiek.GrafiekType != GrafiekType.LINE)
+                {
+                    grafiek.AantalDataPoints = 1;
+                }
                 for (int i = 0; i < grafiek.AantalDataPoints; i++)
                 {
                     List<Post> posts = postManager.getDataConfigPosts(dataConfig).ToList();
@@ -209,7 +213,7 @@ namespace BL.Managers
                             }
                             else
                             {
-                             dataPoint = (double)posts.Count / (double)totaal;
+                                dataPoint = (double)posts.Count / (double)totaal;
 
                             }
                             grafiekData.Add(start.ToString("dd/MM/yy HH:mm"), dataPoint);
@@ -221,13 +225,25 @@ namespace BL.Managers
                 }
                 if (dataConfig.Label == null)
                 {
-                dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
+                    dataConfig.Label = dataConfig.Element.Naam + grafiek.DataType.ToString().ToLower();
 
                 }
-                data.Add(dataConfig.Label, grafiekData);
+                if (grafiek.GrafiekType != GrafiekType.LINE)
+                {
+                    allData.Add(dataConfig.Element.Naam + allData.Count.ToString(), grafiekData.Values.FirstOrDefault());
+                }
+                else
+                {
+                data.Add(data.Count.ToString(), grafiekData);
+
+                }
                 index++;
             }
-            return data;
+            if (grafiek.GrafiekType != GrafiekType.LINE)
+            {
+                data.Add(data.Count.ToString(), allData);
+            }
+                return data;
         }
         #endregion
 
@@ -362,7 +378,7 @@ namespace BL.Managers
 
             dashboardRepository.createAlert(alert);
 
-            if (uowManager!=null)
+            if (uowManager != null)
             {
                 uowManager.Save();
             }

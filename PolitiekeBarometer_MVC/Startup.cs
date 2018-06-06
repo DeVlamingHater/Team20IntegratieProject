@@ -28,14 +28,16 @@ namespace PolitiekeBarometer_MVC
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
             CreateUserAndRoles();
-            IElementManager elementManager = new ElementManager();
-            PlatformManager platformManager = new PlatformManager();
+            UnitOfWorkManager uowMgr = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowMgr);
+            PlatformManager platformManager = new PlatformManager(uowMgr);
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
             elementManager.deleteAllPersonen(deelplatform);
             elementManager.addPersonen(elementManager.readJSONPolitici());
             elementManager.setTrendingElementen(deelplatform);
-            UpdateAsync();
+           UpdateAsync();
             SetTimer();
+            uowMgr.Save();
         }
 
         private void SetTimer()
@@ -49,10 +51,11 @@ namespace PolitiekeBarometer_MVC
         }
         private static async Task UpdateAsync()
         {
-            IElementManager elementManager = new ElementManager();
-            IDashboardManager dashboardManager = new DashboardManager();
-            IPlatformManager platformManager = new PlatformManager();
-            IPostManager postManager = new PostManager();
+            UnitOfWorkManager uowManager = new UnitOfWorkManager();
+            IElementManager elementManager = new ElementManager(uowManager);
+            IDashboardManager dashboardManager = new DashboardManager(uowManager);
+            IPlatformManager platformManager = new PlatformManager(uowManager);
+            IPostManager postManager = new PostManager(uowManager);
             DateTime lastUpdate = Platform.lastUpdate;
             Deelplatform deelplatform = platformManager.getDeelplatformByNaam("Politiek");
 
@@ -66,6 +69,7 @@ namespace PolitiekeBarometer_MVC
             Platform.refreshTimer.Interval = Platform.interval.TotalMilliseconds;
 
             Platform.lastUpdate = DateTime.Now;
+            uowManager.Save();
         }
         private static async void UpdateAPIAsync(object source, ElapsedEventArgs e)
         {
