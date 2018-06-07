@@ -26,7 +26,7 @@ namespace PolitiekeBarometer_MVC.Controllers
 
             string email = System.Web.HttpContext.Current.User.Identity.GetUserName();
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatformURL);
-            ViewBag.Suggestions = elementManager.getAllElementen(Deelplatform);
+            ViewBag.Suggestions = Elementen;
             List<Zone> zones = new List<Zone>();
             zones = dashboardManager.getZones(dashboard).ToList();
             Zone zone = new Zone()
@@ -53,7 +53,6 @@ namespace PolitiekeBarometer_MVC.Controllers
             if (grafiek.Dataconfigs == null || grafiek.Dataconfigs.Count == 0)
             {
                 grafiek = dashboardManager.getGrafiek(grafiek.Id);
-                grafiek.Dataconfigs = dashboardManager.GetGrafiekDataconfigs(grafiek);
             }
             var grafiekData = dashboardManager.getGraphData(grafiek);
             ViewBag.grafiekData = grafiekData;
@@ -122,6 +121,20 @@ namespace PolitiekeBarometer_MVC.Controllers
                     break;
                 case "Trend":
                     grafiek.DataType = DataType.PERCENTAGE;
+                    break;
+                default:
+                    break;
+            }
+            switch (itemtype)
+            {
+                case "Line":
+                    grafiek.GrafiekType = GrafiekType.LINE;
+                    break;
+                case "Bar":
+                    grafiek.GrafiekType = GrafiekType.BAR;
+                    break;
+                case "Pie":
+                    grafiek.GrafiekType = GrafiekType.PIE;
                     break;
                 default:
                     break;

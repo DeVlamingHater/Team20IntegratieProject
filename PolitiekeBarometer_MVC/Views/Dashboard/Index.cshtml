@@ -29,7 +29,10 @@
             <button class="tablinks" onclick="loadZone(event, @zone.Id)" ondblclick="veranderTabNaam(this)" onblur="saveTabNaam(@zone.Id,this)">
                 @zone.Naam
             </button>
-            @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
+            @if (zone.Naam != "TestZone")
+            {
+                @Html.ActionLink("x", "DeleteZone", new { zoneId = zone.Id })
+            }
         </div>
     }
     <div>
@@ -66,7 +69,7 @@
                             var size = item.Size;
                             if (size == 0)
                             {
-                                size = 1;
+                                size = 2;
                             }
                             <li data-col="@xposition" data-row="@yposition" data-sizex="@size" data-sizey="@size" class="gs-w bg-dark">
                                 @Html.Action("Item", "Dashboard", new { Item = item })
@@ -106,10 +109,6 @@
                     <label>
                         <input type="radio" name="ItemType" value="Pie" />
                         <i class="fa fa-pie-chart" style="font-size: 80px"></i>
-                    </label>
-                    <label>
-                        <input type="radio" title="Number" name="ItemType" value="Number" />
-                        Enkele waarde
                     </label>
                 </div>
                 <div class="modal-footer">
@@ -182,61 +181,61 @@
                                 <option value="@item.Naam">@item.Naam</option>
                             }
                         </select>
-                        <div class="form-group">
-                            <h4>Filters</h4>
-                            @Html.Label("Age")
-                            <div class="form-group">
-                                <input type="radio" name="Age" value="Geen"> Geen filter
-                                <input type="radio" name="Age" value="Splits"> Splits
-                                <input type="radio" name="Age" value="Positief"> +25j
-                                <input type="radio" name="Age" value="Negatief"> -25j<br>
-                            </div>
-                            @Html.Label("Geslacht")
-                            <div class="form-group">
-                                <input type="radio" name="Geslacht" value="Geen"> Geen filter
-                                <input type="radio" name="Geslacht" value="Splits"> Splits
-                                <input type="radio" name="Geslacht" value="Positief"> Vrouw
-                                <input type="radio" name="Geslacht" value="Negatief"> Man <br>
-                            </div>
+                        @*<div class="form-group">
+                                <h4>Filters</h4>
+                                @Html.Label("Age")
+                                <div class="form-group">
+                                    <input type="radio" name="Age" value="Geen"> Geen filter
+                                    <input type="radio" name="Age" value="Splits"> Splits
+                                    <input type="radio" name="Age" value="Positief"> +25j
+                                    <input type="radio" name="Age" value="Negatief"> -25j<br>
+                                </div>
+                                @Html.Label("Geslacht")
+                                <div class="form-group">
+                                    <input type="radio" name="Geslacht" value="Geen"> Geen filter
+                                    <input type="radio" name="Geslacht" value="Splits"> Splits
+                                    <input type="radio" name="Geslacht" value="Positief"> Vrouw
+                                    <input type="radio" name="Geslacht" value="Negatief"> Man <br>
+                                </div>
 
-                            @Html.Label("Sentiment")
-                            <div class="form-group">
-                                <input type="radio" name="Sentiment" value="Geen"> Geen filter
-                                <input type="radio" name="Sentiment" value="Splits"> Splits
-                                <input type="radio" name="Sentiment" value="Positief"> Positief
-                                <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
-                            </div>
+                                @Html.Label("Sentiment")
+                                <div class="form-group">
+                                    <input type="radio" name="Sentiment" value="Geen"> Geen filter
+                                    <input type="radio" name="Sentiment" value="Splits"> Splits
+                                    <input type="radio" name="Sentiment" value="Positief"> Positief
+                                    <input type="radio" name="Sentiment" value="Negatief"> Negatief<br>
+                                </div>
 
-                            @Html.Label("Retweet")
-                            <div class="form-group">
-                                <input type="radio" name="Retweet" value="Geen"> Geen filter
-                                <input type="radio" name="Retweet" value="Splits"> Splits
-                                <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
-                                <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
-                            </div>
+                                @Html.Label("Retweet")
+                                <div class="form-group">
+                                    <input type="radio" name="Retweet" value="Geen"> Geen filter
+                                    <input type="radio" name="Retweet" value="Splits"> Splits
+                                    <input type="radio" name="Retweet" value="Positief"> Enkel Retweets
+                                    <input type="radio" name="Retweet" value="Negatief"> Geen Retweets<br>
+                                </div>
 
-                            @Html.Label("Personaliteit")
-                            <div class="form-group">
-                                <input type="radio" name="Personaliteit" value="Geen"> Geen filter
-                                <input type="radio" name="Personaliteit" value="Splits"> Splits
-                                <input type="radio" name="Personaliteit" value="Positief"> Introvert
-                                <input type="radio" name="Personaliteit" value="Negatief"> Extravert<br>
-                            </div>
-                            @Html.Label("Opleiding")
-                            <div class="form-group">
-                                <input type="radio" name="Opleiding" value="Geen"> Geen filter
-                                <input type="radio" name="Opleiding" value="Splits"> Splits
-                                <input type="radio" name="Opleiding" value="Positief"> Hoge opleiding
-                                <input type="radio" name="Opleiding" value="Negatief"> Lage opleiding<br>
-                            </div>
-
-                        </div>
-
+                                @Html.Label("Personaliteit")
+                                <div class="form-group">
+                                    <input type="radio" name="Personaliteit" value="Geen"> Geen filter
+                                    <input type="radio" name="Personaliteit" value="Splits"> Splits
+                                    <input type="radio" name="Personaliteit" value="Positief"> Introvert
+                                    <input type="radio" name="Personaliteit" value="Negatief"> Extravert<br>
+                                </div>
+                                @Html.Label("Opleiding")
+                                <div class="form-group">
+                                    <input type="radio" name="Opleiding" value="Geen"> Geen filter
+                                    <input type="radio" name="Opleiding" value="Splits"> Splits
+                                    <input type="radio" name="Opleiding" value="Positief"> Hoge opleiding
+                                    <input type="radio" name="Opleiding" value="Negatief"> Lage opleiding<br>
+                                </div>
+                            </div>*@
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Stoppen</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ToonGrafiek()" data-toggle="modal" data-target="#createItemModal4">Toon Grafiek</button>
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -262,6 +261,7 @@
         </div>
     </div>
 }
+
 <script type="text/javascript">
     $(".chosen-select").chosen()
     {

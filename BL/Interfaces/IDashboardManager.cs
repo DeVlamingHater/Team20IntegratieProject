@@ -53,6 +53,10 @@ namespace BL.Interfaces
         Melding createMelding(Alert alert, double waarde);
         void updateAlert(Alert alert);
         List<DataConfig> GetGrafiekDataconfigs(Grafiek grafiek);
+        Melding getMeldingById(int id);
+        void setMeldingInactive(int id);
+        void generateTestMeldingen(Dashboard dashboard);
+        List<Melding> getAllMeldingen(Dashboard dashboard);
         #endregion
     }
 }

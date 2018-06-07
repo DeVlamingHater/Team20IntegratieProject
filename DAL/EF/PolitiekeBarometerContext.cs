@@ -108,9 +108,11 @@ namespace DAL.EF
 
             modelBuilder.Entity<Alert>().HasMany<Melding>(a => a.Meldingen);
 
-            modelBuilder.Entity<Melding>().HasRequired<Alert>(m => m.Alert);
+            modelBuilder.Entity<Melding>().HasOptional<Alert>(m => m.Alert);
 
             modelBuilder.Entity<ApplicationUser>().HasRequired<Gebruiker>(g => g.Gebruiker);
+
+            modelBuilder.Entity<Melding>().HasOptional<Dashboard>(m => m.Dashboard);
 
             modelBuilder.Entity<ApplicationUser>().HasMany<IdentityUserRole>((ApplicationUser u) => u.Roles);
             base.OnModelCreating(modelBuilder);

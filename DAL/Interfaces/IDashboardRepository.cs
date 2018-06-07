@@ -48,6 +48,10 @@ namespace DAL
         Grafiek getGrafiek(int itemId);
         void updateAlert(Alert alert);
         List<DataConfig> getGrafiekDataConfig(Grafiek grafiek);
+        Melding getMeldingById(int id);
+        void updateMelding(Melding melding);
+        void createMelding(Melding melding1);
+        List<Melding> getAllMeldingen(Dashboard dashboard);
         #endregion
     }
 }

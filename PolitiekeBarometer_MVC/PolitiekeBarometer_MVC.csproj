@@ -429,6 +429,7 @@
     <Content Include="Views\Error\AdminError.cshtml" />
     <Content Include="Views\Deelplatform\Element.cshtml" />
     <Content Include="Views\Alert\DetailsAlert.cshtml" />
+    <Content Include="Views\Alert\LijstMeldingen.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.js" />
     <Content Include="startbootstrap-sb-admin-gh-pages\startbootstrap-sb-admin-gh-pages\js\sb-admin-charts.min.js" />

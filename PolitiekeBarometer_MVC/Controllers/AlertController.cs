@@ -312,9 +312,32 @@ namespace PolitiekeBarometer_MVC.Controllers
         #endregion
 
         #region Melding
-        public ActionResult MeldingDetail(int id)
+        public ActionResult Melding(int id)
         {
-            return View();
+            IDashboardManager dashboardManager = new DashboardManager();
+            Melding melding = dashboardManager.getMeldingById(id);
+            dashboardManager.setMeldingInactive(id);
+            return View("MeldingDetail", melding);
+        }
+        public ActionResult GenerateTestMeldingen()
+        {
+            UnitOfWorkManager uowmgr = new UnitOfWorkManager();
+            IDashboardManager dashboardManager = new DashboardManager(uowmgr);
+            string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
+
+            Dashboard dashboard = dashboardManager.getDashboard(username, deelplatformURL);
+            dashboardManager.generateTestMeldingen(dashboard);
+            uowmgr.Save();
+            return RedirectToAction("Index", "Deelplatform");
+        }
+        public ActionResult LijstMeldingen()
+        {
+            IDashboardManager dashboardManager = new DashboardManager();
+            string username = System.Web.HttpContext.Current.User.Identity.GetUserName();
+
+            Dashboard dashboard = dashboardManager.getDashboard(username, deelplatformURL);
+            List<Melding> Meldingen = dashboardManager.getAllMeldingen(dashboard);
+            return View("LijstMeldingen", Meldingen);
         }
         public ActionResult MeldingDropDown()
         {
@@ -327,27 +350,26 @@ namespace PolitiekeBarometer_MVC.Controllers
                 //Ophalen Meldingen van het dashboard
                 Dashboard dashboard = dashboardManager.getDashboard(username, Deelplatform.Naam);
                 meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
-
                 //TestMeldingen
                 #region TestMeldingen
-                Melding melding1 = new Melding()
+                /*Melding melding1 = new Melding()
                 {
                     IsActive = true,
                     IsPositive = true,
                     MeldingDateTime = DateTime.Now.AddHours(-1),
                     Message = "Deze Alert is een positieve test alert",
                     Titel = "Postieve Test Melding"
-                };
-                Melding melding2 = new Melding()
-                {
-                    IsActive = true,
-                    IsPositive = false,
-                    MeldingDateTime = DateTime.Now.AddHours(-2),
-                    Message = "Deze Alert is een Negatieve test alert",
-                    Titel = "Negatieve Test Melding"
-                };
-                meldingen.Add(melding1);
-                meldingen.Add(melding2);
+                };*/
+                //Melding melding2 = new Melding()
+                //{
+                //    IsActive = true,
+                //    IsPositive = false,
+                //    MeldingDateTime = DateTime.Now.AddHours(-2),
+                //    Message = "Deze Alert is een Negatieve test alert",
+                //    Titel = "Negatieve Test Melding"
+                //};
+               // meldingen.Add(melding1);
+                //meldingen.Add(melding2);
                 #endregion
             }
             return PartialView(meldingen);

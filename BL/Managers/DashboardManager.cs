@@ -503,7 +503,54 @@ namespace BL.Managers
 
         public List<DataConfig> GetGrafiekDataconfigs(Grafiek grafiek)
         {
+            initNonExistingRepo();
             return dashboardRepository.getGrafiekDataConfig(grafiek);
+        }
+
+        public Melding getMeldingById(int id)
+        {
+            initNonExistingRepo();
+            return dashboardRepository.getMeldingById(id);
+        }
+
+        public void setMeldingInactive(int id)
+        {
+            initNonExistingRepo();
+            Melding melding = getMeldingById(id);
+            melding.IsActive = false;
+            dashboardRepository.updateMelding(melding);
+        }
+
+        public void generateTestMeldingen(Dashboard dashboard)
+        {
+            initNonExistingRepo(true);
+            Melding melding1 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = true,
+                MeldingDateTime = DateTime.Now.AddHours(-1),
+                Message = "Deze Alert is een positieve test alert",
+                Titel = "Postieve Test Melding",
+                Dashboard = dashboard
+            };
+            dashboardRepository.createMelding(melding1);
+            Melding melding2 = new Melding()
+            {
+                IsActive = true,
+                IsPositive = false,
+                MeldingDateTime = DateTime.Now.AddHours(-2),
+                Message = "Deze Alert is een Negatieve test alert",
+                Titel = "Negatieve Test Melding",
+                Dashboard = dashboard
+            };
+            dashboardRepository.createMelding(melding2);
+            //meldingen.Add(melding1);
+            //meldingen.Add(melding2);     
+        }
+
+        public List<Melding> getAllMeldingen(Dashboard dashboard)
+        {
+            return dashboardRepository.getAllMeldingen(dashboard);
         }
         #endregion
     }

@@ -71,7 +71,7 @@ namespace DAL.Repositories_EF
         #region Zone
         public IEnumerable<Zone> getDashboardZones(int dashboardId)
         {
-            return context.Zones.Include(z=>z.Items).Where(r => r.Dashboard.Id == dashboardId).AsEnumerable();
+            return context.Zones.Include(z => z.Items).Where(r => r.Dashboard.Id == dashboardId).AsEnumerable();
         }
 
         public Zone getZone(int zoneId)
@@ -86,7 +86,7 @@ namespace DAL.Repositories_EF
             return zone;
         }
 
-        public void changeZoneName(int zoneId,string zoneNaam)
+        public void changeZoneName(int zoneId, string zoneNaam)
         {
             getZone(zoneId).Naam = zoneNaam;
             context.SaveChanges();
@@ -166,7 +166,7 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Alert> getActiveAlerts(Dashboard dashboard)
         {
-            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Dashboard.Id == dashboard.Id &&a.Status == AlertStatus.ACTIEF).ToList<Alert>();
+            return context.Alerts.Include(a => a.DataConfig.Element).Where<Alert>(a => a.Dashboard.Id == dashboard.Id && a.Status == AlertStatus.ACTIEF).ToList<Alert>();
         }
 
         public DataConfig getAlertDataConfig(Alert alert)
@@ -192,7 +192,7 @@ namespace DAL.Repositories_EF
 
         public Alert getAlert(int id)
         {
-            return (Alert)context.Alerts.Include(a=>a.DataConfig.Element).Include(a=>a.Dashboard).Where(a => a.AlertId == id).FirstOrDefault();
+            return (Alert)context.Alerts.Include(a => a.DataConfig.Element).Include(a => a.Dashboard).Where(a => a.AlertId == id).FirstOrDefault();
         }
 
         public void updateAlert(Alert alert)
@@ -210,19 +210,45 @@ namespace DAL.Repositories_EF
 
         public IEnumerable<Melding> getActiveMeldingen(Dashboard dashboard)
         {
-            return context.Meldingen.Where(m => m.Alert.Dashboard.Id == dashboard.Id);
+            List<Melding> meldingen = context.Meldingen.Where(m => m.Alert.Dashboard.Id == dashboard.Id && m.IsActive == true).ToList();
+            meldingen.AddRange(context.Meldingen.Where(m => m.Dashboard.Id == dashboard.Id && m.IsActive));
+            return meldingen;
         }
 
         public List<DataConfig> getGrafiekDataConfig(Grafiek grafiek)
         {
-            List<DataConfig> dataConfigs = new List<DataConfig>(); 
+            List<DataConfig> dataConfigs = new List<DataConfig>();
             foreach (DataConfig dataconfig in grafiek.Dataconfigs)
             {
-                DataConfig grafiekconfig = context.DataConfigs.Include(dc=>dc.Element).Include(dc => dc.Filters).Include(dc => dc.Vergelijking).Where(dc => dc.DataConfiguratieId == dataconfig.DataConfiguratieId).FirstOrDefault();
+                DataConfig grafiekconfig = context.DataConfigs.Include(dc => dc.Element).Include(dc => dc.Filters).Include(dc => dc.Vergelijking).Where(dc => dc.DataConfiguratieId == dataconfig.DataConfiguratieId).FirstOrDefault();
                 dataConfigs.Add(grafiekconfig);
             }
-            
+
             return dataConfigs;
+        }
+
+        public Melding getMeldingById(int id)
+        {
+            return context.Meldingen.Find(id);
+        }
+
+        public void updateMelding(Melding melding)
+        {
+            context.Entry(melding).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
+        public void createMelding(Melding melding1)
+        {
+            context.Meldingen.Add(melding1);
+            context.SaveChanges();
+        }
+
+        public List<Melding> getAllMeldingen(Dashboard dashboard)
+        {
+            List<Melding> meldingen = context.Meldingen.Where(m => m.Alert.Dashboard.Id == dashboard.Id).ToList();
+            meldingen.AddRange(context.Meldingen.Where(m => m.Dashboard.Id == dashboard.Id));
+            return meldingen;
         }
         #endregion
     }

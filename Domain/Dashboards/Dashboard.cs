@@ -19,5 +19,7 @@ namespace Domain.Dashboards
         public List<Zone> Zones { get; set; }
 
         public Deelplatform Deelplatform { get; set; }
+
+
     }
 }

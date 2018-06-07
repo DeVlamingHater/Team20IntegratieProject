@@ -24,6 +24,8 @@ namespace Domain.Dashboards
 
         public bool IsActive { get; set; }
 
+        public Dashboard Dashboard { get; set; }
+
 
     }
 }

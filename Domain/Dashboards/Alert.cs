@@ -15,20 +15,16 @@ namespace Domain
 
         public DataType DataType { get; set; }
 
-        [Required]
         public AlertStatus Status { get; set; }
 
-        [Required]
         public DataConfig DataConfig { get; set; } 
 
         public TimeSpan Interval { get; set; }
 
         //Het aantal posts dat moet overschreden worden
-        [Required]
         public double Waarde { get; set; }
 
         //Bepaal welke operator moet gebruikt worden bij het bepalen van een overschrijding
-        [Required]
         [RegularExpression("[<,>][=]?")]
         public String Operator { get; set; }
 
@@ -46,12 +42,12 @@ namespace Domain
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             //Er moet minstens één soort melding ingesteld zijn
-            if (!ApplicatieMelding && !EmailMelding && !BrowserMelding)
-            {
-                string errormessage = "Er moet minstens één soort melding ingesteld zijn";
-                errors.Add(new ValidationResult(errormessage,
-                    new string[] {"ApplicatieMelding","EmailMelding","BrowserMelding" }));
-            }
+            //if (!ApplicatieMelding && !EmailMelding && !BrowserMelding)
+            //{
+            //    string errormessage = "Er moet minstens één soort melding ingesteld zijn";
+            //    errors.Add(new ValidationResult(errormessage,
+            //        new string[] {"ApplicatieMelding","EmailMelding","BrowserMelding" }));
+            //}
 
             return errors;
         }

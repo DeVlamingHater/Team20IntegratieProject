@@ -1,33 +1,34 @@
 ﻿@model IEnumerable<Domain.Dashboards.Melding>
-@if (Model.Count()!= 0)
-{
-    <li class="nav-item dropdown" id="alertDropDown">
-        <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-bell"></i>
-            <span class="d-lg-none">
-                Alerts
-                <span class="badge badge-pill badge-warning">
-                    @{
-                        Model.Count();
-                    }
-                    New
-                </span>
-            </span>
-            <span class="indicator text-warning d-none d-lg-block">
-                @if (Model.Count() > 0)
-                {
-                    <i class="fa fa-fw fa-circle"></i>
+
+<li class="nav-item dropdown" id="alertDropDown">
+    <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-fw fa-bell"></i>
+        <span class="d-lg-none">
+            Alerts
+            <span class="badge badge-pill badge-warning">
+                @{
+                    Model.Count();
                 }
+                New
             </span>
-        </a>
+        </span>
+        <span class="indicator text-warning d-none d-lg-block">
+            @if (Model.Count() > 0)
+            {
+                <i class="fa fa-fw fa-circle"></i>
+            }
+        </span>
+    </a>
 
-        <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">Nieuwe Meldingen</h6>
+    <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+        <h6 class="dropdown-header">Nieuwe Meldingen</h6>
+        @if (Model.Count() != 0)
+        {
 
-            @foreach (var item in Model)
+            foreach (var item in Model)
             {
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/Alert/Melding/@item.MeldingId">
+                <a class="dropdown-item" href="@Url.Action("Melding", "Alert",new { id=item.MeldingId })">
                     @if (item.IsPositive)
                     {
                         <span class="text-success">
@@ -54,10 +55,26 @@
                     </div>
                 </a>
             }
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item small nav-link">@Html.ActionLink("Bekijk Alle Meldingen", "LijstMeldingen", "Alert")</div>
-            <div class="dropdown-item small nav-link">@Html.ActionLink("Bekijk Alle Alerts", "LijstAlerts", "Alert")</div>
-        </div>
-    </li>
+        }
 
-}
+        else
+        {
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item">
+                <span class="text-success">
+                    <strong>
+                        Geen nieuwe meldingen
+                    </strong>
+                </span>
+            </a>
+        }
+
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item small nav-link">@Html.ActionLink("Bekijk Alle Meldingen", "LijstMeldingen", "Alert")</div>
+        <div class="dropdown-item small nav-link">@Html.ActionLink("Bekijk Alle Alerts", "LijstAlerts", "Alert")</div>
+        <div class="dropdown-item small nav-link">@Html.ActionLink("Maak test meldingen", "GenerateTestMeldingen", "Alert")</div>
+
+    </div>
+</li>
+
+

@@ -1,5 +1,8 @@
 ﻿@model Domain.Dashboards.Item
-
+@{ 
+    ViewBag.delete = "delete" + Model.Id;
+    ViewBag.page = "dashboard";
+}
 <div class="card h-100">
     <div class="card-header">
         <i class="fa fa-bar-chart"></i> Grafiek
@@ -24,7 +27,7 @@
                     <button id="iconAlert" class="btn btn-default" data-toggle="modal" data-target="#@ViewBag.alert"><i class="fa fa-bell"></i></button>
                     if (ViewBag.page == "dashboard")
                     {
-                        <button id="iconVerwijder" class="btn btn-danger" data-toggle="modal" data-target="#@ViewBag.delete"><i class="fa fa-close"></i></button>
+                        <button id="iconVerwijder" class="btn btn-danger" onclick="deleteGrafiek(@Model.Id)"><i class="fa fa-close"></i></button>
                     }
                 }
             </div>
@@ -32,3 +35,27 @@
         </div>
     </div>
 </div>
+
+<script>
+function deleteGrafiek(el) {
+        var grafiek = el;
+        for (i = 0; i < grafiek.length; i++) {
+            if (isNaN(grafiek[i]) == false) {
+                grafiekindex = grafiekindex + grafiek[i];
+            }
+        };
+        var f = {};
+                f.url = '@Url.Action("deleteGrafiek", "Home")';
+                f.type = "POST";
+                f.dataType = "json";
+                f.data = JSON.stringify({ grafiekIndex: grafiekindex });
+                f.contentType = "application/json";
+                f.success = function (response) {
+                    alert("grafiek verwijderd");
+                };
+                f.error = function (response) {
+                    alert("failed");
+                };
+                $.ajax(f);
+    }
+</script>
