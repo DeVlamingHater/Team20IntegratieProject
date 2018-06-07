@@ -20,7 +20,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressSSLPort>44363</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -299,6 +299,7 @@
     <Content Include="Content\Images\Politieke_Barometer_Banner.jpg" />
     <Content Include="Content\jquery.gridster.css" />
     <Content Include="Content\jquery.gridster.min.css" />
+    <Content Include="Content\witteRuimte.css" />
     <Content Include="Scripts\gridsterscripts\gridsterScript.js" />
     <Content Include="Scripts\Gridster\jquery.gridster.js" />
     <Content Include="Scripts\Gridster\jquery.gridster.min.js" />

@@ -35,8 +35,8 @@ namespace PolitiekeBarometer_MVC
             elementManager.deleteAllPersonen(deelplatform);
             elementManager.addPersonen(elementManager.readJSONPolitici());
             elementManager.setTrendingElementen(deelplatform);
-           UpdateAsync();
-            SetTimer();
+            UpdateAsync();
+            //SetTimer();
             uowMgr.Save();
         }
 
