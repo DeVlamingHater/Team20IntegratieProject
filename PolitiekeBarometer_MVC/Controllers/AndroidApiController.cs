@@ -74,25 +74,25 @@ namespace PolitiekeBarometer_MVC.Controllers
             Dashboard dashboard = dashboardManager.getDashboard(email, deelplatform.Naam);
             List<Melding> meldingen = dashboardManager.getActiveMeldingen(dashboard).ToList();
 
-            Melding melding1 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = true,
-                MeldingDateTime = DateTime.Now.AddHours(-1),
-                Message = "Deze Alert is een positieve test alert",
-                Titel = "Postieve Test Melding"
-            };
-            Melding melding2 = new Melding()
-            {
-                IsActive = true,
-                IsPositive = false,
-                MeldingDateTime = DateTime.Now.AddHours(-2),
-                Message = "Deze Alert is een Negatieve test alert",
-                Titel = "Negatieve Test Melding"
-            };
+            //Melding melding1 = new Melding()
+            //{
+            //    IsActive = true,
+            //    IsPositive = true,
+            //    MeldingDateTime = DateTime.Now.AddHours(-1),
+            //    Message = "Deze Alert is een positieve test alert",
+            //    Titel = "Postieve Test Melding"
+            //};
+            //Melding melding2 = new Melding()
+            //{
+            //    IsActive = true,
+            //    IsPositive = false,
+            //    MeldingDateTime = DateTime.Now.AddHours(-2),
+            //    Message = "Deze Alert is een Negatieve test alert",
+            //    Titel = "Negatieve Test Melding"
+            //};
 
-            meldingen.Add(melding1);
-            meldingen.Add(melding2);
+            //meldingen.Add(melding1);
+            //meldingen.Add(melding2);
             return meldingen;
         }
 

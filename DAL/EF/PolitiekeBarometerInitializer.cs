@@ -11,7 +11,7 @@ using Domain.Platformen;
 namespace DAL.EF
 {
 
-    class PolitiekeBarometerInitializer : DropCreateDatabaseIfModelChanges<PolitiekeBarometerContext>
+    class PolitiekeBarometerInitializer : CreateDatabaseIfNotExists<PolitiekeBarometerContext>
     {
         protected override void Seed(PolitiekeBarometerContext context)
         {
